@@ -2,7 +2,7 @@
 Sharing the cheatsheet I did for past modules
 
 Cheatsheet helps me to revise better, I hope it will be useful for you too.
-Sadly some of the modules do not have cheatsheet.
+Sadly I was too lazy to do cheatsheet for some of the modules or some modules require hand written cheatsheet.
 
 If anyone wants to share their cheatsheet too, please feel free to drop me a message.
 
