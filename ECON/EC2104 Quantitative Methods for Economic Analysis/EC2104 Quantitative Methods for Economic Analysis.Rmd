@@ -7,6 +7,8 @@ output:
         toc_depth: 4
 ---
 
+AY21/22 Semester 2
+
 <!-- This is the main file rendering the weekly summary -->
 
 # Preface
@@ -68,6 +70,27 @@ $\lim_{x\rightarrow \infty}x^2/e^x$
 If you are interested in knowing the why, please refer to
 [What do I need to know](#What%20do%20I%20need%20to%20know)
 section on the modules offered by mathematics department.
+
+## Something to know before reading this summary
+
+This summary is meant to provide a comprehensive view of the
+content (so you know what's being taught here after the
+semester) and hopefully to provide some easier to understand
+explanation in case the mathematics notation is unfamiliar to
+you. I will use the term `Layman` achieve this.
+
+In contrast to `Layman`, a definition is a statement of
+exact meaning of a word, or simply: in order for you to use
+this word, you must satisfy every single words (!) in this
+definition. In this summary I will use `Layman` to indicate
+that what I'm trying to say is not a `Definition`. `Layman`
+means that there might be situation where the statement is
+not entirely correct but `Layman` will be useful in
+explaining the terms.
+
+I might also have a section on `terminology`, which is just
+some technical or special terms used to describe some
+observations/facts.
 
 
 # Single Variable Calculus

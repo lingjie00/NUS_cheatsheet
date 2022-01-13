@@ -1,4 +1,72 @@
 ## Functions
 
+Layman: learning functions helps us to quantify the
+relationship between different quantities. For example, 
+if bank offered me a 5% annual interest rate, what will happen to
+my 100 dollar savings next year?
+$f(savings) = savings + savings \times 5\%$
+
+### Layman Definitions
+
+Type | Layman
+--- | ---
+Functions |\
+a rule that maps input (domain) onto a unique output (range) |\
+
+Composite Functions |\
+applying functions sequentially of each other |\
+
+Inverse Functions |\
+the reverse of the function
+
+### Terminology
+
+Terms | Layman
+--- | ---
+Domain | input to the function
+Range | output of the function
+Codomain | the bigger space output exists
+
+Layman: the biggest confusion might be between `Range` and
+`Codomain`. Think of `Codomain` as the superset of `Range`,
+or simply: `Codomain` contains more values than `Range`. For
+example, if we have a `Domain` of all real numbers, 
+and a function of $f(x)=x^2$. The `Codomain` is also all the real
+numbers. However, the `Range` is a smaller subset containing
+values $\{0, 1, 2, 4, \cdots \}$.
+
+### Testing if a function is invalid
+
+1. Show by numerical example that function violates the
+   one-to-one mapping
+2. Plot and show that vertical-line test failed. Meaning the
+   vertical line cuts x-axis with more than one
+   intersection.
+
+### Type of functions
+
+Note: it is very important to identify the domain and range
+of a function. For example, given a function $f(x) = x + 1$
+with a restricted domain of $x\geq 0$, then the range can only
+be values larger than or equals to 1 (or $f(x) \geq 1$).
+
+Another example: consider function $f(x)=\frac{3x-1}{x+4}$, the
+domain will be the real values except for $-4$ (or $x\in
+\mathbb{R}, x \neq 4$). The range will be all the real values.
+
+Type | Form | Example | Domain | Range
+--- | --- | --- | --- | --- |
+Polynomial |\
+$f(x)=a_nx^n+a_{n-1}x^{n-1}+\cdots+a_1x+a_0$ with real coefficients.|\
+$f(x)=2x^2 + x - 5$ | $x \in \mathbb{R}$ | $f(x) \in \mathbb{R}$ |\
+
+Power |\
+$f(x)=Ax^r$ where $r, A$ are constants. For this module: $x>0$ |\
+|\
+|\
+
+Exponent |
+
+Logarithmic |
 
 ## Limits
