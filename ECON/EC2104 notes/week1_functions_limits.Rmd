@@ -1,0 +1,108 @@
+---
+title: EC2104 Tutorial 1 - Functions & Limits
+author: ling
+output:
+    beamer_presentation:
+        slide_level: 3
+        toc: false
+theme: "Malmoe"
+---
+
+# Functions
+
+- Function: a procedure mapping domain onto range.
+- Key Characteristics: one-to-one mapping between domain and
+range.
+- Test invalid functions:
+  1. Failed the vertical-line test
+  2. Numeric example where function failed one-to-one
+     mapping definition
+- Composite Functions: nested function, or applying
+  functions sequentially
+  - Note: $g\circ f(x)=g(f(x))\neq f(g(x))=f\circ g(x)$ for
+    most functions
+- Inverse Functions: the reverse of the function, mapping
+  from range to domain
+  - Note: it is important to identify the domain and range
+    correctly
+  - Note: inverse function has to satisfy one-to-one mapping
+    relationship as well
+
+## Polynomial
+
+\begin{block}{Polynomial function}
+$P(x) = a_nx^n + a_{n-1}x^{n-1}+\cdots+a_1x+a_0$
+\end{block}
+- non-zero coefficients $a_n, a_{n-1}, \cdots, a_0$
+- $x$ is the unknown, $a_n, a_{n-1}, \cdots, a_0$ are known
+- Domain: $\mathbb{R}$, Range: $\mathbb{R}$
+- Types of polynomial functions
+  - Linear Functions: $P(x)=a_1x+a_0$
+  - Quadratic Functions: $P(x)=a_2x^2+a_1x+a_0$
+- Example of polynomial functions
+  - Linear: solving equilibrium conditions (e.g. demand and
+    supply)
+  - Quadratic: Solving profit maximisation conditions (e.g.
+    monopoly optimal output level to maximise profit)
+
+## Power and Exponential functions
+
+\begin{block}{Power Functions}
+$f(x) = Ax^r$
+\end{block}
+- $x$ is the unknown, $r, A$ are known.
+- Domain: $x>0$ (in this module)
+- Range: $f(x)>0, A > 0$ or $f(x)<0, A < 0$
+
+\begin{block}{Exponent Functions}
+$f(t) = Aa^t$
+\end{block}
+- $t$ is the unknown, $A, a$ are known.
+- Domain: $\mathbb{R}$
+- Range: $f(t) > 0$
+- Note: $f(t+1)=f(t)\cdot a=Aa^{t+1}$
+
+## Logarithmic function
+
+\begin{block}{Logarithmic Functions}
+$x := \log_a a^x=\log_a b$
+\end{block}
+- inverse of exponential function ($a^x=b$)
+- commonly natural log is used ($\log_e x$ or $\ln x$)
+- Note: $a^{log_a x} = x$
+- Logarithmic is commonly used to simplify differentiation
+  - Question: $\frac{d}{dx} exp(x-1)^2=0$
+  - Solving Log transformed question: $\frac{d}{dx} 
+    log(exp(x-1)^2) =
+    \frac{d}{dx} (x-1)^2=0\Rightarrow x^* = 1$
+  - Log transformed and original question differs in
+    objective function value ($e^{(1-1)^2}=1\neq (1-1)^2=0$)
+    but the optimal solution is the same ($x^*=1$)
+
+## Key economics Examples
+
+- Solving equilibrium price and quantity
+    - Linear demand: $Q_D = a-bP$
+    - Linear supply: $Q_S = \alpha + \beta P$
+- Solving optimal output $Q^M$ and profit $\pi^M$
+  - Cost function: $C=\alpha Q + \beta Q^2, Q \geq 0$
+  - Demand function: $P = a - bQ$
+  - Revenue function: $R = PQ$
+  - Profit function: $\pi(Q) = R - C$
+
+
+# Limits
+
+\begin{block}{Limits}
+$\lim_{x\rightarrow a}f(x)=A$
+\end{block}
+- Read: as $x$ tends towards $a$, the limit of $f(x)$
+  tends towards $A$
+- Commonly used when
+   1. Functions does not exist at the point
+   2. When value tends towards infinity
+- For a limit to exist, the left limit and right limit must
+  tends towards the same value
+  - $\lim_{x\rightarrow a} f(x)=A \Leftrightarrow
+    \lim_{x\rightarrow a^-} f(x)=\lim_{x\rightarrow
+    a^+}f(x)=A$
