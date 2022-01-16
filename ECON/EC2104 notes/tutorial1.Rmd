@@ -1,0 +1,152 @@
+---
+title: EC2104 Tutorial 1 solution
+author: ling
+output:
+    beamer_presentation:
+        slide_level: 2
+        toc: false
+theme: "Malmoe"
+---
+
+# Question 1: Finding limits
+
+## Before finding limits
+
+Before you apply fancy L'Hopital rule or any other techniques
+
+1. Check if limit exist (left limit = right limit)
+   - There is no point trying to find something that does
+     not exist
+2. Check if the limit is in indeterminate form 
+   ($\frac{0}{0}, \frac{\infty}{\infty}, 0\cdot0,
+   \infty\cdot\infty$)
+   - If there is a solution simply by substituting the value
+     of the limit (e.g. $\lim_{x\rightarrow0}x+4=0+4=4$), 
+     why bother wasting time
+3. If limit is in indeterminate form and value tends towards
+   infinity, check if denominator has higher rate of growth
+   than numerator
+   - Intuitively, if only the denominator is infinity, the
+     fraction will tends towards 0
+   - Example: solve question 1a) $\lim_{x\rightarrow 0}
+     \frac{x}{e^x}=0$ by eyeballing
+   - Order of growth (when value tends towards
+     infinity only): $O(1) < O(log(x))
+     < O(x^n) < O(e^x)$
+
+## Question 1b)
+
+Q: Find
+$\lim_{x\rightarrow-4}\left(\frac{x^2-16}{x+4}\right)\ln|x|$
+
+0. Identify: $\ln|-4|=ln(4)$ is a constant
+
+Method 1: Simplification
+
+1. Observe $x^2-16=(x+4)(x-4)$
+2. Simplify question: 
+$\lim_{x\rightarrow-4}\left(\frac{x^2-16}{x+4}\right)\ln|x|
+= \lim_{x\rightarrow-4}(x-4)\ln|x|=-8\ln(4)$
+
+Method 2: L'H
+
+1. Since the fraction is indeterminate, apply L'H:
+   $\Rightarrow
+   \lim_{x\rightarrow-4}\frac{\frac{d}{dx}x^2-16}{\frac{d}{dx}x+4}\ln|-x|
+   =\lim_{x\rightarrow -4}\frac{2x}{1}\ln|-x|=-8\ln(4)$
+
+Why bother with other methods when almost all questions can
+be solved by L'H?
+
+- Solving differentiation can be challenging sometimes
+
+## Question 1c)
+
+Q: Find
+$\lim_{x\rightarrow 1.5}\frac{2x^2-3x}{|2x-3|}=
+\lim_{x\rightarrow 1.5}\frac{x(2x-3)}{|2x-3|}$
+
+0. Observe:
+   - although fraction is indeterminate, absolute
+   function is not differentiable.
+   - Therefore, L'H cannot be
+   used directly
+   - and we cannot simplify the question
+   directly.
+   - We need to use piecewise function and find limit by
+     finding the left limit and right limit
+1. Left limit:
+   $\lim_{x\rightarrow
+   1.5}\frac{x(2x-3)}{2x-3}=\lim_{x\rightarrow 1.5}x=1.5$
+2. Right limit:
+   $\lim_{x\rightarrow
+   1.5}\frac{x(2x-3)}{-(2x-3)}=\lim_{x\rightarrow 1.5}-x=-1.5$
+3. Observe: since left limit $\neq$ right limit, by
+   definition of limits the limit does not exist
+
+## Question 1d): challenging but important
+
+Q: Find
+$\lim_{x\rightarrow\infty}\sqrt{x^2+x}-x$
+
+0. Observe:
+   - The question is not in a fraction form, L'H
+   cannot be applied directly.
+   - Although $\sqrt{x^2+x}>0$ but $-x<0$, and it seems like
+     $\sqrt{x^2+x}\approx x$. So it is hard to decide if the
+     limit will diverge (positive or negative infinity) or
+     it will converge
+1. Use an important trick in solving limits question:
+   $\lim_{x\rightarrow\infty}\sqrt{x^2+x}-x
+   =\lim_{x\rightarrow
+   \infty}\frac{(\sqrt{x^2+x}-x)(\sqrt{x^2+x}+x)}{(\sqrt{x^2+x}+x)}$
+   - Note: since
+     $\frac{(\sqrt{x^2+x}+x)}{(\sqrt{x^2+x}+x)}=1$, we can
+     multiply any functions with $1$ without changing the
+     function.
+   - Note: furthermore, we simplify the function using
+     identity: $(a+b)(a-b)=a^2-b^2$
+2. Therefore, $\lim_{x\rightarrow \infty}\sqrt{x^2+x}-x
+   =\lim_{x\rightarrow \infty} \frac{x^2+x-x^2}{\sqrt{x^2+x}+x}$
+   - to be continued in the next slide
+
+## Question 1d) cont
+
+Now, we solve
+$\lim_{x\rightarrow \infty} \frac{x^2+x-x^2}{\sqrt{x^2+x}+x}
+=\lim_{x\rightarrow \infty} \frac{x}{\sqrt{x^2+x}+x}$
+
+3. Reapplying the trick in step (1):
+    - $\lim_{x\rightarrow \infty} \frac{x}{\sqrt{x^2+x}+x}
+    =\lim_{x\rightarrow \infty} \frac{x}{\sqrt{x^2+x}+x} \cdot
+    \frac{1/x}{1/x}=
+    \lim_{x\rightarrow \infty} \frac{1}{\sqrt{1+\frac{1}{x^2}}+1}$
+4. Deduce: 
+$\lim_{x\rightarrow \infty} \frac{1}{\sqrt{1+\frac{1}{x^2}}+1}
+=\frac{1}{2}$
+
+Note: We skipped some detailed working here, you can refer
+to the step by step procedure in tutorial solution or work
+it out yourself.
+
+## Question 1e)
+
+Similar idea as question 1d), refer to tutorial solution for
+detailed steps.
+
+## Question 1f)
+
+Q: Find $a, b$ such that
+$\lim_{x \rightarrow 0}\frac{\sqrt{ax+b}-2}{x}=1$
+
+0. For L'Hopital to work, assume
+ $\lim_{x \rightarrow 0} \sqrt{ax+b}-2=0
+ \Rightarrow \sqrt{b} = 2
+ \Rightarrow b = 4$
+1. Applying L'Hopital rule:
+ $\Rightarrow \lim_{x \rightarrow 0}\frac{a}{2\sqrt{ax+b}}=1$
+2. Substitute $x=0$:
+ $\Rightarrow \frac{a}{2\sqrt{b}}=1$
+3. Find relationship between $a, b$:
+ $\Rightarrow a = 2\sqrt{b}$
+4. Since from step (0): $b = 4 \Rightarrow a = 4$
