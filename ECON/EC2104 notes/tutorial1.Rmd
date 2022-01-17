@@ -177,8 +177,142 @@ Important things to know:
 
 # Question 3: Finding inverse 
 
+## Question 3a
+
+Q: $f(x) = \frac{1}{2}(e^x - e^{-x})$
+
+1. Solve for $x$: $y=\frac{1}{2}(e^x - e^{-x})$
+2. Multiply both side by $e^x$: $ye^x=\frac{1}{2}(e^{2x} - 1)$
+3. Let $z=e^x$, solve for: $yz-\frac{1}{2}z^{2} + \frac{1}{2}=0$
+   - $\Leftrightarrow$ solve $z^2-1-2yz=0$
+4. $\Rightarrow z = y + \sqrt{y^2+1}$
+   - Reject $z = y - \sqrt{y^2+1}$ since $z = e^x > 0$
+5. Take $\ln$: $y = \ln(x+\sqrt{x^2+1})$
+
+- Key trick: substituting the function of $x$
+
+## Question 3b
+
+Q: $f(x)=40x-4x^2, x\in[0, 10]$
+
+1. Show function is not valid (not one-to-one) with numeric
+   example: $f(4)=f(6)$
+
+- Key learning point: if function is not one-to-one, the
+  inverse function does not exist
+
 # Question 4: Finding first derivatives
+
+## Question 4a
+
+Show $f$ is differentiable at $x=1$
+
+\begin{align*}
+f(x) = \begin{cases}
+2+\sqrt{x}, & x\geq 1\\
+\frac{1}{2}x + \frac{5}{2}, & x<1
+\end{cases}
+\end{align*}
+
+- Key: show by definition (limit of Newton's quotient exist)
+
+1. Write down the definition
+   \begin{align*}
+   f'(1) = \lim_{\Delta x\rightarrow 0} \frac{f(1+\Delta x)
+   - f(1)}{\Delta x}
+     =\lim_{\Delta x\rightarrow 0} \frac{f(1+\Delta x) - 3}{\Delta x}
+   \end{align*}
+2. Test if limit exist (left limit = right limit)
+   - Left limit:
+     $\lim_{\Delta x \rightarrow 0}\frac{2+\sqrt{1+\Delta x}-3}{\Delta x}=\frac{1}{2}$
+   - Right limit:
+     $\lim_{\Delta x \rightarrow 0}\frac{\frac{1}{2}(1+\Delta x)+\frac{5}{2}-3}{\Delta x}=\frac{1}{2}$
+3. Since limit exist, $f$ is differentiable at $x=1$ and
+   $f'(1)=\frac{1}{2}$
+
+## Question 4b
+
+Determine if $f$ is differentiable at $x=2$,
+$f(x)=\begin{cases}\frac{1}{4}x^3-\frac{1}{2}x^2, &x\geq 2\\
+\frac{-6x-6}{x^2+2}, &x<2\end{cases}$
+
+- Note that only continuous function are differentiable
+
+0. For a quick check, try if $f(2)$ from the left equals to
+   the right
+1. More formally:
+   - Left limit ($x \geq 2$):
+     $\lim_{x\rightarrow 2^+}f(x)=
+     \frac{1}{4}2^3-\frac{1}{2}2^2=0$
+   - Right limit ($x < 2$):
+     $\lim_{x\rightarrow 2^+}f(x)=
+     \frac{-6\times2-6}{2^2+2}=-3$
+2. Since limit does not exist (left limit not equal to right
+   limit), function is not continuous at $x=2$ and is not
+   differentiable
 
 # Question 5: Finding roots with Intermediate Value Theorem
 
+## Question 5a
+
+Q: Use IVT to show $2^x=\frac{10}{x}$ for some $x>0$
+
+0. Express function in a more familiar way:
+   $\Rightarrow 2^x-\frac{10}{x}=0$
+1. Check if function is continuous in the domain
+   - Note: although function is not continuous in the whole
+     real line, when restricted to only positive values the
+     function is continuous
+2. Find alternating functional value. For example: $f(2)<0,
+   f(3)>0$
+3. Invoke IVT
+   - By IVT, there exists at least one value $c$
+   in $[2, 3]$ such that $f(c)=2^c-\frac{10}{c}=0$
+
+## Question 5b
+
+Q: Can we use IVT to conclude function has no roots in the
+interval?
+
+- No, IVT only allows us to conclude there exists at least
+  one root.
+- In Math and Logic, one way deduction is different from two
+  way deduction ($P \Rightarrow Q \neq P \Leftarrow Q$)
+  - If a definition/theorem works two ways, we say it is
+    both a necessary and sufficient condition, or say P if
+    and only if Q $P \Leftrightarrow Q$
+- Example: $f(x)=(x-1)^2$
+  - $f(0)=1=f(2)>0$, but $f(1)=0\Rightarrow$ there is at
+    least one root
+
 # Question 6: Elasticity
+
+Given:
+
+- $P_{t-1}=\$20$
+- $Q_{t-1}=100$ mil
+- PED $=\epsilon_D = -0.25$
+- PES $=\epsilon_S = 0.5$
+- demand function: $Q_d=a-bP$
+- supply function: $Q_s = c+dP$
+
+Q6a: Solve for demand and supply function
+
+1. Demand function:
+   $\epsilon_D = \frac{d Q_d}{d P}\left(\frac{P}{Q_d}\right)
+   = -b \frac{20}{100}=-0.25$ $\Rightarrow b=1.25$
+   - Since $Q_d = a - bP \Rightarrow 100 = a - 1.25\cdot 20
+     \Rightarrow a = 125$
+   - Therefore: $Q_d = 125 - 1.25P$
+2. Supply function:
+   $\epsilon_S = \frac{d Q_s}{d P}\left(\frac{P}{Q_s}\right)
+   = d \frac{20}{100}=0.5$ $\Rightarrow d=2.5$
+   - Since $Q_s = c - dP \Rightarrow 100 = c - 2.5\cdot 20
+     \Rightarrow c = 50$
+   - Therefore: $Q_S = 50 + 2.5 P$
+
+## Question 6b
+
+- Demand and Supply have same slope, different intercepts
+  - Shift in demand and supply
+- Name any factor that shifted demand and supply
