@@ -1,0 +1,191 @@
+---
+title: EC2104 Lecture 2 - continuity & differentiation
+author: ling
+output:
+    beamer_presentation:
+        slide_level: 3
+        toc: false
+theme: "Madrid"
+---
+
+# Continuity
+
+\begin{block}{Definition}
+A function is continuous at $x = a \Leftrightarrow$
+\begin{align*}
+\lim_{x\rightarrow a} f(x) = f(a)
+\end{align*}
+\end{block}
+
+Conditions for function to be continuous
+
+1. Function $f$ must be defined at $x=a$
+2. $\lim_{x\rightarrow a} f(x)$ exist
+    - By definition of limits:
+      $\lim_{x\rightarrow a^+} f(x)
+      = \lim_{x\rightarrow a^-} f(x) = L$ 
+3. $\lim_{x\rightarrow a} f(x) = L = f(a)$
+
+## Intermediate Value Theorem (IVT)
+
+\begin{block}{IVT}
+Let $f$ be a function which is continuous in the interval
+$[a, b]$. If $f(a), f(b)$ have different sign, then there is
+at least one $c$ in $(a, b)$ such that $f(c)=0$
+\end{block}
+
+Note:
+
+- function must be continuous
+- $f(a), f(b)$ must be different sign
+  - Intuitively, if the function has both positive and
+    negative $y$ value, then $0$ passes through the function
+    at least once 
+- useful to check if there is at least one root
+  - but does not inform us on the number of roots (could be
+    more than 1) or the value of the root
+  - Furthermore, failing IVT does not ensure root DO NOT exist
+
+## Checking if equation has solution
+
+Note: we are using the first definition of IVT. Therefore,
+we need to ensure the function is in the form $f(c)=0$
+
+- E.g. if given $g(x) = e^x = 6$, we convert to
+  $f(x) = e^x - 6$ before applying IVT
+
+Steps:
+
+1. Ensure $f(x)$ is continuous
+   - Exponential functions are continuous
+2. Check for sign reversal
+   - $f(1) e - 6 < 0, f(100) = e^{100} - 6 > 0$
+3. Invoke IVT
+   - By IVT, there is at least $c$ in $(1, 100)$ such that
+     $f(c)=0$
+
+By narrowing down the intervals $(a, b)$ we can find a
+numerical solution for the roots. This is known as the
+bisection method.
+
+# Differentiability
+
+\begin{block}{Differentiability}
+A function $f(x)$ is differentiable at $x=a$ as long as the
+following limit exist
+\begin{align*}
+f'(a) = \lim_{h\rightarrow 0}\frac{f(a+h)-f(a)}{h}
+\end{align*}
+\end{block}
+
+- The limit comes as a result of secant line formula:
+  $\frac{\Delta y}{\Delta x}$
+  - by decreasing the change in $x$ we get tangent line
+- Limit exist when left limit = right limit
+- Non-continuous function are not differentiable
+  $P \Rightarrow Q$
+  - but continuous does not mean
+    differentiable $P \nLeftarrow Q$
+  - Note that in mathematics (and logic), statement $P$
+    implies $Q$ does not mean statement $Q$ implies
+    $P$. Very important.
+
+## L'Hopital Rule
+
+One key method used to solve limits
+
+\begin{block}{L'Hopital Rule}
+If $f(a)=g(a)=0$ or $\infty$, and $g'(a)$ is non-zero
+\begin{align*}
+\lim_{x\rightarrow a} \frac{f(x)}{g(x)} = 
+\lim_{x\rightarrow a} \frac{f'(x)}{g'(x)}
+\end{align*}
+\end{block}
+
+## Increasing/ Decreasing Functions
+
+Derivative | slope | function value
+--- | --- | ---
+$f'(x) > 0$ | upward sloping | increasing
+$f'(x) < 0$ | downward sloping | decreasing
+$f'(x) = 0$ | 0 slope (flat) | turning point
+
+Note:
+
+- If function is 1) monotonically increasing/ decreasing,
+  combined with 2) Intermediate Value Theorem we can show the
+  equation has a unique solution
+  - monotonically increasing/ decreasing means function
+    value only increase/ decrease
+  - monotone can be shown by showing derivatives is always
+    greater than/ less than $0$
+
+# Applications
+
+## Cost Curves (MC, AC)
+
+\begin{align*}
+\frac{d}{dx} \frac{C(x)}{x} = \frac{1}{x}\left(C'(x) -
+\frac{C(x)}{x}\right)
+\Rightarrow \begin{cases}
+> 0 , &C'(x) > \frac{C(x)}{x}\\
+< 0 , &C'(x) < \frac{C(x)}{x}\\
+= 0 , &C'(x) = \frac{C(x)}{x}
+\end{cases}
+\end{align*}
+
+- marginal cost (MC): $\frac{d}{dx}C(x)$, cost of producing
+  one more unit of goods $x$
+- average cost (AC): $\frac{C(x)}{x}$, the average cost of
+  production
+- firm production quantity $Q^*$: when MC cuts AC from below
+  - average cost is lowered with an additional production
+    $\frac{d}{dx}\frac{C(x)}{x}<0$
+
+## National Income Model
+
+\begin{align*}
+\frac{dY}{d\bar{I}} = \frac{1}{[1-f'(Y)]} > 0, \because f'(Y) \in (0, 1)
+\end{align*}
+
+- $Y(C) = C + \bar{I} = f(Y) + \bar{I}$
+$\Rightarrow \frac{dY}{d\bar{I}} = f'(Y)\frac{dY}{d\bar{I}}+1$
+- Income is a function of consumption
+  - The more you spend, the more income is for another
+    person
+- Consumption is a function of income
+  - How much you spend depends on how much you have
+- We are interested in knowing how a change in investment
+  will affect national income 
+  - investment $\bar I$ is assumed to be exogenous
+    (determiend outside of the system, or taken to be a given value)
+
+## Elasticities
+
+How certain variable change in response to changes in other
+variables
+
+\begin{block}{Elasticity of $f$ with respect to $x$}
+\begin{align*}
+\epsilon_x f(x) = \frac{df(x)}{dx}\left[\frac{x}{f(x)}\right]
+=f'(x)\left[\frac{x}{f(x)}\right]
+\end{align*}
+\end{block}
+
+- An equivalent expression:
+  \begin{align*}
+    \frac{d \ln f(x)}{d \ln(x)}
+    \end{align*}
+  - most of the time it's easier to differentiate the log
+    transformed function
+
+## Risk Aversion
+
+\begin{block}{Arrow-Pratt measure of absolute risk aversion}
+$A(w) = -\frac{u''(w)}{u'(w)}$
+\end{block}
+\begin{block}{Arrow-Pratt measure of absolute risk aversion}
+$R(w) = wA(w) = -w\frac{u''(w)}{u'(w)}$
+\end{block}
+
+- $u(w) :=$ utility based on the level of wealth $w$

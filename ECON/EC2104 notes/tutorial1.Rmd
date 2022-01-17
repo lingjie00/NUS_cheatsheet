@@ -5,7 +5,7 @@ output:
     beamer_presentation:
         slide_level: 2
         toc: false
-theme: "Malmoe"
+theme: "Madrid"
 ---
 
 # Question 1: Finding limits
@@ -150,3 +150,35 @@ $\lim_{x \rightarrow 0}\frac{\sqrt{ax+b}-2}{x}=1$
 3. Find relationship between $a, b$:
  $\Rightarrow a = 2\sqrt{b}$
 4. Since from step (0): $b = 4 \Rightarrow a = 4$
+
+# Question 2: Finding equilibrium
+
+Important things to know:
+
+- Competitive market always clears
+  - quantity demanded = quantity supplied, $Q_S = Q_D$
+  - Assumes no regulations and firms, buyers have no market
+    power (perfect competition)
+- To solve the equilibrium (the easier way):
+  - $1, 2$ variables: substitution
+  - $\geq 2$ variable: matrix operations (linear algebra)
+- A shift in line when intercept changes, a rotation in line
+  when gradient changes
+  - $Q_S = 10P_J - 5 P_A \Rightarrow P_J = \frac{Q_S}{10} +
+    \frac{1}{2}P_A$
+  - Note in plotting demand and supply curve, we usually
+    plot price as the function output  (inverse demand and
+    supply)
+    $\Leftrightarrow P_J(Q_S) = f(Q_S) = \frac{Q_S}{10} +
+    \frac{1}{2}P_A$
+- When asked about price ceiling (max price),
+  price floor (min price), check if the policy
+  is binding first
+
+# Question 3: Finding inverse 
+
+# Question 4: Finding first derivatives
+
+# Question 5: Finding roots with Intermediate Value Theorem
+
+# Question 6: Elasticity

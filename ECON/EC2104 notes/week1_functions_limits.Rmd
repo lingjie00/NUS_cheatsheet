@@ -1,11 +1,11 @@
 ---
-title: EC2104 Tutorial 1 - Functions & Limits
+title: EC2104 Lecture 1 - Functions & Limits
 author: ling
 output:
     beamer_presentation:
         slide_level: 3
         toc: false
-theme: "Malmoe"
+theme: "Madrid"
 ---
 
 # Functions
