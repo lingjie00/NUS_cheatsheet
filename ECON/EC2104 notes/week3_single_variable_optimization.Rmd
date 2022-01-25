@@ -1,0 +1,177 @@
+---
+title: EC2104 Lecture 3 - Single Variable Optimization
+author: ling
+output:
+    beamer_presentation:
+        slide_level: 3
+        toc: false
+theme: "Madrid"
+---
+
+# Implicit Differentiation
+
+Solving $\frac{dy}{dx}$ without an explicit function
+
+Steps:
+
+1. Take derivatives of both side with respect to $x$
+2. Solve for $\frac{dy}{dx}$
+
+E.g. Solve $\frac{dy}{dx}$ for $y^2 + xy = 5$
+
+1. $2y\frac{dy}{dx}+y+x\frac{dy}{dx}=0$
+2. $\frac{dy}{dx}=\frac{-y}{2y+x}$
+
+## Differentiating Inverse Function
+
+Common trick used in probability to retrieve transformed
+random variable
+
+\begin{block}{Differentiating Inverse Function}
+If $x_0$ is an interior point of interval $l$ and
+$f'(x_0)\neq 0$, then $g$ is differentiable at $y_0=f(x_0)$
+and 
+\begin{align*}
+    g'(y_0) = \frac{1}{f'(x_0)}
+\end{align*}
+\end{block}
+
+# Taylor Approximation
+
+
+\begin{block}{nth-order Taylor polynomial}
+Approximate the function $f(x)$ around $x=a$
+\begin{align*}
+f(x) &\approx \sum_{k=0}^n \frac{f^{(k)}(a)}{k!}(x-a)^k
+\end{align*}
+\end{block}
+
+- Building block in many numerical approximation for solving
+optimization problems.
+    - Besides economics, machine learning and operational
+      research field heavily uses this approximation in
+      their algorithms.
+- Note that we are approximating $f(x)$ at a point $a$
+  - When $a$ change, the approximated value $\tilde{y}$
+    changes
+- Error of approximation ($\tilde{y}-y$) increase as $x$
+  moves further away from $a$
+- Note:
+  - $0!=1, n! = n\times(n-1)\times(n-2)\times \cdots \times 2\times 1$
+  - $f^{(k)}(a)$ is the $k$th derivatives evaluated at $a$
+
+# Convexity
+
+Key building blocks used in many techniques, including
+optimization
+
+\begin{block}{Convexity}
+A function is said to be convex if for any $a, b$ and for
+any $t \in[0, 1]$
+\begin{align*}
+    f(ta+(1-t)b) \leq tf(a) + (1-t)f(b)
+\end{align*}
+\end{block}
+
+- Strictly convex if 
+  $f(ta+(1-t)b) > tf(a) + (1-t)f(b)$
+- Concave function when 
+  $f(ta+(1-t)b) \geq tf(a) + (1-t)f(b)$
+  - Strictly concave when 
+  $f(ta+(1-t)b) < tf(a) + (1-t)f(b)$
+- Note that a concave function is the negative of convex
+  function
+  - If $f(x)$ is concave, then $-f(x)$ is convex
+
+## Testing Convexity with second derivative
+
+\begin{block}{Second derivative test for convexity}
+Suppose that $f$ is continuous in the interval $l$ and twice
+differentiable is in the interior of $l$. Then:
+\begin{itemize}
+    \item $f''(x)>0\Rightarrow f(x)$ is strictly convex in $l$
+    \item $f''(x)\geq0\Rightarrow$ convex only
+    \item $f''(x)<0\Rightarrow f(x)$ is strictly concave in $l$
+    \item $f''(x)\leq0\Rightarrow$ concave only
+\end{itemize}
+\end{block}
+
+# Single variable optimization
+
+## Extreme Value Theorem
+
+Useful to know if extrema exist (note: but it does not tell
+you if extrema does not exist)
+
+\begin{block}{Extreme Value Theorem}
+Suppose that $f$ is continuous function over a closed and
+bounded interval $[a, b]$. Then there exist point a minimum
+point $d$ and a maximum point $c$
+\end{block}
+
+- Must be continuous
+- Must be closed (point exist at the boundary)
+  - Closed: $[1, 2]$
+  - Open: $(1, 2), (1, 2], [1, 2)$
+- Must be bounded
+  - (skipping the definition) points must exist and not
+    infinity
+
+## Finding extrema using turning points
+
+- Note: FOC are only necessary conditions
+  - 
+
+
+## Testing identify of turning points using First Derivative Test
+
+## Testing identify of turning points using Second Derivative Test
+
+## Determine point of inflection
+
+## Note on Global vs Local Extrema
+
+Extreme points are points where functions reach their
+highest/lowest values
+
+\begin{block}{Extrema}
+If $f(x)$ has domain $D$,
+\begin{itemize}
+    \item $c \in D$ is maximum point for $f\Leftrightarrow
+    f(x) \leq f(c), \forall x \in D$
+    \item $d \in D$ is maximum point for $f\Leftrightarrow
+    f(x) \geq f(c), \forall x \in D$
+\end{itemize}
+\end{block}
+- Local extrema when the point is max/min point in a
+  neighbourhood (within a interval of values)
+- Global extrema when the point is max/min point across all
+  the domain
+- Generally, a function will have multiple local extrema
+    - Only for a special subset of functions, the local extrema
+      = global extreme (when functions are strictly
+      convex/concave)
+    - Determining global extrema remain an unsolved problem
+      outside of convex functions. Best way is to compare
+      the functional values
+
+## Summary on finding the extrema of functions
+
+\begin{block}{Setup}
+    Find maximum/minimum values of a differentiable function
+    $f$ defined on a closed, bounded interval $[a, b]$
+\end{block}
+
+Then the General step for finding the extrema:
+
+1. Consider interior point
+   - Using First Order Condition (FOC)
+2. Consider boundary (end points)
+   - In the case of the setup, $f(a), f(b)$
+3. Consider non-differentiable points
+
+Compare the functional values to determine global extrema
+
+\begin{block}{Determine extrema of unbounded functions}
+Value of extreme must be found through methods of limits
+\end{block}

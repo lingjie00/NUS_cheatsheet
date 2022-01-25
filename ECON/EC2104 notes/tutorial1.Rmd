@@ -33,6 +33,8 @@ Before you apply fancy L'Hopital rule or any other techniques
    - Order of growth (when value tends towards
      infinity only): $O(1) < O(log(x))
      < O(x^n) < O(e^x)$
+   - note: require strong intuition and might be hard to
+     observe for more complicated questions
 
 ## Question 1b)
 
@@ -77,10 +79,10 @@ $\lim_{x\rightarrow 1.5}\frac{2x^2-3x}{|2x-3|}=
      finding the left limit and right limit
 1. Left limit:
    $\lim_{x\rightarrow
-   1.5}\frac{x(2x-3)}{2x-3}=\lim_{x\rightarrow 1.5}x=1.5$
+   1.5}\frac{x(2x-3)}{-(2x-3)}=\lim_{x\rightarrow 1.5}-x=-1.5$
 2. Right limit:
    $\lim_{x\rightarrow
-   1.5}\frac{x(2x-3)}{-(2x-3)}=\lim_{x\rightarrow 1.5}-x=-1.5$
+   1.5}\frac{x(2x-3)}{2x-3}=\lim_{x\rightarrow 1.5}x=1.5$
 3. Observe: since left limit $\neq$ right limit, by
    definition of limits the limit does not exist
 
@@ -236,7 +238,7 @@ Determine if $f$ is differentiable at $x=2$,
 $f(x)=\begin{cases}\frac{1}{4}x^3-\frac{1}{2}x^2, &x\geq 2\\
 \frac{-6x-6}{x^2+2}, &x<2\end{cases}$
 
-- Note that only continuous function are differentiable
+- Note that non-continuous function are not differentiable
 
 0. For a quick check, try if $f(2)$ from the left equals to
    the right
