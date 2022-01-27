@@ -82,6 +82,10 @@ any $t \in[0, 1]$
 - Note that a concave function is the negative of convex
   function
   - If $f(x)$ is concave, then $-f(x)$ is convex
+- Why study convex problem?
+  - For a convex minimization problem, a local minimizer is
+    also a global minimizer ( which is in general not true
+    for other type of problem! )
 
 ## Testing Convexity with second derivative
 
@@ -110,24 +114,122 @@ point $d$ and a maximum point $c$
 \end{block}
 
 - Must be continuous
-- Must be closed (point exist at the boundary)
+- Must be closed (skipping formal definition)
+  - Intuitively: point exist at the boundary
   - Closed: $[1, 2]$
   - Open: $(1, 2), (1, 2], [1, 2)$
-- Must be bounded
-  - (skipping the definition) points must exist and not
-    infinity
+- Must be bounded (skipping formal definition)
+  - Intuitively: you can find a positive number $M$ that is
+    larger than all the values in the set of values
+  - points must not infinity
+
+## Stationary/ critical/ turning points
+
+\begin{block}{Stationary point or critical point}
+Let $f: X \rightarrow R$, where $X$ is an open subset of
+$R$. An interior point $x^*\in X$ is called a stationary
+point of $f$ if $f'(x^*)=0$
+\end{block}
+
+Types of stationary points:
+
+1. Maximum point
+2. Minimum point
+3. Inflection point (saddle point)
+
+Q: How do we know what is the type of stationary points? 
+
+- First derivative test
+- Second derivative test
 
 ## Finding extrema using turning points
 
-- Note: FOC are only necessary conditions
-  - 
 
+\begin{block}{First Order Necessary Condition}
+If $x^*$ is a local minimizer of $f$ and $f$ is continuously
+differentiable in an open neighbourhood of $x^*$, then
+\begin{align*}
+    \frac{d}{dx} f(x^*) = 0
+\end{align*}
+\end{block}
+
+- Note: FOC are only necessary conditions for extrema ($P\Rightarrow Q$)
+  - If $x^*$ is a local minimizer/maximizer of $f$ on the
+    domain,then $x^*$ is a stationary point ($\Rightarrow
+    f'(x)=0$).
+  - Provided the function is differentiable at the point
+- Given a turning point, it is uncertain if it's min/max
+  point
+  - $P\Leftarrow Q$ not clear,
+  so is $x^*$ a max? min? or inflection?
+- Other points that are extrema but might not satisfy FOC
+    - Extreme points
+    - Non-differentiable points
 
 ## Testing identify of turning points using First Derivative Test
 
+\begin{block}{Condition for First Derivative Test}
+Assume 1. Interior point 2. Function is differentiable
+within the neighbourhood (a, b) of the stationary point at c
+\end{block}
+
+$f'(a)$ | $f'(c)$ | $f'(b)$ | result
+--- | --- | --- | ---
+$\geq0$ | $=0$ | $\leq0$ | local max
+$\leq0$ | $=0$ | $\geq0$ | local min
+$> 0$ | $=0$ | $> 0$ | not a extrema
+$< 0$ | $=0$ | $< 0$ | not a extrema
+
+Intuitively: gradient is the slope, draw the different cases
+
 ## Testing identify of turning points using Second Derivative Test
 
+\begin{block}{Condition for Second Derivative Test}
+Assume 1. Interior point 2. Function is twice differentiable
+at $x=c$ where $f'(c)=0$ (stationary point)
+\end{block}
+
+$f''(c)$ | result
+--- | ---
+$\leq 0$ | local max
+$< 0$ | strict local max
+$\geq 0$ | local min
+$> 0$ | strict local min
+$=0$ | no results
+
+Note:
+
+- Recall the property of convex function $f''(x) \geq 0
+  \forall x$
+- Therefore, a stationary point in the convex function is
+  always the min
+
 ## Determine point of inflection
+
+Recall: second derivative test say nothing about $f''(c)=0$
+
+\begin{block}{Definition for Inflection points}
+If function $f$ is twice differentiable, the point $c$ is
+called an inflection point for $f$ if there exists an
+interval $(a, b)$ about $c$ such that
+\begin{itemize}
+    \item $f''(x) \geq 0 $ in $(a, c)$ and $f''(x)\leq0$ in
+    $(c, b)$
+    \item $f''(x) \leq 0$ in $(a, c)$ and $f''(x) \geq 0$ in
+    $(c, b)$
+\end{itemize}
+\end{block}
+
+\begin{block}{Test for Inflection Points}
+Let $f$ be a function with a continuous second derivative in
+an interval $l$, and let $c$ be an interior point of $l$.
+\begin{itemize}
+    \item If $c$ is an inflection point for f, then
+    $f''(c)=0$
+    \item If $f''(c)=0$ and $f''$ changse sign at $c$, then
+    $c$ is an inflection point for $f$
+\end{itemize}
+\end{block}
 
 ## Note on Global vs Local Extrema
 

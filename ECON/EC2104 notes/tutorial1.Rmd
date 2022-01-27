@@ -28,7 +28,7 @@ Before you apply fancy L'Hopital rule or any other techniques
    than numerator
    - Intuitively, if only the denominator is infinity, the
      fraction will tends towards 0
-   - Example: solve question 1a) $\lim_{x\rightarrow 0}
+   - Example: solve question 1a) $\lim_{x\rightarrow \infty}
      \frac{x}{e^x}=0$ by eyeballing
    - Order of growth (when value tends towards
      infinity only): $O(1) < O(log(x))
@@ -243,12 +243,12 @@ $f(x)=\begin{cases}\frac{1}{4}x^3-\frac{1}{2}x^2, &x\geq 2\\
 0. For a quick check, try if $f(2)$ from the left equals to
    the right
 1. More formally:
-   - Left limit ($x \geq 2$):
+   - Left limit ($x < 2$):
+     $\lim_{x\rightarrow 2^-}f(x)=
+     \frac{-6\times2-6}{2^2+2}=-3$
+   - Right limit ($x \geq 2$):
      $\lim_{x\rightarrow 2^+}f(x)=
      \frac{1}{4}2^3-\frac{1}{2}2^2=0$
-   - Right limit ($x < 2$):
-     $\lim_{x\rightarrow 2^+}f(x)=
-     \frac{-6\times2-6}{2^2+2}=-3$
 2. Since limit does not exist (left limit not equal to right
    limit), function is not continuous at $x=2$ and is not
    differentiable
