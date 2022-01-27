@@ -18,7 +18,7 @@ identify any mistakes.
 
 I wrote an overview expressing my personal opinion regarding
 this module. You can refer to it in
-[week0_overview](/week0_overview.pdf)
+[week0_overview](/ECON/EC2104%20notes/week0_overview.pdf)
 
 ## Folder Structure
 
