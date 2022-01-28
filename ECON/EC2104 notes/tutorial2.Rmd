@@ -1,0 +1,150 @@
+---
+title: EC2104 Tutorial 2 solution
+author: ling
+output:
+    beamer_presentation:
+        slide_level: 2
+        toc: false
+theme: "Madrid"
+---
+
+This week's tutorial is more mechanical (applied) than
+conceptual. I'll only highlight the more important concepts
+to understand. For full solution please refer to professor's
+uploaded solution.
+
+# Question 1
+
+Key: understand the following relationship graphically
+
+- $\frac{d}{dx} = 0 \Leftarrow$ stationary point
+- $\frac{d}{dx}$ does not exist $\Leftrightarrow$ function not
+  differentiable at the point
+  - If $\frac{d}{dx}$ does not exist $\Rightarrow$ $\frac{d^2}{dx^2}$
+    does not exist
+- $\frac{d}{dx} < 0 \Rightarrow$ function is decreasing
+- critical point:
+  1. $\frac{d}{dx}=0$
+  2. Not differentiable
+- $\frac{d^2}{dx^2}>0\Leftarrow$ convex function
+
+# Question 2
+
+1. A continuous function is not always differentiable
+    - Show using definition of differentiable
+      \begin{align*}
+      &f'(0) = \lim_{\Delta x\rightarrow 0}
+      \frac{f(\Delta x) + f(0)}{\Delta x}
+      = \lim_{\Delta x \rightarrow 0}
+      \frac{f(\Delta x)}{\Delta x}
+    \end{align*}
+    - $\lim_{\Delta x \rightarrow 0^-} 
+      \frac{f(\Delta x)}{\Delta x} =
+      \frac{\Delta x}{\Delta x} = 1;
+      \lim_{\Delta x \rightarrow 0^+} 
+      \frac{f(\Delta x)}{\Delta x} =
+      \frac{2\Delta x}{\Delta x} = 2$
+    - $\lim_{\Delta x \rightarrow 0^-} \neq
+      \lim_{\Delta x \rightarrow 0^+} \Rightarrow
+      f'(0) \text{ does not exist}$
+2. Non-continuous are not differentiable
+3. Checking global minimum
+   1. Check critical points
+        - $f'(x)=0$
+        - non-differentiable points including boundary points
+   2. Compare functional value to determine global extrema
+
+# Question 3
+
+Key:
+
+- Understand how to perform implicit differentiation
+- Understand how to perform chain rule together with
+  implicit differentiation (part c is slightly more
+  troublesome to solve)
+
+# Question 4
+
+Key: 
+
+- Understand how to do nested differentiation
+- Understand how to perform first order and second order
+  differentiation
+- Understand how to check if a function is increasing/
+  decreasing
+  - If $f'(a) > 0$, then function is increasing at point $a$
+- Understand how to check if a function is concave or convex
+  - A convex function has $f''(a) \geq 0$ at a
+  - Remember to check if there is any inflection points
+
+# Question 5
+
+Key:
+
+- Able to perform differentiation to investigate the extrema
+  by invoking first order necessary condition
+- Understand that for convex function stationary points are
+  minimum while for concave function stationary points are
+  maximum
+- Understand how to apply properties of elasticity
+
+## Question 5d
+
+Key: using properties of elasticity
+
+Given: $Q = \frac{10}{p+4p^2}$,
+WTS: $\epsilon_p$
+
+1. Using $\epsilon_x\left(\frac{f(x)}{g(x)}\right) = \epsilon_x(f(x))-\epsilon_x(g(x))$
+   - $f(p) := 10, g(p) := p + 4p^2$
+   - $\Rightarrow \epsilon_p(\frac{10}{p+4p^2}) = \epsilon_p(10) - \epsilon_p(p + 4p^2)$
+   - Note: $\epsilon_p(10) = 0$
+2. Using $\epsilon_x(f\pm g) = \frac{f(x)\epsilon_x(f(x))\pm g(x)\epsilon_x(g(x))}{f(x)\pm g(x)}$
+   - $f(p) := p, g(p) := 4p^2$
+   - $\Rightarrow \epsilon_p(p+4p^2) = \frac{p\epsilon_p(p) + 4p^2\epsilon_p(4p^2)}{p + 4p^2}$
+3. Using $\epsilon_x(f(x)) = f'(x) \frac{x}{f(x)}$
+   - $\epsilon_p(p) = \frac{p}{p} = 1$
+   - $\epsilon_p(4p^2) = 8p \frac{p}{4p^2} = 2$
+
+# Question 6
+
+Key:
+
+- Understand how to find global extrema
+- Techniques:
+  1. Check interior points that are stationary points
+  2. Compare functional value of non-differentiable points
+     - Boundary points
+     - non-differentiable points
+
+# Question 7
+
+Key:
+
+- Understand how to use Taylor expansion to approximate
+  function
+  - Linear approximation at point $a$:
+\begin{align*}
+    f(x) \approx f(a) + f'(a)(x - a)
+\end{align*}
+- Understand the implication of Taylor approximation in the
+  context of convex and concave function
+  - We know that linear approximation is just a line
+    - in fact, think of linear approximation like moving
+      along the tangent line
+  - Now, we know the shape of convex and concave function
+  - From there, it is easy to understand that linear
+    approximation is likely to be smaller than convex
+    function and larger than concave function
+  - Note: this is different from the definition of convex
+    and concave function
+
+# Question 8
+
+Key:
+
+- Understand the definition of and technique used to find
+  inflection points
+- Inflection points satisfy:
+  1. $f''(x) = 0$
+  2. $f''(x-\epsilon) \neq f''(x+\epsilon)$
