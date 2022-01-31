@@ -1,0 +1,180 @@
+---
+title: EC2104 Lecture 4 - Leibniz Integration (extra)
+author: ling
+output:
+    pdf_document:
+        toc: false
+---
+
+We illustrate how to use Mean Value Theorem, some tricks in
+integration and the definition
+of differentiation to prove Leibniz Integration.
+This is optional content and is for your interest only.
+
+## Mean Value Theorem
+
+If a function $f$ is continuous over the closed interval $[a, b]$
+and differentiable on the open interval $(a, b)$.
+
+Then there exists a point $c$ in the interval $(a, b)$ such
+that
+$$f'(c) = \frac{f(b)-f(a)}{b-a}$$
+
+- Meaning, if function is continuous and differentiable over
+  an closed interval $[a, b]$
+- Then there is a point (let's call it $c$)
+  where if you take the differentiation at that point
+- The differentiation will equals to the secant line joining
+  $a$ and $b$
+
+
+# Proving Leibniz Integration
+
+WTS: 
+
+$$
+\frac{d}{dt} \int^{b(t)}_{a(t)} f(x, t) dx
+= \int^{b(t)}_{a(t)} \frac{\partial}{\partial t}
+f(x, t) dx + f(b(t), t)\frac{db(t)}{dt} -
+f(a(t), t)\frac{da(t)}{dt}
+$$
+
+
+1. Let $I(x, t) = \int_{a(t)}^{b(t)} f(x, t) dx$
+2. Applying definition of differentiation
+   $$
+   \frac{\partial}{\partial t} I(x, t) =
+   \lim_{\Delta t \rightarrow 0}
+   \frac{I(x, t+\Delta t) - I(x, t)}{\Delta t}
+   $$
+3. Substitute the definition of $I(x, t)$
+   $$
+   \lim_{\Delta t \rightarrow 0}
+   \frac{I(x, t+\Delta t) - I(x, t)}{\Delta t} =
+   \lim_{\Delta t \rightarrow 0}
+   \frac{1}{\Delta t}
+   \left(
+   \int_{a + \Delta a}^{b + \Delta b} f(x, t+\Delta t) dx
+   - \int_a^b f(x, t) dx
+     \right)
+   $$
+4. Applying property of integration: $\int_{-b}^b f(x) dx = \int_{-b}^0 f(x) dx + \int_{0}^b f(x) dx$
+   \begin{align*}
+   &\lim_{\Delta t \rightarrow 0}
+   \frac{1}{\Delta t}
+   \left(
+   \int_{a + \Delta a}^{b + \Delta b} f(x, t+\Delta t) dx
+   - \int_a^b f(x, t) dx
+     \right) \\
+     &=
+   \lim_{\Delta t \rightarrow 0}
+   \frac{1}{\Delta t}
+   \left(
+   \int_{a+\Delta a}^a f(x, t+\Delta t) dx +
+   \int_a^{b} f(x, t+\Delta t) dx +
+   \int_b^{b+\Delta b} f(x, t+\Delta t) dx -
+   \int_a^b f(x, t) dx
+     \right)
+   \end{align*}
+5. Applying property of integration: $\int_a^b f(x) dx = -\int_b^a f(x) dx$
+\begin{align*}
+   \lim_{\Delta t \rightarrow 0}
+   \frac{1}{\Delta t}
+   \left(
+   \int_{a+\Delta a}^a f(x, t+\Delta t) dx +
+   \int_a^{b} f(x, t+\Delta t) dx +
+   \int_b^{b+\Delta b} f(x, t+\Delta t) dx -
+   \int_a^b f(x, t) dx
+     \right) =\\
+   \lim_{\Delta t \rightarrow 0}
+   \frac{1}{\Delta t}
+   \left(
+   \int_a^b f(x, t+\Delta t) - f(x, t) dx +
+   \int_b^{b+\Delta b} f(x, t+\Delta t) dx -
+   \int_a^{a+\Delta a} f(x, t+\Delta t) dx
+     \right)
+\end{align*}
+6. Using Mean Value Theorem: $f'(c) = \frac{f(b) - f(a)}{b-a}\Rightarrow f(b) - f(a) = f'(c)(b-a)$
+\begin{align*}
+    \int_b^{b+\Delta b} f(x, t+\Delta t) dx &=
+    F(b+\Delta b, t + \Delta t) - F(b, t + \Delta t)\\
+    &= f(c, t + \Delta t)(b+\Delta b - b)\\
+    &= f(c, t + \Delta t)\Delta b
+\end{align*}
+    - Note: $F'(x) = f(x)$
+7. Further using implications from Mean Value Theorem, as
+   $\Delta t \rightarrow 0 \Rightarrow b + \Delta b
+   \rightarrow b \Rightarrow c = b \text{ as } \Delta t \rightarrow 0$
+   - Layman: as the changes in $d$ gets smaller, the changes
+     in $b$ will get smaller (since $b(t)$ is a function of
+     $t$).
+   - By Mean Value Theorem, there must exist a $c$ between
+     the bounds such that $f(b) - f(a) = f'(c)(b-a)$
+   - Since the bound $[b, b+\Delta b]$ gets increasingly
+     smaller with $t$ getting smaller, eventually the bound
+     will become $[b, b]$
+   - Implying that $c = b$ (the only possible value in [b, b])
+   - Formally:
+     $$
+     \lim_{\Delta t \rightarrow 0} f(c, t+\Delta t)
+     = f(b, t)
+     $$
+8. Distribute the terms
+  \begin{align*}
+   \lim_{\Delta t \rightarrow 0}
+   \frac{1}{\Delta t}
+   \left(
+   \int_a^b f(x, t+\Delta t) - f(x, t) dx +
+   \int_b^{b+\Delta b} f(x, t+\Delta t) dx -
+   \int_a^{a+\Delta a} f(x, t+\Delta t) dx
+     \right)\\
+     =
+   \left[\int_a^b
+   \lim_{\Delta t \rightarrow 0}
+   \frac{ f(x, t+\Delta t) - f(x, t)}
+   {\Delta t} dx
+   \right]+
+   \left[
+   \lim_{\Delta t \rightarrow 0}
+   \frac{
+   f(c_b, t + \Delta t)\Delta b (t)
+   }
+   {\Delta t}
+   \right]-
+   \left[
+   \lim_{\Delta t \rightarrow 0}
+   \frac{
+   f(c_a, t + \Delta t)\Delta a(t)
+   }
+   {\Delta t}
+   \right]
+  \end{align*}
+9. Applying results from 6, 7 and definition of differentiation
+   $f'(t) = \lim_{\Delta t \rightarrow 0}\frac{f(t + \Delta t) - f(t)}{\Delta t}
+   = \lim_{\Delta t \rightarrow 0} \frac{\Delta f(t)}{\Delta t}$
+   \begin{align*}
+   \frac{d}{dt} \int^{b(t)}_{a(t)} f(x, t) dx
+   &= 
+   \left[\int_a^b
+   \lim_{\Delta t \rightarrow 0}
+   \frac{ f(x, t+\Delta t) - f(x, t)}
+   {\Delta t} dx
+   \right]+
+   \left[
+   \lim_{\Delta t \rightarrow 0}
+   \frac{
+   f(c_b, t + \Delta t)\Delta b(t)
+   }
+   {\Delta t}
+   \right]-
+   \left[
+   \lim_{\Delta t \rightarrow 0}
+   \frac{
+   f(c_a, t + \Delta t)\Delta a(t)
+   }
+   {\Delta t}
+   \right] \\
+   &= \int_a^b \frac{\partial}{\partial t} f(x, t) dx
+   + f(b(t), t) \frac{db(t)}{dt}
+     - f(a(t), t) \frac{da(t)}{dt} \text{ (shown)}
+   \end{align*}

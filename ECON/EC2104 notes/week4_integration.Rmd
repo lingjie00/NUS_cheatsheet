@@ -1,0 +1,114 @@
+---
+title: EC2104 Lecture 4 - Integration
+author: ling
+output:
+    beamer_presentation:
+        slide_level: 3
+        toc: false
+theme: "Madrid"
+---
+
+# Integration
+
+\begin{block}{Indefinite integrals}
+If $F'(x) = f(x)$, then $\int f(x) dx = F(x) + C$.
+Given $A = F(0) + C \Rightarrow C = A - F(0)$
+\end{block}
+
+\begin{block}{Definite integrals}
+When $F'(x)=f(x)$ for all $x\in(a, b)$, the definite integral
+of $f$ over $[a, b]$ is $\int_a^b f(x) dx = F(b) - F(a)$
+\end{block}
+
+\begin{block}{Integration as Area Under Curve}
+Let $A(t)$ be a function measures the area under the graph
+of $f$ over the interval
+$[a, t] \Rightarrow A(t)=\int_a^b f(t)dt$
+\end{block}
+
+## Integration as Area Under Curve
+
+Consider:
+Find area under the curve for $f(x)=cos(x)$ for $x\in[0, \pi]$
+
+Note:
+
+- $\int cos(x) dx = sin(x) + C$
+- When finding area under a curve, one need to 
+  know which area are under the $x-axis$
+- For area under the $x-axis$, take $-\int f(x) dx$
+  instead
+
+Wrong method:
+$$
+\int_0^\pi cos(x) dx = sin(\pi) - sin(0) = 0
+$$
+
+Correct method:
+$$
+\int_0^{\pi/2} cos(x) dx
+- \int_{\pi/2}^\pi cos(x) dx
+= sin(\pi/2) - sin(0) - sin(\pi) + sin(\pi/2)
+= 2
+$$
+
+# Techniques in integration
+
+1. Anti-differentiation
+   $$
+   \int f(x) dx = F(x) + C
+   $$
+2. Integration by Substitution
+   $$
+   \int f(g(x))\frac{dg(x)}{dx} dx = 
+   \int f(u) du =
+   F(g(x)) + C
+   $$
+   - Differentials: $du = \frac{du}{dx} dx = g'(x)dx$,
+     where $u = g(x)$
+3. Integration by Parts
+   $$
+   \int f(x) \frac{dg(x)}{dx} =
+   f(x)g(x) - \int g(x)\frac{df(x)}{dx} dx
+   $$
+4. Leibniz Integral Rule (next slide)
+
+## Leibniz Integral Rule
+
+$$
+\frac{d}{dt} \int^{b(t)}_{a(t)} f(x, t) dx
+= \int^{b(t)}_{a(t)} \frac{\partial}{\partial t}
+f(x, t) dx + f(b(t), t)\frac{db(t)}{dt} -
+f(a(t), t)\frac{da(t)}{dt}
+$$
+
+- If $a(t), b(t)$ are constants
+  $$
+  \frac{d}{dt}\int_a^b f(x, t) dx =
+  \int_a^b \frac{\partial}{\partial t} f(x, t) dx
+  $$
+- Variable limit form
+  $$
+  \frac{d}{dt}\int_{a(t)}^{b(t)} f(x) dx =
+  f(b(t))\frac{db(t)}{dt}-
+  f(a(t))\frac{da(t)}{dt}
+  $$
+
+## Integrating infinite bounds
+
+To solve 
+$$
+\int_{0}^{\infty} f(x) dx
+$$
+
+1. Express $\infty$ as $s$
+   - i.e. $\int_{0}^{s} f(x) dx$
+2. Solve the integration in terms of the symbol $s$
+   - i.e. $\int_0^s f(x) dx = F(s) - F(0)$
+3. Take limit to infinity
+   - i.e. $\lim_{s\rightarrow \infty} F(s) - F(0)$
+
+Note:
+
+- $\int_{-\infty}^{\infty} f(x)dx 
+  = \int_{-\infty}^{0} f(x) dx + \int_{0}^\infty f(x) dx$
