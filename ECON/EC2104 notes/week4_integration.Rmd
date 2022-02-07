@@ -94,6 +94,53 @@ $$
   f(a(t))\frac{da(t)}{dt}
   $$
 
+## Remarks: when to use Leibniz Integral Rule
+
+Now, there are only so few techniques we have learnt to
+solve analytical solutions in integration. If all else
+failed, try Leibniz integration.
+
+\begin{block}{Question ask to evaluate}
+$$
+    \int_0^1 \frac{t^3-1}{\ln(t)} dt
+$$
+\end{block}
+
+1. Substitution?
+   - Try sub $x=ln(t) \Rightarrow dt = t dx$. However, how
+     to express $x$ as a function of $t^3 - 1$?
+   - Try sub $x=t^3-1 \Rightarrow dt = dx/3t$. However, how
+     to express $x$ as a function o $\ln(t)$?
+2. By Parts? $uv' = uv - \int u'v$
+   - Try let $u=1/\ln(t), v'=t^3-1 \Rightarrow
+     u'=-\frac{1}{t\ln(t)^2}, v = 3t^2$. However, how to
+     solve $\int -\frac{3t^2}{t\ln(t)^2}$?
+   - Try let $u=t^3-1, v'=1/\ln(t) \Rightarrow u' = 3t^2$.
+     However, what is $\int \frac{1}{\ln(t)}$?
+
+## Remark: using Leibniz Integration Rule correctly
+
+\begin{block}{Question ask to evaluate}
+$$
+    \int_0^1 \frac{t^3-1}{\ln(t)} dt
+$$
+\end{block}
+
+1. Check if question is in the functional form we desire:
+   $\frac{d}{dx}\int f(x, t) dt$
+   - Note current expression is $\int f(t) dt$
+2. If needed, fill in the missing ingredients
+   - Want $f(x, t)$, have $f(t)$ $\Rightarrow$ introduce $x$
+   - Want $\frac{d}{dx}$, have only $\int f(x, t) dt$
+     $\Rightarrow$ solve for the differentiated result
+     instead
+3. Choose the right ingredients to fill
+   - What if we use $g(x) := \int_0^1 \frac{t^3-x}{\ln(t)}
+     dt \Rightarrow g'(x) = \int_0^1
+     \frac{\partial}{\partial x} \frac{t^3-x}{\ln(t)}dt = 
+     \int_0^1 -\frac{1}{\ln(t)}dt = 0$
+   - Then $g(x) = C, C =$?
+
 ## Integrating infinite bounds
 
 To solve 

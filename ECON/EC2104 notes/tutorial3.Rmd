@@ -1,0 +1,53 @@
+---
+title: EC2104 Tutorial 3 solution
+author: ling
+output:
+    beamer_presentation:
+        slide_level: 2
+        toc: false
+theme: "Madrid"
+---
+
+# Question 3(a)
+
+Given: $\dot{S}=-aS(t)$,
+WTS: $S(t) = S_0e^{at}$
+
+1. We know $\dot{S} = \frac{dS}{dt}$, rearranging the given
+   term we have $\frac{\left( \frac{dS}{dt} \right)}{S}=-a$
+2. Now, consider $f(S)=\ln(S)$, we have $\frac{df}{dt} = \frac{1}{S}\cdot \frac{dS}{dt}$ by chain rule
+3. Observe results from (1) and (2). We note that
+   $$
+   \frac{d\ln(S)}{dt} = \frac{\left(\frac{dS}{dt}\right)}{S} = \frac{\dot{S}}{S} = -a
+   $$
+4. Now, solve for the differential (integrate both side wrt t)
+   \begin{align*}
+   \Rightarrow \ln(S) &= -at + C\\
+   \Rightarrow S(t) &= e^{-at+C} = e^C\cdot e^{-at}
+   \end{align*}
+5. When $t=0, S(0)=S_0 \Rightarrow e^C \cdot e^{0} = S_0
+   \Rightarrow e^C = S_0$
+6. Therefore
+   $$
+   \Rightarrow S(t) = S_0 e^{-at} \text{ (shown)}
+   $$
+
+
+# Question 4(a)
+
+Amount $A(0)$ is invested with $p$% yearly interest, ask
+$A(t) :=$ value of investment after $t$ years
+
+1. We know the rate of change over time (from the question)
+   $$
+   \frac{dA(t)}{dt} = p\cdot A(t)
+   $$
+2. Expressing the equation as differential equation and
+   integrate both side
+   $$
+   \frac{1}{A(t)}dA(t) = p dt \Rightarrow \int\frac{1}{A(t)}dA(t) = \int p dt
+   $$
+3. Solution:
+   - $\Rightarrow \ln(A(t)) = pt + C$
+   - $A(t) = e^{pt+C} = e^C\cdot e^{pt}$
+   - Since $A(0) = e^C\Rightarrow A(t) = A(0)e^{pt}$

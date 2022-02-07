@@ -1,0 +1,146 @@
+---
+title: EC2104 Lecture 5 - Multi variable functions
+author: ling
+output:
+    beamer_presentation:
+        slide_level: 3
+        toc: false
+theme: "Madrid"
+---
+
+# Multi variable functions
+
+\begin{block}{Multi variable function}
+Given domain $D \in \bold{R}^n$, function $f$ is a rule that
+maps $\bold{X} := x_1, \cdots, x_n$ to a specific number
+$\Rightarrow f(\bold{X}) = f(x_1, \cdots, x_n) = z$
+\end{block}
+
+\begin{block}{Multi variable first and second order derivatives}
+We use a gradient vector $\nabla f(\bold{X})$ to denote all
+the partial derivatives of $f(\bold{X})$, and a Hessian
+matrix $\bold{H}_{f(\bold{X})}$ to denote all second order
+partial derivatives of $f(\bold{X})$ (more about matrix in
+Linear Algebra, after mid term)
+\begin{align*}
+    \nabla f(\bold{X}) =
+    \begin{pmatrix}
+        \frac{\partial}{\partial x_1}\\
+        \frac{\partial}{\partial x_2}\\
+        \vdots\\
+        \frac{\partial}{\partial x_n}
+    \end{pmatrix}~
+    \bold{H}_{f(\bold{X})} = 
+    \begin{pmatrix}
+        &\frac{\partial^2}{\partial x_1 \partial x_1}
+        &\frac{\partial^2}{\partial x_1 \partial x_2}
+        &\cdots
+        &\frac{\partial^2}{\partial x_1 \partial x_n}\\
+        &\frac{\partial^2}{\partial x_2 \partial x_1}
+        &\frac{\partial^2}{\partial x_2 \partial x_2}
+        &\cdots
+        &\frac{\partial^2}{\partial x_2 \partial x_n}\\
+        &\vdots &\vdots &\ddots &\vdots\\
+        &\frac{\partial^2}{\partial x_n \partial x_1}
+        &\frac{\partial^2}{\partial x_n \partial x_2}
+        &\cdots
+        &\frac{\partial^2}{\partial x_n \partial x_n}\\
+    \end{pmatrix}
+\end{align*}
+\end{block}
+
+## Notation and identifying variables
+
+Things you learnt in single variable calculus easily extends
+into multi variable calculus. However, some care needs to be
+taken.
+
+Consider $f(\bold{X}) = ax_1x_2^c, x_1 \in \{1, 2\}, x_2 \in \{4, 5\}$
+
+1. Identifying parameter and hyper-parameter
+    - parameter (aka independent or exogenous variables):
+      $x_1, x_2$
+    - hyper-parameter  (aka dependent or endogenous variables): $a, c$
+    - hyper-parameter are determined outside of the system
+      (or function), so take it as a given value (a
+      constant), parameter are determined in the system, it
+      is a variable that you can change
+    - If question notation changed to $f(\bold{X}, a, c)$,
+      now $a, c$ becomes parameter.
+2. Identify multi variable domain
+    - Cartesian Product $(x_1, x_2) \in \{1, 2\}\times\{4, 5\}=\{(1, 4), (1, 5), (2, 4), (2, 5)\}$
+
+Understanding parameter and hyper-parameter, you can easily
+extend single variable differentiation (and integration)
+onto partial differentiation and multi variable integration
+
+## Young's Theorem
+
+Sometimes differentiating w.r.t. one variable is
+easier than another. Young's theorem allows us to switch the
+sequence in multi variable differentiation
+
+\begin{block}{Young's Theorem}
+Suppose that all $m^{th}$-order partial derivatives of the
+function $f(\bold{X})$ are continuous.
+If any two of them involve differentiating w.r.t. each of
+the variable the same number of times, then they are
+necessarily equal
+
+$$
+\Rightarrow \frac{\partial}{\partial x_j}\left(\frac{\partial}{\partial x_i}\right)=
+ \frac{\partial}{\partial x_i}\left(\frac{\partial}{\partial x_j}\right)
+$$
+\end{block}
+
+Note:
+
+- Although theorem require partial derivatives to be
+  continuous, it has a wide range of applications.
+- In most economics and statistics application, 
+    the partial derivatives are indeed continuous
+
+# Level Curve
+
+Level curves are useful in solving problems with 3 variables
+using graphical methods. A few important things to know:
+
+1. Direction where level curve decrease
+   - You can substitute values to check how does level curve
+     value change
+2. Shape of the level curve
+   - Cobb Douglas (convex curve): $f(x, y) = Ax^\alpha y^{1-\alpha}=c$
+   - Circle (similarity, Oval): $f(x, y) = x^2 + y^2 = c$
+3. Identifying partial derivatives at a given point with level curve
+   - Draw line parallel to the axis (x or y) to know
+     the direction of change
+   - To know the magnitude of change, approximate using
+     $f'_x(x_1, y_1) \approx f_x(x_1+1, y_1) - f_x(x_1, y_1)$
+
+# General Chain Rule
+
+\begin{block}{General Chain Rule}
+if $z=f(\bold{X})$ is continuously differentiable, and
+$x_i=g_i(\bold{t})$, for each $i=1, 2, \cdots, n$ are all
+differentiable, then
+$$
+\frac{\partial z}{\partial t_j} = 
+\frac{\partial z}{\partial x_1}\frac{\partial x_1}{\partial t_j} + 
+\frac{\partial z}{\partial x_2}\frac{\partial x_2}{\partial t_j} + 
+\cdots
+\frac{\partial z}{\partial x_n}\frac{\partial x_n}{\partial t_j} + 
+$$
+for each $j=1, 2, \cdots, m$
+\end{block}
+
+Note:
+
+- Think of it this way: to get the combined effect of a
+  change in $t_j$, you need to add up how individual
+  variable $x_i$ change w.r.t $t_j$
+- For example, if $Y=F(K, L)$, $Y:=$ GDP, $K:=$ capital and
+  $L:=$ labour
+  - To know how does increasing one year affects the GDP, you
+    need to know how does increasing one year affects the
+    capital and labour in order to know the combined effect
+    on the GDP.
