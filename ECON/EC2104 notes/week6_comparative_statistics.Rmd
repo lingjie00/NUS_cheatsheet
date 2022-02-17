@@ -1,0 +1,175 @@
+---
+title: Lecture 6 - Comparative Statistics (tools)
+author: ling
+output:
+    beamer_presentation:
+        slide_level: 3
+        toc: false
+theme: "Madrid"
+---
+
+# Implicit Differentiation along Level Curve
+
+\begin{block}{Implicity Differentiation along a Level Curve}
+$$
+y' = f'(x) = -\frac{\partial F(x, y)/\partial x}{\partial F(x, y)/\partial y}
+$$
+\end{block}
+
+\begin{block}{Marginal Rate of Substitution}
+$$
+MRS = R_{yx} = \frac{\partial F(x, y)/\partial x}{\partial F(x, y)/\partial y}
+$$
+\end{block}
+
+- Used to investigate quantity of $y$ needed to replace per
+  unit of $x$
+- e.g. number of sleep hours you are willing to forgo in
+  exchange for one mark increment in exam
+
+## Elasticity of Substitution
+
+\begin{block}{Elasticity of Substitution}
+$$
+\sigma_{yx} = EL_{R_{yx}}\left(\frac{y}{x}\right) =
+\frac{R_{yx}}{y/x} \left[\frac{d(y/x)}{dR_{yx}}\right] =
+\frac{d\ln(y/x)}{d\ln(R_{yx})}
+$$
+\end{block}
+
+- Measures $\frac{\%\Delta (y/x)}{\%\Delta (R_{yx})}$,
+  percentage change in $\frac{y}{x}$ when MRS increase
+  by $1\%$
+- Recall: $EL_x(f(x)) = \frac{x}{f(x)}f'(x)$
+
+# Homogeneous and Homothetic Functions
+
+## Homogeneous Functions
+
+\begin{block}{Homogeneity}
+Function $f$ is homogeneous of degree $k$ if for all $(x, y)$ in domain
+$$
+f(tx, ty) = t^kf(x, y), t > 0
+$$
+\end{block}
+
+- Return to scale: increasing inputs by $t$, will output
+  increase more than/less than or equal to $t$
+- Classic example: Cobb Douglas production function $F(K, L) = AK^\alpha L^\beta$
+  - Cobb Douglas is homogeneous of degree $\alpha+\beta$
+  - Constant return to scale: $\alpha+\beta = 1$
+  - Increasing return to scale: $\alpha + \beta > 1$
+  - Decreasing return to scale: $\alpha + \beta < 1$
+- Two important results:
+  1. Knowing one pair of $(x, y, f(x, y))$ provides knowledge
+     of the whole function
+  2. Knowing one level curve provides knowledge of all level
+     curves
+
+## Homothetic Functions
+
+\begin{block}{Homothetic Functions}
+$f$ is homothetic if for $(\bold{x^{(1)}}, \bold{x^{(2)}})$ in the domain with
+$f(\bold{x^{(1)}}) = f(\bold{x^{(2)}})$
+
+we have
+$$
+f(t\bold{x^{(1)}}) = f(t\bold{x^{(2)}}), t > 0
+$$
+\end{block}
+
+\begin{block}{Theorem 12.7.2}
+Suppose $F(x) = H(f(x))$. If (1) $H$ is strictly increasing
+and (2) $f$ is homogeneous (of any degree) $\Rightarrow$ $F$
+is homothetic
+\end{block}
+
+- Homogeneous implies Homothetic ($P \Rightarrow Q$)
+  - $Q \not\Rightarrow P$: Homothetic does not imply homogenous
+  - $\neg P \not \Rightarrow Q$: Non-Homogeneous does not
+    imply non Homothetic
+  - $\neg Q \Rightarrow \neg P$: Non-Homothetic implies
+    Non-Homogeneous
+
+## Showing a function is homogenous and/or homothetic
+
+1. Showing function is homogenous
+   - Show $f(tx, ty) = t^k f(x, y)$
+2. Showing function is homothetic
+   1. Show by definition
+      - Given: $f(\bold{x^{(1)}}) = f(\bold{x^{(2)}})$
+      - Show: $f(t\bold{x^{(1)}}) = f(t\bold{x^{(2)}})$
+   1. Use Thm 12.7.2
+      1. Express function as composite function $F = H(f(x))$
+      2. Show $H(\cdot)$ is strictly increasing function
+      3. Show $f(\cdot)$ is homogenous function
+      4. Invoke Theorem
+
+# Differentials
+
+\begin{block}{Differentials}
+$z:=f(\bold{x})=f(x_1, x_2, \cdots, x_n)$ the differential
+of $z$ is
+$$
+dz = \sum_{i=1}^nf'_i(\bold{x})dx_i
+$$
+\end{block}
+
+- Graphically: tangent space
+  - plane in 3 dimensional ($R^3$), line
+  in 2 dimensional ($R^2$)
+- Actual change ($\Delta z$) and approx change ($dz$):
+  - $\Delta z = f(x+dx, y+dy) - f(x, y) \approx
+  dz = f'_1(x, y)dx + f'_2(x, y)dy$
+
+\begin{block}{Chain rule for differentials}
+$$
+z = g(f(\bold{x})) \Rightarrow dz =
+g'(f(\bold{x}))\left(\sum_{i=1}^n f'_i dx_i\right),
+\bold{x}\in R^n
+$$
+\end{block}
+
+## Differentials for Systems of Equations
+
+\begin{block}{System of Equations}
+\begin{align*}
+f_1(\bold{x}) &= 0\\
+f_2(\bold{x}) &= 0\\
+\vdots\\
+f_m(\bold{x}) &= 0\\
+\end{align*}
+\end{block}
+
+Solving differential for system of equations at a point $P$
+
+1. Solve differentials
+2. Substitution values of $\bold{x}$ at point $P$
+3. Solve the system of equations
+4. Partial derivatives is the coefficient of the differentials
+   - e.g. $du = g(dx, dy) = 5dx - 3dy \Rightarrow
+     \frac{\partial u}{\partial x} = 5, \frac{\partial
+     u}{\partial y} = -3$
+
+# Degree of Freedom
+
+\begin{block}{Degrees of freedom}
+A system of equations with $n$ variables is said to have $k$
+degrees of freedom if $k$ variables can be freely chosen
+\end{block} 
+
+- Remaining $n-k$ variables will be uniquely determined once
+  $k$ free variables have been assigned
+- E.g. $y = \beta_0 + \beta_1 x_1 + \beta_2 x_2$ (single
+  equation)
+  - Given $(y, x_1, x_2) = (-2, 1, 2) \Rightarrow \beta_0 + \beta_1 + 2\beta_2 = -2$
+  - if $\beta_1 = 1, \beta_2 = -1 \Rightarrow \beta_0 = -1$
+  - if $\beta_1 = -1, \beta_2 = 1 \Rightarrow \beta_0 = -3$
+  - We can freely determine the value of $\beta_1, \beta_2$,
+    but not the value of $\beta_0$.
+  - We say this system has 2 degree of freedom
+    - $n=3, k=2, n-k=1$
+  - This system is a least square linear regression with 3
+    parameters and 2 covariates
+- If there are $m$ independent equations: degree of freedom is
+  $n-m$

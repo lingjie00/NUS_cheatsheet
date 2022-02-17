@@ -58,9 +58,9 @@ taken.
 Consider $f(\bold{X}) = ax_1x_2^c, x_1 \in \{1, 2\}, x_2 \in \{4, 5\}$
 
 1. Identifying parameter and hyper-parameter
-    - parameter (aka independent or exogenous variables):
+    - parameter (aka dependent or endogenous variables):
       $x_1, x_2$
-    - hyper-parameter  (aka dependent or endogenous variables): $a, c$
+    - hyper-parameter  (aka independent or exogenous variables): $a, c$
     - hyper-parameter are determined outside of the system
       (or function), so take it as a given value (a
       constant), parameter are determined in the system, it

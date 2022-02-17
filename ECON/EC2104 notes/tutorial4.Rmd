@@ -1,0 +1,76 @@
+---
+title: EC2104 Tutorial 4 solution
+author: ling
+output:
+    beamer_presentation:
+        slide_level: 2
+        toc: false
+theme: "Madrid"
+---
+
+# Question 1 and 2
+
+Some important things to know
+
+1. $\frac{d}{dx} a^{f(x)} = f'(x)a^{f(x)}\ln(a)$
+2. Reading product symbol ($\prod$):
+   $\prod_{i=1}^n (x_i-\gamma_i)^{\beta_i}=
+   (x_1 - \gamma_1)^{\beta_1}
+   (x_2 - \gamma_2)^{\beta_2}
+   \cdots
+   (x_n - \gamma_n)^{\beta_n}$
+3. Reading summation symbol ($\sum$):
+   $\sum_{i=1}^n (x_i-\gamma_i)^{\beta_i}=
+   (x_1 - \gamma_1)^{\beta_1} +
+   (x_2 - \gamma_2)^{\beta_2} +
+   \cdots +
+   (x_n - \gamma_n)^{\beta_n}$
+4. If the question ask to prove (or show) two statement are
+   the same
+   1. do either of the following, depending on which
+       is easier:
+       1. Show right hand side = left hand side
+       2. Show left hand side = right hand side
+   2. Always check what do you need, and what do you have
+1. $C^1:=$ class 1 smoothness, zeroth and first derivatives
+   are continuous. [wiki here](https://en.wikipedia.org/wiki/Smoothness)
+
+## Question 2a
+
+Given $z = \sqrt{y}f(y^2-2x)$,
+WTS:
+$y^2 \frac{\partial z}{\partial x}+y\frac{\partial z}{\partial y}
+= \frac{1}{2}z$
+
+1. Should I show
+   1. RHS = LHS $\Rightarrow$ show
+      $y^2 \frac{\partial z}{\partial x}
+      +y\frac{\partial z}{\partial y} = \frac{1}{2}z$
+   2. LHS = RHS $\Rightarrow$ show
+      $\frac{1}{2}z = y^2 \frac{\partial z}
+      {\partial x}+y\frac{\partial z}{\partial y}$
+2. Think
+   1. $\frac{1}{2}z =
+      \frac{1}{2} \sqrt{y}f(y^2-2x)$, missing
+      $\frac{\partial z}{\partial x}$ and
+      $\frac{\partial z}{\partial y}$
+   2. However, finding
+      $\frac{\partial z}{\partial x}$ and
+      $\frac{\partial z}{\partial y}$ is a
+      manageable task
+3. WTS RHS = LHS,
+      $\frac{\partial z}{\partial x}
+      = -2\sqrt{y}f'$ and
+      $\frac{\partial z}{\partial y}
+      = \frac{1}{2\sqrt{y}}f(y^2-2x)+2y^{\frac{3}{2}}f'$
+   1. Check and compare with RHS $\frac{1}{2}z$:
+      1. what is missing? $\Rightarrow \frac{1}{\sqrt{y}}$ instead of
+         $\sqrt{y}$
+      2. what is extra?
+          $\Rightarrow$ we should not have f'$
+   2. Can we manipulate the equations to get what we want? 
+      - yes, $y^2 \frac{\partial z}{\partial x} +
+      y\frac{\partial z}{\partial y} = \frac{1}{2}z$
+4. This question is easy in the sense if you follow closely
+   to the LHS equations, you can solve the problem. But in
+   general, some clues is all you need to solve the problem.
