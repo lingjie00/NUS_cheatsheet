@@ -1,0 +1,178 @@
+---
+title: EC2104 Tutorial 5 solution
+author: ling
+output:
+    beamer_presentation:
+        slide_level: 2
+        toc: false
+        incremental: true
+theme: "Madrid"
+---
+
+# Question 1
+
+Given $\pi = p(Q)\cdot Q$, find relationship between $MR$
+and $\epsilon_D$
+
+-  What do I need? (1) MR, (2) $\epsilon_D$, (3)
+  relationship between them
+-  MR: $\frac{d\pi}{dQ} = P(Q) + Q\frac{dP}{dQ}$
+-  $\epsilon_D = \frac{dQ}{dP}\left(\frac{P}{Q}\right)$
+-  Relationship: $Q\frac{dP}{dQ} = \frac{P}{\epsilon_D}$
+-  Result: $MR = P + Q\frac{dP}{dQ} = P +
+   \frac{P}{\epsilon_D}$ (ans: a)
+
+
+# Question 2
+
+Given equation system, find $\frac{du}{dv}, \frac{du}{dy},
+\frac{dv}{dx}, \frac{dv}{dy}$
+\begin{align*}
+    \ln(x+u) + uv - y^2e^y + y &= 0\\
+    u^2 - x^v &= v
+\end{align*}
+
+- What do I need? (1) Solve differentials (2) Substitute values at the point (3) Solve system of linear equations (4) Find coefficients 
+- Differentials:
+    \begin{align*}
+        \frac{dx + du}{x+u} + udv + vdu - 2ye^vdy + y^2e^vdv + dy &= 0\\
+        2udu - vx^{v-1}dx - x^v\ln(x)dv &= dv
+    \end{align*}
+
+## Question 2 Cont
+
+- What do I need? (1) Solve differentials (2) Substitute values at the point (3) Solve system of linear equations (4) Find coefficients 
+- Substitute $(x, y, u, v) = (2, 1, -1, 0)$
+    \begin{align*}
+        dx + du - dv -2dy - dv + dy = 0 &\Rightarrow du -
+        2dv = dy - dx\\
+        -2du - \ln(2) dv = dv &\Rightarrow dv =
+        -\frac{2}{1+\ln(2)} du\\
+        & \Rightarrow du = -\frac{1+\ln(2)}{2} dv
+    \end{align*}
+- Solve: $du - 2dv = dy - dx$
+    \begin{align*}
+        du + \frac{4}{1+\ln(2)}du = dy - dx &\Rightarrow
+        du = \frac{1+\ln(2)}{5+\ln(2)}(dy-dx)\\
+        -\frac{1+\ln(2)}{2}dv + 2dv = dy - dx &\Rightarrow
+        dv = -\frac{2}{5+\ln(2)}(dy - dx)
+    \end{align*}
+- Find coefficients: $\frac{du}{dy}=\frac{1+\ln(2)}{5+\ln(2)},
+  \frac{du}{dx}=-\frac{1+\ln(2)}{5+\ln(2)},
+  \frac{dv}{dy}=-\frac{2}{5+\ln(2)},
+  \frac{dv}{dx}=\frac{2}{5+\ln(2)}$ (ans: a)
+
+# Question 3, 4, 5
+
+(True/False) If $g(x)=x^5, \lim_{x\rightarrow 2}\frac{g(x)-g(2)}{x-2}=80$
+
+- Applying L'H rule: $\Rightarrow \lim_{x\rightarrow 2 }g'(x) = 5(2)^4 = 80$ (True)
+
+(True/False) If $f$ is differentiable, then $\frac{d}{dx}f(\sqrt{x})=\frac{f'(x)}{2\sqrt{x}}$
+
+- Applying chain rule: $\frac{d}{dx}f(\sqrt{x}) = f'(\sqrt{x})
+  \frac{d\sqrt{x}}{dx} = \frac{f'(\sqrt{x})}{2\sqrt{x}}$ (False)
+
+Suppose $f$ is continuous on $[a, b]$ and differentiable on
+$(a, b)$. If $f'(x) > 0$ on $(a, b)$. Which is necessarily
+true?
+
+1. $f$ is decreasing on $[a, b]$
+   - False, $f'(x) > 0$. $f$ is increasing
+2. $f$ has no local extrema on $(a, b)$ using $f'(x) = 0$
+   - True, $f'(x) > 0$. No result using FOC
+3. $f$ is a constant function on $(a, b)$
+   - False, $f'(x) > 0$. Constant function has $f'(x) = 0$
+4. $f$ is convex on $(a, b)$
+   - False, not necessarily true. Require knowledge on
+     $f''(x)$
+
+# Question 6 (a)
+
+Given pdf: $f(x)=\frac{\lambda a\exp(-\lambda x)}{\left(exp(-\lambda x) + a\right)^2}
+, x\in \mathbf{R}, a,
+\lambda > 0$
+
+- Show that $F(x) = \frac{a}{exp(-\lambda x)+a}$, given $C=0$
+  - Note $F(x) = \int f(x) dx$, $F(x)$ is called Cumulative distribution function
+  - Solving $\int \frac{\lambda a\exp(-\lambda x)}{\left(exp(-\lambda x) + a\right)^2} dx$
+    1. Substitution method: $u = exp(-\lambda x) + a$
+    2. Observation: $\frac{d}{dx}\frac{1}{exp(-\lambda x) +
+       a} = \frac{\lambda exp(-\lambda x)}{(exp(-\lambda x)+a)^2}$
+- Determine $\lim_{x\rightarrow +\infty}F(x)$
+  - Note that for all CDF, $\lim_{x\rightarrow + \infty} F(x) = 1$
+  - Formally: $\lim_{x\rightarrow +\infty}
+    \frac{a}{exp(-\lambda x)+a} = \frac{a}{a} = 1 \because
+    \lim_{x\rightarrow +\infty} exp(-\lambda x) = 0$
+- Determine $\lim_{x\rightarrow -\infty}F(x)$
+  - Note that for all CDF, $\lim_{x\rightarrow - \infty} F(x) = 0$
+  - Formally: $\lim_{x\rightarrow
+    -\infty}\frac{a}{exp(-\lambda x)+a} = 0 \because \lim_{x\rightarrow -\infty}exp(-\lambda x) = \infty$
+
+## Question 6b
+
+Given pdf: $f(x)=\frac{\lambda a\exp(-\lambda x)}{\left(exp(-\lambda x) + a\right)^2},
+F(x) = \frac{a}{exp(-\lambda x)+a},
+x\in \mathbf{R}, a, \lambda > 0$
+
+- Show that $\int_{-\infty}^x f(t) dt = F(x)$
+  - Note: integrating pdf = cdf
+  - Formally: $\int_{-\infty}^x f(t) dt = \lim_{s\rightarrow -\infty} F(x) - F(s) = F(x)$
+- Show that $F(x)$ is strictly increasing
+  - Note: in general cdf is an increasing function, this question asks
+    a narrower definition of strictly increasing function
+  - Formally: $f(x) > 0 \because exp(\cdot) > 0$
+  - Can you think of why this cdf is strictly increasing? Look at the support of the pdf
+
+## Question 6c
+
+Given pdf: $f(x)=\frac{\lambda a\exp(-\lambda x)}{\left(exp(-\lambda x) + a\right)^2},
+F(x) = \frac{a}{exp(-\lambda x)+a},
+x\in \mathbf{R}, a, \lambda > 0$
+
+- Compute $F''(x)$
+  - $F''(x) = f'(x) = \frac{d}{dx} \frac{\lambda a\exp(-\lambda x)}{\left(exp(-\lambda x) + a\right)^2}
+    =\frac{-\lambda^2 a exp(-\lambda x)(exp(-\lambda x) + a)^2 - (\lambda a exp(-\lambda x)) 2(exp(-\lambda x) + a)
+    exp(-\lambda x)(-\lambda)}{(exp(-\lambda x)+a)^4}
+    =\frac{a\lambda^2exp(-\lambda x)(exp(-\lambda
+    x)-a)}{( exp(-\lambda x) + a )^3}$
+- Find the inflection point at $(x_0, F(x_0))$
+  - At point of inflection: $F(x_0) = \frac{1}{2}$. Data is
+    equal likely to be less than and more than $x_0$
+  - Formally: Inflection at $F''(x)=0 \Rightarrow
+    exp(-\lambda x_0)-a = 0$ (other terms are positive)
+    - $exp(-\lambda x_0) = a \Rightarrow x_0 = -\frac{\ln(a)}{\lambda}$
+  - $(x_0, F(x_0)) = \left(-\frac{\ln(a)}{\lambda},
+    \frac{1}{2}\right)$
+
+# Question 7
+
+Given $H(Q) = Q^2, Q(K, L) = AK^\alpha L^\beta, K > 0, L > 0$
+
+- Show $H$ is homothetic function
+  1. Show by definition
+     1. If $H(k_1, l_1) = H(k_2, l_2)$, WTS: $H(tk_1, tl_1) = H(tk_2, tl_2)$
+     2. $H(tk_1, tl_1) = t^{2(\alpha+\beta)}H(k_1, l_1) = t^{2(\alpha+\beta)}H(k_2, l_2)$
+     3. $H(tk_2, tl_2) = t^{2(\alpha+\beta)}H(k_2, l_2)$
+     4. Since $H(tk_1, tl_1) = H(tk_2, tl_2) \Rightarrow$ homothetic
+  2. Using Thm. Rewrite $H(Q) = h(Q(K, L))$ where $h(x) = x^2$
+     1. Show $Q$ is homogenous: $Q(tK, tL) = t^{\alpha+\beta}AK^\alpha L^\beta = t^{\alpha+\beta}Q(K, L)$
+     2. Show $h$ is increasing function: $\frac{dh}{dQ} = 2Q > 0 \because K > 0, L > 0 \Rightarrow Q > 0$
+
+- Is $H$ homogenous function?
+  - Yes, since $H(tK, tL) = t^{2(\alpha+\beta)}AK^\alpha L^\beta = t^{2(\alpha+\beta)}H(K, L)$
+
+- In general, does homotheticity imply homogeneity?
+  - No, there are homothetic function that are not homogenous
+  - E.g. $f(x, y) = xy + exp(xy)$
+
+## Question 7 c
+
+Given $H(Q) = Q^2, Q(K, L) = AK^\alpha L^\beta, K > 0, L > 0$
+
+- Find marginal rate of technical substitution for the isoquants of $H$
+  - MRTS: $$
+    \frac{H'_K}{H'_L} =
+    \frac{2(AK^\alpha L^\beta)\alpha K^{\alpha-1}AL^\beta}
+    {2(AK^\alpha L^\beta)\beta L^{\beta-1}AK^\alpha} = \frac{\alpha L}{\beta K}
+    $$
