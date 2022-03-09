@@ -28,14 +28,14 @@ and $\epsilon_D$
 Given equation system, find $\frac{du}{dv}, \frac{du}{dy},
 \frac{dv}{dx}, \frac{dv}{dy}$
 \begin{align*}
-    \ln(x+u) + uv - y^2e^y + y &= 0\\
+    \ln(x+u) + uv - y^2e^v + y &= 0\\
     u^2 - x^v &= v
 \end{align*}
 
 - What do I need? (1) Solve differentials (2) Substitute values at the point (3) Solve system of linear equations (4) Find coefficients 
 - Differentials:
     \begin{align*}
-        \frac{dx + du}{x+u} + udv + vdu - 2ye^vdy + y^2e^vdv + dy &= 0\\
+        \frac{dx + du}{x+u} + udv + vdu - 2ye^vdy - y^2e^vdv + dy &= 0\\
         2udu - vx^{v-1}dx - x^v\ln(x)dv &= dv
     \end{align*}
 

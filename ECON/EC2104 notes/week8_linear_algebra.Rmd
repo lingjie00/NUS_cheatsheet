@@ -1,0 +1,197 @@
+---
+title: Lecture 8 - Linear Algebra
+author: ling
+output:
+    beamer_presentation:
+        slide_level: 3
+        toc: false
+theme: "Madrid"
+---
+
+# Matrix, Vectors
+
+\begin{block}{Vector: an array of values}
+Row vectors:
+$$
+\mathbf{a}_{1 \times n} = \begin{pmatrix}
+    a_{11} & a_{12} & \cdots & a_{1n}\\
+\end{pmatrix}
+$$
+
+Column vectors:
+$$
+\mathbf{a}_{m \times 1} = \begin{pmatrix}
+    a_{11}\\
+    a_{21}\\
+    \vdots\\
+    a_{m1}\\
+\end{pmatrix}
+$$
+\end{block}
+
+\begin{block}{Matrix: an array of vectors}
+$$
+\mathbf{A}_{m \times n} = \begin{pmatrix}
+    a_{11} & a_{12} & \cdots & a_{1n}\\
+    a_{21} & a_{22} & \cdots & a_{2n}\\
+    \vdots & \vdots & \ddots & \vdots\\
+    a_{m1} & a_{m2} & \cdots & a_{mn}\\
+\end{pmatrix}
+$$
+\end{block}
+
+## Definitions and properties
+
+- Dimension: $dim(\mathbf{A}) = m \times n$
+  - $m$ rows and $n$ columns
+- Linear independence in a matrix
+  - Vectors are not a multiple of each other
+  - Vectors are not a linear combination of each other
+- Rank: $rank(\mathbf{A})$
+  - Rank describes the number of linearly independent rows and columns
+  - $rank(\mathbf{A}) \leq \min(m, n)$
+  - Column rank = row rank
+- Transpose: $\mathbf{A}^T$ or $\mathbf{A}'$
+  - $a_{ij} = a_{ji}$
+
+# Matrix operations
+
+- Matrix addition: (two matrices must be of the same dimension)
+  $\mathbf{A}_{m\times m} + \mathbf{B}_{m\times m} = \begin{pmatrix}
+    a_{11} + b_{11} & a_{12} + b_{12} & \cdots & a_{1n} + b_{1n}\\
+    a_{21} + b_{21} & a_{22} + b_{22} & \cdots & a_{2n} + a_{2n}\\
+    \vdots & \vdots & \ddots & \vdots\\
+    a_{m1} + b_{m1} & a_{m2} + b_{m2} & \cdots & a_{mn} + b_{mn}\\
+  \end{pmatrix}$
+
+- Inner Product/ Dot product: (vectors must be of the same length)
+  $\mathbf{a} = (a_1, a_2, \cdots, a_n),
+  \mathbf{b} = (b_1, b_2, \cdots, b_n)$
+  $\mathbf{a\cdot b} = a_1b_1 + a_2b_2 + \cdots + a_n b_n$
+
+- Scaler multiplication: (scalar is a $1\times 1$ matrix)
+$$
+\lambda\mathbf{A}_{m \times n} = \begin{pmatrix}
+    \lambda a_{11} & \lambda a_{12} & \cdots & \lambda a_{1n}\\
+    \lambda a_{21} & \lambda a_{22} & \cdots & \lambda a_{2n}\\
+    \vdots & \vdots &  \ddots & \vdots\\
+    \lambda a_{m1} & \lambda a_{m2} & \cdots & \lambda a_{mn}\\
+\end{pmatrix}
+$$
+
+## Matrix multiplication
+
+\begin{align*}
+\mathbf{A}_{m \times n} \times
+\mathbf{B}_{n \times k} &= 
+\begin{pmatrix}
+    \mathbf{a_1}\\
+    \mathbf{a_2}\\
+    \mathbf{\vdots}\\
+    \mathbf{a_m}
+\end{pmatrix} \times
+\begin{pmatrix}
+    \mathbf{b_1} &
+    \mathbf{b_2} &
+    \mathbf{\cdots} &
+    \mathbf{b_k}
+\end{pmatrix} \\
+&=
+\begin{pmatrix}
+    \mathbf{a_1}\cdot \mathbf{b_1} &
+    \mathbf{a_1}\cdot \mathbf{b_2} &
+    \cdots &
+    \mathbf{a_1}\cdot \mathbf{b_k}\\
+    \mathbf{a_2}\cdot \mathbf{b_1} &
+    \mathbf{a_2}\cdot \mathbf{b_2} &
+    \cdots &
+    \mathbf{a_2}\cdot \mathbf{b_k}\\
+    \vdots & \vdots & \ddots & \vdots\\
+    \mathbf{a_m}\cdot \mathbf{b_1} &
+    \mathbf{a_m}\cdot \mathbf{b_2} &
+    \cdots &
+    \mathbf{a_m}\cdot \mathbf{b_k}\\
+\end{pmatrix}_{m\times k}
+\end{align*}
+Note:
+
+- Matrix multiplication only exist if the inside dimension are the same
+- The resultant matrix is the outside dimension
+- Power of matrices is a matrix multiplication operations
+  - e.g. $\mathbf{A^3} = \mathbf{A}\times\mathbf{A}\times\mathbf{A}$
+- Matrix operations are not commutative: $\mathbf{AB} \neq \mathbf{BA}$
+
+## Converting system of linear equations into matrix form
+
+We illustrate an example here
+
+Given:
+\begin{align*}
+    a_{11}x_1 + a_{12}x_2 + a_{13}x_3 &= b_1\\
+    a_{21}x_1 + a_{22}x_2 + a_{23}x_3 &= b_2\\
+    a_{31}x_1 + a_{32}x_2 + a_{33}x_3 &= b_3\\
+\end{align*}
+
+Express in matrix form
+\begin{align*}
+    \begin{pmatrix}
+        a_{11} & a_{12} & a_{13}\\
+        a_{21} & a_{22} & a_{23}\\
+        a_{31} & a_{32} & a_{33}
+    \end{pmatrix}
+    \begin{pmatrix}
+        x_1\\
+        x_2\\
+        x_3
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+        b_1\\
+        b_2\\
+        b_3
+    \end{pmatrix} \Leftrightarrow
+    \mathbf{Ax}=\mathbf{b}
+\end{align*}
+
+## Special matrices
+
+- Square matrices: $\mathbf{A}_{n\times n}$
+- Diagonal matrices: $a_{ij} \neq 0, i = j$, $a_{ij} = 0, i \neq j$
+- Symmetric matrices: $a_{ij} = a_{ji}$, for all $i \in [1, m], j \in [1, n]$
+- Identify matrices: $a_{ij} = 1, i = j$, $a_{ij} = 0, i \neq j$
+- Null matrices: $a_{ij} = 0$, for all $i \in [1, m], j \in [1, n]$
+- Idempotent matrices: $\mathbf{A}^2 = \mathbf{AA} = \mathbf{A}$
+
+# Gauss-Jordan Elimination technique
+
+- Leading entry: first non-zero element in each row
+
+- Row echelon form (ref):
+  - Leading entry is non-zero
+  - Rows below leading entries are 0
+
+- Reduced row echelon form (rref):
+  - In REF form and
+  - Leading entries are 1
+  - Non-leading entries are 0
+
+- Operations:
+  - row switching
+  - row scalar multiplication
+  - row addition
+
+# Solving system of linear equations with G-J Elimination
+
+Given:
+$$
+\mathbf{A}_{m\times n}\mathbf{x}_{n\times 1} =
+\mathbf{b}_{n\times 1}
+$$
+
+1. Form an augmented matrix: $[\mathbf{A}|\mathbf{b}]$
+2. Express the augmented matrix in RREF form
+   - $\Leftrightarrow [\mathbf{I}|\mathbf{A^{-1}b}] = [\mathbf{A^{-1}A}|\mathbf{A^{-1}b}]$
+3. Deduce solution with
+   - Unique solution: $\Leftrightarrow rank(\mathbf{A}) = rank(\mathbf{A|b}) = \min(m, n)$
+   - Infinitely many solutions: $\Leftrightarrow rank(\mathbf{A}) = rank(\mathbf{A|b}) < \min(m, n)$
+   - No solution: $\Leftrightarrow rank(\mathbf{A}) < rank(\mathbf{A|b})$
