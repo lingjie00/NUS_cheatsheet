@@ -1,0 +1,65 @@
+---
+title: EC2104 Tutorial 6 solution
+author: ling
+output:
+    beamer_presentation:
+        slide_level: 2
+        toc: false
+        incremental: false
+theme: "Madrid"
+---
+
+# Question 4
+
+Key matrix transpose properties
+
+- $(\mathbf{A} + \mathbf{B})' = \mathbf{A}' + \mathbf{B}'$
+- $(\mathbf{AB})' = \mathbf{B'A'}$
+- Symmetric matrix $\Leftrightarrow \mathbf{A} = \mathbf{A'}$
+
+# Question 9b
+
+Given $\mathbf{A} = \begin{pmatrix}
+a & b\\
+c & d
+\end{pmatrix}$
+Given $\mathbf{A}^2 = (a+d)\mathbf{A} - (ad - bc)\mathbf{I}$
+
+WTF: $\mathbf{A}$ such that $\mathbf{A}^2 = 0, \mathbf{A} \neq 0$
+
+- Require: $a + d = 0$ and $ad - bc = 0$
+  - $\Rightarrow a = -d, ad = bc = -d^2$
+  - $d = \sqrt{-bc}$, $\{b, c | (b < 0, c > 0) \cup (b > 0, c < 0)\}$
+- Therefore, we require any $\mathbf{A}$ such that
+  $$
+  \mathbf{A} = \begin{pmatrix}
+    -\sqrt{-st} & s\\
+    t & \sqrt{-st}
+  \end{pmatrix}
+  $$$\{s, t |st < 0\} - \{s, t | s = 0, t = 0\}$
+
+# Question 9c
+
+Given $\mathbf{A} = \begin{pmatrix}
+a & b\\
+c & d
+\end{pmatrix}$
+Given $\mathbf{A}^2 = (a+d)\mathbf{A} - (ad - bc)\mathbf{I}$
+
+WTS: $\mathbf{A}^3 = 0 \Rightarrow \mathbf{A}^2 = 0$
+
+- $\mathbf{A}^2 = (a+d)\mathbf{A} - (ad - bc)\mathbf{I}$
+  - $\Rightarrow \mathbf{A}^3 = (a+d)\mathbf{A}^2 - (ad - bc)\mathbf{A} = 0$
+  - (1) $(a+d)\mathbf{A}^2 = (ad-bc)\mathbf{A}$
+  - we also have $(a+d)\mathbf{A}^3 = (ad-bc)\mathbf{A}^2 = 0$
+  - (2) $\Rightarrow (ad-bc)\mathbf{A}^2 = 0$
+
+Consider cases:
+
+1. $\mathbf{A}^2 = 0$
+2. $(ad - bc) = 0$ $\Rightarrow (a+d)\mathbf{A}^2 = 0$
+   1. $\mathbf{A}^2 = 0$
+   1. $a+d = 0 \Rightarrow \mathbf{A}^2 = (a+d)\mathbf{A} -
+      (ad - bc)\mathbf{I} = 0$
+
+Therefore, in all possible cases $\mathbf{A}^2 = 0$
