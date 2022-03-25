@@ -1,0 +1,98 @@
+---
+title: Lecture 9 - Matrix algebra
+author: ling
+output:
+    beamer_presentation:
+        slide_level: 3
+        toc: false
+theme: "Madrid"
+---
+
+# Determinants
+
+Result: an invertible matrix $\mathbf{A}$ has
+$det(\mathbf{A})\neq 0$
+
+\begin{block}{Laplace Expansion}
+\begin{align*}
+    det(\mathbf{A}) &= \sum_{j=1}^n (-1)^{i+j} a_{i, j} M_{i, j}
+\end{align*}
+\end{block}
+
+Procedure:
+
+1. Find sub-matrices $\mathbf{A}_{ij}$
+   - $\mathbf{A}_{ij}$ sub-matrix is obtained with deleting
+     row $i$ and column $j$
+2. Find Minor $\mathbf{M_{ij}}$
+   - $M_{ij}=det(\mathbf{A}_{ij})$
+3. Find Cofactors $C_{ij}$
+   - $C_{ij} = (-1)^{i+j}M_{ij}$
+4. Find $C_{ij}a_{ij}$ in any column and row
+   - Tip: find the column/row with most $a_{ij}=0$
+
+# Inverse
+
+\begin{block}{Inverse}
+Square matrix $\mathbf{A}$ has an inverse $\mathbf{A}^{-1}$
+if and only if $\mathbf{AA}^{-1}=\mathbf{A}^{-1}\mathbf{A}=\mathbf{I}$
+\end{block}
+
+Note: 
+
+- The concept of fraction $\frac{1}{a}$ does not exist
+in linear algebra.
+- Inverse only exist for square matrices
+- Since the definition is 'if and only if', meaning it is a
+  two way relationship.
+  1. If we know $\mathbf{A}$ is invertible, we know that
+    $\mathbf{A}^{-1}$ exist.
+  2. If we can find a matrix $\mathbf{B}$ such
+  that $\mathbf{AB}=\mathbf{BA}=\mathbf{I}$ then matrix
+  $\mathbf{A}$ is invertible with inverse
+  $\mathbf{A}^{-1}=\mathbf{B}$
+
+## Finding inverse
+
+1. Using Gauss-Jordon elimination
+   1. Form augmented matrix $[\mathbf{A}|\mathbf{I}]$
+   2. Find RREF $[\mathbf{I}|\mathbf{A}^{-1}]$
+2. Using adjoint matrices
+   1. Find adjoint matrix $adj(\mathbf{A})=\mathbf{C}^T$
+   2. Find $\mathbf{A}^{-1}=\frac{1}{|\mathbf{A}|}adj(\mathbf{A})$
+
+# Solving system of linear equations
+
+To solve: $\mathbf{Ax}=\mathbf{b}$
+
+1. Using inverse
+   1. G-J: $[\mathbf{A}|\mathbf{b}] \Rightarrow [\mathbf{I}|\mathbf{A}^{-1}\mathbf{b}]$
+   2. Pre-multiply inverse: $\mathbf{x} = \mathbf{A}^{-1}\mathbf{b}$
+2. Cramer's Rule
+  - $x_i = \frac{|\mathbf{A}_i|}{|\mathbf{A}|}$
+  - where $\mathbf{A_i}$ is the matrix $\mathbf{A}$ with
+    $i$th column vector replaced by $\mathbf{b}$
+
+# Eigenvalues and Eigenvector
+
+\begin{block}{Eigenvalues and Eigenvector}
+$\lambda$ is called eigenvalues of $\mathbf{A}$ when the
+following relationship holds for $\mathbf{v}\neq \mathbf{0}$
+\begin{align*}
+    \mathbf{Av} = \lambda\mathbf{v}
+\end{align*}
+\end{block}
+
+- Multiplying $\mathbf{A}$ to $\mathbf{v}$ only scale
+  $\mathbf{v}$ by a factor of $\lambda$
+- To find $\lambda, \mathbf{v}$
+  1. To find $\lambda$: solve $det(\mathbf{A}-\lambda\mathbf{I})=0$
+  2. To find $\mathbf{v}$: solve $(\mathbf{A}-\lambda\mathbf{I})\mathbf{v}=\mathbf{0}$
+     - Use RREF to find $[\mathbf{A}-\lambda\mathbf{I}|\mathbf{0}]$
+     - Eigenvector is not unique (infinite solutions)
+
+Eigenvalues properties (among a long list)
+
+1. Product of $\lambda = det(\mathbf{A})$
+2. If the hessian matrix has all non-negative $\lambda$, the
+   multi-variable function is convex

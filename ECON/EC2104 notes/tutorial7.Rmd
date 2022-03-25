@@ -1,0 +1,93 @@
+---
+title: EC2104 Tutorial 7 solution
+author: ling
+output:
+    beamer_presentation:
+        slide_level: 2
+        toc: false
+        incremental: false
+theme: "Madrid"
+---
+
+# Question 6: Finding eigenvalues
+
+Given $\mathbf{A}=\begin{pmatrix}-2&-4&2\\-2&1&2\\4&2&5\end{pmatrix}$
+
+- $\mathbf{A}-\lambda\mathbf{I} = \begin{pmatrix}-2-\lambda & -4 & 2 \\ -2&1-\lambda & 2 \\4&2&5-\lambda\end{pmatrix}$
+- $det(\mathbf{A}-\lambda\mathbf{I}) = 0$
+  - $\Rightarrow (-2-\lambda)\begin{vmatrix}1-\lambda&2\\2&5-\lambda\end{vmatrix}
+    +4\begin{vmatrix}-2&2\\4&5-\lambda\end{vmatrix}
+    +2\begin{vmatrix}-2&1-\lambda\\4&2\end{vmatrix}$
+  - $\Rightarrow (\lambda-3)(\lambda+5)(\lambda-6)=0$
+  - $\Rightarrow \lambda_1 = 3, \lambda_2 = -5, \lambda_3 = 6$
+
+## Question 6: Finding eigenvectors
+
+Given $\mathbf{A}=\begin{pmatrix}-2&-4&2\\-2&1&2\\4&2&5\end{pmatrix}$
+$\lambda \in [3, -5, 6]$
+
+1. $\lambda = 3
+   \Rightarrow \mathbf{A}-\lambda\mathbf{I} = \begin{pmatrix}-5&-4&2\\-2&-2&2\\4&2&2\end{pmatrix}
+   \rightarrow \begin{pmatrix}1&0&2\\0&1&-3\\0&0&0\end{pmatrix}$ (RREF)
+   - $\Rightarrow \begin{pmatrix}v_1\\v_2\\v_3\end{pmatrix} =s\begin{pmatrix}-2\\3\\1\end{pmatrix}$
+2. $\lambda = -5
+   \Rightarrow \mathbf{A}-\lambda\mathbf{I} = \begin{pmatrix}3&-4&2\\-2&6&2\\4&2&10\end{pmatrix}
+   \rightarrow \begin{pmatrix}1&0&2\\0&1&1\\0&0&0\end{pmatrix}$ (RREF)
+   - $\Rightarrow \begin{pmatrix}v_1\\v_2\\v_3\end{pmatrix} =s\begin{pmatrix}-2\\-1\\1\end{pmatrix}$
+
+## Cont
+
+3. $\lambda = 6
+   \Rightarrow \mathbf{A}-\lambda\mathbf{I} = \begin{pmatrix}-8&-4&2\\-2&-5&2\\4&2&-1\end{pmatrix}
+   \rightarrow \begin{pmatrix}1&0&-\frac{1}{16}\\0&1&-\frac{3}{8}\\0&0&0\end{pmatrix}$ (RREF)
+   - $\Rightarrow \begin{pmatrix}v_1\\v_2\\v_3\end{pmatrix} =\frac{s}{16}\begin{pmatrix}1\\6\\16\end{pmatrix}$
+
+# Question 7: Finding eigenvalues and eigenvectors
+
+Given $\mathbf{A} = \begin{pmatrix}-1 & 3\\2 & 0\end{pmatrix}$
+
+- Find eigenvectors and eigenvalues
+  - $\mathbf{A}-\lambda\mathbf{I} =
+    \begin{pmatrix}-1-\lambda & 3\\ 2 & -\lambda\end{pmatrix}$
+  - Solving $det(\mathbf{A}-\lambda\mathbf{I}) = 0 = (1+\lambda)\lambda - 6 \Rightarrow \lambda_1 = 2, \lambda_2 = -3$
+  - Solving $(\mathbf{A}-\lambda\mathbf{I})\mathbf{v}=\mathbf{0}$
+    - $\lambda = 2:$ $\left[\begin{matrix}-3 & 3\\2 & -2\end{matrix}~\vline~\begin{matrix}0\\0\end{matrix}\right]$
+      $\rightarrow \left[\begin{matrix}1 & -1\\0 & 0\end{matrix}~\vline~\begin{matrix}0\\0\end{matrix}\right]$
+      $\Rightarrow \mathbf{v} = s\begin{pmatrix}1\\1\end{pmatrix}$
+    - $\lambda = -3:$ $\left[\begin{matrix}2 & 3\\2 & 3\end{matrix}~\vline~\begin{matrix}0\\0\end{matrix}\right]$
+      $\rightarrow \left[\begin{matrix}1 & \frac{3}{2}\\0 & 0\end{matrix}~\vline~\begin{matrix}0\\0\end{matrix}\right]$
+      $\Rightarrow \mathbf{v} = s\begin{pmatrix}-\frac{3}{2}\\1\end{pmatrix}$
+
+# Question 7: Eigendecomposition
+
+Given $\mathbf{A} = \begin{pmatrix}-1 & 3\\2 & 0\end{pmatrix}$
+$\mathbf{D} = \begin{pmatrix}2 & 0\\0 & -3\end{pmatrix}$
+$\mathbf{P} = \begin{pmatrix}1 & -3 \\1 & 2\end{pmatrix}$
+$\mathbf{P}^{-1} = \frac{1}{5}\begin{pmatrix}2 & 3 \\-1 & 1\end{pmatrix}$
+
+- Since $\mathbf{Av}=\lambda\mathbf{v}$, we have $\mathbf{A}=\mathbf{PDP}^{-1}$
+  - $\mathbf{D}:=[\mathbf{\lambda_1}~\mathbf{\lambda_2}]$, $\mathbf{P}:=[\mathbf{v_1}~\mathbf{v_2}]$
+  - $\mathbf{AP} = \mathbf{PD} \Rightarrow \mathbf{APP}^{-1} = \mathbf{PDP}^{-1}$
+    - $\mathbf{AP} = \begin{pmatrix}-1&3\\2&0\end{pmatrix}\begin{pmatrix}1&-3\\1&2\end{pmatrix} = \begin{pmatrix}2&9\\2&-6\end{pmatrix}$
+    - $\mathbf{PD} = \begin{pmatrix}1&-3\\1&2\end{pmatrix}\begin{pmatrix}2&0\\0&-3\end{pmatrix} = \begin{pmatrix}2&9\\2&-6\end{pmatrix}$
+    - Note: $\mathbf{DP} = \begin{pmatrix}2&0\\0&-3\end{pmatrix}\begin{pmatrix}1&-3\\1&2\end{pmatrix} =\begin{pmatrix}2&-6\\-3&-6\end{pmatrix}$
+- Note: the order of stacking does not matter, but the
+  corresponding eigenvectors and eigenvalues does
+
+## Eigendecomposition (cont)
+
+Given $\mathbf{A} = \begin{pmatrix}-1 & 3\\2 & 0\end{pmatrix}$
+$\mathbf{D} = \begin{pmatrix}2 & 0\\0 & -3\end{pmatrix}$
+$\mathbf{P} = \begin{pmatrix}1 & -3 \\1 & 2\end{pmatrix}$
+$\mathbf{P}^{-1} = \frac{1}{5}\begin{pmatrix}2 & 3 \\-1 & 1\end{pmatrix}$
+
+Eigendecomposition: $\mathbf{A} = \mathbf{PDP}^{-1}$
+
+- Using eigendecomposition we have $\mathbf{A}^n = \mathbf{PD}^n\mathbf{P}^{-1}$
+  - $\mathbf{A}^n = \mathbf{AA\cdots A} = (\mathbf{PD}\mathbf{P}^{-1})(\mathbf{PD}\mathbf{P}^{-1})\cdots(\mathbf{PD}\mathbf{P}^{-1})$
+  - Note that $\mathbf{PP}^{-1}=\mathbf{I}$
+  - Simplifying: $\mathbf{A}^n = \mathbf{PD}\mathbf{D}\cdots\mathbf{D}\mathbf{P}^{-1}=\mathbf{PD}^n\mathbf{P}^{-1}$
+- In general, power of diagonal matrix is the power of the entries
+  - i.e. $\begin{pmatrix}2 & 0\\0 & -3 \end{pmatrix}^n =
+    \begin{pmatrix}2^n & 0 \\0 & (-3)^n\end{pmatrix}$
+- Therefore, $\mathbf{A}^{100} = \mathbf{P}\begin{pmatrix}2^{100}&0\\0&(-3)^{100}\end{pmatrix}\mathbf{P}^{-1}$
