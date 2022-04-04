@@ -19,6 +19,7 @@ contains every major pointers in the module.
 | --- | --- | --- | --- |
 | EC1101E  | Introduction to Economic Analysis | Mindmap |
 | EC2102 | Macroeconomic Analysis I | cheatsheet | One for Goods Market, one for Labor Market
+| EC2104 | Quantitative Methods for Economic Analysis | notes | detailed notes used as TA
 | EC3101 | Microeconomic Analysis II | summary notes
 | EC3102 | Macroeconomic Analysis II | summary notes
 | EC3303 | Econometrics I | cheatsheet |
