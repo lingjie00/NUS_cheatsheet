@@ -1,0 +1,79 @@
+---
+title: Lecture 11 - Equality Constraints Optimization
+author: ling
+output:
+    beamer_presentation:
+        slide_level: 2
+        toc: false
+        incremental: false
+theme: "Madrid"
+---
+
+# Lagrange Multiplier Method
+
+Solving equality constraint optimization
+
+$$
+\min_{\mathbf{x}} f(\mathbf{x}) ~s.t.~ m_i - g_i(\mathbf{x}) = 0, i = 1, \cdots, m
+$$
+
+Solve Lagrangian function instead
+
+$$
+\min_{\mathbf{x}, \mathbf{\lambda}} \mathcal{L}(
+\mathbf{x}, \mathbf{\lambda}) = f(\mathbf{x}) + \sum_{i=1}^m \lambda_i [ m_i -  g_i(\mathbf{x}) ]
+$$
+
+- Note the constraint presentation in order to preserve $\lambda_i$ interpretation
+- $\lambda_i = \frac{\partial f^*(m_i)}{\partial m_i}$, value
+  function rate of change when constraint $m_i$ changes
+
+Require Non-Degenerate Constraint Qualification (NDCQ)
+
+- $rank(\mathbf{J_{g}(x^*)}) = m$
+- $\mathbf{J_\mathbf{g}(x^*)}$ is the Jacobian of the constraints at the minimizer
+- Rank of matrix $\mathbf{A}$ is the number of
+  linearly independent rows/columns
+
+## FOC and SOC
+
+First Order Necessary Condition (FOC)
+
+- Unconstrained
+  - Single variable: $f'(x^*) = 0$
+  - Multiple variables: $\nabla f(\mathbf{x}^*) = \mathbf{0}$
+- Equality constraint
+  - Lagrangian: $\nabla\mathcal{L}(\mathbf{x^*, \lambda^*}) =
+    \mathbf{0}$
+
+Second Order Necessary and Sufficient Condition (SOC)
+
+- Unconstrained (local min)
+  - Single variable: $f''(x^*) > 0$
+  - Multiple variables: $H_f(\mathbf{x}^*) \succ 0$ (positive definite)
+- Equality constraint (local min)
+  - Lagrangian: $H_{\mathcal{L}}(\mathbf{x^*, \lambda^*}) \succ 0$ (positive definite)
+
+## Sufficient Condition for global extreme point
+
+\begin{alertblock}{Remark}
+We are testing if function is convex.
+Therefore, require the following to hold true for all $\mathbf{x}$ in
+domain, not just the minimizer $\mathbf{x}^*$
+\end{alertblock}
+
+- Unconstrained (global min)
+  - Single variable: $f''(x) \geq 0$
+  - Multiple variable: $H_f(\mathbf{x}) \succeq \mathbf{0}$
+    (positive semi-definite)
+- Equality constraint (global min)
+  - Lagrangian: $H_{\mathcal{L}}(\mathbf{x}, \mathbf{\lambda}) \succeq \mathbf{0}$ (positive semi-definite)
+
+## General comments on global extreme points
+
+1. Closed and bounded domain will have global extreme points
+   - Prove by Weierstrass Extreme Value Theorem
+   - Compare objective values (including interior, boundary and non-differentiable points)
+   - Consider $\max_{x_1, x_2} -x_1^2 + x_2 ~s.t.~ x_1^2+x_2^2=1$
+3. Unbounded domain might not have global extreme points
+   - Consider $\max_{x_1, x_2} x_1^2 + x_2^2$
