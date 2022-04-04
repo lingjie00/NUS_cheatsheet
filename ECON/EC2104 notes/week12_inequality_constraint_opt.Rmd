@@ -1,0 +1,119 @@
+---
+title: Lecture 12 - Inequality Constraints Optimization
+author: ling
+output:
+    beamer_presentation:
+        slide_level: 2
+        toc: false
+        incremental: false
+theme: "Madrid"
+---
+
+# Lagrange Multiplier Method (Inequality)
+
+Solving inequality constraint optimization
+
+$$
+\max_{\mathbf{x}} f(\mathbf{x}) ~s.t.~ h_i(\mathbf{x}) - c_i \leq 0, i = 1, \cdots, m
+$$
+
+Solve Lagrangian function instead
+
+$$
+\max_{\mathbf{x}, \mathbf{\mu}} \mathcal{L}(
+\mathbf{x}, \mathbf{\mu}) = f(\mathbf{x}) - \sum_{i=1}^m \mu_i [ g_i(\mathbf{x}) - c_i  ],
+\mu_i \geq 0
+$$
+
+- Note the constraint presentation in order to ensure $\mu_i
+  \geq 0$
+
+Note the difference between equality constraint:
+
+- $\lambda_i$ is unconstrained ($\in R$), $\mu_i$
+  has to be non-negative ($\geq 0$).
+- Representation here is for maximisation problem, note that
+  for minimisation problem the form will be different.
+
+## Complementary slackness
+
+Solving inequality optimization problems is more challenging
+than equality optimization problems. We need to consider
+cases when
+
+1. Constraint is binding: $h_i - m_i = 0$
+2. Constraint is not binding: $h_i - m_i < 0$
+
+Therefore, to summarises the possible cases, we introduce
+complementary slackness condition
+
+\begin{block}{Complementary Slackness}
+\begin{enumerate}
+    \item $\mu_i > 0$, $h_i - m_i = 0$
+    \item $\mu_i = 0$, $h_i - m_i < 0$
+\end{enumerate}
+\end{block}
+
+## Solving Inequality Lagrangian
+
+We need find KKT points (i.e. points that satisfied the
+following conditions)
+
+1. FOC: $\frac{\partial{\mathcal{L}(\mathbf{x, \mu})}}{x_i} = 0$
+2. Complementary Slackness: $\mu_i \geq 0$, $\mu_i = 0$ when $h_i-m_i<0$
+3. All constraints must be satisfied
+
+Note:
+
+- In general, solving inequality constraint problems require
+  a lot of patience to work out each possible cases.
+- For $m$ constraints, there are $2m$ different cases to consider
+- Note that Lagrangian method failed when $h(\mathbf{x})=c$
+  and $h'_1 = h'_2 = 0$ (for two variable case)
+
+## FOC and SOC
+
+First Order Necessary Condition (FOC)
+
+- Unconstrained
+  - Single variable: $f'(x^*) = 0$
+  - Multiple variables: $\nabla f(\mathbf{x}^*) = \mathbf{0}$
+- Equality constraint
+  - Lagrangian: $\nabla\mathcal{L}(\mathbf{x^*, \lambda^*}) =
+    \mathbf{0}$
+- Inequality constraint
+  - Lagrangian: $\frac{\partial\mathcal{L}(x^*_i, mu_i^*)}{x_i} = 0$
+  - Complementary Slackness: $\mu_i \geq 0$, $\mu_i = 0$ when
+    $h_i(\mathbf{x}) - c_i < 0$
+
+Second Order Necessary and Sufficient Condition (SOC)
+
+- Unconstrained (local min)
+  - Single variable: $f''(x^*) > 0$
+  - Multiple variables: $H_f(\mathbf{x}^*) \succ 0$ (positive definite)
+- Equality constraint (local min)
+  - Lagrangian: $H_{\mathcal{L}}(\mathbf{x^*, \lambda^*}) \succ 0$ (positive definite)
+
+## Sufficient Condition for global extreme point
+
+\begin{alertblock}{Remark}
+We are testing if function is convex.
+Therefore, require the following to hold true for all $\mathbf{x}$ in
+domain, not just the minimizer $\mathbf{x}^*$
+\end{alertblock}
+
+- Unconstrained (global min)
+  - Single variable: $f''(x) \geq 0$
+  - Multiple variable: $H_f(\mathbf{x}) \succeq \mathbf{0}$
+    (positive semi-definite)
+- Equality constraint (global min)
+  - Lagrangian: $H_{\mathcal{L}}(\mathbf{x}, \mathbf{\lambda}) \succeq \mathbf{0}$ (positive semi-definite)
+
+## General comments on global extreme points
+
+1. Closed and bounded domain will have global extreme points
+   - Prove by Weierstrass Extreme Value Theorem
+   - Compare objective values (including interior, boundary and non-differentiable points)
+   - Consider $\max_{x_1, x_2} -x_1^2 + x_2 ~s.t.~ x_1^2+x_2^2=1$
+3. Unbounded domain might not have global extreme points
+   - Consider $\max_{x_1, x_2} x_1^2 + x_2^2$
