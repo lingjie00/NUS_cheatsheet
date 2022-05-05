@@ -1,0 +1,32 @@
+Central questions:
+
+1. Why are some countries much poorer than others?
+2. Why do countries grow?
+3. What are the sources of recessions and booms?
+4. Why is there unemployment and what determines its extent?
+
+Questions 1 and 2 belongs to growth theory, question 3
+belong to business cycle and question 4 belong to
+unemployment.
+
+## Evolution of input factors
+
+Growth rate for $x(t)$ where $\dot{x} := \frac{dx(t)}{dt}$
+$$
+g_x := \frac{\dot{x}}{x} = \frac{d\ln(x)}{dt} \Rightarrow
+X(t) = X_0 e^{g_x t}
+$$
+
+Discrete-time growth rate:
+
+$$
+g_x = \Delta \ln(x_t) = \ln(x_{t+1})-\ln(x_t)
+$$
+
+## Equilibrium, steady-state, Balanced growth path, comparative statics, Golden-rule
+
+- Equilibrium: $k^*$ such that $\dot{k} = 0 \Rightarrow k(t+1)=k(t)$
+  - An economy in equilibrium is called in steady-state
+- Balanced growth path: how other variables behave when $k = k^*$
+- Comparative statics: how changing hyper-parameter change variables
+- Golden-rule of capital accumulation: $k^*$ that maximises Consumption

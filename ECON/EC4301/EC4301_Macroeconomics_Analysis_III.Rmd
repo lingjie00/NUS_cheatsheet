@@ -1,0 +1,20 @@
+---
+title: EC4301 Macroeconomic Analysis III
+author: Ling
+date: "`r Sys.Date()`"
+geometry: margin=1cm
+output:
+    bookdown::pdf_document2:
+        toc: true
+        toc_depth: 4
+---
+
+# Agency Theory
+
+```{r child="agency.Rmd"}
+```
+
+# Auctions
+
+```{r child="auction.Rmd"}
+```

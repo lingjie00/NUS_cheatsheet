@@ -1,0 +1,330 @@
+\documentclass[12pt,landscape]{article}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[landscape]{geometry}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{color,graphicx,overpic}
+\usepackage{hyperref}
+\usepackage{soul} %for highlight
+\usepackage{xcolor} %color definition
+\usepackage{sectsty} %change section color
+
+
+\pdfinfo{
+  /Title (EC3101 Microeconomics cheatsheet)
+  /Creator (Lingjie)}
+
+% This sets page margins to .5 inch if using letter paper, and to 1cm
+% if using A4 paper. (This probably isn't strictly necessary.)
+% If using another size paper, use default 1cm margins.
+\ifthenelse{\lengthtest { \paperwidth = 11in}}
+    { \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
+    {\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
+        {\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+        {\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+    }
+
+% Turn off header and footer
+\pagestyle{empty}
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries\color{red}}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries\color{blue}}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries\color{violet}}}
+\makeatother
+
+% Define BibTeX command
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+
+%My Environments
+\newtheorem{example}[section]{Example}
+% -----------------------------------------------------------------------
+
+\begin{document}
+\raggedright
+\footnotesize
+\begin{multicols}{3}
+
+
+% multicol parameters
+% These lengths are set only within the two main columns
+%\setlength{\columnseprule}{0.25pt}
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{1pt}
+\setlength{\columnsep}{2pt}
+
+\begin{center}
+     \Large{\underline{EC3101 Microeconomics II}} \\
+     {Lingjie, \today}
+\end{center}
+
+\section{Inter-temporal Choice}
+	Future value, FV = $m(1+i)$\\
+	Present value, PV = $\frac{FV}{(1+i)}$
+
+\subsubsection{Inter-temporal Utility}
+	$u(C_1, C_2) = C_1 + \delta C_2$, $\delta$ is discount rate
+
+\subsubsection{Inter-temporal Budget Constraint}
+	$(C_1,C_2) = (m_1,m_2) \Rightarrow$ consumer don't save/borrow\\
+	$C_1 + \frac{C_2}{1+i} = m_1 + \frac{m_2}{1+i}$, $m_i$ in units of goods\\
+
+\subsection{Changes in Nominal Interest Rate}
+	$MRS_{C_1, C_2} = 1+i$\\
+	changes in $r$ affects slope of curve, higher steeper\\
+	\begin{tabular}{lccc}
+							&		saver			&		borrower				& neither\\
+		\hline
+		$\uparrow i$ \vline		&		$\uparrow U$		&		$\downarrow U$		& unchanged\\
+		\hline
+		$\downarrow i$ \vline	&		$\downarrow U$	&		$\uparrow U$			& unchanged\\
+		\hline
+	\end{tabular}\\
+	Neither result in unchanged utility if and only if income adjust accordingly\\
+	With increased $i$, borrower might become saver\\
+
+\subsection{Changes in Price}
+	If $p \neq 1$: $p_1C_1+\frac{p_2}{1+r}C_2 = m^*_1 + \frac{m^*_2}{1+i}$, $m^*_i$ = $m_i$ money\\
+	new MRS $= (1+i)\frac{p_1}{p_2}$\\
+	\begin{tabular}{lcc}
+							&		$C_1$			&		$C_2$				\\
+		\hline
+		$\uparrow p_1$ \vline	&		$\downarrow$		&		$\uparrow$			\\
+		$\downarrow p_1$ \vline	&		$\uparrow$		&		$\downarrow$			\\
+		\hline
+		$\uparrow p_2$ \vline	&		$\uparrow$		&		$\downarrow$			\\
+		$\downarrow p_2$ \vline	&		$\downarrow$		&		$\uparrow$			\\
+		\hline
+	\end{tabular}\\
+
+\subsection{Changes in inflation}
+	$p_1(1+\pi) = p_2$ or $\pi = \frac{p_2-p_1}{p_1}$\\
+	If $\pi \neq 0, p_1 = 1$: $c_1 + \frac{1+\pi}{1+i}c_2 = m^*_1 + \frac{m^*_2}{1+i}$
+	\begin{tabular}{lccc}
+							&		saver			&		borrower				& neither\\
+		\hline
+		$\uparrow \pi$ \vline		&		$\downarrow U$		&		$\uparrow U$		& unchanged\\
+		\hline
+		$\downarrow \pi$ \vline	&		$\uparrow U$	&		$\downarrow U$			& unchanged\\
+		\hline
+	\end{tabular}\\
+	Neither result in unchanged utility if and only if income adjust accordingly\\
+
+\subsubsection{Real Interest Rate}
+	$1+\rho = \frac{1+i}{1+\pi}$, $\rho$ is real interset rate\\
+	$\rho = \frac{i-\pi}{1+\pi} \approx i-\pi$ for small $\pi$
+
+\section{Uncertainty}
+	Expected Utility: $u(c_1, c_2, \pi_1, \pi_2) = \pi_1\nu(c_1) + \pi_2\nu(c_2)$\\
+	Expected Money: $\pi_1c_1 + \pi_1c_1$\\
+	Given concave utility $\Rightarrow \frac{\partial U}{\partial c} = MU_c(c) < 0$, $\uparrow c \downarrow U$
+
+\subsection{Risk Measurement}
+	\begin{tabular}{l@{ : }l}
+		Risk aversion			& EU $<$ U(EM)\\
+		Certainty equivalence	& $U^{-1}(EU)$
+	\end{tabular}
+	
+\subsubsection{Risk Premium}
+	RP = EM - CE\\
+	RP is 'willingness-to-pay' to avoid risk, higher more risk averse\\
+	CE is the certainty amount needed to achieve the utility under risk
+
+\subsubsection{Arrow-Pratt}
+	$-\frac{u''(w)}{u'(w)}$, higher more risk averse
+
+\subsection{State-Contingent Budget Constraints}
+	\textit{States of Nature}: outcomes of random events\\
+	\textit{Contingent consumption plan}: specification of amount consumed in different state of nature\\
+	\textit{Insurance premium}: price of insurance, $\gamma$\\
+	\begin{tabular}{ll}
+		w/o insurance			&	$C_{-} = m-L, C_{+} = m$\\
+		w insurance			&	$C_{-} = m-L+(1-\gamma) K$\\
+							&	$C_{+} = m-\gamma K$\\
+		budget constraint		&	$C_{+} = -\frac{\gamma}{1-\gamma}C_{-} + \frac{m-\gamma L}{1-\gamma}$\\
+		$MRS_{c_{-}, c_{+}}$	&	$\frac{\pi_{-}MU(C_{-})}{\pi_{+}MU(C_{+})} = \frac{\gamma}{1-\gamma}$, price ratio
+	\end{tabular}
+
+\subsection{Market for Insurance}
+	$\pi_{\text{insurance}} = \gamma K - (\pi_{-}K + \pi_{+}0) = (\gamma - \pi_{-})K$\\
+	Buy insurance when: $U(C_{+}-\gamma K) \geq EU$
+
+\subsection{Insurance pricing}
+	\begin{tabular}{ll}
+		competitive pricing		&		$\pi_{\text{insurance}} =0\Rightarrow \gamma = \pi_{-}$\\
+		fully insurance			&		$\frac{MU(C_{-})}{MU(C_{+})}=1 = \frac{C_-}{C_+}$\\
+		\hline
+		unfair pricing			&		$\pi_{\text{insurance}} >0\Rightarrow \gamma > \pi_{-}$\\
+		partial insurance		&		$\frac{MU(C_-)}{MU(C_+)} > 1 \Rightarrow \frac{C_-}{C_+} < 1$\\
+		\hline
+		Full insurance 			& 		$C_- = C_+$, $45^o$ line\\
+		Partial insurance		&		$C_- < C_+$, nearer to $C_+$
+	\end{tabular}
+	
+	
+
+\section{Monopoly}
+	Single seller for the market with downward sloping market demand\\
+	Producer surplus $PS$ below price above supply\\
+	Consumer surplus $CS$ above price below demand
+	
+\subsection{Profit Maximisation}
+		$\max_q \pi = p(q)q - c(q)$ till $MR =MC$
+
+\subsection{Price Elasticity of Demand, PED}
+	PED: $\epsilon = \left[\frac{dq}{q}/\frac{dp}{p}\right] \leq 0, dq=1$\\
+	$p'(q)q + p(q) = c'(q)=p(q)\left[1+\frac{dp}{p}\frac{q}{dq}\right] = p(q)[1-\frac{1}{|\epsilon|}] $\\
+	In demand curve, $\epsilon$ decrease from elastic to inelastic
+
+\subsubsection{PED cases ($\epsilon \leq 1$ and Markup Pricing)}
+	\begin{tabular}{l@{ : }ll}
+		$\epsilon = \infty$	&	$p(q) = c'(q)$ 							& 	perfect competition\\
+		$\epsilon \leq 1$	&	$q \downarrow 0=0$						&	near 0 production\\
+		$\epsilon > 1$		&	$p(q) = \frac{c'(q)}{[1-\frac{1}{|\epsilon|}]}$		&	markup prices
+	\end{tabular}
+
+\subsection{Inefficiency of Monopoly}
+	Since $Q^* < Q_{m}$, monopoly produce less than market equilibrium, $CS^* < CS_{m}$ and DWL exist
+
+\subsection{First-degree Price Discrimination}
+	$P=$ demand, PS = market surplus
+
+\subsection{Third-degree Price Discrimination}
+	Assumptions
+	\begin{itemize}
+		\item Perfect identification of different markets
+		\item No arbitrage across groups
+	\end{itemize}
+	solve $\max_{q_1, q_2} p_1(q_1)q_1 + p_2(q_2) - c_1(q_1) - c_2(q_2)$
+
+\subsubsection{Uniform Pricing}
+	Firm charging the same price for both markets
+	$p_1(q) > p_2(q)$
+	\begin{align*}
+	Q &= p_1^{-1}1_{\{P> p_2(0)\}} + [p_1^{-1}+p_2^{-1}]1_{\{P\leq p_2(0)\}}\\
+	P &= p_11_{\{Q>Q(p_2(0))\}} + p(p_1^{-1}+p_2^{-1})1_{\{Q\leq Q(p_2(0))\}}
+	\end{align*}
+	Solve for MR = MC and decide on Q, P, $\pi$
+
+\subsection{Barriers to Entry}
+	Types: legal, strategic, structural
+
+\subsection{Natural Monopoly}
+	Firm with Economies of scale and low demand (relative to cost) $\Rightarrow$ downward sloping $ATC > MC$
+
+\subsection{Regulating Natural Monopoly}
+	\begin{tabular}{ll}
+		MC pricing		&		$MC=P<ATC \Rightarrow \pi < 0$\\
+		ATC pricing		&		$MC<P=ATC \Rightarrow \pi =0$\\
+		Qty tax,$\tau$		&		$\uparrow P, \downarrow Q$, distort market
+	\end{tabular}
+	However, ATC pricing incur high regulatory cost and no firms have no incentive to be cost efficient
+
+\subsubsection{Quantity Tax Levied on Monopolist}
+	\begin{tabular}{l@{ : }l}
+		w/o $\tau$		&	$p(q)\left[1+\frac{1}{\epsilon}\right] = k \Rightarrow p(q) = \frac{\epsilon k}{1+\epsilon}$\\
+		w $\tau$		&	$\frac{\epsilon(k+\tau)}{1+\epsilon} \Rightarrow \frac{\epsilon k}{1+\epsilon} + \frac{\epsilon \tau}{1+\epsilon}$
+	\end{tabular}\\
+	Since monopolist only operates when $\epsilon < 1$, $\frac{\epsilon \tau}{1+\epsilon} > 1$, more elastic demand means firms pass even more than full time to consumer.\\
+	However, in reality firms do not pass more than tax to consumer. This result also assume whole demand curve to be constant elasticity (not true)
+
+\section{Oligopoly}
+
+\subsection{Cournot}
+	Assumptions:
+	\begin{itemize}
+		\item identical product
+		\item independent and simultaneously strategy
+		\item firms choose output level
+	\end{itemize}
+	Payoffs and best response function:
+	\begin{align*}
+		&\max_{q_i} P(q_1+q_2)q_i -C_i(q_i)~\forall~i\in N
+	\end{align*}
+
+\subsection{Stackelberg}
+	Assumptions:
+	\begin{itemize}
+		\item Stackelberg leader set quantity independently
+		\item follower observe leader and set quantity
+	\end{itemize}
+	1. Solve followers' best response per \textit{Cournot}\\
+	2. Solve leaders' best response function
+	\begin{align*}
+		\max_{q_i} P(q_i+q_j(q_i))q_i - C_i(q_i)~\forall~i,j\in N
+	\end{align*}
+
+\subsection{Collusion}
+	Firms collude to form cartel and choose $Q_{mkt}$
+	\begin{align*}
+		\max_Q P(Q)Q - C(Q)
+	\end{align*}
+	Decision to produce
+	\begin{tabular}{ll}
+		$C_i(Q) < C_j(Q)$		&		only firm $j$ will produce\\
+		$C_i(Q) = C_j(Q)$		&		firms share $Q$ till $MC_i = MC_j$
+	\end{tabular}\\
+	Collusion is not sustainable in static game\\
+	In dynamic game, firms punish by 'grim trigger strategy', not cooperate again\\
+	$\alpha$ = payoff in collusion\\
+	$\beta$ = payoff in Cournot\\
+	$\gamma$ = payoff in Cournot with opp in collusion\\
+	$\delta$ = discount factor
+	\begin{align*}
+		\pi_{coop} &= \pi_{cheat}\\
+		\alpha + \delta\alpha + \delta^2\alpha + \cdots &= \gamma + \delta\beta + \delta^2\beta + \cdots\\
+		\sum_{i=[0,\infty]}{\delta^i\alpha} &= \gamma + \sum_{i=[1,\infty]}{\delta^i\beta}\\
+		\frac{\alpha}{1+\delta} &= \frac{\gamma}{1+\delta}
+	\end{align*}
+	
+	
+\subsection{Bertrand}
+	Assumptions:
+	\begin{itemize}
+		\item identical product
+		\item constant $MC=c$, no fixed cost
+		\item firms choose price level
+	\end{itemize}
+	Cases:\\
+	\begin{tabular}{ll}
+		$P_i > P_j$			&		$Q_i =0, P_i = P_j - \delta \downarrow_0$\\
+		$P_i = P_j$			&		$Q_i = Q_j$\\
+		$P_j > P_{monopoly}$	&		$P_i = P_{monopoly}$\\
+		$P_j < MC$			&		$P_i = MC$
+	\end{tabular}
+
+\subsubsection{Bertrand, Cournot, Stackelberg, Collusion}
+	\begin{tabular}{lcccc}
+				&	Bertrand	&	Cournot	&	Stackelberg	&	Collusion\\
+		$P^*$	&	1		&	2		&	3			&	4\\
+		$Q^*$	&	4		&	3		&	2			&	1\\
+		$\pi$		&	0		&	1		&	2			&	3
+	\end{tabular}
+	\centerline{best for consumers $\longrightarrow$ best for firms}
+
+\subsubsection{Capacity Constraint}
+	In this mod we assume single firm can satisfy the entire market
+
+
+\end{multicols}
+\end{document}

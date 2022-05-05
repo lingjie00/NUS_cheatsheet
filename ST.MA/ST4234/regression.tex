@@ -1,0 +1,130 @@
+  \section{Linear Regression}
+
+  Consider: $\mathbf{y} = \mathbf{X\beta} + \mathbf{\epsilon}$
+
+  \subsubsection{Simultaneous equation}
+
+  If $\mathbf{\epsilon} = \mathbf{0}$, $\mathbf{\beta} =
+  \mathbf{X}^{-1}\mathbf{y}$
+
+  \subsubsection{Ordinary least squares (OLS)}
+
+  $\hat{\mathbf{\beta}}$ is the minimizer of
+  $SSR(\mathbf{\beta}) = || \mathbf{y} - \mathbf{X\beta}
+  ||^2$
+
+  $\hat{\mathbf{\beta}} =
+  (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y}$
+
+  \subsubsection{Regularized least squares (RLS)}
+
+  Consider a Ridge regression with $L2$ norm.
+
+  $\hat{\mathbf{\beta}}$ minimises $SSR^+(\mathbf{\beta})
+  := SSR(\mathbf{\beta}) + m_0 \sum_{j=1}^d \beta_j^2$
+
+  $\hat{\mathbf{\beta}} = (\mathbf{X}^T\mathbf{X} +
+  m_0\mathbf{I}_d)^{-1}\mathbf{X}^T\mathbf{y}$,
+  $\mathbf{I}_d :=$ $(d\times d)$ identity matrix.
+
+  \subsubsection{Bayesian regression}
+
+  Ridge regression arrives at the same result with Bayesian
+  models with normal errors and a Normal-Gamma prior. That
+  is the $\mathbf{\beta}$ in Ridge is the posterior mean of
+  $\mathbf{\beta}$ in Bayesian model.
+
+  Model:
+  \begin{align*}
+      Y_i &=x_{i1}\beta_1 + \cdots x_{id}\beta_d +
+      \epsilon_i\\
+      \epsilon_i &\sim N\left(0, \frac{1}{\lambda}\right), i \in [1, n]
+  \end{align*}
+
+  Parameters:
+  \begin{align*}
+      \mathbf{\Theta} = (\beta_1, \cdots, \beta_d,
+      \lambda)
+  \end{align*}
+
+  Likelihood:
+  \begin{align*}
+      p(\mathbf{y}|\mathbf{\Theta})
+      &= \prod_{i=1}^n p(\epsilon_i |\Theta)\\
+      &\propto \lambda^{\frac{n}{2}}\exp\left(
+          -\frac{\lambda}{2}\sum_{i=1}^n \epsilon_i^2
+      \right)\\
+      \because \mathbf{\epsilon}
+      &= \mathbf{y} -
+      \mathbf{X\beta}\\
+      \therefore \sum_{i=1}^n \epsilon_i^2
+      &= ||\mathbf{\epsilon}||^2\\
+      &=||\mathbf{y} - \mathbf{X\beta}||^2\\
+      &=SSR(\mathbf{\beta})\\
+      \Rightarrow p(\mathbf{y}|\mathbf{\Theta})
+      &\propto \lambda^{\frac{n}{2}}\exp\left[
+          -\frac{\lambda}{2}SSR(\mathbf{\beta})
+      \right]
+  \end{align*}
+
+  Normal-Gamma prior
+
+  \begin{align*}
+      \lambda &\sim \Gamma\left(
+          \frac{\nu_0}{2}, \frac{\nu_0\sigma_0^2}{2}
+      \right), \nu_0 > 0, \sigma_0^2 > 0\\
+          \beta_j|\lambda &\sim N\left(
+              0, \frac{1}{m_0\lambda}
+              \right), m_0 > 0, \beta_1, \cdots, \beta_d
+              \text{ are independent}\\
+      p(\mathbf{\Theta})
+        &= p(\lambda)\prod_{j=1}^d p(\beta_j|\lambda)\\
+        &\propto \lambda^{\frac{\nu_0+d}{2} - 1}
+        \exp\left(
+            -\frac{\lambda}{2}\left[
+                m_0 \sum_{j=1}^d \beta_j^2 + \nu_0\sigma_0^2
+            \right]
+        \right)
+  \end{align*}
+  
+  Posterior
+  \begin{align*}
+      p(\mathbf{\Theta}|\mathbf{y})
+      &\propto \lambda^{\frac{n+d+\nu_0}{2} - 1}
+      \exp\left(
+          -\frac{\lambda}{2}\left[
+              SSR^+(\mathbf{\beta}) + \nu_0\sigma_0^2
+          \right]
+      \right)
+  \end{align*}
+
+  Remark: It can be shown that
+  $SSR^+(\mathbf{\beta})=SSR^+(\mathbf{\hat{\beta}})
+  +\mathbf{z}^T(\mathbf{X}^T\mathbf{X}+m_0\mathbf{I}_d)\mathbf{z}$
+
+  Therefore, posterior can be expressed as
+  \begin{align*}
+      p(\Theta|\mathbf{y})
+      &\propto \lambda^{\frac{\nu_0+n}{2}-1}\exp\left(
+          -\frac{\lambda}{2}\left[
+              SSR^+(\mathbf{\hat{\beta}}) + \nu_0\sigma_0^2
+          \right]
+          \right)\\
+      &\times \lambda^{\frac{d}{2}}\exp\left(
+          -\frac{\lambda}{2}\left[
+              \mathbf{z}^T(\mathbf{X}^T\mathbf{X}+m_0\mathbf{I}_d)\mathbf{z}
+          \right]
+      \right)\\
+      \Rightarrow \lambda|\mathbf{y} &\sim \Gamma\left(
+          \frac{\nu_n}{2}, \frac{\nu_n\sigma_n^2}{2}
+      \right)\\
+          \nu_n &= \nu_0 + n\\
+          \sigma_n^2 &=
+          \frac{\nu_0\sigma_0^2+SSR^+(\mathbf{\hat{\beta}})}
+          {\nu_0 + n}\\
+          \Rightarrow \mathbf{z} &= \mathbf{\beta} -
+          \mathbf{\hat{\beta}} \sim \mathbf{N(0,
+          \Sigma^{-1})}\\
+          \mathbf{\Sigma^{-1}} &=
+          \frac{1}{\lambda}(\mathbf{X}^T\mathbf{X}+m_0\mathbf{I}_d)^{-1}
+  \end{align*}

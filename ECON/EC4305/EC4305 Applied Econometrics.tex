@@ -1,0 +1,1085 @@
+\documentclass[a4paper,12pt,landscape]{article}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[a4paper, landscape]{geometry}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{color,graphicx,overpic}
+\usepackage{hyperref}
+\usepackage{tabulary}
+\usepackage{soul} %for highlight
+\usepackage{xcolor} %color definition
+\usepackage{sectsty} %change section color
+\usepackage{tabulary} % better table
+\usepackage{makecell} % new line in cell
+
+% type codes
+\usepackage{listings} 
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=false,                 
+    captionpos=b,                    
+    keepspaces=false,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\pdfinfo{
+  /Title (EC4305 Applied Econometrics)
+  /Creator (Ling)}
+
+% This sets page margins to .5 inch if using letter paper, and to 1cm
+% if using A4 paper. (This probably isn't strictly necessary.)
+% If using another size paper, use default 1cm margins.
+\ifthenelse{\lengthtest { \paperwidth = 11in}}
+    { \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
+    {\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
+        {\geometry{top=.5cm,left=.5cm,right=.5cm,bottom=.5cm} }
+        {\geometry{top=.5cm,left=.5cm,right=.5cm,bottom=.5cm} }
+    }
+
+% Turn off header and footer
+\pagestyle{empty}
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries\color{red}}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries\color{blue}}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries\color{violet}}}
+\makeatother
+
+% Define BibTeX command
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+
+%My Environments
+\newtheorem{example}[section]{Example}
+% -----------------------------------------------------------------------
+
+\begin{document}
+\raggedright
+\footnotesize
+\begin{multicols}{3}
+
+
+% multicol parameters
+% These lengths are set only within the two main columns
+\setlength{\columnseprule}{0.25pt}
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{1pt}
+\setlength{\columnsep}{2pt}
+
+\begin{center}
+     \Large{\underline{EC4305 Applied Econometrics}} \\
+     {Lingjie, \today}
+\end{center}
+
+Objective: understanding causal relationships between variables.
+
+Require: dataset with external shock to determine the causal impact
+
+Example: Do hospitals make people healthier?
+
+\section{Acronyms}
+
+\begin{tabulary}{\linewidth}{l @{ : } L}
+    $Y_i$ & outcome for individual $i$\\
+    $D_i$ & treatment of individual $i$\\
+    $Y_{1i}$ & outcome for individual $i$ when given treatment\\
+    $Y_{0i}$ & outcome for individual $i$ when not given treatment\\
+    ATE & $E\left[ Y_{1i} - Y_{0i}  \right]$\\ & Average Treatment Effects\\
+    TOT & $E\left[ Y_{1i} - Y_{0i} | D_i = 1 \right]$ \\
+        & Treatment effect Of the Treated\\
+    ITT & $E(Y|\text{ compliers \& non-compliers}) - E(Y|\text{ untreated})$ \\
+        & Intent to Treat\\
+    counterfactual & $E\left[ Y_{0i} | D_i=1  \right]$\\
+                   & (unobserved) outcome for individual in an alternative universe without treatment \\
+    selection bias & $E\left[ Y_{0i}|D_i=1  \right] - E\left[ Y_{0i}|D_i=0  \right]$ \\
+                   & bias due to omitted variable\\
+    observed difference & $E\left[ Y_{1i}|D_i=1  \right] - E\left[ Y_{0i}|D_i=0  \right]$\\
+                        & observed difference in average outcome
+\end{tabulary}
+
+\section{Causal Inference}
+
+Outcome:
+\begin{align*}
+    Y_i &= Y_{0i} + (Y_{1i} - Y_{0i})D_i, ~D_i\in\{0, 1\}
+\end{align*}
+
+Where $Y_{1i} - Y_{0i}$ is the causal effect for individual $i$
+
+\subsection{Regression results}
+
+\subsubsection{RCT}
+
+\begin{align*}
+    Y_i &= \alpha + \beta\cdot D_i + \epsilon_i
+\end{align*}
+$\alpha = E\left[ Y_i|D_i=0  \right]$\\
+$\beta = E\left[ Y_i|D_i=1  \right] - E\left[ Y_i|D_i=0  \right]$
+
+\begin{lstlisting}
+reg Y X
+\end{lstlisting}
+
+\subsubsection{FE}
+
+Note: $\lambda_t = \sum_m \rho_m \cdot I_m$
+
+\begin{align*}
+    Y_{it} = \lambda_t
+\end{align*}
+
+$\lambda_t = E[Y_{it}|t]$ 
+
+\begin{align*}
+    Y_{it} = \alpha + \lambda_t
+\end{align*}
+$\alpha = E[Y_{it}|t=\text{base}]$\\
+$\lambda_t = E[Y_{it}|t] - E[Y_{it}|t=\text{base}]$
+
+\subsubsection{Dynamic Effect}
+
+Note: $\lambda_t \cdot D_i = \sum_m \rho_m \cdot D_i \cdot I_m$\\
+(causal effect is same with or without constant) $\lambda_t \cdot D_i = E[Y_{it}|t, D_i=1]-E[Y_{it}|t, D_i=0]$
+
+\begin{align*}
+    Y_{it} &= \lambda_t + \lambda_t \cdot D_i\\
+\end{align*}
+$\lambda_t = E[Y_{it}|D_i=0]$\\
+
+\begin{align*}
+    Y_{it} &= \alpha + \lambda_t + \lambda_t \cdot D_i\\
+\end{align*}
+$\alpha = E[Y_{it}|t=\text{base}, D_i=0]$\\
+$\lambda_t = E[Y_{it}|D_i=0]-E[Y_{it}|t=\text{base}, D_i=0]$\\
+
+\subsubsection{Time Trend}
+
+\begin{align*}
+    Y_{it} &= \alpha + \beta Post_t
+\end{align*}
+$\alpha = E[Y_{it}|Post_t=0]$\\
+$\beta = E[Y_{it}|Post_t=1]-E[Y_{it}|Post_t=0]$
+
+\begin{align*}
+    Y_{it} &= \alpha + \beta D_i + \gamma Post_t
+\end{align*}
+$\alpha = E[Y_{it}|D_i=0, Post_t=0]$\\
+$\gamma = E[Y_{it}|D_i=0, Post_t=1]-E[Y_{it}|D_i=0, Post_t=0]$
+$\beta = E[Y_{it}-\gamma\cdot Post_t|D_i=1]-E[Y_{it}-\gamma\cdot Post_t|D_i=0]$\\
+Note: $\beta$ relates to $-\gamma\cdot Post_t$ to control for time trend.
+Control the fact that everyone is healthier/sicker in the post-period due to macroeconomics conditions.
+
+\subsubsection{DID}
+
+\begin{align*}
+    Y_{it} &= \alpha + \beta D_i + \gamma Post_t + \delta D_i \cdot Post_t
+\end{align*}
+
+$\alpha = E[Y_{i0}|D_i=0]$\\
+$\beta = E[Y_{i0}|D_i=1]-E[Y_{i0}|D_i=0]$\\
+$\gamma = E[Y_{i1}|D_i=0] - E[Y_{i0}|D_i=0]$\\
+$\delta = \left(E[Y_{i1}|D_i=1]-E[Y_{i0}|D_i=1]\right) - \left( E[Y_{i1}|D_i=0] - E[Y_{i0}|D_i=0] \right)$ (DID
+estimator)
+
+Note:
+\begin{itemize}
+    \item always Post minus Pre (base), Treat minus Control (base)
+    \item $E[Y_{it}|Post_t=0] = E[Y_{i0}]$
+    \item $E[Y_{it}|Post_t=1] = E[Y_{i1}]$
+\end{itemize}
+
+\subsubsection{DID with FE}
+
+\begin{align*}
+    Y_{it} &= \alpha + \beta D_i + \lambda_t + \delta D_i \cdot Post_t
+\end{align*}
+
+Note: $Post_t = \sum_m \lambda_t$ (post treatment time dummies)\\
+Useful for granular control of time trend and smaller standard errors.
+
+\subsubsection{DID with two-way FE}
+
+\begin{align*}
+    Y_{it} &= \alpha + \beta D_i + \lambda_t + \delta D_i \cdot Post_t
+\end{align*}
+
+Note: $D_i = \sum_j \alpha_i$ (entity dummies)\\
+Useful for granular control of time trend and smaller standard errors.
+
+\subsection{Selection bias}
+
+Observed difference = TOT + selection bias
+
+\begin{align*}
+    &E\left[ Y_i|D_i=1  \right] - E\left[ Y_i|D_i=0  \right]\\
+    &=E\left[ Y_{1i}|D_i=1  \right] - E\left[ Y_{0i}|D_i=0  \right]\\
+    &=E\left[ Y_{1i}|D_i=1  \right] - E\left[ Y_{0i} | D_i = 1  \right]\\
+    &+E\left[ Y_{0i}|D_i=1  \right] - E\left[ Y_{0i} | D_i = 0  \right]
+\end{align*}
+
+Selection bias = difference in outcome between
+treatment and control group, before any treatment\\
+e.g. health status of older vs younger people before going to hospital
+
+\subsubsection{Key questions}
+
+\begin{align*}
+    E\left[ Y_{0i}|D_i=1  \right] - E\left[ Y_{0i} | D_i = 0  \right]
+\end{align*}
+
+\begin{itemize}
+    \item Direction
+    \item Magnitude
+    \item r/s between outcome and treatment selection
+        \begin{align*}
+            Cov(Y_{0i}, D_i)
+        \end{align*}
+        \subitem who is more likely to be selected for treatment
+    \item Over-estimation of causal effect: $b > a$
+    \item Under-estimation of causal effect: $b < a$
+\end{itemize}
+
+$a$ := actual treatment effect\\
+$b$ := estimated treatment effect (might be biased)
+
+\subsection{ITT vs TOT}
+
+\begin{tabulary}{\linewidth}{l @{ : } L}
+    $A$ & offered program, treated\\
+    $B$ & offered program, not treated\\
+    $C$ & not offered program
+\end{tabulary}
+
+\begin{tabulary}{\linewidth}{l | L | L}
+    \hline
+    & ITT & TOT \\
+    \hline
+    \hline
+    name & Intent to Treat & Treatment on the Treated\\
+    \hline
+    measures & effect of making eligible for treatment & effect of taking treatment\\
+    \hline
+    causal effect & yes & no, unless 100\% compliers\\
+    \hline
+    calculation & $E(Y|A~\&B)-E(Y|C)$ & $E(Y|A) - E(Y|C)$\\
+    \hline
+\end{tabulary}
+
+\begin{align*}
+    y_{it} = \alpha + \beta_1 (\text{PostOffer}_{it}) + \beta_2 (\text{PreOffer}_{it}) + X_i\Gamma + \gamma_t + \epsilon_{it}
+\end{align*}
+
+\begin{tabulary}{\linewidth}{l @{ : } L}
+    $\beta_1$ & ITT\\
+    $\beta_2$ & waiting list effect\\
+    $\Gamma$ & control for other covariants\\
+    $\gamma_t$ & time dummy
+\end{tabulary}
+
+\subsection{Dynamic effect}
+
+Effect of a treatment might change over time.
+We might be interested in the dynamics of the ATE.
+
+Creating $N-1$ time dummies
+\begin{align*}
+    &I(Jul=1) + I(Aug=1) + I(Sep=1) = 1 \\
+    &Y_i = \alpha + \beta_{Aug} I_{Aug} + \beta_{Sep} I_{Sep} + \epsilon_i
+\end{align*}
+
+Coefficient of $I_{Aug}$ measures the average outcome of Aug to the base group (Jul).
+
+\subsubsection{Dynamic Effect of a treatment}
+
+\begin{align*}
+    Y_i = & \alpha + \sum_{m=0}^3\rho_m D_i I_m + \sum_{m=1}^3 \beta_m I_m + \epsilon_i\\
+    \Leftrightarrow & \alpha + \sum_{m=0}^3 \rho_m D_i I_m + \gamma_t + \epsilon_i
+\end{align*}
+
+\begin{tabulary}{\linewidth}{l @{ : } L}
+    $\rho_m$ & dynamic effect, average treatment effect in month $m$\\
+    $I_m$ & indicator function for month $m$\\
+    $D_i$ & treatment of entity $i$\\
+    $\gamma_t$ & monthly fixed effect
+\end{tabulary}
+
+Note: we can include all interactions but not all month dummies.
+
+\section{Randomization}
+
+Randomization ensures no selection bias
+
+\begin{align*}
+    \{ Y_{0i}, Y_{1i}  \} \perp D_i
+\end{align*}
+\begin{align*}
+    &\Rightarrow E[Y_{0i}|D_i=1] = E[Y_{0i}|D_i=0] = E[Y_{0i}]\\
+    &\Rightarrow E[Y_{1i}|D_i=1] = E[Y_{1i}|D_i=0] = E[Y_{1i}]
+\end{align*}
+
+Therefore 
+\begin{align*}
+    &E\left[ Y_{0i}|D_i=1  \right] - E\left[ Y_{0i}|D_i=0  \right] = 0\\
+    &\Rightarrow E[Y_{1i} | D_i = 1] - E[Y_{0i}|D_i=0] \\
+    &= E[Y_{1i}-Y_{0i}|D_i=1]\\
+    &=E[Y_{1i}-Y_{0i}]
+\end{align*}
+
+TOT = ATE under randomization
+
+\subsubsection{Limitation}
+
+\begin{enumerate}
+    \item Budget, ethical constraints
+    \item Impossible to conduct experiment
+    \item Analysing past data/ pilot program before experiment
+\end{enumerate}
+
+\subsection{Regression Analysis of Experiments}
+
+Regression model
+\begin{align*}
+    Y_i = \beta_0 + \beta_1 D_i + \epsilon_i
+\end{align*}
+
+Interpretation
+
+\begin{tabulary}{\linewidth}{l @{ = } l l}
+    $\beta_0$ & $E[Y_{0i}|D_i=0]$ & (base effect)\\
+    $\beta_1$ & $E[Y_i|D_i=1] - E[Y_i|D_i=0]$ & (observed difference)\\
+              & $E[Y_{1i} - Y_{0i} |D_i=1]$ & (TOT)\\
+              & $E[Y_{1i} - Y_{0i}]$ & (ATE)\\
+\end{tabulary}
+
+\subsection{Balanced test}
+
+\begin{tabular}{l @{ : } l}
+    Objective & Check $E[Y_{0i}|D_i=1] - E[Y_{0i}|D_i=0] =0$\\
+    Limitation & $E[Y_{0i}|D_i=1]$ is unobserved\\
+    Solution & check pre-treated outcomes\\
+    Ideal & pre-treated outcomes are all balanced
+\end{tabular}
+
+Check
+\begin{align*}
+    E[X_i|D_i=1] = E[X_i|D_i=0]
+\end{align*}
+Note: This is sufficient but not necessary condition. i.e.\\
+No selection bias $\Rightarrow$ balanced pre-treated outcomes
+
+\begin{lstlisting}
+ttest X, by(treatment)
+\end{lstlisting}
+
+\subsection{Conditional Independence Assumption}
+
+Random assignment conditional on a group\\
+$\Rightarrow$ selection bias is zero within the group
+
+\begin{align*}
+    \{ Y_{0i}, Y_{1i}  \} \perp D_i | F_i
+\end{align*}
+\begin{align*}
+    &\Rightarrow E[Y_{0i}|D_i=1] \neq E[Y_{0i}|D_i=0]\\
+    &\Rightarrow E[Y_{0i}|D_i=1,F_i=1] = E[Y_{0i}|D_i=0,F_i=1]
+\end{align*}
+
+\subsubsection{Regression analysis}
+
+Assume CIA
+\begin{tabular}{l @{ : } l}
+    Short regression & $ Y_i = \alpha_0 + \alpha_1 D_i + u_i$\\
+                     & $\alpha_1=$ TOT + SB\\
+    Long regression & $ Y_i = \beta_0 + \beta_1 D_i + \beta_2 F_i + \epsilon_i$\\
+                    & $\beta_1=$ TOT
+\end{tabular}
+
+\subsubsection{Adding irrelevant regressors}
+
+\begin{tabulary}{\linewidth}{l @{ : } L}
+    unconditional & adding any variables (including $F$) changes $\beta$ little\\
+    CIA & $\beta$ sensitive to inclusion of $F$ (should include)\\
+        & $\beta$ changes little when adding other variables (excluding $F$)
+\end{tabulary}
+
+\begin{align*}
+    &(1) ~Y_i = \rho_1 D_i + u_i\\
+    &(2) ~Y_i = \rho_2 D_i + \delta F_i + u_i\\
+    &(3) ~Y_i = \rho_3 D_i + \gamma C_i + u_i\\
+    &(4) ~Y_i = \rho_4 D_i + \delta_2 F_i + \gamma_2 C_i + u_i
+\end{align*}
+
+$\rho_1 \approx \rho_3 \neq \rho_2 \approx \rho_4$
+
+\subsubsection{Test coefficient across regression}
+
+Note: do not read off regression table for this
+
+\begin{lstlisting}
+reg Y x1
+est store reg1
+reg Y x1 x2
+est store reg2
+suest reg1 reg2
+test [reg1_mean]D = [reg2_mean]D
+\end{lstlisting}
+
+\section{Instrument Variable and 2SLS}
+
+IV enable causal effect estimates with omitted variable
+
+Valid IV satisfies two conditions
+\begin{itemize}
+    \item Relevance condition: $Cov(s_i, Z_i) \neq 0$
+    \item Exclusion restriction: $Cov(\eta_i, Z_i) = 0$
+\end{itemize}
+Where
+\begin{tabulary}{\linewidth}{l @{ := } L}
+    $s_i$ & treatment\\
+    $Z_i$ & IV\\
+    $\eta_i$ & error in short regression
+\end{tabulary}
+
+\subsection{IV and Causality}
+
+Assume $s_i \perp \nu_i | A_i$ (CIA), $A_i$ not observed
+\begin{align*}
+    \text{(short) } Y_i &= \alpha + \rho s_i + \eta_i\\
+    \text{(long) } Y_i &= \alpha + \rho s + \gamma A_i + \nu_i\\
+    \Rightarrow \eta_i &= \gamma A_i + \nu_i \text{ (OVB)}
+\end{align*}
+
+Omitted variable bias:\\
+Comparing OLS and IV estimator gives sign of bias
+\begin{align*}
+    \rho^{OLS} &= \frac{Cov(Y_i, s_i)}{Var(s_i)}\\
+               &=\frac{Cov(\alpha + \rho s + \gamma A_i + \nu_i, s_i)}{Var(s_i)}\\
+               &=\rho + \gamma \frac{Cov(A_i, s_i)}{Var(s_i)}
+\end{align*}
+
+\subsubsection{Exclusion restriction}
+\begin{itemize}
+    \item Instrument is independent of potential outcomes (condition on covariates)
+    \item $Z$ has no effect on outcomes other than through $S$
+\end{itemize}
+
+\subsection{Two-Stage Least Squares (2SLS)}
+2SLS allows adding covariates (controls) and combine multiple instruments
+
+First stage
+\begin{align*}
+    s_i = \pi_{11}Z_i + X_i'\pi_{12} + \xi_{1i}
+\end{align*}
+Reduced Form
+\begin{align*}
+    Y_i = \pi_{21}Z_i + X_i'\pi_{22} + \xi_{2i}
+\end{align*}
+Second stage (modified short regression)
+\begin{align*}
+    Y_i = \rho \hat{s}_i + X'_i\theta + (\eta_i + \rho \xi_{1i})
+\end{align*}
+$\rho$ is determined by
+\begin{align*}
+    \rho = \frac{\pi_{21}}{\pi_{11}}
+\end{align*}
+
+\subsubsection{Estimate causal effect $\rho$}
+Causal effect is ratio of reduced form / first stage:
+\begin{align*}
+    \rho &= \frac{Cov(Y_i, Z_i)}{Cov(s_i, Z_i)}\\
+         &= \frac{Cov(Y_i, Z_i)/V(Z_i)}{Cov(s_i, Z_i)/V(Z_i)}
+\end{align*}
+
+Arise from
+\begin{align*}
+    \frac{Cov(Y_i, Z_i)}{Cov(s_i, Z_i)} &= \frac{Cov(\alpha+\rho s + \gamma A_i + \nu_i, Z_i)}{Cov(s_i, Z_i)}\\
+                                        &=\rho \frac{Cov(s_i, Z_i)}{Cov(s_i, Z_i)} = \rho
+\end{align*}
+
+\subsubsection{Wald Estimator}
+Suppose IV $Z_i$ is dummy variable
+\begin{align*}
+    \rho = \frac{E(Y_i|Z_i=1)-E(Y_i|Z_i=0)}{E(S_i|Z_i=1)-E(S_i|Z_i=0)}
+\end{align*}
+
+\subsection{2SLS bias}
+Note:
+\begin{itemize}
+    \item 2SLS estimator is consistent\\
+        Large sample: $E(\hat\rho)\approx\rho$
+    \item 2SLS estimator is biased\\
+        Finite sample: $E(\hat\rho)\neq\rho$
+    \item When first stage $F-$stat = 0 $\Rightarrow$ 2SLS = OLS
+    \item Bias vanish when $F-$stat in first stage is large $(>10)$
+    \item Useless IV increase bias \\(var with no effect on first-stage $R^2$)
+\end{itemize}
+
+\subsection{Identify IV}
+
+Good instruments come from institutional knowledge and idea about
+process determining the variable of interest
+
+\subsubsection{Test relevance condition $\Rightarrow Cov(s_i, Z_i)\neq0$}
+
+$F$ test $>10$ for all IVs in the first stage regression 
+
+\subsubsection{Test exclusion restriction $\Rightarrow Cov(\eta_i, Z_i)=0$}
+
+Difficult as $\eta_i$ not observed
+
+\begin{enumerate}
+    \item Over identifying restriction test\\
+        If $Q>K$ (num of IV $>$ num of treatment var)\\
+        and IV are chosen with the same logic
+        \begin{align*}
+            H_0 &: \text{instruments are all valid}\\
+            H_1 &: \text{at least one of the IV are not valid}
+        \end{align*}
+    \item Qualitative argument\\
+        Argue that $Z, Y$ not related
+    \item Falsification test\\
+        Find another non-treatment sample s.t. $Y_i = \beta Z_i + \epsilon_i \Rightarrow \beta=0$
+\end{enumerate}
+
+Note: $Q<K \Rightarrow$ need more IV. $Q=K\Rightarrow$ just enough IV
+
+\section{Panel Data and Fixed Effects}
+
+Fixed Effect model
+\begin{align*}
+    Y_{it} = \alpha_i + \lambda_t + \rho D_{it} + X_{it}'\delta + \epsilon_{it}
+\end{align*}
+
+Estimated using: OLS + dummies, de-mean, first difference
+
+\subsection{Cross Section/Time Series/Panel Data}
+
+\begin{tabulary}{\linewidth}{l @{ : } L}
+    Cross section & many subjects at the same point of time\\
+    Time series & sequence of data points over a time interval\\
+    Panel data & behavior of entities are observed across time (aka longitudinal data)\\
+    Balanced panel & all data across the years are observed\\
+    Unbalanced panel & missing data for some years
+\end{tabulary}
+
+\subsection{Solving OVB}
+To solve omitted variable bias in cross-sectional data
+\begin{itemize}
+    \item Find a proxy
+    \item Find a valid IV
+\end{itemize}
+
+Panel data further use
+\begin{itemize}
+    \item Random effect (RE) models\\
+        (Assumes no fixed effect)
+    \item Fixed effect method \\
+        (Eliminate time-invariant individual characteristics)
+    \item IV, Differences in Differences
+\end{itemize}
+
+\subsection{Fixed Effect Model: Causal Inference}
+treatment ($D_{it}$), treatment effect ($\rho$)
+
+regression model ($A_i$ not observed)
+\begin{align*}
+    Y_{it} &= \alpha + \lambda_t + \rho D_{it} + X_{it}' \delta + A_i'\gamma + \epsilon_{it}\\
+    u_{it} &:= A_i'\gamma + \epsilon_{it} \text{ (OVB)}
+\end{align*}
+
+fixed effect model (solve OVB by absorb $A_i$)
+\begin{align*}
+    Y_{it} &= \alpha_i + \lambda_t + \rho D_{it} + X_{it}'\delta + \epsilon_{it}\\
+    \alpha_i &= \alpha + A'_i\gamma \text{ (individual fixed effect)}
+\end{align*}
+
+\subsection{FE: Estimation}
+OLS regression with dummies
+\begin{align*}
+    Y_{it} &= \lambda_t + \rho D_{it} + X_{it}'\delta + \sum_{i=1}^{N-1}\alpha_i I_i + \epsilon_{it}
+\end{align*}
+Within estimator (de-mean)
+\begin{align*}
+    Y_{it} - \bar Y_i &= (\lambda_t - \bar\lambda) + \rho (D_{it}
+    -\bar D_i) + (X_{it} - \bar X_i)'\delta + (\epsilon_{it} -
+    \bar\epsilon_{i})\\ \bar{Y}_{i} &= \alpha_i + \bar\lambda
+    +\rho\bar D_i + \bar{X}_i'\delta + \bar\epsilon_{i}
+\end{align*}
+First differencing
+\begin{align*}
+    \Delta Y_{it} &= \Delta \lambda_t + \rho \Delta D_{it} + \Delta
+    X'_{it}\delta + \Delta \epsilon_{it}
+\end{align*}
+
+Remarks
+\begin{itemize}
+    \item With 2 periods, all 3 methods are algebraically the same
+    \item First differencing introduces serial correlation of error terms (not recommended)
+    \item Interpretation (all methods):\\
+        for a given individual/firm/country, as $X$ varies across time by one unit, $Y$
+        increases or decrease by $\rho$ units
+\end{itemize}
+
+\subsubsection{FE vs OLS}
+
+\begin{itemize}
+    \item Compare OLS vs FE gives sign of selection bias
+    \item pooled regression: OLS estimate without fixed effects
+    \item we require variations in FE: cannot investigate
+        time-invariant variable (e.g. union status unchanged across
+        time)
+    \item FE controls for all time-invariant differences between individuals
+\end{itemize}
+
+\section{Differences-In-Differences}
+
+
+\begin{center}
+\begin{tabular}{|l | l | l|}
+    \hline
+    & Treatment & Control \\
+    \hline
+    Pre-Program & \makecell{A \\ $\bar{Y}_{Pre}^{Treatment}$} &
+    \makecell{B \\ $\bar{Y}_{Pre}^{Control}$} \\
+    \hline
+    Post-Program & \makecell{C \\ $\bar{Y}_{Post}^{Treatment}$} &
+    \makecell{D \\ $\bar{Y}_{Post}^{Control}$} \\
+    \hline
+\end{tabular}
+\end{center}
+DID estimator
+\begin{align*}
+    \left(\bar{Y}_{Post}^{Treatment} - \bar{Y}_{Pre}^{Treatment}\right) &- \left( \bar{Y}_{Post}^{Control} -
+    \bar{Y}_{Pre}^{Control}  \right)\\
+        (C - A) &- (D - B)
+\end{align*}
+
+\begin{tabular}{l @{ := } l}
+    Selection bias & $A-B$\\
+    Time trend & $D-B$\\
+    Treatment effect & $(C-A)-(D-B)$ \\&$ (C-D) - (A-B)$
+\end{tabular}
+
+\subsection{DID Regression}
+
+\begin{align*}
+    Y_{it} &= \alpha + \gamma D_i + \eta Post_t + \beta D_i \cdot Post_t + \epsilon_{it}
+\end{align*}
+
+\begin{tabular}{l @{ := } l}
+    $D_i$ & indicator for observation is treatment group\\
+    $Post_t$ & indicator for time is after treatment\\
+    $\beta$ & treatment effect (DID estimator)\\
+    $\alpha$ & pre-program mean in control group\\
+    $\gamma$ & selection bias\\
+    $\eta$ & time trend
+\end{tabular}
+
+\subsection{DID Assumption}
+
+
+\subsubsection{Parallel (common) Trends}
+
+Test $\beta_{\tau}=0$ for $\tau <0$
+
+\begin{align*}
+    Y_{ist} = \alpha + \gamma D_i + \eta Post_t + \sum_{\tau=-m, \tau
+    \neq -1}^{q} \beta_{\tau} W_t^{\tau} \cdot D_i + \epsilon_{ist}
+\end{align*}
+
+\begin{tabulary}{\linewidth}{l @{ := } L}
+    $W_t^\tau$ & indicator of time is $\tau$ periods ago\\
+               & Pre-period: $\tau < 0$, Post-Period: $\tau \geq 0$\\
+    $\tau \neq -1$ & base group, period right before treatment\\
+    $\beta_\tau$ & average $(Y-\gamma)$ difference between treatment
+    and control group at $t=\tau$ (similar to dynamic effect model)
+\end{tabulary}
+
+Common trends assumption:
+\begin{itemize}
+    \item Selection bias relates to fixed characteristics of individuals
+        \subitem[$\Rightarrow$] selection bias magnitude does not change over time
+    \item Time trend is the same for treatment and control groups
+\end{itemize}
+
+Note:
+
+Ideally test if untreated outcome of treatment and control are parallel in post-treatment.
+But counterfactual is not observed. Therefore, test for parallel trend before treatment.
+
+
+\subsubsection{No Omitted Variables that Correlate with Treatment Status}
+
+Estimation is biased if there are other factors affecting the
+difference in trends between treatment and control.
+
+Difficult to test, recommend:
+\begin{itemize}
+    \item Placebo (Falsification) test
+        \subitem[1.1] Exploit a population not affected by policy
+        \subitem[1.2] Use outcome variable not affected by policy, but
+        affected by potential unobserved policy shocks
+    \item IV strategy
+        \subitem exogenous variation of treatment status
+\end{itemize}
+
+\subsubsection{Endogenous Intervention}
+
+DID estimation is appropriate when interventions are as good as random, conditional on the controls
+
+\begin{itemize}
+    \item treatment is randomised
+    \item if possible endogeneity occur (treatment group is selected),
+        DID is biased
+    \item idea: the post treatment trend is expected to change even
+        without policy (bias upwards)
+\end{itemize}
+
+
+
+\subsection{Continuous treatment intensity}
+
+\begin{align*}
+    Y_{it} &= \alpha + \delta S_i \cdot Post_t + \beta S_i + \eta Post_t + \epsilon_{it}
+\end{align*}
+
+$S :=$ continuous variable, measuring treatment intensity.\\
+$\delta :=$ measures treatment effect for the continuous treatment.
+
+\subsubsection{Adding fixed effects}
+
+\begin{align*}
+    Y_{it} &= \alpha + \delta S_i \cdot Post_t + \theta_t + \delta_i + \epsilon_{it}
+\end{align*}
+
+$S :=$ continuous variable, measuring treatment intensity.\\
+$\delta :=$ measures treatment effect for the continuous treatment.\\
+$\theta_t :=$ time fixed effects\\
+$\delta_i :=$ individual fixed effects
+
+\subsection{DID with IVs}
+
+If $S$ is endogenous (treatment group is associated with lower
+outcome), we can find an instrument for $S$
+
+First-Stage DID:
+\begin{align*}
+    S_i \cdot Post_t &= \alpha + \delta Z_i \cdot Post_t + \theta_t +
+    \delta_i + \epsilon_{it}
+\end{align*}
+
+Reduced Form DID:
+\begin{align*}
+    Y_{it} &= \alpha + \delta^r Z_i \cdot Post_t + \theta_t + \delta_i
+    + \epsilon_{it}
+\end{align*}
+
+Second stage:
+\begin{align*}
+Y_{it} &= \alpha + \gamma \hat{S_i}\cdot \hat{Post_t} + \theta_t +
+\delta_i + \epsilon_{it}
+\end{align*}
+
+$S$ can be continuous or discrete\\
+$\gamma = \delta^r/\delta$ measures the causal effect
+
+\subsection{Clustered Standard Errors}
+
+\begin{itemize}
+    \item Panel data introduce serially correlated error problem
+        within the cross section across years.
+    \item Ignoring serial correlation underestimate the standard
+        error. (exaggerate precision of regression estimates)
+\end{itemize}
+
+\subsubsection{Bias in un-clustered standard errors}
+
+Bias: overly rejected $H_0: \beta = 0$ ($67.5\%$ instead of $5\%$)
+
+\subsubsection{Solution1: Ignore time series data}
+
+Aggregating data into one pre and one post period
+
+\subsubsection{Solution2: Clustered standard error}
+
+Cluster standard error at state, year, state x year level
+
+\begin{itemize}
+    \item Require clusters to be sampled randomly
+    \item Require large clusters ($>10$)
+\end{itemize}
+
+\section{Regression Discontinuity}
+
+Identification assumption: all factors (other than assignment) are
+evolving ``smoothly'' with respect to X $\Leftrightarrow
+E[Y_{0i}|X_i]$ and $E[Y_{1i}|X_i]$ are continuous in $X_i$ at $c$.
+
+\subsection{Sharp RD}
+
+Treatment is deterministic function of assignment D
+
+\begin{align*}
+    D &= \begin{cases}
+        1, & X\geq c\\
+        0, & X < c
+    \end{cases}\\
+    Y &= \alpha + \tau D + f(X) + \epsilon
+\end{align*}
+$\tau :=$ treatment effect
+
+\subsection{RD Regression}
+
+\begin{align*}
+    E[Y_i | X_i] &= E[Y_{0i} | X_i] + (E[Y_{1i}|X_i] - E[Y_{0i}|X_i])D_i\\
+    \tau &:= E[Y_{1i}|X_i] - E[Y_{0i}|X_i]\\
+    E[Y_{0i}|X_i] &:= \alpha + f(X_i)\\
+    \Rightarrow Y_i &= \alpha + f(X_i) + \tau D_i + \epsilon_i
+\end{align*}
+
+$D_i = I(X \geq c)$, $c$ = cutoff
+
+\subsubsection{Polynomial Method}
+Approximate $f(X) = \sum_{p=1}^P \beta_p X^p$, polynomial terms
+
+$\tilde{X_i} = X_i - c$
+\begin{align*}
+    Y_i &= \alpha + \beta_{01} \tilde{X_i} + \beta_{02} \tilde{X_i^2}
+    + \cdots + \beta_{0p}\tilde{X_i^p}\\ &+ \tau D_i + \beta_{11}^*
+    D_i \tilde{X_i} + \beta_{12}^* D_i \tilde{X_i^2} + \cdots +
+    \beta_{1p}^* D_i \tilde{X_i^p} + \eta_i
+\end{align*}
+\begin{tabulary}{\linewidth}{l @{ := } L}
+    $\beta_{0p}$ & correlation between $Y, X$ of the control group\\
+    $\beta_{1p}^*$ & $\beta_{1p} - \beta_{0p}$\\ & incremental
+    correlation between $Y, X$ relative to control group\\ $\tau $ &
+    treatment effect
+\end{tabulary}
+
+\subsubsection{Local Linear Regression}
+Select only the data certain width $h$ around cutoff $c$
+
+$c-h \leq X \leq c+h$, $\tilde{X_i} = X_i - c$
+\begin{align*}
+    Y_i &= \alpha + \beta_0 \tilde{X_i} + \tau D_i + \beta_1^* D_i
+    \tilde{X_i} + \eta_i
+\end{align*}
+\begin{tabulary}{\linewidth}{l @{ := } L}
+    $\beta_0$ & linear correlation between $Y, X$ of control group\\
+    $\beta_1^*$ & $\beta_1 - \beta_0$, incremental linear correlation
+    between $Y, X$ of treatment relative to control
+\end{tabulary}
+
+Note:
+\begin{itemize}
+    \item Can be combined with polynomial method
+    \item Larger bandwidth: more precise (lower variance) but higher
+        bias
+\end{itemize}
+
+\subsection{Model selection}
+
+\subsubsection{AIC}
+
+Choosing order of polynomial $p$
+\begin{align*}
+    AIC(p) &= N ln(\hat\sigma^2(p)) + 2p\\
+    p_{AIC}^{opt} &= \arg \min_p AIC(p)
+\end{align*}
+
+$\hat\sigma^2(p)$ := mean squared error of regression\\
+$p$ := num of regressors
+
+\subsubsection{Bin Dummies}
+
+Choosing order of polynomial $p$
+
+Test $H_0: \gamma_k = 0$ with $F-$test\\
+increase polynomial order until $\gamma_k=0$
+\begin{align*}
+    Y_i &= \alpha + \beta_0 \tilde{X_i} + \tau D_i + \beta_1 D_i
+    \tilde{X_i} + \sum_{k=1}^b \gamma_k \cdot I_k + \eta_i
+\end{align*}
+\begin{tabulary}{\linewidth}{l @{ := } L}
+    $I_k$ & $I(X \in {bin}_k)$\\
+    ${bin}_k$ & $[l, l+2h), [l+2h, l+4h), \cdots, [u-2h, u]$\\
+    $l$ & lowest $X$\\
+    $u$ & highest $X$\\
+    bin width & $2h$\\
+    num of bin & $(u-l)/2h$
+\end{tabulary}
+
+\subsubsection{Cross-validation Procedure}
+Only method for both bandwidth choice $h$ and polynomial $p$
+\begin{align*}
+    CV(h) &= \frac{1}{N} \sum_{i=1}^N (Y_i - \hat Y)^2\\
+    h_{CV}^{opt} &= \arg \min_h CV(h)
+\end{align*}
+Select only data within $c\pm h$ and conduct train/test split\\
+Testing assumption horizontal line fit is suitable
+
+\subsection{Graphical Analysis}
+
+Divide assignment variable into a number of bins and plot the average
+outcome value against mid-points of the bins
+
+\subsection{Valid or Invalid RD: Sorting}
+
+Individuals influence the assignment variable.
+For example, individuals check their answers to avoid failing
+
+\begin{tabular}{| l | l | l|}
+    \hline
+    & Marginal pass & Marginal fail\\
+    \hline
+    Case I & Type A and B & Only Type B\\
+    Case II & Type A and B & Type A and B\\
+    \hline
+\end{tabular}
+
+Case I: invalid RD\\
+Case II: valid RD, individual has imprecise control
+
+\subsection{Testing Validity}
+
+\begin{itemize}
+    \item Test I: test whether the covariates $W$ are balanced at the
+        threshold.
+        \subitem e.g. income, age, and observed characteristics not
+        affected by treatment
+        \subitem However, impossible to test unobserved
+        characteristics
+    \item Test II: test if density of $X$ (assignment variable) is
+        continuous
+        \subitem  jump in density indicate sorting
+\end{itemize}
+
+\subsubsection{Test I: no Discontinuity in covariate}
+
+$x-$axis: assignment variable\\
+$y-$axis: pre-determined variable
+\begin{align*}
+    W &= a + bD + f(X) + \epsilon
+\end{align*}
+$b=0\Rightarrow$ pre-determined characteristics is balanced
+
+\subsubsection{Test II: no Discontinuity in assignment var density}
+$x-$axis: assignment variable\\
+$y-$axis: density of assignment variable
+\begin{align*}
+    Density(X) &= a + bD + f(X) + \epsilon
+\end{align*}
+$b=0\Rightarrow$ density of assignment variable is continuous
+
+\subsection{Fuzzy RD}
+
+Exploits Discontinuity in probability of treatment conditional on assignment D
+\begin{align*}
+    P(D_i = 1 | X_i) &= \begin{cases}
+        g_1(X_i), & X_i > c\\
+        g_0(X_i), & X_i \leq c
+    \end{cases}\\
+        g_0(X_i) &\neq g_1(X_i)\\
+        P(D_i = 1 | X_i) &= g_0(X_i) + [g_1(X_i) - g_0(X_i)]T_i\\
+        T_i &= I(X_i \geq c)
+\end{align*}
+
+The discontinuity $T_i$ becomes an instrument variable for treatment status $D$
+
+\subsubsection{Imperfect Compliance: Fuzzy RD Design}
+
+First-stage
+\begin{align*}
+    D &= \gamma + \delta T + g(X) + \nu
+\end{align*}
+
+Reduced Form
+\begin{align*}
+    Y &= \alpha_r + \tau_r T + f_r(X) + \epsilon_r
+\end{align*}
+
+Second stage
+\begin{align*}
+    Y &= \alpha + \tau \hat{D} + f(X) + (\epsilon + \tau\nu)\\
+\end{align*}
+\begin{tabulary}{\linewidth}{l @{ := } l @{ } L}
+    $T$ & $I(X_i\geq c)$& instrument for $D$\\
+    $\tau_r$ & $\tau\delta$& Intent-to-treat (ITT) effect\\
+    $\tau$ & $\frac{\tau_r}{\delta}$& treatment effect
+\end{tabulary}
+
+\subsubsection{Estimation}
+
+$\tilde{X_i} = X_i - c$
+
+First-stage
+\begin{align*}
+        D_i &= \gamma_{00} + \gamma_{01}\tilde{X_i} +
+        \gamma_{02}\tilde{X_i^2} + \cdots + \gamma_{0p}\tilde{X_i^p}\\
+            &+ \pi T_i + \gamma_{11}^* T_i \tilde{X_i} + \gamma_{12}^*
+            T_i \tilde{X_i^2} + \cdots + \gamma_{1p}^* T_i
+            \tilde{X_i}^p + \epsilon_i
+\end{align*}
+
+Second-stage
+\begin{align*}
+    Y_i &= \alpha + \beta_{01}\tilde{X_i} + \beta_{02}\tilde{X_i}^2 +
+    \cdots + \beta_{0p}\tilde{X_i}^p \\ &+ \tau\hat{D_i} +
+    \beta^*_{11}\hat{D_i}{\tilde{X_i}} +
+    \beta_{12}^*\hat{D_i}{\tilde{X_i}^2} + \cdots + \beta_{1p}^*
+    \hat{D_i}{\tilde{X_i}^p} + \eta_i
+\end{align*}
+$T_i, T_i\tilde{X_i}, \cdots, T_i\tilde{X_i^p}$ are instruments for
+$D_i, D_i\tilde{X_i}, \cdots, D_i\tilde{X_i^p}$
+
+\subsubsection{Assumption}
+
+Same assumption as standard IV framework (LATE)
+\begin{itemize}
+    \item Monotonicity: assignment $X$ must result in same direction
+        on outcome
+    \item Excludability: assignment $X$ cannot impact outcome expect
+        through receipt of treatment
+\end{itemize}
+
+\end{multicols}
+\end{document}

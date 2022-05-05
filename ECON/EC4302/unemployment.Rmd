@@ -1,0 +1,274 @@
+Key investigation
+
+- Long-run: determinants of average unemployment over
+  extended periods and across countries
+- Short-run: Cyclical properties of the labor market
+- Question: why shifts in labor demand lead to large
+  movement in unemployment but not wage (sticky wage)
+
+## Traditional approach - Supply and Demand of labour
+
+Key implications:
+
+- Unemployment is a result of a force that prevents wage
+  from falling to the market clearing price (wage) and
+  quantity
+
+Model
+
+- $N$ number of identical competitive firms with $\pi = Y -
+  wL$
+- Critical assumption: effort depends positively on wage $w$
+  the firm pays. $e = e(w), e'(\cdot) > 0$
+- $Y=F(eL):=$ output,  $F'(\cdot) >0, F''(\cdot) < 0$
+- $L:=$ amount of labour hired, total of $\bar{L}$ identical
+  workers, each supplies 1 unit of labor inelastically
+
+Model result and interpretation
+
+- Profit maximising firm solves :$\max_{L, w} F(e(w)L) - WL$
+- FOC: $F'(e(w)L)e(w)-w=0$, $F'(e(w)L)L'(w) - L = 0$
+- Optimal wage $w^*$ and labour $L^*$: $\frac{e(w)}{w} = e'(w)$
+  - average effort per dollar $e(w)/w$
+  - cost per unit of effective labor $w/e(w)$
+- Graphically: line extending from origin = gradient
+
+Unemployment
+
+- $N$ identical competitive firm choose the same $(w^*, L^*)$
+- Total unconstrained labour demand is $NL^*$
+  1. If labour supply $\bar{L} \geq NL^*$: firm choose
+     $w^*$, employed $NL^*$ and unemployment $\bar{L} - NL^*$
+  2. If labour supply $\bar{L} < NL^*$: firm increase $w^*$
+     such that $\bar{L} = NL^*$ and no unemployment
+
+Implications
+
+- Short-run implication: $w^*$ does not respond to demand
+  shocks, match the observation shifts in labour demand
+  leads to large movement in employment and small changes in
+  the real wage
+- Long-run implication: Since $w^*$ does not respond to
+  demand shocks, economic growth implies the real wage
+  remains unchanged and unemployment trends down (eventually
+  to 0).
+  - However, in reality no clear trend for unemployment over
+    time, across countries unemployment increases with GDP
+    per capita
+
+## Modern approach - Searching and matching of labour
+
+Key difference:
+
+- Heterogeneous workers and jobs
+
+Environment
+
+- Workers
+  - Employed: produce output $y$, receive time varying wage
+    $w(t)$ per unit time
+  - Unemployed: receive benefit $b \geq 0$ per unit time
+  - Risk neutral, discount rate $r > 0$, discount factor
+    $\frac{1}{1+r}$
+- Jobs
+  - Filled: output $y$, cost firm $w(t)$
+  - Vacant: no output for labour cost $w(t)$
+  - Maintenance fee: $c > 0$
+  - A filled job produce positive value when $y > w + c$,
+    free-entry condition to create a vacant job and the
+    number of jobs is endogenous
+
+Absent of frictions
+
+- All jobs are filled since $y > w + c$
+- Workers earn marginal product $w(t) = y - c$ in this
+  competitive market
+- Shifts in labour demand $y$ directly proportional to
+  wage. But this contradict empirical observation with
+  sticky wages
+
+### Matching problem
+
+Search and Matching
+
+- $E(t), U(t) :=$ number of employed and unemployment workers
+- $F(t), V(t) :=$ number of filled and unfilled jobs
+- $M(t) = M(U(t), V(t)) :=$ unemployed workers and vacant jobs arrange meetings
+- $\dot{E}(t) = M(t) - \lambda E(t) :=$ employed workers
+  leave existing jobs at exogenous separation rate $\lambda$
+
+Matching
+
+- Matching function
+  - $\theta = \frac{V(t)}{U(t)} :=$ market tightness
+  - $M(U(t), V(t)) = U(t)M(1, \frac{V(t)}{U(t)}) =
+    U(t)m(\theta(t))$, assuming constant returns of $M(t)$
+  - $a(t) = \frac{M(t)}{U(t)} = m(\theta(t)) :=$ job-finding
+    rate
+  - $\alpha(t) = \frac{M(t)}{V(t)} =
+    \frac{m(\theta(t))}{\theta(t)} :=$ vacancy-filling rate
+  - Assume Cobb Douglas $M(U, V) = kU^{1-\gamma}V^{\gamma};
+    m(\theta) = k\theta^\gamma$, $k>0, 0<\gamma<1$
+- Wage determination
+  - Assume all match leads to hires since collectively utility is higher
+  - wage is determined through Nash bargaining, $\phi$% of
+    match surplus goes to worker and $1-\phi$% goes to the
+    firm
+  - $\phi:=$ barging power
+
+Value function
+
+- Discrete time
+  - Lifetime utility value of the agent: $V(c) =
+    \sum_{t=0}^\infty \beta^t c$
+  - $c_t = c :=$ consumption at any period t, $u(c)=c :=$
+    utility function, $\beta:=$ discount factor
+  - Geometric sequence: $V(c) = \lim_{n\rightarrow \infty}
+    \frac{1-\beta^n}{1-\beta}c = \frac{c}{1-\beta}$
+- Continuous time
+  - $rV(t) = R(t) + \dot{V}(t) + \lambda[P(t) - V(t)]$
+    equilibrium condition
+  - $r :=$ discount rate, $R(t):=$ rental income,
+    $\dot{V}(t):=$ change of asset value $\lambda :=$
+    probability of selling the house, $P(t) :=$ selling the
+    price of house
+  - Therefore, the return of owning the asset $rV(t)$ is the
+    rental income $R(t)$ + potential return of owning house
+    not in steady state $\dot{V}(t)$ + potential return of
+    selling the house $P(t)-V(t)$
+
+### Equilibrium (from continuous time)
+
+The expected lifetime utility from time $t$ forward,
+discounted to time $t$ of (1) worker who is employed
+$V_E(t)$, unemployed $V_U(t)$ and (2) job that is filled
+$V_F(t)$ and vacant $V_V(t)$
+
+Four equilibrium
+
+- $rV_E(t) = w(t) + \dot{V}_E(t) + \lambda [V_U(t) - V_E(t)]$
+- $rV_U(t) = b + \dot{V}_U(t) + a(t) [V_E(t) - V_U(t)]$
+- $rV_F(t) = [y-w(t)-c] + \dot{V}_F(t) +
+  \lambda[V_V(t)-V_F(t)]$
+- $rV_V(t) = -c + \dot{V}_V(t) + \alpha [V_F(t) - V_V(t)]$
+
+Evolution of the number of workers who are employed
+
+- $\dot{E}(t) = kU(t)^{1-\gamma}V(t)^\gamma - \lambda E(t)$
+
+Nash bargaining assumption
+
+- $\frac{V_E(t) - V_U(t)}{V_F(t) - V_V(t)} =
+  \frac{\phi}{1-\phi}$
+
+Free entry: new vacancies can be created and eliminated
+freely
+
+- $V_V(t) = 0$ for all $t$
+
+### Steady-state
+
+Steady-state equilibrium: $\dot{V}(t) = 0, \dot{E}(t) = 0$,
+$a(t), \alpha(t)$ are constant
+
+- $rV_E = w + \lambda (V_U - V_E)$
+- $rV_U = b + a(V_E - V_U)$
+- $rV_F = y - w - c + \lambda(V_V - V_F)$
+- $rV_V = -c + \alpha(V_F - V_V)$
+
+Solution steps:
+
+1. Use steady-state value functions and the Nash bargain
+   condition to solve for $w(t)$
+2. Use $w(t)$ and steady-state $a, \alpha$ to find $V_V$
+3. Use free-entry condition $V_V = 0$ to find equilibrium
+   $E^*$ and $U^*$
+
+Solving steady-state: $E, V_V$
+
+- $V_E - V_U = \frac{w-b}{a+\lambda+r}$
+- $V_F - V_V = \frac{y-w}{\alpha + \lambda + r}$
+- Nash barging: $\frac{\phi}{1-\phi} = \frac{w-b}{\alpha +
+  \lambda + r} \cdot \frac{\alpha + \lambda + r}{y - w}$
+  $\Rightarrow w = b + \frac{(a+\lambda+r)\phi}{\phi a +
+  (1-\phi)\alpha + \lambda + r}(y-b)$
+- Free entry condtion: $rV_V = 0$ for all $t$ $\Rightarrow$
+  $rV_V = -c + \frac{(1-\phi)\alpha}{\phi a + (1-\phi)\alpha
+  + \lambda + r}(y-b) = 0$
+- In steady-state, $\dot{E}(t) = 0 \Rightarrow M(U, V) =
+  \lambda E$
+- Mass of workers is 1 $\Rightarrow E + U = 1, U = 1 - E$
+- Job finding rate: $a = \frac{M(U, V)}{U} = \frac{\lambda E}{1-E}
+  =\frac{k(1-E)^{1-\gamma}V^\gamma}{1-E}$
+- Vacancy filling rate: $\alpha = \frac{M(U, V)}{V}
+  =k^{1/\gamma}\left(\frac{1-E}{\lambda
+  E}\right)^{\frac{1-\gamma}{\gamma}}$
+
+Solution
+
+- $rV_V = 0 = -c + \frac{(1-\phi)\alpha(E)}{\phi a(E) +
+  (1-\phi)\alpha(E) + \lambda + r}(y-b)$
+- $rV_V$ is decreasing in $E$
+  - $E \rightarrow 1, a \rightarrow \infty, \alpha
+    \rightarrow 0 \Rightarrow rVv \rightarrow -c < 0$
+  - $E \rightarrow 0, a \rightarrow 0, \alpha
+    \rightarrow \infty \Rightarrow rVv \rightarrow y-b-c > 0$
+- Solving for the $E^*$ and unemployment is $1-E^* > 0$
+
+### Implications
+
+Impact of a shift in labour demand
+
+- Short-run implication: model cyclical changes due to
+  shifts in $y$, but when $y$ increases, $E^*$ increases and
+  unemployment decreases (pro-cyclical) which is observed
+  empirically.
+  However, wage rises more than proportionally with $y$
+  due to $a, \alpha$, which is not sticky wages.
+- Long-run implication: proportional change in $y, b, c$
+  does not affect the unemployment $1-E^*$, and $w^*$
+  changes the same proportion as $y$ which matches the
+  empirical observation
+
+### Efficiency
+
+Externalities on firm's entry decisions:
+
+- positive on unemployed worker
+- negative on other firms looking for workers
+
+Simplification: one off static setup
+
+- Decision on creating $V$ vacancies initially
+- $U$ unemployed workers
+- hired workers $E = M(U, V) = kU^{1-\gamma}V^\gamma$
+- Each vacancy has cost $c$ and each worker produces $y$
+- Unemployed workers receive no income ($b = 0$) and wage is
+  simply $\phi y$ (bargain power)
+
+Equilibrium
+
+- Market equilibrium
+  - $V^{EQ} = \left[ \frac{k(1-\phi)y}{c}
+    \right]^{1/(1-\gamma)}U$
+  - Free-entry condition and marginal benefit of filling
+    jobs - cost of creating jobs
+  - $V_V = 0 = \frac{M(U, V)}{V}(y-w) - c =k\left( \frac{U}{V}
+    \right)^{1-\gamma}(1-\phi)y - c \Rightarrow V^{EQ}$
+- Optimal allocation
+  - $V^{OPT} = \left[ \frac{k\gamma y}{c}
+    \right]^{1/(1-\gamma)}U$
+  - Social welfare: $E(y-w) - Vc + Ew = Ey - Vc =
+    kU^{1-\gamma}V^{\gamma}y - Vc$
+  - FOC $\frac{\partial}{\partial V}$: $\gamma\left( \frac{kU}{V} \right)^{1-\gamma} y -
+    c = 0 \Rightarrow V^{OPT}$
+
+Hosios condition $\gamma = 1-\phi$
+
+- Decentralised equilibrium achieve efficiency if $\gamma =
+  1 - \phi$
+  - $\gamma$ is the positive externality, which is the
+    elasticity on matching, reflects which post gets how
+    many matches 
+  - $1-\phi$ is the negative externality, which is the firm
+    bargain power

@@ -1,0 +1,216 @@
+## Market Design and Auction market
+
+### Market Design
+
+A set of training rules that governs
+
+1. Collection of objects of heterogeneous qualities
+2. Two sides - potential buyers and sellers
+3. Allocation or matching to achieve certain objective(s)
+4. Rules/institutions to carry out all the relevant
+   transactions between the parties
+
+Note that sometimes trade happens even without a formal
+format. Such as negotiation between 2 parties in a non
+competitive market.
+
+### Standard Auction: Rules for Selling a single object
+
+1. Potential buyers
+2. Auction rules
+   1. Sealed bid: First-price auction
+      - Bid: $E(V_{1:n-1}|V_{1:n-1} < v_i)$
+      - Highest bidder pays at price equal to his bid  
+   2. Sealed-bid: Second-price auction
+      - Bid: private value $v_i$
+      - Highest bidder wins at price to the second-highest
+        bid
+   3. Ascending price: English auction
+      - Bid: private value $v_i$
+      - Price stops increasing when all but one bidder drops
+        out
+   4. Descending price: Dutch auction
+      - Bid: $E(V_{1:n-1}|V_{1:n-1} < v_i)$
+      - Price stops decreasing when one bidder takes his
+        finder off the button
+
+Note: 
+
+- first-price and Dutch, second-price and English are
+  similar in decision, while all auctions are similar in
+  outcome
+- All auctions end with efficiency $V_{\text{highest}}$ or
+  $V_{1:n}$
+- All winning bidder pays $V_{2:n}$
+  - Second-price or English: $V_{2:n}$
+  - First-price or Dutch: $E(V_{2:n})$  
+
+## Complete information bidding strategies
+
+Assume an item on sale with 5 bidders bidding $\{v_1 =10,
+v_2 = 5, v_3 =7, v_4 = 2, v_5 = 8\}$, the ordered statistics
+are:
+
+$$
+\{v_{1:5} = 10, v_{2:5}=8, v_{3:5} = 7, v_{4:5} = 5, v_{5:5} = 2\}
+$$
+
+The bidding strategies under different auction system
+
+- First-price and Dutch: expected private value of the
+  second highest bidder
+  - $b_1 = 8.01, b_2 = 5, b_3 = 7, b_4 = 2, b_5 = 8$
+  - bidder 1 pays $8.01$
+- Second-price and English: private value
+  - $b_1 = 10, b_2 = 5, b_3 = 7, b_4 = 2, b_5 = 8$
+  - bidder 1 pays $8$
+
+## Asymmetric information bidding strategies
+
+The Auction Model (IPV: Independent Private Values)
+
+- Single object for sale
+- $n$ bidders
+- Buyers have private value $v_i$ for the object
+- A buyer knows his own value, while the others think of it
+  as a random variable
+- The private value follow a uniform distribution over [a, b]
+
+### Second-price and English Auction bidding strategy
+
+- Bidder decide at each point if to continue bidding or not
+- Bidder select a point to drop out from auction
+- Bidder $i$ with private value $v_i$ has to decide if to
+  continue the auction when
+  1. $p<v_i$: stay in bidding
+  2. $p = v_i$: drop out of bidding
+
+Therefore, the bidding strategy is to stay in auction until
+private value
+
+$$
+b_i = \beta(v_i) = v_i
+$$
+
+### First-price and Dutch Auction bidding strategy
+
+- Bidder $i$ knows his own private value $v_i$ but treats
+  the other bidders private value as random variable
+- The only private value of concern is the largest ordered
+  statistics $v_{1:n-1}$
+  1. If $v_i < v_{1:n-1}$, bidder $i$'s bid is irrelevant
+  2. If $v_i > v_{1:n-1}$, bidder $i$ bid $v_{1:n-1}$
+
+Therefore, the bidding strategy is to stay in auction or bid
+the second highest private value
+
+$$
+b_i = \beta(v_i) = E(v_{1:n-1}|v_{1:n-1} < v_i) = v_i - \frac{v_i}{N}
+$$
+
+## Reserve price
+
+Seller set reserve price $r$ in the auction and bids below
+$r$ will not be considered
+
+Bidding strategy
+
+- SPA: $b(v) = v$
+- FPA: $b(v) = E\bigg(\max\{ V_{1:n-1}, r \} \vline \max\{ V_{1:n-1}, r \} < v \bigg)$
+
+
+### Optimal Reserve
+A binding reserve is when reserve $r$ is set between $a, b$,
+it prevents sale with a positive probability.
+
+The reserve insures a case where the second bid is too low
+relative to the first bid
+
+The level below which bidders do not participate is called
+the screening level, the screening level $v^* = r$
+
+To calculate the optimal reserve, consider maximise expected
+revenue. The expected revenue is the total probability of
+the reserve price between the top 2 valuation and lower than
+second highest valuation.
+\begin{align*}
+\max_r &~r\cdot P(V_{2:n} < r < V_{1:n}) + E(V_{2:n}|V_{2:n} >
+r) \cdot P(V_{2:n} > r)\\
+&= rn(1-F(r))F(r)^{n-1} + \int_r^b
+xn(n-1)F(x)^{n-2}(1-F(x))f(x) dx
+\end{align*}
+
+The first order condition
+
+$$
+n(1-F(r))F(r)^{n-1} - rnf(r)F(r)^{n-1} +
+rn(n-1)(1-F(r))F(r)^{n-2}f(r) - rn(n-1)F(r)^{n-2}(1-F(r))f(r) = 0
+$$
+
+With the optimal reserve price
+
+$$
+r = \frac{1-F(r)}{f(r)} \propto \frac{1}{\text{Hazard rate}}
+$$
+
+## Participation/Bidding/Entry Fee
+
+Bidding strategy if seller charge a bidding fee $\phi$
+
+- If bidder has a low private value, he should not bid
+- If a bidder decide to bid then
+  - SPA: bid private value
+  - FPA: bid the expected min price to win
+
+## First Price Sealed Bid Auction derivation
+
+- $v:=$ private value,
+  a random distribution assumed to be uniform with cdf $F$
+- $b = \beta(v)$: $\beta(v)$ is the bid function for all
+  bidders while $b:=$ is the bid value
+
+### Deriving the utility function
+The utility of bidder $i$ is the difference between private
+value and bid value ($v-b$) given that individual has won
+the bid, i.e. $b>\beta(v_j)$ for all the other bidders.
+
+\begin{align*}
+    U_i(v, b) &= (v-b)\prod_{j=1}^{N-1}P(b>\beta(v_j))\\
+              &= (v-b)\prod_{j=1}^{N-1}P(v_j < \beta^{-1}(b))\\
+              &= (v-b)F^{N-1}(\beta^{-1}(b))\\
+              &\because v_j \sim Unif(0, 1)\\
+    \Rightarrow U_i(v, b) &= (v-b)(\beta^{-1}(b))^{N-1}
+\end{align*}
+
+### Solving for the best bid value
+Bidder $i$ maximises the utility by changing the bid price
+\begin{align*}
+    \max_b ~U_i(v, b)&= (v-b)(\beta^{-1}(b))^{N-1}\\
+    \frac{\partial U_i(v, b)}{\partial b} &=
+    -\bigg(\beta^{-1}(b)\bigg)^{N-1} + (v-b)(N-1) \bigg(\beta^{-1}(b)\bigg)^{N-2}\frac{1}{\beta'(\beta^{-1}(b))} = 0 ~(FOC)\\
+    \because b &= \beta(v) \Rightarrow v = \beta^{-1}(b)\\
+    \Rightarrow -v^{N-1} &+ (N-1)(v-\beta(v))\frac{v^{N-2}}{\beta'(v)} = 0
+\end{align*}
+
+Note: deriving $\frac{d}{db}\beta^{-1}(b) = \frac{1}{\beta'(\beta^{-1}(b))}$
+\begin{align*}
+    b &= \beta(v)\\
+    \frac{db}{dv} &= \beta'(v)\\
+    \Rightarrow \frac{dv}{db} = \frac{d}{db} \beta^{-1}(b) &= \frac{1}{\beta'(v)} = \frac{1}{\beta'(\beta^{-1}(b))}
+\end{align*}
+
+Solving for the best bid value by rearranging the previous
+equation
+\begin{align*}
+    v^{N-1}\beta'(v) + (N-1)v^{N-2}\beta(v) &=
+    (N-1)v^{N-1}\\
+    \Leftrightarrow \frac{d}{dv}v^{N-1}\beta(v)
+    &= (N-1)v^{N-1}\\
+    \Rightarrow v^{N-1}\beta(v) &= \int_0^v (N-1)s^{N-1}ds\\
+    v^{N-1}\beta(v) &= (N-1)\frac{v^N}{N}\\
+    \Rightarrow  \beta(v) &= \frac{N-1}{N}v =
+    v-\frac{v}{N}
+\end{align*}
+
+General solution when $v$ is not uniform distribution: $b = \beta(v) = v - \frac{1}{F^{N-1}(v)}\int_{ \underline{v} }^v F^{N-1}(s) ds$
+

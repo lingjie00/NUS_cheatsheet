@@ -1,0 +1,105 @@
+Variables | Symbol | Endogenous | growth rate
+--- | --- | --- | --- 
+output | $Y$ | yes |
+capital | $K$ | yes |
+labor | $L$ | no | $n$
+knowledge | $A$ | no | $g$
+
+Equations and functions
+
+1. Production functions: input factors to output
+2. Saving, investment and capital accumulation over time
+
+Assumes competitive market with no externalities:
+
+1. Rent $r(t) = \frac{\partial F}{\partial K} = f'(k(t))$
+2. Wage per person $W(t) = \frac{\partial F}{\partial AL} = A[f(k)-kf'(k)]$
+   - Wage per unit of effective labour $w(t) = W(t)/A = f(k)-kf'(k)$
+
+## Neoclassical Production Function
+
+$$
+Y(t) = F[K(t), A(t)L(t)] \Leftrightarrow y(t) = f(k(t))
+$$
+
+- $A(t)L(t) :=$ efficiency units of labor
+- $k(t) := \frac{K(t)}{L(t)A(t)}$, $f(k) := F(k, 1)$ intensive form (due to CRS)
+
+Example: Cobb-Douglas function $F(K,
+AL)=K^\alpha(AL)^{1-\alpha}$
+
+### Critical assumptions
+
+1. Constant returns to scale (CRS)
+   $$F(\lambda K, \lambda AL) = \lambda F(K, AL), \forall
+   \lambda \geq 0$$
+2. Diminishing marginal product (DMP)
+   $$\frac{\partial F}{\partial K} > 0, \frac{\partial^2 F}{\partial K^2} < 0$$
+   - same for labour, and capital per unit of effective labor
+3. Inada conditions
+   $$\lim_{K\rightarrow 0}\frac{\partial F}{\partial K} =
+   \infty, ~\lim_{K\rightarrow \infty}\frac{\partial
+   F}{\partial K} = 0$$
+
+## Solow model: benchmark model with endogenous capital
+
+Most important result: Differences in $k$ cannot account for
+large income differences
+
+Note: saving rate is exogenous
+
+1. Evolution of capital
+    $$
+    \dot{K}(t) = Y(t) - C(t) - \delta K(t) = sY(t)-\delta K(t)
+    $$
+2. Dynamics of $k$
+   $$
+   \dot{k} = sy - (\delta + g + n)k
+   $$
+   - break-even investment: $( \delta + g + n )k$
+3. Steady-state:
+   $$
+   sf(k^*) = (\delta + g + n)k^*
+   $$
+4. Balanced growth path:
+   - Capital $K = ALk^* \Rightarrow g_K = n+g$
+   - Output $Y = f(k^*) \Rightarrow g_Y = n+g$
+   - Capital per worker $=Ak^* \Rightarrow g_{Ak^*} = g$
+   - Output per worker $=f(k^*)A \Rightarrow g_{f(k^*)A} = g$
+   - Consumption per worker $=(1-s)f(k^*)A \Rightarrow g_{(1-s)f(k^*)A}=g$
+5. Comparative statics of a change in $s$ (saving rate)
+   $$
+   \frac{\partial k^*}{\partial s} = \frac{f(k^*)k^*}{s[f(k^*)-k^*f'(k^*)]} > 0
+   $$
+   - Effect on $(1) \dot{k}, (2) k$, (3) $\frac{Y}{L}$, $(4) c = (1-s)f(k)$ (output per effective worker)
+6. Golden-rule of capital accumulation
+   $$
+   f'(k^*) = n+g+\delta
+   $$
+7. Long-run effect of $s$ on output
+   $$
+   EL_s(y^*) = \frac{\partial y^* /y^*}{\partial s/s} =
+   \frac{\alpha_K(k^*)}{1-\alpha_k(k^*)}
+   $$
+   - $\alpha_K(k^*) = \frac{k^*f'(k^*)}{f(k^*)}$
+8. Speed of convergence
+   $$
+   k(t) - k^* \approx e^{-\lambda t}[k(0)-k^*]
+   $$
+   - $\lambda = -[sf'(k^*)-(\delta +g+n)] > 0$
+
+### Solow in Discrete-time
+
+Assume no population growth $(n=0)$ and no technological
+process $(g=0)$
+
+1. Law of motion for capital stock
+   $$
+   k_{t+1} = (1-\delta)k_t + sf(k_t)
+   $$
+2. Steady-state
+   $$
+   \frac{f(k^*)}{k^*} = \frac{\delta}{s}
+   $$
+3. Dynamics
+   - All equilibrium converge to the positive steady-state $k^*$

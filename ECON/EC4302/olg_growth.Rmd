@@ -1,0 +1,78 @@
+Assumes
+
+1. Discrete-time
+2. No depreciation of capital stock ($\delta = 0$)
+
+Results:
+
+1. Evolution of Capital Stock
+   $$
+   K_{t+1} = (w_tA_t - C_{1, t})L_t
+   $$
+2. Dynamics of Capital stock
+   $$
+   k_{t+1} =
+   \frac{s(f'(k_{t+1}))}{(1+n)(1+g)}[f(k_t)-k_tf'(k_t)]
+   $$
+3. Equilibrium: type of sequences $\{w_t, r_t, k_t\}$ s.t.
+   1. $r_t = f'(k_t)$
+   2. $w_t = f(k_t) - k_tf'(k_t)$
+   3. $k_{t+1} = 
+  \frac{s(f'(k_{t+1}))}{(1+n)(1+g)}[f(k_t)-k_tf'(k_t)]$
+   4. $k_0 > 0$ (given)
+4. Balanced growth path: not known in general, consider Cobb-Douglas and Log utility ($\theta = 1$)
+
+Most important results:
+
+1. Finitely lived consumers do not change Solow results
+2. However, competitive equilibrium now is not Pareto
+   optimal
+
+## Households
+
+- $L_{-1} :=$ initial population
+- $L_{t-1} :=$ individuals born in period $t-1$, the old
+- $L_t := (1+n)L_{t-1}$ the young
+- $A_0k_0 = \frac{K_0}{L_0}$ initial capital stock owned by per
+  production worker
+
+1. Utility
+   $$
+   U_t = u(C_{1, t}) + \frac{1}{1+\rho}u(C_{2, t+1})
+   $$
+2. Budget constraint
+   $$
+   C_{2, t+1} = (1+r_{t+1})(w_tA_t - C_{1, t})
+   $$
+3. Household behavior
+   $$
+   L = \frac{C^{1-\theta}_{1, t}}{1-\theta} +
+   \frac{1}{1+\rho} \frac{C^{1-\theta}_{2, t+1}}{1-\theta}
+   + \lambda\left[
+     w_tA_t - \left(
+        C_{1, t} + \frac{C_{2, t+1}}{1+r_{t+1}}
+     \right)
+     \right]
+   $$
+4. Euler equation
+   $$
+   \frac{C_{2, t+1}}{C_{1, t}} = \left(
+    \frac{1+r_{t+1}}{1+\rho}
+   \right)^{\frac{1}{\theta}}
+   $$
+5. Saving rate
+   $$
+   C_{1, t} = [1-s(r_{t+1})]w_tA_t
+   $$
+   $$
+   S(r) = \frac{(1+r)^{\frac{1}{\theta}-1}}{
+   (1+r)^{\frac{1}{\theta}-1} + (1+\rho)^{\frac{1}{\theta}}
+   }
+   $$
+   - interest rate $(r(t))$ affect saving rate negatively
+     (income effect) and positively (substition effect)
+   - If $\theta = 1 \Rightarrow$ substition and income
+     effect cancels
+   - If $\theta < 1$, saving rate increase in interest rate
+     (higher willingness for substition, substition effect
+     dominates)

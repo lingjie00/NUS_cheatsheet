@@ -1,0 +1,506 @@
+---
+output: pdf_document
+---
+
+Players:
+
+- Principal ($\mathbf{P}$)
+  - Designs contract, screen types
+  - Does not know about $\mathbf{A}$'s type
+
+- Agent ($\mathbf{A}$)
+  - Perform action, react based on contract
+  - Signal type to $\mathbf{P}$  
+
+Incentive problems:
+
+1. Hidden information (HI) $\rightarrow$ Adverse selection
+   - Hiding smoker information from insurance agent
+2. Hidden action (HA) $\rightarrow$ Moral hazard
+   - Coming to office but does no work, my action is not
+     observed
+
+## Adverse selection
+
+1. Screening problem
+   - **P** does not know about **A** type, **P** needs to screen for different types of **A**  
+   - Bank offer loan to house buyer but does not know
+     buyer's future income  
+
+2. Signalling problem
+   - **A** takes an action for **P** to inference
+   - Job applicants chooses education to signal ability  
+
+## Moral hazard
+
+**P** owns firm to produce output, designs contract and
+gives agent reward *w* to maximise expected profit.
+
+**A** product output $y$ based on agent's effort
+*a* and random factor $\epsilon$, accepts contract to
+maximise expected payoff (wage - effort cost)
+
+Timeline
+
+1. **P** and **A** sign a contract $w = s + bp$
+2. **A** choose action $\mathbf{a} = (a_1, a_2)$ which is
+   not observed by **P**
+3. Actions and noise ($\epsilon, \phi$) determined **A**
+   output ($y$) and performance ($p$), **P** observe $p$ (or $y$) and
+   **A** receive compensation specified by contract.
+
+### Risk-neutral principal and risk-neutral agent
+
+#### Pay for performance
+
+Consider $y = a+\epsilon$
+
+1. [Case 1] effort *a* is not observed, but output *y* is
+observed
+    - Consider: linear contract $w = s + by$, $s\in R, b
+      \in(0, 1]$
+    - Agent either accept or reject contract, if agent
+      accept contract, exert effort $a$ to maximise expected
+      payoff
+      $$
+      \max_a E[s+b\cdot (a+\epsilon)] - c(a)
+      $$
+      The optimal effort is when marginal benefit = marginal
+      cost
+      $$b = c'(a^*)$$
+    - Implications: as *b* increase, **A** exert higher
+      effort. However, **P** will not assign $b=1$ unless
+      $s<0$. Production efficiency occur when $b=1$ since
+      **A** exert the optimal effort to maximise output.
+
+2. [Case 2] effort *a* is not observed, but performance *p*
+is observed
+    - Consider: $w = s + bp$
+    - Performance is based on effort and noise $p = \mathbf{a} + \phi, E(\phi) = 0$
+    - There could be multiple efforts $\mathbf{a} = (a_1, a_2)$
+    - If $y = a_1 + a_2, p = a_1$, then contract based on $p$ cannot incentives $a_2$
+    - If $y = a_1, p = a_1 + a_2$, then contract based on
+      $p$ could incentive **A** to exert $a_2$ but not
+      $a_1$.
+
+#### Multi-task agency model
+
+Solving for [Case 2] effort *a* is not observed, but
+performance *p* is observed.
+
+Consider $y = f_1a_1 + f_2a_2 + \epsilon$, $p = g_1a_1 +
+g_2a_2 + \phi$, $w = s+bp$, $c(a_1, a_2) = \frac{1}{2}a_1^2
++ \frac{1}{2}a_2^2$
+
+- **A** solves
+  $$
+  \max_{a_1, a_2} s + b(g_1a_1+g_2a_2) - \frac{1}{2}a_1^2 -
+  \frac{1}{2}a_2^2
+  $$
+  yield
+  $$
+  a_1^*(b) = g_1b, a_2^*(b) = g_2b
+  $$
+- **A** expected utility $E(u) = E(w) - c(a_1, a_2)$
+  $$
+  E(u) = s + b[g_1a_1^*+g_2a_2^*] - \frac{1}{2}(a_1^*)^2 -
+  \frac{1}{2}(a_2^*)^2
+  $$
+- **P** expected profit $E(\pi) = E(y - w)$
+  $$
+  E(\pi) = f_1a_1^* + f_2a_2^* - s - bg_1a_1^* - bg_2a^*_2
+  $$
+  solving for best bonus $b^*_{\mathbf{P}} = arg \max_b E(\pi)$
+  $$
+  b^*_{\mathbf{P}} = \frac{f_1g_1+f_2g_2}{2(g_1^2+g_2^2)}
+  $$
+- Total expected surplus $E(\pi + u) = E(y) - c(a_1, a_2)$
+  $$
+  E(\pi + u) = (f_1g_1+f_2g_2)b -
+  \frac{1}{2}(g_1^2+g_2^2)b^2
+  $$
+- Socially (second-best) efficient bonus: $b^*_{social} = arg \max_b E(\pi + u)$
+  $$
+  b^*_{social} = \frac{f_1g_1 + f_2g_2}{g_1^2 + g_2^2}
+  $$
+- Therefore, **A**'s optimal decisions do not lead to
+  productive efficiency.
+
+Interpreting the $b^*$
+
+- Scaling and alignment with $b^*$
+  $$
+  b^* = \frac{\sqrt{f_1^2+f_2^2}}{\sqrt{g_1^2+g_2^2}}\cos(\theta)
+  $$
+  derived from cosine distance:
+  $\cos(\theta)=\frac{\mathbf{f}\cdot\mathbf{g}}{||\mathbf{f}||\cdot||\mathbf{g}||}
+  =\frac{f_1g_1+f_2g_2}{\sqrt{f_1^2+f_2^2}\sqrt{g_1^2+g_2^2}}$,
+  $b^* = \frac{f_1g_1+f_2g_2}{g_1^2+g_2^2} =
+  \cos(\theta)\frac{\sqrt{f_1^2+f_2^2}}{\sqrt{g_1^2+g_2^2}}$
+
+  Scaling factor: $\frac{\sqrt{f_1^2+f_2^2}}{\sqrt{g_1^2+g_2^2}}$,
+  alignment factor: $\cos(\theta)$
+- Scaling issue: $g_1 >> f_1, g_2 >> f_2$
+  - Performance will be inflated: high $p$ but low $y$
+  - **P** design a weak incentive: $b^* < 1$
+  - However, if $p$ is still align with $y$ (i.e. $g_1 = k f_1, g_2 = k f_2$),
+    then $b^* = \frac{1}{k}$ can be used to correct the
+    scaling effect
+- Alignment issue: $f_1=0, g_2=0$
+  - Performance will be badly align ($y = f_2a_2, p =
+    g_1a_1$), incentive $b^*$ is useless to planner
+- Scaling and alignment issue: $g_1 = 2f_1, g_2 = \frac{3}{2}f_2$
+  - Performance will be inflated, and **A** put in
+    disproportional effort on $a_1$
+- Note: if *p* and *y* are correlated, i.e. $cov(\epsilon,
+  \phi)\neq 0$, then random noise can result in high performance but no impact on output
+  - For example, business cycle may increase stock price but
+    fundamental is still not strong
+
+### Risk-neutral principal and risk-adverse agent
+
+Main issue: under risk-aversion, who should bear the risk
+and how will risk-aversion shape the optimal (second-best)
+contract? Examples:
+
+- Tenant (**A**) who cultivates a land with no other means
+  is risk adverse as he does not want to end up in a ruin.
+  Landlord (**P**) who is rich and can absorb risks is risk
+  neural.
+- Innovator (**A**) who wants to start a company is assumed
+  to be small player while bank (**P**) is a large
+  organisation that is risk-neutral.
+
+Consider an outcome $q\in\{0, 1\}$ with $q=1$ denotes success,
+$P(q=1|a)=p(a)$, $p(\cdot)$ is strictly increasing and
+concave (i.e. $p(0) = 0, p(\infty) = 1, p'(\cdot) > 0$).
+**P** is risk neutral with utility $V(q-w)=q-w$,
+$V'(\cdot)>0, V''(\cdot)=0$ and **A** is risk averse with
+utility $u(w) - \Psi(a)$, $u'(\cdot) > 0, u''(\cdot) < 0,
+\Psi'(\cdot) > 0, \Psi''(\cdot)\geq 0$.
+
+#### Solving first-best
+
+Consider $\Psi(a) = a$, assume **P** can ensure any choice
+of effort **a** subject to compensating **A** for his cost.
+
+- Principal maximises utility $V(q-w)$
+  $$
+  \max_{a, w_1, w_0} p(a)(1-w_1) + (1-p(a))(-w_0)
+  $$
+  subject to **A**'s utility equal or higher than outside option.
+  (here assume $\bar{u} = 0$)
+  $$
+  s.t.~p(a)u(w_1) + (1-p(a))u(w_0) - a \geq \bar{u}
+  $$
+- Solving FB problem with Lagrangian
+  $$
+  \max_{a, w_1, w_0, \lambda} L = p(a)(1-w_1) +
+  (1-p(a))(-w_0) + \lambda[p(a)u(w_1) + (1-p(a))u(w_0)-a]
+  $$
+  Key solutions from $\nabla_L(a, w_1, w_0, \lambda) = 0$
+  - Borch rule: $\lambda = \frac{1}{u'(w_1)} = \frac{1}{w'(w_0)}$
+    and $w_0 = w_1 = w^*$
+  - Unique $a^*$ such that: $u(w^*) = a^*$, $p'(a^*) = \frac{1}{u'(w^*)}$
+- Intuition behind FB solution: marginal product of effort =
+  **A**'s marginal utility loss due to effort
+  $$
+  \frac{dEq(a)}{da} = \frac{du^{-1}(a)}{da} \Rightarrow p'(a) =
+  \frac{1}{u'(w)}
+  $$
+  where $E(q(a)) :=$ expected output, $u^{-1}(a) :=$
+  utility loss due to effort cost and $u(w)=a$
+
+#### Solving second-best (optimal)
+
+Consider **P** cannot observe for effort **a** and must
+induce **A** through compensation package $(w_0, w_1)$
+
+- Principal maximises utility $V(q-w)$
+  $$
+  \max_{w_1, w_0} p(a)(1-w_1) + (1-p(a))(-w_0)
+  $$
+  subject to **A**'s maximising utility
+  $$
+  \max_a p(a)u(w_1) + (1-p(a))u(w_0) - a
+  $$
+  and participation constraint (IR) (here assume $\bar{u} = 0$)
+  $$
+  p(a)u(w_1) + (1-p(a))u(w_0) - a \geq 0
+  $$
+- **A**'s incentive compatibility (IC)
+  $$
+  p'(a)[u(w_1) - u(w_0)] = 1
+  $$
+  **A**'s marginal expected utility from effort must equal
+  to his marginal cost of effort
+- Simplified Principal utility maximisation
+  $$
+  \max_{w_1, w_0} p(a)(1-w_1) + (1-p(a))(-w_0)
+  $$
+  subject to participation constraint (IR)
+  $$
+  s.t.~p(a)u(w_1) + (1-p(a))u(w_0) - a \geq 0
+  $$
+  and subject to **A**'s incentive compatibility (IC)
+  $$
+  s.t.~p'(a)[u(w_1) - u(w_0)] = 1
+  $$
+  The Lagrangian
+  $$
+  \max_{w_1, w_0, \lambda_1, \lambda_2}
+  p(a)(1-w_1) + (1-p(a))(-w_0)
+  +\lambda_1[p(a)u(w_1) + (1-p(a))u(w_0) - a]
+  +\lambda_2[p'(a)[u(w_1) - u(w_0)] - 1]
+  $$
+  Key solutions from $\nabla_L(w_1, w_0, \lambda_1, \lambda_2)$
+  - Contrast to Borch rule: $\frac{1}{u'(w_1)} = \lambda_1 +
+    \lambda_2 \frac{p'(a)}{p(a)}$, $\frac{1}{u'(w_2)} = \lambda_1 -
+    \lambda_2 \frac{p'(a)}{1-p(a)}$
+- Interpreting observation
+  - Compared FB solution that eliminated any risk for the
+    agent **A**, optimal insurance is distorted by asking **A** to
+    bear some risks.
+  - **A** gets reward for good performance, larger share of
+    surplus relative to Borch rule when high performance,
+    and get penalty for bad performance.
+  - Here we have $\lambda_1, \lambda_2 \geq 0$ due to the
+    interpretation of Lagrange multiplier
+
+#### Application: Optimal debt financing under moral hazard and limited liability
+
+Assume both **P** and **A** are risk-neutral, entrepreneur
+**A** require funding for project and market **P** provides
+the capital.
+Subject to funding **A** exert effort **a** resulting in
+revenues *q* with density function $f(q|a)$ and
+distribution function $F(q|a)$ where $q\in[0, \bar{q}]$
+
+Assume $f(q|a)$ satisfies MLRP (monotone likelihood ratio
+property): $\Rightarrow \frac{d}{dq}\frac{f_a(q|a)}{f(q|a)} \geq 0$,
+for two effort case where $\mathbf{a} = (a_1, a_2)$:
+$\Rightarrow \frac{d}{dq}\frac{f(q|a_L)}{f(q|a_H)} \geq 0$.
+MLRP implies density has higher mass on higher values of $q$
+as $\mathbf{a}$ increase.
+
+Result: debt contract is optimal under the assumption that
+the agent is subject to limited liability (LL).
+A debt contract pays **P** amount $r(q) = D, q \geq D$ and
+$r(q)=q, q < D$. This makes **A** residual claimant for the
+revenues above the promised debt $D$.
+
+Setup: **A** maximises utility $v(w, a) = w - \Psi(a)$ with
+$w :=$ wealth and $\Psi(0) = 0$, $\Psi'(\cdot) > 0$,
+$\Psi''(\cdot) > 0$ (convex effort cost). Assume $\Psi(a) =
+\frac{1}{2}a^2$. Limited liability means **A** can be asked
+to repay **P** at most his revenue: $0 \leq r(q) \leq q$,
+further assumes **A**'s repayment never goes down with
+revenue $r'(q) \geq 0$.
+
+- **A** maximise utility $\int_0^{\bar{q}}v(w, a) dq$
+  $$
+  \max_{r(q), a} \int_0^{\bar{q}} [q-r(q)]f(q|a) dq - \Psi(a)
+  $$
+  subject to **A**'s optimal effort decision (IC),
+  i.e. marginal benefit = marginal cost
+  $$
+  \int_0^{\bar{q}}[q-r(q)]f_a(q|a)dq = \Psi'(a)
+  $$
+  and subject to zero profit of the lender (IR)
+  $$
+  \int_0^{\bar{q}} r(q)f(q|a)dq = I
+  $$
+  and limited liability (LL)
+  $$
+  0 \leq r(q) \leq q
+  $$
+- Solving the Lagrangian
+  $$
+  \max_{r(q), a, \lambda_1, \lambda_2} L =
+  \int_{0}^{\bar{q}}[q-r(q)]f(q|a)dq - \Psi(a) +
+  \lambda_1\left[\int_0^{\bar{q}}r(q)f(q|a)dq - I\right] +
+  \lambda_2\left[\int_0^{\bar{q}}[q - r(q)]f_a(q|a)dq - \Psi'(a)\right]
+  $$
+  Rearranging the Lagrangian and realise Lagrangian is
+  linear in $r(q)$
+  $$
+  L = \int_{0}^{\bar{q}} r(q)\left[
+  \lambda_1 - \lambda_2 \frac{f_a(q|a)}{f(q|a)} - 1
+  \right] f(q|a) dq
+  + \int_0^{\bar{q}} q\left[
+    1 + \lambda_2 \frac{f_a(q|a)}{f(q|a)}
+    \right] f(q|a)dq - \Psi(a) - \lambda_2\Psi'(a) -
+    \lambda_1I
+  $$
+  Solution for optimal repayment schedule where **A**
+  is published ($r^*(q) = q$) and rewarded ($r^*(q)=0$) by
+  the revenue generated.
+  Solution is arrived by setting $\lambda_1-\lambda_2\frac{f_a(q|a)}{f(q|a)}-1 > 0$
+  and $\max(r(q))$ to max $L$
+  \begin{align*}
+  r^*(q) = \begin{cases}
+  q & \lambda_1 > 1 + \lambda_2 \frac{f_a(q|a)}{f(q|a)}\\
+  0 & \lambda_1 \leq 1 + \lambda_2 \frac{f_a(q|a)}{f(q|a)}\\
+  \end{cases}
+  \end{align*}
+  Therefore, reward **A** when
+  $$
+  \frac{f_q(q|a)}{f(q|a)} > \frac{\lambda_1 - 1}{\lambda_2}
+  $$
+- Designing the debt contract by payout function with a
+  threshold revenue
+  \begin{align*}
+  r^*(q) = \begin{cases}
+  0 & q > Z\\
+  q & q \leq Z
+  \end{cases}
+  \end{align*}
+- Practical implementation require **A** to payback **P**
+  the loan amount, therefore modify the debt contract
+  \begin{align*}
+  r^*(q) = \begin{cases}
+  D & q > D\\
+  q & q \leq D
+  \end{cases}
+  \end{align*}
+  and the minimum value of $D$ is achieved by solving
+  the total expected repayment is equal to the investment
+  amount (zero profit)
+  $$
+  \int_0^D qf(q|a^*) dq + [1-F(D|a^*)]D = I
+  $$
+  where $a^*$ is given by IC
+  $$
+  \int_D^q (q-D)f_a(q|a^*)dq = \Psi'(a^*)
+  $$
+  This modification ensures **P** gets the loan amount back
+  while high residual claimant for **A** in the high revenue
+  state.
+
+### Relational contracts
+
+Relational contract is a case of no explicit contract
+between **P** and **A**. In various employment not all
+contingencies can be written in a contract, making formal
+contract that require verifiable outcomes unrealistic.
+Therefore, some contracts are incomplete.
+The key idea here is trigger strategies.
+
+Consider output $y$ can be observed but cannot be verified.
+Therefore, no formal contract available between **P** and
+**A** but strategies can be conditioned on $y$, implying a
+subjective and not objective assessment of $y$.
+
+**A** exerts effort costly effort $a \in [0, 1]$, with
+effort cost $c(a)$, $c'(a) >0$ and $P(y=H) = a$. **P**'s
+payoff is $y-w$ and **A**'s payoff is $w-c(a)$, **A** has an
+outside option $w_a$.
+
+#### One-shot interaction
+
+1. **A** expects **P** to not pay a bonus even if $y=H$
+2. Therefore, **A** exert $a=0$ and $y = L$
+3. If $L < w_a$, then **P** and **A** failed to form a
+   relationship contract. Note that it will be more
+   efficient if they have a contract.
+
+#### Repeated Game: Relational Contract
+
+- If **A** believes **P** will pay a bonus $b$ if $y=H$
+  (honor relational contract), **A** solves
+  $$
+  \max_{a} s+ab - c(a)
+  $$
+  optimal $a^*$ is when marginal cost = marginal benefit
+  $$
+  c'(a^*) = b
+  $$
+  The resultant **P**'s expected profit per period $E(\pi) =
+  E(y-w)$
+  $$
+  E(\pi) = a^*(a)H + (1-a^*(b))L - [s + a^*(b)b] =
+  L + a^*(b)[H-L] - [s + a^*(b)b]
+  $$
+  The resultant **A**'s expected payoff per period $E(s+ab-c(a))$
+  $$
+  E(s+a^*b-c(a^*)) = s+a^*(b)b - c(a^*(b)) \geq w_a
+  $$
+  If **P** provide the minimal bonus $\hat{b}$ (optimal
+  bonus) to meet **A**'s participation constraint.
+  $$
+  s+a^*(b)b = w_a+c(a^*(b)) \Rightarrow
+  \hat{b} = \frac{w_a+c(a^*(b))-s}{a^*(b)}
+  $$
+  The final **P**'s expected profit per period
+  $$
+  E[\pi(\hat{b})] = L + a^*(\hat{b})[H-L] - c(a^*(\hat{b}))
+  - w_a
+  $$
+- Trigger strategies: **P** considers if to honour the
+  relational contract
+  
+  1. If **P** does not honour the relational contract when
+     $y = H$, the current payoff is: $H-s$
+  2. If **P** honour the relational contract, the current
+     payoff is $H-s-\hat{b}$ and $E(\pi(\hat{b}))$
+     thereafter.
+  3. **P** consider the lifetime utility and pay bonus if
+     and only if (considering only the excess profit)
+     $$
+     (H-s-\hat{b}) + \frac{E(\pi(\hat{b}))}{r} \geq (H-s)
+     $$
+     Therefore, **P** pays bonus $\hat{b}$ if and only if
+     $E(\pi(\hat{b})) \geq r\hat{b}$
+- interpretation: relational contract depends on interest
+  rate
+  - If $r$ is low, it is easy to satisfy the requirement for
+    efficient contracting as future profit is equally
+    valuable.
+  - If $r$ is high, then requirement cannot be fulfilled as
+    futture profit is not valued.
+
+### Application: Credit Rationing
+
+Credit Rationing: Banks (**P**) are selective in offering credits to 
+loaners (**A**). Although demand for credit exceeds
+supply, bank is not willing to increase the supply nor the
+interest rate.
+
+#### Setup and issues
+
+- Profit maximising lender considers
+
+  1. Interest rate
+  2. Riskiness of loans
+
+  However, higher interest rate increase the riskiness of loans
+- Adverse selection & incentive effects
+  - Adverse selection: affects the type of borrower
+    - Higher interest rate attracts more risky borrowers
+    - More risky borrowers are willing to take a higher risk
+      project to compensate for the higher cost of borrowing
+  - Incentive effects: affects the type of projects
+    - Higher interest rate results in more risky projects
+      due to limited liability
+    - Between two mean-preserving projects, select the
+      project with higher payoff & lower chance of success
+      since the maximum pay back is the collateral  
+
+  Therefore, there exist an optimal interest rate that
+  maximises the bank's expected payoff.
+  The bank will not monotonically increase interest
+  rate or increase supply of loans to address the excess
+  demand for loans.
+
+#### Rationing: select amongst identical borrowers
+
+- Screening with interest rate
+- Project return & firm profit
+- Expected return & interest rate
+
+#### Results and Intuition
+
+- Results & intuitions
+- Non-monotonicity of bank's return in borrower's risk type
+- Optimal interest rate & Market equilibrium
+- Credit Rationing Result

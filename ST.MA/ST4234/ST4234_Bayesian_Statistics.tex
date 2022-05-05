@@ -1,0 +1,37 @@
+\documentclass[a4paper,12pt,landscape]{article}
+\input{cheatsheet}
+\pdfinfo{
+    /Title (ST4234 Bayesian Statistics)
+/Creator (Ling)}
+
+\begin{document}
+\raggedright
+\footnotesize
+\begin{multicols}{2}
+
+
+    % multicol parameters
+    % These lengths are set only within the two main columns
+    \setlength{\columnseprule}{0.25pt}
+    \setlength{\premulticols}{1pt}
+    \setlength{\postmulticols}{1pt}
+    \setlength{\multicolsep}{1pt}
+    \setlength{\columnsep}{2pt}
+
+    \begin{center}
+        \Large{\underline{ST4234 Bayesian Statistics}} \\
+        {Lingjie, \today}
+    \end{center}
+
+    \input{bayesian_approach.tex}
+
+    \input{distributions.tex}
+
+    \input{posteriors.tex}
+
+    \input{techniques.tex}
+
+    \input{regression.tex}
+
+\end{multicols}
+\end{document}

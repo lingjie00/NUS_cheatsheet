@@ -1,0 +1,2601 @@
+\documentclass[a4paper,12pt,landscape]{article}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[a4paper, landscape]{geometry}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{color,graphicx,overpic}
+\usepackage{hyperref}
+\usepackage{tabulary}
+\usepackage{soul} %for highlight
+\usepackage{xcolor} %color definition
+\usepackage{sectsty} %change section color
+\usepackage{tabulary} % better table
+
+% type codes
+\usepackage{listings} 
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=false,                 
+    captionpos=b,                    
+    keepspaces=false,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\pdfinfo{
+    /Title (EC4304 Economic and financial forecasting)
+  /Creator (Ling)}
+
+% This sets page margins to .5 inch if using letter paper, and to 1cm
+% if using A4 paper. (This probably isn't strictly necessary.)
+% If using another size paper, use default 1cm margins.
+\ifthenelse{\lengthtest { \paperwidth = 11in}}
+    { \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
+    {\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
+        {\geometry{top=.5cm,left=.5cm,right=.5cm,bottom=.5cm} }
+        {\geometry{top=.5cm,left=.5cm,right=.5cm,bottom=.5cm} }
+    }
+
+% Turn off header and footer
+\pagestyle{empty}
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries\color{red}}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries\color{blue}}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries\color{violet}}}
+\makeatother
+
+% Define BibTeX command
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+
+%My Environments
+\newtheorem{example}[section]{Example}
+% -----------------------------------------------------------------------
+
+\begin{document}
+\raggedright
+\footnotesize
+\begin{multicols}{3}
+
+
+% multicol parameters
+% These lengths are set only within the two main columns
+\setlength{\columnseprule}{0.25pt}
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{1pt}
+\setlength{\columnsep}{2pt}
+
+\begin{center}
+     \Large{\underline{EC4304 Forecasting}} \\
+     {Lingjie, \today}
+\end{center}
+
+Conditional mean = trend + seasonal + cycle
+\begin{align*}
+    E(Y_{t+h}|\Omega_t) = T_t + S_t + C_t
+\end{align*}
+
+Forecasting is useful in guiding decisions
+
+Different forecasting methods
+
+\begin{enumerate}
+    \item Guessing
+    \item Rules of thumb
+    \item Naive extrapolation
+    \item Leading indicators
+    \item Naive/simple model
+    \item Formal forecasting models
+\end{enumerate}
+
+Forecasting steps
+
+\begin{enumerate}
+    \item Create approximate model for $E(Y_{t+h}|\Omega_t)$
+    \item Estimate parameters from data
+    \item (alternatively) Non-parametric model for $E(Y_{t+h}|\Omega_t)$
+\end{enumerate}
+
+Codes in this cheatsheet is based on STATA
+
+\subsubsection{Notations}
+
+\begin{tabulary}{\linewidth}{l @{ := } L}
+    data frequency & time period (e.g. year, month)\\
+    in-sample obs & $\{Y_t\}_{t=1}^T$\\
+    out-of-sample period & $\{Y_{T}, Y_{T+1}, \cdots, Y_{T+h}\}$\\
+    forecast horizon & $h$\\
+    point forecast & $\{\hat Y_{t+h|t}\}$\\
+    forecast distribution & $F(y)_{t+h|t}$\\
+    forecast density & $f(y)_{t+h|t}$\\
+    extrapolative forecast & sequence of forecasts $\hat Y_{T+1|T}, \hat Y_{T+2|T}, \cdots \hat Y_{T+h|T}$\\
+    fan chart & prediction intervals from extrapolative forecast\\ &(common: 50\%, 80\%)\\
+    direct forecast & making forecast $\hat Y_{T+h|T}$ directly\\
+    information set & $\Omega_T=\{(Y_t, X_t)\}_{t=1}^T$\\
+    trend & long term and smooth variation\\
+    seasonal & pattern which repeat annually and may be constant or variable\\
+    cycle & persistent dynamics not captured by
+    trend or seasonal\\
+    level & actual values\\
+    return/growth rate & first differenced value
+\end{tabulary}
+
+\subsubsection{Note}
+\begin{itemize}
+    \item loss at each time period is different
+    \item no gain from conditioning if information is independent with $Y$
+\end{itemize}
+
+\section{Forecast reporting}
+
+Ideal reporting: interval forecast
+
+\subsection{Forecast (Predictive) Distribution}
+
+Showing the distribution for $Y$
+
+\begin{align*}
+    &\text{Unconditional: } &f(y);& ~F(y) = P(Y \leq y)\\
+    &\text{Conditional: } &f(y|x);& ~F(y|x) = P(Y \leq y|x)
+\end{align*}
+
+\begin{lstlisting}
+* distribution summary
+sum, detail
+* kernel estimate of density
+kdensity
+kdensity y if x1==1 & x2==0
+* multipl;e densities plot
+kdensity y if x1==1 || kdensity y if x2==0
+* cumulative distribution estimate
+* and save as ydist
+cumul y, gen(ydist)
+\end{lstlisting}
+
+Important to know the distribution of impacts.
+
+Conditioning reduces forecast risk.
+
+\subsection{Point forecast}
+
+A point estimate $\hat Y$ is a summary of $F(y)$
+
+Possible candidates: mean, median
+
+\subsubsection{Optimal point forecast}
+
+Ideal choice minimise the expected loss (risk)
+
+\begin{itemize}
+    \item Quadratic: $\hat Y = E(Y)$
+        \subitem estimation: OLS
+    \item Absolute: $\hat Y = F^{-1}(0.5)$ (median)
+        \subitem estimation: Quantile regression
+\end{itemize}
+
+Quadratic risk:
+\begin{align*}
+    R(\hat Y) &= E[(Y - \hat Y)^2]\\
+              &= E(Y^2) - 2\hat YE(Y) + \hat Y^2\\
+    FOC: &~\frac{dR(\hat Y)}{d\hat Y} = -2E(Y) + 2\hat Y =0\\
+    \Rightarrow &~\hat Y = E(Y)
+\end{align*}
+Note: $\hat Y$ here is realised (constant).
+
+\subsection{Interval forecast}
+
+Intermedia solution to point and distribution forecast
+
+\begin{align*}
+    C = [ \hat Y_{lower}, \hat Y_{upper} ]
+\end{align*}
+Forecast interval $100\alpha\%$
+\begin{align*}
+    P(Y\in C) = \alpha \Leftrightarrow Y \in \hat Y \pm Z_{\alpha/2}
+    SE(\hat Y)
+\end{align*}
+Note: FI: $\hat{Y}|X =\hat{f}(X) + \epsilon_t$, CI: $E(\hat{Y}|X) = \hat{f}(X)$
+
+Popular choice of $\alpha$
+\begin{tabular}{| l | l |}
+    \hline
+    $\alpha$ & $Z_{\alpha/2}$\\
+    \hline
+    $0.90$ & $1.64$\\
+    $0.80$ & $1.28$\\
+    $0.68$ & $1.00$\\
+    $0.50$ & $0.67$\\
+    \hline
+\end{tabular}
+
+\subsubsection{RMSFE}
+
+Root mean squared forecast error
+\begin{align*}
+    \sigma_e = \sqrt{E(Y-\hat Y)^2} = \sqrt{Var(Y - \hat Y)}
+\end{align*}
+$ \because E(Y_t - \hat Y_t) = 0 \text{ (unbiased) } $
+
+MSFE, AR(1)
+\begin{align*}
+    \sigma^2_e &= E(Y_t - \hat Y_t)^2\\
+               &\Leftrightarrow Var(Y_t - \hat Y_t)\\
+               &= Var(\beta_0 + \beta_1 + \epsilon_t - \hat\beta_0 -
+               \hat\beta_1 Y_{t-1})\\
+               &= \sigma^2_\epsilon + Var(\hat\beta_0) + Y_{t-1}^2 Var(\hat\beta_1) + Cov(\hat\beta_0, \hat\beta_1)
+\end{align*}
+
+useful for normal forecast interval
+
+\begin{lstlisting}
+* only works for non-robust regression
+predict varname, stdf
+\end{lstlisting}
+
+\subsubsection{Quantile intervals}
+
+The forecast interval implied a $\alpha$ quantile, $\alpha = F^{-1}(q)$
+
+\begin{align*}
+    C &= \left[\frac{1-\alpha}{2}, \frac{1-(1-\alpha)}{2}\right]\\
+    q(\alpha) &= F^{-1}(\alpha) = \inf_y F(y) \geq \alpha
+\end{align*}
+
+\subsubsection{Monotonicity rule}
+
+For any increasing transformation of $Y$,
+the $\alpha$ quantile of the transformation is the $\alpha$ quantile of $Y$.
+
+\begin{tabular}{l @{ $\Rightarrow$ } l}
+    $m(Y)=a+bY$ & $q_m(\alpha)=a+bq_Y(\alpha)$ \\
+    $m(Y)=ln(Y)$ & $q_m(\alpha)=ln(q_Y(\alpha))$ \\
+    $m(Y)=exp(Y)$ & $q_m(\alpha)=exp({q_Y(\alpha)})$ \\
+\end{tabular}
+
+\subsubsection{Normal rule}
+
+\begin{align*}
+    Y \sim N(\mu, \sigma^2)
+\end{align*}
+
+$100\cdot(1-\alpha)$ forecast interval
+\begin{align*}
+    [\mu-\sigma z_{\alpha/2}, ~\mu + \sigma z_{\alpha/2}]
+\end{align*}
+
+where $z_{\alpha/2}$ is normal quantile
+
+\subsubsection{Log normality}
+
+\begin{align*}
+    ln(Y) \sim N(\mu, \sigma^2)
+\end{align*}
+
+$100\cdot(1-\alpha)$ forecast interval
+
+\begin{align*}
+    [\exp(\mu-\sigma z_{\alpha/2})&, ~\exp(\mu + \sigma z_{\alpha/2})]
+\end{align*}
+
+\subsubsection{Empirical quantile intervals}
+
+Estimate quantile directly from large dataset.\\
+Harder to estimate conditional quantile.
+
+\begin{lstlisting}
+centile Y, centile(2.5, 97.5)
+\end{lstlisting}
+
+\section{Forecast error and loss function}
+
+Forecast error
+\begin{align*}
+    e = Y - \hat Y
+\end{align*}
+
+\subsection{Loss function}
+
+Loss function represents the trade-off between errors
+\begin{align*}
+    L(e); ~ L(Y, \hat Y)
+\end{align*}
+
+Three rules
+\begin{enumerate}
+    \item $L(0) = 0$
+    \item $L(e) \geq e, ~\forall e$
+    \item Non-increasing $e, ~\forall e<0$, non-decreasing $e, ~\forall e>0$ 
+        \subitem $L(e') \leq L(e), e' < e < 0$
+        \subitem $L(e) \leq L(e'), e' > e > 0$
+\end{enumerate}
+
+\subsection{Type of loss functions}
+
+Different loss function result in different
+ideals\\e.g. bias is desired in asymmetric loss
+
+\subsubsection{Symmetric}
+
+Penalize positive and negative errors equally
+\begin{itemize}
+    \item Quadratic (MSE) $L(e) = e^2$
+    \item Absolute (MAE) $L(e) = |e|$
+\end{itemize}
+
+\subsubsection{Asymmetric}
+
+Penalize positive and negative errors differently
+\begin{itemize}
+    \item Linear-Linear (Linlin)
+        \subitem Asymmetric version of absolute loss
+        \begin{align*}
+            L(e) = \begin{cases}
+                a|e|, ~e>0\\
+                b|e|, ~e\leq 0
+            \end{cases}
+        \end{align*}
+    \item Linear-exponential (Linex)
+        \subitem Linear on left if $a > 0$, exponential on the other
+        \begin{align*}
+            L(e) = b\left[ e^{ae} - ae - 1  \right], a \neq 0, b > 0
+        \end{align*}
+\end{itemize}
+
+\subsubsection{Level-dependent}
+
+Error depends on the level of the actual value
+\begin{itemize}
+    \item Mean Absolute Percentage (MAPE)
+        \subitem Unit less, weights error heavily when $Y$ near 0
+        \begin{align*}
+            L(e, Y) = \left| \frac{e}{Y} \right|
+        \end{align*}
+\end{itemize}
+
+\subsubsection{State-dependent}
+
+Error depends on the state of the error (near 0 or inf)
+\begin{itemize}
+    \item direction-of-change
+        \begin{align*}
+            L(Y, \hat Y) = \begin{cases}
+                0, ~sign(\Delta Y) = sign(\Delta \hat Y)\\
+                1, ~sign(\Delta Y) \neq sign(\Delta \hat Y)
+            \end{cases}
+        \end{align*}
+\end{itemize}
+
+\subsubsection{QLIKE loss}
+
+Error based on Kullback-Leibler divergences.
+
+QLIKE is robust to measurement errors and
+invariant to unit of measurement.
+\begin{align*}
+    QLIKE &= \frac{Y}{\hat Y} - \log\left( \frac{Y}{\hat Y} \right) -
+    1
+\end{align*}
+
+\subsection{Risk (Expected Loss)}
+
+Loss after running multiple predictions with different datasets.
+\begin{align*}
+    R(\hat Y) = E(L(e)) = E(L(Y - \hat Y))
+\end{align*}
+
+Min risk = optimal point forecast (smallest loss on average)
+
+
+\section{Stationary Time series processes}
+mean, variance, autocovariance does not depend on time
+
+k-th order:
+
+\begin{tabulary}{\linewidth}{L @{ : } l}
+    mean $E(Y_t)$ & $\mu$\\
+    var $Var(Y_t)$&$\sigma^2$\\
+    autocovariance $\gamma(t, k)$ &$ cov(Y_t, Y_{t-k})$\\
+                   &$E[(Y_t-\mu)(Y_{t-k}-\mu)]$\\
+                   &$E(Y_tY_{t-k}) - E(Y_t)^2$\\
+                   &$E(Y_tY_{t-k})$ if $E(Y_t)=0$\\
+    autocorrelation $\rho(t, k)$ &$ \frac{Cov(Y_t, Y_{t-k})}{\sqrt{Var(Y_t)Var(Y_{t-k})}}$\\
+                                 & $\frac{Cov(Y_t, Y_{t-k})}{Var(Y_t)}$
+\end{tabulary}
+
+\subsection{Stationarity}
+
+\subsubsection{Covariance stationarity}
+
+(weak, wide-sense, second-order) stationarity condition:
+
+\begin{tabulary}{\linewidth}{l L}
+    $E(Y_t) = \mu$ & (mean stationary)\\
+    $Var(Y_t) = \sigma^2$ & (variance stationary)\\
+    $E(Y_t^2) = \mu_2 < \infty$ & (finite 2nd moment)\\
+    $\gamma(t, k) = \gamma(k)$ & (constant autocovariance)\\
+    $\rho(k) = \gamma(k)/\sigma^2$ & (constant autocorrelation)
+\end{tabulary}
+
+for all $t$ and any $k$
+
+\subsubsection{Properties}
+\begin{align*}
+    &\gamma(k) = Cov(Y_t, Y_{t-k}) = \gamma(-k)\\
+    &\gamma(0) = Cov(Y_t, Y_t) = Var(Y_t) = \sigma^2\\
+    &\left|\gamma(k)\right| \leq \gamma(0) ~\forall k\\
+    &\rho(k) = \frac{\gamma(k)}{\gamma(0)}=\rho(-k) \in [-1, 1]\\
+    &\rho(0) = 1
+\end{align*}
+
+\subsubsection{Strictly stationary}
+
+Condition: joint pdf invariant under time displacement
+\begin{align*}
+    f(Y_{t_1}, Y_{t_2}, \cdots, T_{t_n}) = f(Y_{t_1+k}, Y_{t_2+k}, \cdots, T_{t_n+k})
+\end{align*}
+
+weaker condition: stationarity up to order $m$\\
+(joint moments up to $m$ exist and stay constant over time)
+
+\subsection{White noise}
+
+white noise process has zero autocorrelation
+$ \rho(k) = 0, k > 0 $
+\begin{align*}
+    Y_t &= \epsilon_t, ~\epsilon_t \sim (0, \sigma^2)\\
+        &\Leftrightarrow Y_t \sim WN(0, \sigma^2)
+\end{align*}
+\begin{itemize}
+    \item Can check if ACF plot has no significant
+        $\rho(k)$
+    \item Serially uncorrelated, linearly unforecastable.
+        However, not necessarily iid
+    \item Serially uncorrelated $\neq$ serially
+        independent (ARCH)
+        \begin{align*}
+            E(\epsilon_t^2|\Omega_{t-1}) = \alpha + \beta \epsilon_{t-1}^2
+        \end{align*}
+    \item special iid case: Gaussian WN
+        independent due to $\rho(k)=0$
+        \begin{align*}
+    &\epsilon_t \sim N(0, \sigma^2)\\
+    &E(\epsilon_t^2|\Omega_{t-1}) = E(\epsilon_t^2) = \sigma^2
+        \end{align*}
+\end{itemize}
+
+
+\subsection{Ergodicity}
+
+Ergodic for the $m$-th moment:
+time average converges to ensemble average as $T$ grows large
+\begin{align*}
+    &E(Y_t) = \text{plim}_{i \rightarrow \infty} \frac{1}{I}\sum_{i=1}^I Y_{t}^{(i)} \text{ (ensemble average)}\\
+    &{\lim_{t\rightarrow \infty}}\frac{1}{T}\sum_{t=1}^T Y_t = \frac{1}{I}\sum_{i=1}^I Y_t^{(i)} \text{ (ergodicity)}
+\end{align*}
+Test criteria: ${lim}_{k\rightarrow \infty}\rho(k)= 0$
+
+Ergodicity theorem ensures LLN for time series.
+
+\subsubsection{Remarks}
+\begin{itemize}
+    \item Requirement for weak stationarity and ergodicity might coincide, but not always
+    \item For stationary Gaussian process, ergodicity for mean and
+        second moment require the condition
+        \begin{align*}
+            \sum_{j=0}^\infty |\gamma(j)| < \infty
+        \end{align*}
+    \item $\Rightarrow$ if $Y_t$ is ergodic, $\hat Y_{T+h|T}\approx E(Y_t)$ for large $h$
+    \item series with seasonal and trend component, or NSA (not seasonally adjusted) might not be ergodic
+\end{itemize}
+
+\subsubsection{Types of Ergodic series}
+
+\begin{tabulary}{\linewidth}{L L}
+    Geometric decay $\rho(k)\approx c^k, c < 1$
+                    & Smooth decline to zero\\
+                    \hline
+                    Negative autocorrelation $ \rho(1) < 0$
+                             &Erogodic if $\lim_{k\rightarrow\infty}|\rho(k)|=0$
+                             (Alternating sign)\\
+                             \hline
+    Slow decay $\rho(k) \approx k^{-d}, d > 0$
+               &Power law, long memory process
+\end{tabulary}
+
+\subsection{Estimation}
+
+Ergodicity ensures LLN works
+\begin{align*}
+    \hat\mu &= \frac{1}{T}\sum_{i=1}^TY_i\\
+    \hat\gamma(k) &= \frac{1}{T} \sum_{t=k+1}^T (Y_t - \hat\mu)(Y_{t-k}-\hat\mu)\\
+    \hat\rho(k) &= \frac{\hat\gamma(k)}{\hat\gamma(0)}
+\end{align*}
+
+Note:
+\begin{itemize}
+    \item estimation subject to sampling uncertainty
+    \item estimates worsen as $k$ gets large relative to $T$
+    \item observe general pattern instead of outliers at large $k$
+\end{itemize}
+
+\subsubsection{Confidence bands for autocorrelation}
+[R] if $Y_t$ is independent white noise, then
+\begin{align*}
+    Var(\hat\rho) &\approx \frac{1}{T}\\
+    E(\hat\rho) & \in [-\frac{2}{\sqrt{T}}, \frac{2}{\sqrt{T}}] \text{ (95\% CI)}
+\end{align*}
+
+[STATA] Bartlett's formula:\\
+assume $Y_t$ is $MA(q) \Rightarrow \rho(k)=0, k > q$
+\begin{align*}
+    Var(\hat\rho(k)) \approx \frac{1}{T} (1 + 2 \sum_{i=1}^q \rho(i)^2), k > q
+\end{align*}
+
+Note:
+\begin{itemize}
+    \item If sample autocorrelation fall within 95\% CI in R, assume white noise. Else, examine Barlett bands
+    \item Bartlett is point-wise hypothesis \\ $H_0: \rho(k) = 0$, not joint test
+    \item Points falls outside of Bartlett bands (shaded region) is significantly different from 0
+\end{itemize}
+
+\subsubsection{Joint tests for White Noise}
+Test all $\gamma(k)$ up to $m$ are jointly
+zero (theory: all $\gamma(k)$)
+
+Ideal $m$: large but not too large, Diebold suggest $\sqrt{T}$
+\begin{align*}
+    H_0 &: \rho(1) = \rho(2) = \cdots = \rho(m) = 0\\
+    \Leftrightarrow  H_0 &: Y_t \text{ is white noise}
+\end{align*}
+
+Portmanteau tests
+\begin{align*}
+    Q_{BP} &= T\sum_{i=1}^m \hat\rho^2(i) \sim \chi_m^2\\
+    Q_{LB} &= T(T+2)\sum_{i=1}^m \frac{1}{T-i}\hat\rho^2(i)\sim\chi_m^2
+\end{align*}
+
+Box-Pierce (BP), Ljung-Box (LB) Q-statistic
+
+STATA reports LB (better performance in small sample)
+
+\begin{lstlisting}
+corrgram
+\end{lstlisting}
+
+Other tests: Lobato (2001), Pena and Rodriguez (2002), Delgado and Velasco (2010, 2011)
+
+\subsection{Lag operator $L$}
+
+useful way to manipulate lags
+\begin{align*}
+    LY_t &= Y_{t-1}\\
+    L^kY_t &= Y_{t-k}\\
+    A(L) &= b_0 + b_1 L + b_2 L^2 + \cdots b_k L^k
+\end{align*}
+
+\begin{lstlisting}
+gen x1 = L.x
+reg rgdp L.rgdp L2.rgdp
+reg rgdp L(1/12).rgdp
+\end{lstlisting}
+
+\section{OLS Standard Errors in TS}
+
+Standard errors of OLS estimates in time series regression
+
+\begin{itemize}
+    \item White Noise error: robust standard error
+    \item Others: HAC adjusted standard error
+        \subitem if no ACF plot, use default $m$
+\end{itemize}
+
+
+\subsection{General Variance}
+
+Solving OLS estimator
+\begin{align*}
+    \hat{\beta} &= \beta + \frac{ \sum_{i=1}^T X_t e_t  }{\sum_{i=1}^T X_t^2}\\
+    \text{Asymtotically } & (v_t := X_te_t)\\
+    \lim_{n\rightarrow\infty} \hat\beta &= \beta + \frac{\sum_{t=1}^T v_t}{T Var(X_t)}\\
+    Var(\hat\beta) &= \frac{Var(\sum_{t=1}^T v_t)}{T^2 Var(X_t)^2}\\
+                   &=\frac{\sum_{t=1}^T Var(v_t) + \sum_{t=1}^T Cov(v_t, v_j)}{T^2 Var(X_i)^2}\\
+                   &=\frac{\sum_{i=1}^T \sigma^2_{v_t} + \sum_{i=1}^T Cov(v_t, v_j)}{T^2 \sigma^4_X}
+\end{align*}
+
+\subsection{Classical and Robust standard errors}
+
+Assumption
+\begin{align*}
+    Cov(v_t, v_j) &= 0 \text{ (independence)}
+\end{align*}
+
+Classical (conditional homoscedasticity)
+\begin{align*}
+    Var(X_t e_t) &= Var(X_t)Var(e_t)\\
+    E(e_t^2 | \Omega_{t-1}) &= \sigma^2 \text{ (equal var)}\\
+    SE(\hat{\beta}) &= \sqrt{\frac{\hat{\sigma}_e^2}{T\hat\sigma_X^2}}
+\end{align*}
+
+Robust standard errors (heterscedasticity)
+
+\begin{align*}
+    SE(\hat{\beta}) &= \sqrt{\frac{\hat{\sigma}_{v_t}^2}{T\hat\sigma_X^4}}
+\end{align*}
+
+\subsection{HAC standard errors}
+
+Heteroskedasticity and autocorrelation consistent (HAC)
+\begin{align*}
+    Cov(v_t, v_j) &\neq 0 \text{ (correlated errors)}
+\end{align*}
+
+Adjustment factor $f_T$
+\begin{align*}
+    Var(\hat\beta) &= \frac{Var(v_t)}{TVar(X_i)^2} f_T\\
+                   &= \frac{\sigma_{v_t}^2}{\sigma_X^4} f_T\\
+    f_T &= \frac{Var(\sum_{t=1}^T v_t)}{TVar(v_t)}\\
+    \Rightarrow Var(\hat\beta) &= \frac{Var(v_t)}{TVar(X_i)^2} \cdot \frac{Var(\sum_{t=1}^T v_t)}{TVar(v_t)}\\
+                               &=\text{original var}
+\end{align*}
+
+Estimate $f_T$ with sample autocorrelations,
+and truncate at max significant lag $m$.
+
+\subsubsection{Unweighted and weighted HAC estimator}
+
+with a truncation parameter $m$
+
+
+Unweighted (can have negative variance)
+\begin{align*}
+    \hat{f} &= 1 + 2\sum_{s=1}^m \hat{\rho}(s)
+\end{align*}
+
+Newey-West
+Weighted (always nonnegative, preferred)
+\begin{align*}
+    \hat{f} &= 1 + 2\sum_{s=1}^m \left(\frac{m-s}{m}\right)\hat{\rho}(s)
+\end{align*}
+
+\subsubsection{Choice of truncation parameter $m$}
+
+$m$ reflects the autocorrelation structure (ACF plot)
+
+\begin{tabular}{l @{ : $m=$ } l}
+    Schwert (max lag) & $12(T/100)^{1/4}$\\
+    Trend/Seasonal (no cycle) & $1.4T^{1/3}$\\
+    Stock and Watson (cycle style) & $0.75T^{1/3}$\\
+    full model (T, S, C), uncorrelated & $0$
+\end{tabular}
+
+\subsubsection{Choice of $m$ for h-step-ahead forecast}
+
+Since forecast error is $MA(h-1)$, $m=h-1$
+
+\section{Model selection}
+
+Q: which order for AR(p)?
+
+Fundamental trade-off: estimation error (var) vs model misspecification (bias)
+
+\subsection{Sequential tests}
+
+Test if coefficient for some variables are 0
+
+\begin{itemize}
+    \item sequential t-test 
+    \item sequential F-test
+        \subitem preferred over t-test in presence of high correlation among regressors
+\end{itemize}
+
+Limitation: 
+\begin{itemize}
+    \item not designed to select best forecast model
+    \item search not comprehensive and outcome is path-dependent
+    \item may end up overparameterization
+\end{itemize}
+
+\subsection{Information criteria}
+
+\begin{itemize}
+    \item AIC: Akaike, minimise Kullback-Leibler distance between model and forecast distribution
+    \item BIC: Schwarz Bayesian, based on highest posterior probability given data
+\end{itemize}
+
+Condition for Information criteria (common mistakes):
+\begin{enumerate}
+    \item same number of observations \\(i.e. when comparing models with diff lags, keep the least obs)
+    \item same dependent variables \\ (i.e. compare $Y$ with $Y$ and not $log(Y)$)
+    \item Assumes conditional homoskedasticity
+\end{enumerate}
+
+\subsubsection{Bayesian criterion}
+
+consider $M_i:=$ model $i$, $D :=$ data
+\begin{align*}
+    \pi(M_1 | D) &= \frac{P(D|M_1)\pi(M_1)}{P(D|M_1)\pi(M_1)+P(D|M_2)\pi(M_2)}
+\end{align*}
+and $\pi(M_i) = \frac{1}{2}$
+
+\subsubsection{Bayesian criterion for AR(p)}
+
+Balance fit (RSS) and model complexity (k), 
+has consistency property: select model most likely to be true 
+(also chooses the smaller model)
+
+Assume AR(p) with normal errors and uniform priors
+\begin{align*}
+    \pi(M_1|D) &\propto
+    exp\left(-\frac{BIC}{2}\right)\\
+    BIC&= T \log\left( \frac{SSR}{T} \right) + k \log(T)
+\end{align*}
+where $k:=$ num of estimated coefficients, $T:=$ sample size
+
+Smallest BIC has highest posterior probability
+
+Alternative forms
+\begin{align*}
+    \text{[STATA]} &\\
+    BIC&= -2L + k\log(T)\\
+    2L &= -T\log(2\pi)+1) -
+    T\log\left(\frac{SSR}{T}\right)\\
+    \text{[R]} &\\
+    BIC &= \log\left( \frac{SSR}{T} \right) + k \frac{\log(T)}{T}
+\end{align*}
+
+\subsubsection{Shibata criterion}
+
+Minimise forecast risk directly
+\begin{align*}
+    R(\hat Y) &= E(Y-\hat Y)^2\\
+    E(SSR) &= E(MSFE) - 2\sigma^2k\\
+    E(MSFE) &= T\sigma^2
+\end{align*}
+
+Shibata bias correction criterion 
+\begin{align*}
+    S_k &= SSR(1+\frac{2k}{T})
+\end{align*}
+
+\subsubsection{Akaike criterion}
+
+AIC is an approximately unbiased estimate of the MSFE
+
+\begin{align*}
+    T \log\left(\frac{S_k}{T}\right) &\approx T\log\left(\frac{SSR}{T}\right) + 2k
+\end{align*}
+
+AIC is an approximately unbiased estimate of the Killback-Leibler information criterion (KLIC)
+
+\subsection{Predictive Least Squares (PLS)/CV}
+
+Compute out-of-sample forecasts and associated forecast error
+
+\begin{align*}
+    e_t &= Y_t - \hat{Y}_t\\
+    PLS &= \sqrt{\frac{1}{P}\sum_{t=M+1}^T e_t^2}
+\end{align*}
+$T:=$ total sample\\
+$P:=$ hold-out sample\\
+$M:=$ training sample
+
+Disadvantages
+\begin{itemize}
+    \item Tends to overestimate true MSFE 
+    \item Tends to over-parsimonious (prefer smaller model)
+    \item very sensitive to choice of $P$
+\end{itemize}
+
+\subsection{Out-of-sample (OOS) model update}
+
+Extrapolation forecast beyond training data
+
+\subsubsection{True vs pseudo OOS}
+
+\begin{tabulary}{\linewidth}{l @{ : } L}
+    True OOS & made guesses about true unknown future values\\
+    pseudo OOS & useful to evaluate models, aka validation/testing data
+\end{tabulary}
+
+Pseudo OOS:
+\begin{tabulary}{\linewidth}{l @{ : } L}
+    $T$ & Total observations\\
+    $N$ & Training data\\
+    $P$ & evaluation data
+\end{tabulary}
+
+Produce series of h-step forecasts (note: fixed horizon h), update estimate 
+with additional data as time increase \\ (using the following 3 methods)
+
+\subsubsection{Fixed estimation window}
+
+\begin{itemize}
+    \item Includes only first $N$ observation (no update)
+    \item Used when estimation costs are high (no real time update possible)
+    \item Not desirable when model is unstable over time
+\end{itemize}
+
+\subsubsection{Expanding/recursive estimation window}
+
+\begin{itemize}
+    \item Use first $N$ data for estimation 
+    \item In next period, include an extra observation to update model
+    \item When DGP is stationary: reduce estimation error over time 
+    \item When DGP changes: reduce var increase bias
+\end{itemize}
+
+\subsubsection{Rolling estimation window}
+
+\begin{itemize}
+    \item Include most recent $N$ observation
+    \item In next period, drop oldest data and include $N+1$ data
+    \item Fixed sample size of the most recent data 
+    \item Used when unsure DGP is stationary and do not want to include outdated data 
+    \item Higher parameter uncertainty (var)
+\end{itemize}
+
+\section{Forecast combination}
+
+Combine different forecasts to reducing variance
+
+Assume forecast $f_1, f_2$ that are unbiased and uncorrelated with 
+variance $\sigma_1^2, \sigma_2^2$
+
+Weighted average
+\begin{align*}
+    f&=wf_1 + (1-w)f_2\\
+    Var(f) &= w^2\sigma_1^2 + (1-w)^2\sigma_2^2
+\end{align*}
+
+\subsection{Equal weights}
+
+Equal weights
+\begin{align*}
+    Var(f) &= \frac{1}{4}(\sigma_1^2 + \sigma_2^2)
+\end{align*}
+variance increase by 2 but divides by 4
+
+\subsection{Unequal weights}
+
+Solve by minimising $Var(f)$ wrt $w$
+\begin{align*}
+    w^* &= \frac{\sigma_2^2}{\sigma_1^2+\sigma_2^2} = \frac{\sigma_1^{-2}}{\sigma_1^{-2}+\sigma_2^{-2}}
+\end{align*}
+
+Note:
+\begin{itemize}
+    \item weight on forecast 1 is inversely proportional to its variance
+    \item weights are non-negative and sum to 1
+    \item In reality, true variance is unknown
+\end{itemize}
+
+\subsubsection{Bates-Granger}
+
+Estimate variance using out-of-sample forecast variances
+\begin{align*}
+    w^* &= \frac{\hat{\sigma}_j^{-2}}{\sum_{i=1}^J \hat\sigma_i^{-2}}
+\end{align*}
+Assume uncorrelated forecasts
+
+\subsubsection{Granger-Ramanathan combination}
+
+Regression method to combine forecasts
+\begin{align*}
+    Y_t &= \beta_1 f_{1t} + \cdots + \beta_Nf_{N, t} + e_t\\
+        &\sum_{i=1}^N w_i = 1, w_i \geq 0
+\end{align*}
+Note: no intercept
+
+\subsubsection{Bayesian model averaging (and AIC)}
+Based on BIC
+\begin{align*}
+    w^*_m &= exp\left( -\frac{BIC_m}{2} \right)\\
+          &= exp\left( - \frac{\Delta BIC_m}{2} \right)\\
+    w_m &= \frac{w^*_m}{\sum_{m=1}^M w^*_m}
+\end{align*}
+
+where $\Delta BIC_m = (BIC_m - BIC^*) :=$ difference between model$m$ and best model.
+This is to adjust for underflow issue
+
+Note:
+\begin{itemize}
+    \item Weighted AIC replaces BIC with AIC
+    \item For prediction interval, compute RMSE of combined forecast and use it as estimate for $\sigma$
+\end{itemize}
+
+\section{Forecast evaluation}
+
+Evaluating forecast ``quality''
+
+\subsection{Optimal forecast under squared loss}
+
+Properties of optimal forecasts under the squared loss 
+(note: properties changes under different loss, for example, 
+in Lin-Lin loss forecast should be biased instead)
+
+\begin{itemize}
+    \item unbiased 
+    \item 1-step ahead errors are white noise 
+    \item h-step ahead errors are at most $MA(h-1)$
+    \item h-step ahead errors with variance non-decreasing in $h$, 
+        and converging to the unconditional variance of the process
+\end{itemize}
+
+\subsubsection{Unbiased}
+
+If $e_t = \epsilon_t$, testing $H_0:\alpha=0$
+\begin{align*}
+    e_t &= \alpha + \epsilon_t
+\end{align*}
+\begin{tabulary}{\linewidth}{l @{ : } L}
+    $e_t$ & 1-step ahead forecast error\\
+    $\epsilon_t$ & error in regression (not a value)
+\end{tabulary}
+
+Note:
+\begin{itemize}
+    \item If serial correlation is present (multi-step ahead error or suboptimal forecast)
+    \item Use $MA$ models and test for $H_0:\alpha=0$
+\end{itemize}
+
+\subsubsection{1-step forecast errors are white noise}
+1 step ahead forecast error (optimal)
+\begin{align*}
+    e_{t+1|t} = \epsilon_{t+1}
+\end{align*}
+
+Look for evidence of serial correlation in forecast errors
+\begin{itemize}
+    \item examine ACF 
+        \subitem see if autocorrelations are significant
+    \item Exame Ljung-Box statistics 
+        \subitem Test joint tests of autocorrelation
+\end{itemize}
+
+\subsubsection{h-step errors are $MA(h-1)$}
+h-step ahead forecast error (optimal)
+\begin{align*}
+    e_{t+h|t} &= \epsilon_{t+h}+b_1\epsilon_{t+h-1} + \cdots + b_{h-1}\epsilon_{t+1}
+\end{align*}
+
+Simple test 
+\begin{itemize}
+    \item Plot ACF of forecasts errors 
+        \subitem examine whether autocorrelation beyond lag $h-1$ are significant
+    \item Estimate $MA(h-1+q)$ model 
+        \subitem test if parameters beyond lag h-1 (q) are jointly zero
+\end{itemize}
+
+\subsubsection{Forecast error variance}
+Variance increases with forecast horizon $h$
+\begin{align*}
+    Var(e_{t+h|t}) &= (1+b_1^2 + b_2^2 +\cdots + b_{h-1}^2)\sigma^2\\ 
+                   &= \sigma^2 \sum_{i=0}^{h-1}b_i^2
+\end{align*}
+$b_0 = 1$
+
+Examine forecast error variances as function of $h$ and observe if they are non-decreasing
+(or if there are patterns)
+
+\subsubsection{Unforecastable errors/MZ regression}
+
+Key property of optimal forecast errors: unable to forecast errors 
+
+idea: coefficients should be zero in the regression
+\begin{align*}
+    e_{t+h|t} &= \alpha + \beta\hat{Y}_{t+h|t} + \epsilon_{t+h}\\
+    \Leftrightarrow Y_{t+h} &= \gamma + \theta \hat{Y}_{t+h|t} + e_{t+h|t}
+\end{align*}
+$H_0: \alpha=0, \beta=0$ or $H_0: \gamma=0, \theta=1$
+
+actual: Mincer-Zarnowitz regression
+\begin{align*}
+    Y_{t+h} &= \alpha + \beta\hat{Y}_{t+h|t} + u_{t+h}
+\end{align*}
+Joint test $H_0: \alpha=0, \beta=1$.\\
+
+Note:
+\begin{itemize}
+    \item Reject if there is systematic bias in the forecast
+    \item Use appropriate standard error (robust, HAC)
+    \item $R^2$ is popular way to compare forecasts from different models
+\end{itemize}
+
+\subsection{Forecast accuracy}
+
+Commonly forecasts are not ideal, we might compare forecasts based on 
+forecast accuracy (bias, risk) instead.
+\begin{align*}
+    \text{Bias} &= \frac{1}{P}\sum_{t=1}^P e_{t+h|t}\\
+    \text{MAE } (L(e) = |e|) &= \frac{1}{P} \sum_{i=1}^P |e_{t+h|t}|\\
+    \text{RMSE } (L(e) = e^2) &= \sqrt{\frac{1}{P}\sum_{t=1}^P e^2_{t+h|t}}
+\end{align*}
+\begin{align*}
+    \text{Percentage error } &= \frac{Y_{t+h}-\hat{Y}_{t+h|t}}{Y_{t+h}} = P_{t+h|t}\\
+    \text{MAPE} &= \frac{1}{P}\sum_{t=1}^P |P_{t+h|t}|
+\end{align*}
+
+Typically report ratio of RMSE to benchmark model
+\subsubsection{Meese-Rogoff puzzle}
+
+Random walk beats economic model - ``Exchange rate models of the seventies: do they fit out-of-sample''
+
+\subsubsection{forecast risk comparison/DM test}
+Assumption: $d_t$ is covariance stationary
+
+Test for risk equality for models $a$ and $b$
+\begin{align*}
+    E(L(e^a_{t+h|t})) &= E(L(e^b_{t+h|t}))\\
+    \Leftrightarrow E(d_t) &= E(L(e^a_{t+h|t})) - E(L(e^b_{t+h|t})) = 0
+\end{align*}
+
+Diebold Mariano EPA test
+\begin{align*}
+    d_t &= L(e^a_{t+h|t}) - L(e^b_{t+h|t})\\
+    DM_{12} &= \frac{\bar{d}}{\sigma_{\bar d}/\sqrt{P}} \sim^A N(0, 1)\\
+    \Leftrightarrow d_t &= \mu + \epsilon_t
+\end{align*}
+$H_0: d_t = 0 \Leftrightarrow H_0: \mu = 0$
+
+Note:
+\begin{itemize}
+    \item plot $d_t$ against time to check if
+        $d_t$ is cov stationary
+    \item cov stationary might not hold if using recursive
+        estimation (as forecast error variance
+        reduce over time $\Rightarrow$ not cov
+        stationary)
+    \item $\hat\sigma_{\bar d} :=$ HAC estimate of standard deviation (examine ACF, Q-stat)
+    \item Test is asymptotic procedure: $P$ has to be large
+    \item Test compares forecasts, not models
+    \item May include conditioning information (like $0/1$ recession indicator)
+    \item Estimation errors in both models'
+        parameter might result in the true better
+        performing model performed worse in small
+        sample
+    \item Cannot be applied to nested models with
+        expanding window (AR(p) + expanding
+        window), rolling window with nested model
+        is fine
+\end{itemize}
+
+Finite sample DM test 
+\begin{align*}
+    t_{HLN} &= (1-P^{-1}(1-2h)) + P^{-2}h(h-1))^{1/2}t_{DM}\\
+            &\sim t(P-1)
+\end{align*}
+$h:=$ forecast horizon, $P:=$ number of OOS forecasts
+
+
+\section{Trend Model \& Forecast}
+
+\begin{enumerate}
+    \item Specify and estimate trend model
+    \item Assess model fit/adequacy (selection)
+    \item construct forecast
+\end{enumerate}
+
+\subsubsection{Caution on pure trend forecasting}
+
+\begin{itemize}
+    \item uncertainty increase with forecast horizon ($h$)
+    \item inaccurate trend specification result in extreme poor forecast
+    \item long term forecast is poor due to changing trend
+    \item trend generally changes over time
+\end{itemize}
+
+\subsection{Deterministic vs stochastic trends}
+
+Deterministic trend is a nonrandom function of time.
+\begin{align*}
+    &T_t = f(t), ~t\in[1, T]
+\end{align*}
+
+Stochastic trend varies randomly with time.
+
+\subsection{Trend specifications}
+
+\begin{align*}
+    \text{Quadratic: } T_t = \beta_0 + \beta_1 t + \beta_2 t^2\\
+    \text{Exponential: } T_t = \beta_0 \cdot \exp(\beta_1 t)\\
+    \text{log-linear: } \ln(T_t) = \ln(\beta_0) + \beta_1 t
+\end{align*}
+
+\subsubsection{Estimation}
+
+Quadratic and log-linear: OLS
+
+Exponential: solve
+\begin{align*}
+    \min_{\beta_0, \beta_1} \sum_{t=1}^T [Y_t -\beta_0 \cdot exp(\beta_1 t) ]^2
+\end{align*}
+
+\begin{lstlisting}
+* OLS
+reg y t
+predict varname, xb
+* exp trend model
+nl (y = {b0=0.1}*exp({b1}*t)), r
+predict varname, yhat
+\end{lstlisting}
+
+\subsection{Forecasting}
+
+\begin{align*}
+    Model:~& Y_t = \beta_0 + \beta_1 t + \epsilon_t\\
+    Forecast:~& Y_{T+h} = \beta_0 + \beta_1(T+h) + \epsilon_{T+h}\\
+    Point: ~& \hat{Y}_{T+h} = \hat\beta_0 + \hat\beta_1 (T+h)\\
+    Interval (Point): ~& \hat{Y}_{T+h} \pm \Phi(\alpha/2)\sigma_e
+\end{align*}
+\begin{tabulary}{\linewidth}{l @{ $:=$ } L}
+    $\Phi(\alpha/2)$ & standard normal with $\alpha/2$ quantile\\
+    $\sigma_e$ & root mean squared forecast error
+\end{tabulary}
+
+Note: we assume $\epsilon_t\sim N(0,\sigma)$ iid to construct prediction interval
+
+\subsection{Trend RMSFE}
+\begin{align*}
+    &Y_t = \beta_0 + \beta_1 t + \epsilon_t\\
+    &\sigma^2_e=\sigma^2_{\epsilon} + var(\hat\beta_0) + (T+h)^2var(\hat\beta_1)+2(T+h)cov(\hat\beta_0, \hat\beta_1)
+\end{align*}
+
+\subsubsection{Incorrect trend specification}
+
+MSFE increase as $T, h$ increases.
+
+MSFE grow with sample size and time horizon.
+\begin{align*}
+    \text{True: } Y_t = \beta_0 + \beta_1 t + u_t, ~u_t\sim iid(0, \sigma_u^2)\\
+    \text{Misspecified: } Y_t = \beta_0 + u_t, u_t \sim iid (0, \sigma_u^2)\\
+    E[(Y_{T+h}-\beta_0)^2] = \beta_1^2(T+h)^2+\sigma_u^2
+\end{align*}
+
+Removing trend remove the need for trend model \\(e.g. first difference)
+\subsection{Breaking trend}
+
+Changing/ breaking trend: structural change/break
+\begin{align*}
+    t < \tau: &~Y_t = \beta_0 + \beta_1 t + u_t\\
+    t \geq \tau: &~Y_t = \alpha_0 + \alpha_1 t + u_t
+\end{align*}
+Either estimate each sub-sample separately or use dummy
+\begin{align*}
+    Y_t &= (\beta_0 + \beta_1 t) I(t < \tau) + (\alpha_0 + \alpha_1 t)I(t \geq \tau) + u_t\\
+        &= \beta_0 + \beta_1 t + \beta_2 d_t + \beta_3 td_t + u_t\\
+    \beta_2 &= \alpha_0 - \beta_0\\
+    \beta_3 &= \alpha_1 - \beta_1\\
+    d_t &= I(t \geq \tau)
+\end{align*}
+
+\subsubsection{Continuous break}
+Want to impose continuous restriction such that
+\begin{align*}
+    \beta_0 + \beta_1 \tau &= \alpha_0 + \alpha_1 \tau\\
+    \Leftrightarrow \beta_2 + \beta_3 \tau &= 0
+\end{align*}
+Using spline technique
+\begin{align*}
+    Y_t &= \gamma_0 + \gamma_1 t + \gamma_2 (t - \tau)d_t + u_t\\
+        &= \gamma_0 + \gamma_1 t + \gamma_2 t^* + u_t\\
+    t^* &= (t-\tau)d_t
+\end{align*}
+\begin{lstlisting}
+gen tstat=
+    (time-tq(1974q1))*(time>=tq(1974q1))
+\end{lstlisting}
+
+\subsubsection{Deciding break}
+Break is generally not advised.
+
+Require long data sample (e.g. 10 years) after the breakdate,
+or economic explanation
+
+Break can be tested with QLR statistic
+
+\section{Seasonality Model \& Forecast}
+
+\subsection{Deterministic vs stochastic seasonality}
+Deterministic seasonal pattern is a repetitive pattern over a calendar year
+\begin{align*}
+    S_t = f(D_{it}), t \in [1, T], i \in s
+\end{align*}
+\begin{tabulary}{\linewidth}{l @{ $:=$ }  L}
+    $s$ & seasonal frequency, quarterly (4), monthly (12)\\
+    $D_{it}$ & seasonal dummy, time $=t$, seasonal frequency $=i$
+\end{tabulary}
+
+Stochastic seasonality pattern approximately repeats itself, but evolves over the years.
+
+\subsubsection{Seasonal adjustment}
+
+Estimate and remove the seasonal component.
+
+Focus on trend and business cycle movement
+
+\subsubsection{De-seasonalization}
+
+General: subtract seasonal component from original series
+
+Seasonal dummy model: add $E(Y)$ to $u_t$
+
+\subsubsection{Types of seasonality}
+
+\begin{itemize}
+    \item Holiday effect
+    \item Trading day effect
+    \item Day of week effect
+    \item Intraday seasonality (hour, time of the day)
+    \item Quarter
+    \item Monthly
+\end{itemize}
+
+\subsection{Deterministic seasonality}
+
+\begin{align*}
+    Y_t &= \sum_{i=1}^s \gamma_i D_{it} + \epsilon_t &(1)\\
+    \Leftrightarrow &= \alpha + \sum_{i=1}^{s-1} \beta_i D_{it} + \epsilon_t &(2)
+\end{align*}
+\begin{tabulary}{\linewidth}{l @{ $:=$ } L}
+    $D_{it}$ & seasonal dummies\\&$1$ if data in period $i$\\
+    $S_t = \sum_{i=1}^s \gamma_i D_{it}$ & seasonality
+\end{tabulary}
+
+\subsubsection{Interpretation}
+
+\begin{tabulary}{\linewidth}{l @{ $:$ } L}
+    Model $(1)$& $\gamma_s = $ seasonality effect\\
+    Model $(2)$& $\alpha = $ seasonality effect of omitted period\\
+               & $\beta_i = \gamma_i - \gamma_s$ differences in $(s-1)$ seasonal components from the omitted period
+\end{tabulary}
+
+\subsubsection{Error analysis}
+
+Examine residuals and ensure no seasonality is present
+
+In case of changing seasonality, residuals will still contain seasonal component
+
+\section{Cycles Model \& Forecast}
+
+Cycle: persistent dynamic that remains after accounting for trend and seasonality,
+a stochastic time series process
+
+Note:
+\begin{itemize}
+    \item Cycles ($C_t$) is covariance stationary and ergodic time series process 
+    \item Wold representation ($MA(\infty)$) approximate any stationary process by general linear process
+    \item AR, MA, ARMA model aim to provide approximation for Wold representation
+\end{itemize}
+
+\subsection{Wold's theorem}
+
+Let $Y_t$ be 
+\begin{itemize}
+    \item any mean-zero covariance stationary process
+    \item not containing any deterministic trend or seasonality
+\end{itemize}
+
+We can express any stationary process (incl nonlinear) approximately by the general linear process below:
+\begin{align*}
+    Y_t &= B(L)\epsilon_t =\sum_{i=0}^\infty b_i \epsilon_{t-i}
+\end{align*}
+where
+\begin{align*}
+    b_0 &=1, ~\sum_{t=0}^\infty b_t^2 < \infty\\
+    \epsilon_t &= Y_t - E(\hat{Y}_t|Y_{t-s}, s\geq 1) \sim WN(0, \sigma^2)
+\end{align*}
+Note:
+\begin{itemize}
+    \item Stationary time series processes are constructed as linear function of innovations, or shocks, $\epsilon_t$
+        \subitem practically, $\epsilon_t$ are
+        constructed as 1-step ahead forecast
+        errors with $Y_t$ regress on all available
+        lags $\{Y_{t-k}\}_{k=1}^T$
+    \item Further assume $\epsilon_t$ is serially
+        independent
+        $E(\epsilon_t^k|\Omega_{t-1})=E(\epsilon_t^k)$
+        for PI construction
+        \subitem assumption is removed at GARCH
+        model
+\end{itemize}
+
+\subsubsection{Moments}
+Let $\Omega_{t-1} := \{\epsilon_{t-1}, \epsilon_{t-2}, \cdots\}$
+\begin{align*}
+    E(Y_t) &= E\left(\sum_{i=0}^\infty b_i\epsilon_{t-i}\right)  =0\\
+    E(Y_t|\Omega_t) &= \sum_{i=1}^\infty b_i \epsilon_{t-i}\\
+    Var(Y_t) &=Var\left(\sum_{i=0}^\infty b_i\epsilon_{t-i}\right)=  \sigma^2 \sum_{i=0}^\infty b_i^2\\
+    Var(Y_t|\Omega_{t-1}) &= E\left\{[Y_t-E(Y_t|\Omega_t)]^2|\Omega_{t-1}\right\}\\
+                          &=E(\epsilon_t^2|\Omega_{t-1}) = E(\epsilon_t^2) = \sigma^2
+\end{align*}
+Note: White noise are serially uncorrelated
+
+\subsubsection{Approximate Wold's infinite order polynomial}
+
+Using rational polynomial with $(p+q)$ parameters
+\begin{align*}
+    B(L) \approx \frac{\Theta(L)}{\Phi(L)} = \frac{\sum_{i=0}^q\theta_i L^i}{\sum_{j=0}^p\phi_j L^j}
+\end{align*}
+
+\subsection{Box-Jenkins methodology}
+
+\begin{enumerate}
+    \item Identify model
+    \item Estimate parameters
+    \item Diagnostic check
+\end{enumerate}
+
+\subsubsection{Identify MA, AR, ARMA with ACF/PACF}
+
+\begin{tabulary}{\linewidth}{l @{ : } L}
+    ACF & autocorrelation plot $\rho(k) = Corr(Y_t, Y_{t-k})$\\
+    PACF & partial autocorrelation plot $p(k)$ $\Rightarrow \phi_k$ in\\
+         &$Y_t = \alpha + \sum_{i=1}^k \phi_i Y_{t-1}$
+\end{tabulary}
+
+Identification:
+\begin{enumerate}
+    \item Examine ACF for $MA(q)$, PACF for $AR(p)$
+        \subitem[remark] if neither ACF/PACF shows clear cut-off, ARMA model might be preferred
+    \item Use model selection criteria such as AIC/BIC
+\end{enumerate}
+
+\begin{lstlisting}
+* PACF
+pac
+* ACF
+ac
+* both
+corrgram
+\end{lstlisting}
+
+\subsubsection{Estimation}
+\begin{itemize}
+    \item MA(q), ARMA(p,q): MLE estimation assuming Gaussianity
+    \item AR(p): OLS estimation
+\end{itemize}
+
+\subsubsection{Residual analysis}
+
+Diagnostic checking on residuals:
+\begin{itemize}
+    \item Cycle is modeled well when residual is white noise
+        \subitem[method1] Residual plot should show WN
+        \subitem[method2] ACF plot on residual should show all 0 autocorrelation (WN)
+        \subitem[method3] Q-test (Ljung-Box Q) $p-$value $> 5\%$\\
+        (Note: only observe $M=\sqrt{T}$th p-value)
+    \item Forecast intervals is appropriate when residual follows normal distribution
+        \subitem[method1] kernel density plot
+        \subitem[method2] Jarque-Bera test
+\end{itemize}
+
+
+\section{Cycles: Moving Average (MA) $\Theta(L)\epsilon_t$}
+\begin{align*}
+    MA(1) :~  Y_t &= \epsilon_t + \theta \epsilon_{t-1} = (1+\theta L)\epsilon_t\\
+    MA(q) :~  Y_t &= \epsilon_t + \theta_1\epsilon_{t-1} + \cdots + \theta_q\epsilon_{t-q} \\
+                  &=\Theta(L)\epsilon_t = \sum_{i=0}^q\theta_i\epsilon_{t-i}
+\end{align*}
+
+Inversion condition (all MA are stationary):
+\begin{itemize}
+    \item $|\theta| < 1$
+    \item all polynomial roots outside of the unit circle
+    \item Express MA processes as lag operations and solve $\Phi(L)=0$
+\end{itemize}
+
+\subsection{Moving Average (MA) processes}
+
+\begin{itemize}
+    \item $\theta \in (-1, 1)$ controls the degree of serial correlation
+    \item $\theta_0 = 1$
+    \item $\epsilon_t$ affects $Y_t$ over two periods:
+        \subitem[1] Contemporaneous impact
+        \subitem[2] One-period delayed impact
+    \item $MA(q)$ process not forecastable beyond $q$ steps
+    \item 1-period-ahead forecast errors are white noise $\epsilon_t$
+    \item h-period-ahead forecast errors are $MA(h-1) = \sum_{i=0}^{h-1}\theta_i\epsilon_{t-i}$
+    \item Forecast error variance increases with $h$ until $Var(Y_t), h>q$
+    \item $MA(q)$ not often used in persistent economic data
+\end{itemize}
+
+\begin{lstlisting}
+* MA(1)
+arima rgdp, ma(1)
+* MA(p)
+arima rgdp, ma(1/p)
+\end{lstlisting}
+
+\subsection{MA(1)/(q): Mean}
+
+MA(1)
+\begin{align*}
+    E(Y_t) &= E(\epsilon_t + \theta \epsilon_{t-1}) = 0\\
+    E(Y_t|\Omega_{t-1}) &= E(\epsilon_t + \theta \epsilon_{t-1}|\Omega_{t-1}) = \theta\epsilon_{t-1}
+\end{align*}
+
+MA(q)
+\begin{align*}
+    E(Y_t) &= E\left(\sum_{i=0}^q\theta_i\epsilon_{t-i}\right) = 0\\
+    E(Y_t|\Omega_{t-1}) &= \sum_{i=1}^q \theta_i\epsilon_{t-i}
+\end{align*}
+
+Note:
+The optimal forecast error is $Y_t - \hat Y_t = \epsilon_t$
+
+
+\subsection{MA(1)/(q): Variance}
+
+MA(1)
+\begin{align*}
+    Var(Y_t) &= Var(\epsilon_t) + \theta^2 Var(\epsilon_{t-1}) = \sigma^2 (1 + \theta^2)\\
+    Var(Y_t|\Omega_{t-1}) &= Var(\epsilon_t|\Omega_{t-1}) + \theta^2Var(\epsilon_{t-1}|\Omega_{t-1})= \sigma^2
+\end{align*}
+MA(q)
+\begin{align*}
+    Var(Y_t) &= Var\left( \sum_{i=0}^q \theta_i\epsilon_{t-i}  \right) = \sigma^2 \sum_{i=0}^q \theta_{i}^2\\
+    Var(Y_t|\Omega_{t-1}) &= \sigma^2
+\end{align*}
+
+Note:
+\begin{itemize}
+    \item Variance depends on $\theta$: larger coefficient $\Rightarrow$ higher variability
+    \item The conditional variance, the innovation variance and 1-step forecast variance are the same
+\end{itemize}
+
+\subsection{MA(1): Autocovariance}
+
+MA(1)
+\begin{align*}
+    \gamma(1) &= E(Y_tY_{t-1}) = E[(\epsilon_t+\theta\epsilon_{t-1})(\epsilon_{t-1}+\theta\epsilon_{t-2})]\\
+              &=E(\epsilon_t\epsilon_{t-1}) + \theta E(\epsilon_{t-1}^2) + \theta E(\epsilon_t\epsilon_{t-2}) + \theta^2
+              E(\epsilon_{t-1}\epsilon_{t-2})\\
+              &=\rho_\epsilon(1) + \theta E(\epsilon_{t-1}^2) + \theta\rho_\epsilon(2) + \theta^2\rho_\epsilon(1) \\
+              &=\theta \sigma^2\\
+    \gamma(k) &= E(Y_tY_{t-k}) = E[(\epsilon_t+\theta\epsilon_{t-1})(\epsilon_{t-k}+\theta\epsilon_{t-k-1})]\\
+              &=E(\epsilon_t\epsilon_{t-k}) + \theta E(\epsilon_{t-1}\epsilon_{t-k}) + \theta
+              E(\epsilon_t\epsilon_{t-k-1}) \\
+              &+ \theta^2
+              E(\epsilon_{t-1}\epsilon_{t-k-1})\\
+              &=\rho_\epsilon(k) + \theta \rho_\epsilon(k-1) + \theta\rho_\epsilon(k+1) + \theta^2\rho_\epsilon(k) \\
+              &=0
+\end{align*}
+
+Note: For WN, $\rho(k) =0, k > 0 \Rightarrow$ autocovaraince function is zero for all $k>1$
+
+\subsection{MA(1): Autocorrelation}
+\begin{align*}
+    \rho(1) = \frac{\gamma(1)}{\gamma(0)} = \frac{\theta\sigma^2}{\sigma^2(1+\theta^2)}=\frac{\theta}{1+\theta^2}
+\end{align*}
+Note:
+\begin{itemize}
+    \item Since $\gamma(k)=0, k>1$, $\rho(k)=0, k>1$. \\Process has very short memory (1 period)
+    \item $Sign(\theta)$ determines sign of the first autocorrelation
+    \item For invertible MA(1): $\theta\in[-1, 1]\Rightarrow \rho(1)\in[-0.5, 0.5]$
+\end{itemize}
+
+\subsection{MA(1): Autoregressive representation}
+Using lag operator
+\begin{align*}
+    Y_t &= \epsilon_t + \theta \epsilon_{t-1}  =(1+\theta L)\epsilon_t\\
+    (1+\theta L)^{-1} Y_t &= \epsilon_t, |\theta| < 1
+\end{align*}
+
+When MA process is invertible, we can represent MA(1) in terms of 
+current period shock and lags of $Y_t$
+
+\begin{align*}
+    Y_t &= \epsilon_t + \theta \epsilon_{t-1}\\
+    \Leftrightarrow \epsilon_t &= Y_t - \theta\epsilon_{t-1}\\
+                               &= Y_t - \theta(Y_{t-1}-\theta\epsilon_{t-2})\\
+    \Rightarrow Y_t &= \epsilon_t - \theta Y_{t-1} + \theta^2 Y_{t-2} - \theta^3 Y_{t-3} + \cdots\\
+                    &=-\sum_{i=1}^\infty (-\theta)^i Y_{t-i} + \epsilon_t
+\end{align*}
+
+\subsection{MA(1)/(p): Invertible MA processes}
+
+Series converge if $|\theta|<1$ (and inversion exists)
+\begin{align*}
+    \epsilon_t & =(1-(-\theta L))^{-1} Y_t\\
+               &= (1 - \theta L + \theta^2 L^2 - \theta^3 L^3 + \cdots)Y_t\\
+               &= \Theta(L)Y_t
+\end{align*}
+
+To ensure invertibility:
+\begin{itemize}
+    \item first $q$ autocorrelations are nonzero, above $q$ are zero
+    \item all $q$ roots of the polynomial outside the unit circle
+\end{itemize}
+
+\subsection{MA(1)/(p): optimal forecast}
+
+1-period-ahead optimal forecast
+\begin{align*}
+    MA(1) :& \hat{Y}_{T+1|T} = E_T(\epsilon_{T+1} + \theta\epsilon_{T}) = \theta\epsilon_T\\
+    MA(q) :& \hat{Y}_{T+1|T} = \sum_{i=1}^q \theta_i \epsilon_{T-q+1}
+\end{align*}
+h-periods-ahead optimal forecast, $h\leq q$
+\begin{align*}
+    MA(q) :& \hat{Y}_{T+h|T} = E_T\left(\sum_{i=0}^q \theta_i \epsilon_{T+h-i}\right) =
+    \sum_{i=h}^{q}\theta_i\epsilon_{T+h-i}
+\end{align*}
+h-periods-ahead optimal forecast, $h>q$
+\begin{align*}
+    MA(1) :& \hat{Y}_{T+h|T} = E_T(\epsilon_{T+h}+\theta\epsilon_{T+h-1}) = 0\\
+    MA(q) :& \hat{Y}_{T+h|T} = E_T\left(\sum_{i=0}^q \theta_i\epsilon_{T+h-i}\right) = 0
+\end{align*}
+
+For $h>q$, optimal forecast is unconditional mean $(=0)$
+
+\subsection{MA estimation with recursive forecast}
+
+Problem: in reality $\epsilon_t$ is not observed\\
+Solution: construct $\epsilon_t$ recursively assuming $\epsilon_0=0$
+$\epsilon_1 = Y_1 - \theta\epsilon_0 = Y_1, \epsilon_2 = Y_2 - \theta\epsilon_1, \cdots, \epsilon_T=Y_T -\theta
+\epsilon_{T-1}$
+
+Done automatically in software by using $\hat\theta$ from MLE
+
+\subsection{MA(1)/(q): forecast errors}
+
+1-period-ahead forecast error
+\begin{align*}
+    MA(1) : e_{T+1|T} &= Y_{T+1} - \hat{Y}_{T+1}\\
+                     &= \epsilon_{T+1} + \theta \epsilon_T - \theta \epsilon_T\\
+                     &=\epsilon_{T+1}\\
+    MA(q) : e_{T+1|T} &= \epsilon_{T+1}
+\end{align*}
+h-period-ahead, $h \leq q$
+\begin{align*}
+    MA(q) : e_{T+h|T} &= \sum_{i=0}^{h-1} \theta_i \epsilon_{T+h-i}\\
+                      &= MA(h-1)
+\end{align*}
+h-period-ahead, $h>q$
+\begin{align*}
+    MA(1) : e_{T+h|T} &= \epsilon_{T+h} + \theta\epsilon_{T+h-1}\\
+    MA(q) : e_{T+h|T} & = \sum_{i=0}^q \theta_i \epsilon_{T+h-i}
+\end{align*}
+
+\subsection{MA(1)/(p): forecast error variance}
+\begin{align*}
+    MA(1), h=1 : Var(e_{T+1|T}) &= Var(\epsilon_{T+1}) = \sigma^2\\
+    MA(1), h>1 : Var(e_{T+h|T}) &= Var(\epsilon_{T+h} + \theta\epsilon_{T+h-1})\\
+                   &=\sigma^2(1+\theta^2)\\
+    MA(q), h \leq q : Var(e_{T+h|T}) &= \sigma^2\left( 1 + \sum_{i=0}^{h-1} \theta_i^2\right)\\
+    MA(q), h > q: Var(e_{T+h|T}) &= \sigma^2 \left( 1 + \sum_{i=0}^q \theta_i^2\right)
+\end{align*}
+For $h\leq q: Var(e_{T+h|T})  \leq Var(Y_t)$\\
+For $h > q: Var(e_{T+h|T})=Var(Y_t)$
+
+
+\section{Cycles: Autoregressive (AR) $\frac{1}{\Phi(L)}\epsilon_t$}
+
+\begin{align*}
+    AR(1) ~Y_i &= \phi Y_{t-1} + \epsilon_t = (1-\phi L)^{-1}\epsilon_t\\
+    AR(p) ~Y_i &= \phi_1 Y_{t-1} + \cdots + \phi_pY_{t-p} + \epsilon_t\\
+               &=\Phi(L)^{-1} \epsilon_t = \left(\sum_{i=0}^p \phi_pL^p\right)^{-1} \epsilon_t
+\end{align*}
+
+Stationary condition (all AR are invertible):
+\begin{itemize}
+    \item all roots of lag polynomial outside of unit circle.
+    \item sum of $AR(p)$ coefficient $<1$ (note: not abs)
+\end{itemize}
+\subsection{Autoregressive (AR) processes}
+
+$\epsilon_t \sim WN(0, \sigma^2)$
+
+AR(1)
+\begin{align*}
+    Y_t &= \phi Y_{t-1} + \epsilon_t\\
+    \Rightarrow \epsilon_t &= (1-\phi L) Y_t\\
+    \Rightarrow Y_t &= (1-\phi L)^{-1} \epsilon_t
+\end{align*}
+
+
+AR(p)
+\begin{align*}
+    Y_t &= \epsilon_t + \sum_{i=1}^p \phi_i Y_{t-i}=\epsilon_t + \left(\sum_{i=1}^p \phi_i L^i\right) Y_t \\
+    \Rightarrow \epsilon_t & = \left(1-\sum_{i=1}^p \phi_i L^i\right) Y_t = \Phi(L)Y_t\\
+    \Rightarrow Y_t &= \Phi(L)^{-1}\epsilon_t
+\end{align*}
+
+Note: $\phi$ determines if $Y_t, Y_{t-1}$ are positively/negatively correlated
+
+\subsection{AR(1): Inversion}
+
+Rewrite process as $MA(\infty)$
+\begin{align*}
+    Y_t &= \phi Y_{t-1} + \epsilon_t = \epsilon_t + \phi(\phi Y_{t-2} + \epsilon_{t-1})\\
+        &=\epsilon_t + \phi\epsilon_{t-1}+\phi^2\epsilon_{t-2}+\cdots\\
+    &= \sum_{i=0}^\infty \phi^i \epsilon_{t-i}
+\end{align*}
+Require $|\phi| < 1$ for inversion and stationarity
+
+AR(1) is infinite MA (Wold) with one free parameter
+
+\subsection{AR(1): Mean}
+
+\begin{align*}
+    E(Y_t) &= E\left(\sum_{i=0}^\infty \phi^i \epsilon_{t-1}\right) = 0\\
+    E(Y_t | \Omega_{t-1}) &= E(\phi Y_{t-1}+\epsilon_t | \Omega_{t-1}) = \phi Y_{t-1}
+\end{align*}
+
+\subsection{AR(1): Variance}
+
+\begin{align*}
+    Var(Y_t) &= Var\left(\sum_{i=0}^\infty \phi^i \epsilon_{t-1}\right) = \sum_{i=0}^\infty \phi^{2i} \sigma^2 \\
+             &= \frac{\sigma^2}{1-\phi^2} \text{ (by series convergence)}\\
+    Var(Y_t| \Omega_{t-1}) &= Var(\phi Y_{t-1}+\epsilon_t |\Omega_{t-1}) = \sigma^2 \text{ (assume iid)}
+\end{align*}
+
+
+Trick: $Var(Y_t)=Var(Y_{t-1})$ (variance stationarity)
+\begin{align*}
+    Var(Y_t) &= Var(\phi Y_{t-1} + \epsilon_t)\\
+             &= \phi^2Var(Y_{t-1}) + \sigma^2\\
+             &= \frac{\sigma^2}{1-\phi^2}
+\end{align*}
+If $\phi = 1$, Var is infinite
+
+\subsubsection{Random Walk/ Unit Root}
+
+When $\phi=1$, AR(1) is known as random walk or unit root process
+\begin{align*}
+    Y_t &= Y_{t-1} + \epsilon_t\\
+        &= Y_0 + \sum_{i=0}^{t-1}\epsilon_{t-i}\\
+    \Delta Y_t &= Y_t - Y_{t-1} = \epsilon_t
+\end{align*}
+Infinite memory: shocks have permanent effects.
+
+Wonders without mean reversion.
+
+Note: differencing $\Delta Y_t$ gives white noise
+
+
+\subsection{AR(1): Autocovariance}
+
+Since $E(Y_t) = 0, E(\epsilon_t Y_{t-k}) = E(\epsilon_t)E(Y_{t-k})$
+\begin{align*}
+    Y_t &= \phi Y_{t-1} + \epsilon_t\\
+    E(Y_t Y_{t-k}) &= E(\phi Y_{t-1} Y_{t-k}) + E(\epsilon_t Y_{t-k})\\
+    \Rightarrow \gamma(k) &= \phi \gamma(k-1)\\
+\end{align*}
+Yule-Walker equation:\\
+recursively work out $\gamma(k)$ with known $\gamma(0)=Var(Y_0)$
+\begin{align*}
+    \gamma(1) &= \phi\gamma(0) = \phi \frac{\sigma^2}{1-\phi^2}\\
+    \gamma(2) &= \phi\gamma(1) = \phi^2 \frac{\sigma^2}{1-\phi^2}\\
+    \vdots\\
+    \gamma(k) &= \phi\gamma(k-1) = \phi^k \frac{\sigma^2}{1-\phi^2}
+\end{align*}
+
+\subsubsection{Yule-Walker trick}
+Multiple both side by $Y_{t-k}$
+\begin{align*}
+    Y_t &= \phi Y_{t-1}+\epsilon_t\\
+    Y_t Y_{t-k} &= \phi Y_{t-1}Y_{t-k} + \epsilon_t Y_{t-k}
+\end{align*}
+
+\subsection{AR(1): Autocorrelation}
+
+\begin{align*}
+    \rho(k) &= \frac{\gamma(k)}{\gamma(0)} = \phi^k, k \geq0
+\end{align*}
+
+Note: AR(1) autocorrelations exhibit geometric decay
+
+Rate of decay $\propto \frac{1}{\phi}$. Therefore, $\phi$ describes persistence in ts.
+
+\subsection{AR(1): forecast without intercept}
+
+\subsubsection{1-period-ahead}
+\begin{align*}
+    \hat{Y}_{T+1|T} &= E_t(\phi Y_t + \epsilon_{t+1}) = \phi Y_t
+\end{align*}
+\subsubsection{h-period-ahead}
+\begin{align*}
+    \hat{Y}_{T+h|T} &= E_T(Y_{T+h})\\
+                    &=\phi^h Y_T\\
+                    &\Leftrightarrow  \phi \hat{Y}_{T+h-1}
+\end{align*}
+Optimal h-step-ahead forecast derived from chain rule
+\begin{align*}
+    Y_{t} &=\phi Y_{t-1}+\epsilon_t \\
+          &= \epsilon_t + \phi(\phi Y_{t-2}+\epsilon_{t-1})\\
+          &=\phi^2 Y_{t-2}+\epsilon_t + \phi \epsilon_{t-1}\\
+          &\vdots\\
+          &=\phi^h Y_T + \epsilon_{T+h} + \phi \epsilon_{T+h-1} + \cdots + \phi^{h-1}\epsilon_{T-h+1}\\
+          &=\phi^h Y_T + \sum_{i=0}^{h-1}\phi^i\epsilon_{T+h-i}
+\end{align*}
+
+Note:
+\begin{itemize}
+    \item Forecast can be obtained through OLS
+    \item Chain rule of forecasting: $\hat{Y}_{T+h|T}=\phi^h Y_T = \phi \hat{Y}_{T+h-1|T}$
+\end{itemize}
+
+
+\subsection{AR(1): forecasting with intercept (1-period)}
+
+\begin{align*}
+    \hat{Y}_{T+1|T} &= E(\alpha + \phi Y_{T} + \epsilon_{T+1})=\alpha+\phi Y_T
+\end{align*}
+
+\subsubsection{Constant in ARIMA Y, AR(1)}
+Note: constant in STATA ARMA is $E(Y_t)$ and not $\alpha$
+\begin{align*}
+    E(Y_t) &= \alpha + \phi E(Y_{t-1})\\
+           &=\frac{\alpha}{1-\phi}
+\end{align*}
+When using OLS, constant = $\alpha$
+
+\subsubsection{(1-step) forecast error}
+
+1-step-ahead:
+\begin{align*}
+    AR(1): ~e_{T+1|T} &= (\alpha + \phi Y_T + \epsilon_{T+1})-(\alpha+\phi Y_T) \\
+                      &=\epsilon_{T+1}
+\end{align*}
+
+\subsubsection{(1-step) forecast error variance}
+1-step-ahead:
+\begin{align*}
+    AR(1): ~Var(e_{T+1|T}) = \sigma^2
+\end{align*}
+
+\subsubsection{(1-step) Forecast intervals}
+1-step ahead (assume $\epsilon_{T+1}\sim N(0, \sigma^2)$)
+\begin{align*}
+    AR(1): \hat{Y}_{T+1|T} \pm \hat\sigma \times z_{\alpha}
+\end{align*}
+
+where
+\begin{align*}
+    \hat\sigma^2 &= \frac{1}{T}\sum_{t=1}^T \hat\epsilon_t^2
+\end{align*}
+
+\subsection{AR(1): forecasting with intercept (h-step)}
+
+\subsubsection{(h-step) Plug-in method: Estimation}
+
+Forecast as function of parameters (back substitution)
+
+2-step-ahead
+\begin{align*}
+    \hat{Y}_{T+2|T} &= E_T\left[ \alpha + \phi\left(\alpha+\phi Y_T + \epsilon_{T+1}\right) + \epsilon_{T+2}  \right]\\
+    &= E_T\left[(1+\phi)\alpha + \phi^2 Y_T + \epsilon_{T+2}+\phi \epsilon_{T+1}\right]\\
+                    &= (1+\phi)\alpha + \phi^2 Y_T
+\end{align*}
+
+h-step
+\begin{align*}
+    \hat{Y}_{T+h|T} &= (1+\hat\phi+\hat\phi^2+\cdots+\hat\phi^{h-1})\hat\alpha + \hat\phi^h Y_T
+\end{align*}
+derived using back substitution
+\begin{align*}
+    Y_t &= \alpha + \phi Y_{t-1} + \epsilon_t\\
+        &= \alpha + \phi (\alpha + \phi Y_{t-2} + \epsilon_{t-1}) + \epsilon_t\\
+        &\vdots\\
+        &= (1+\phi + \phi^2 + \cdots + \phi^{h-1})\alpha + \phi^hY_{t-h} + u_t\\
+    u_t &= \epsilon_t + \phi \epsilon_{t-1} + \phi^2 \epsilon_{t-2} + \cdots + \phi^{h-1} \epsilon_{t-h+1}\\
+        &\sim MA(h-1)
+\end{align*}
+
+Note:
+\begin{itemize}
+    \item Simple but cumbersome for multi-step forecast
+\end{itemize}
+
+
+\subsubsection{(h-step) Plug-in method: Forecast Variance}
+Since
+\begin{align*}
+    Y_{T+2|T} &= (1+\phi)\alpha+\phi^2Y_T + \epsilon_{T+2} + \phi\epsilon_{T+1}\\
+    Var(\epsilon_{T+2}) &= Var(\epsilon_{T+1})
+\end{align*}
+Therefore
+\begin{align*}
+    \hat\sigma_u &= \sqrt{(1+\hat\phi^2)\hat\sigma^2}
+\end{align*}
+Note:
+\begin{itemize}
+    \item Hard to generalize beyond AR(1) models
+    \item Require result from AR(1) regression to get estimates
+\end{itemize}
+
+\subsubsection{(h-step) Iterated method: Estimation}
+
+Use chain-rule to compute 1-step then 2-step forecast
+
+2-period-ahead
+\begin{align*}
+    E_T(Y_{T+2}) &= E_T(\alpha+\phi Y_{T+1} + \epsilon_{T+2})\\
+                 &= \alpha + \phi E_T(Y_{T+1})\\
+    \hat{Y}_{T+1|T} &= \hat\alpha + \hat\phi Y_{T}\\
+    \hat{Y}_{T+2|T} &= \hat\alpha + \hat\phi
+    \hat{Y}_{T+1|T}
+\end{align*}
+h-period-ahead
+\begin{align*}
+    \hat{Y}_{T+h|T} &= \hat\alpha + \hat\phi\hat{Y}_{T+h-1|T}
+\end{align*}
+
+\begin{itemize}
+    \item Convenient in linear models, does not work for non-linear models
+    \item less useful when other covariates are used
+    \item More efficient but prone to bias
+\end{itemize}
+
+\subsubsection{(h-step) Iterated method: Forecast Variance}
+Require simulation, 3 ways:
+
+\begin{enumerate}
+    \item errors: $\epsilon_t \sim N(0, \hat\sigma^2)$, assume normal error
+    \item residuals: draw from actual data
+    \item betas: include parameter uncertainty
+\end{enumerate}
+
+\begin{lstlisting}
+*errors (betas), residuals (betas)
+forecast solve, simulate(errors, 
+    statistic(stddev, 
+        predix(sd_)) reps(1000))
+\end{lstlisting}
+
+\subsubsection{(h-step) Direct method: Estimation}
+
+Estimate h-step regression function
+
+2-period-ahead
+\begin{align*}
+    Y_{T+2} &= (1+\phi)\alpha + \phi^2 Y_{T} + \epsilon_T + \phi \epsilon_{T+1}\\
+            &= \alpha^* + \phi^* Y_{T} + u_T\\
+    \alpha^* &= (1+\phi)\alpha\\
+    \phi^* &= \phi^2\\
+    u_T &= \epsilon_T + \phi\epsilon_{T+1} \sim MA(h-1)
+\end{align*}
+
+h-period-ahead (need h regressions to forecast 1 to h steps)
+\begin{align*}
+    \hat{Y}_{T+h|T} &= \hat\alpha^* + \hat\phi^* Y_{T}
+\end{align*}
+
+Note:
+\begin{itemize}
+    \item Can be estimated directly by OLS
+    \item Minimizes parameter directly\\ (different result from iterated and plug-in method)
+    \item error term is not white noise\\ (but still uncorrelated with the regressor)
+    \item Can only produce i-period-ahead with $Y_T\sim Y_{T-i}$
+    \item More robust to misspecification (theoretical literature agrees)
+\end{itemize}
+
+\subsubsection{(h-step) Direct method: Forecast Variance}
+Using regression RMSE
+\begin{align*}
+    \hat\sigma_u &= \sqrt{\frac{1}{T}\sum_{i=1}^T\hat u_i^2}
+\end{align*}
+
+Remember to adjust for parameter uncertainty as well.
+
+In STATA: predict shat, stdf
+
+
+\subsection{AR(p) with intercept}
+
+Process model, $\epsilon_t\sim WN(0, \sigma^2)$
+\begin{align*}
+    &Y_t = \alpha + \phi_1 Y_{t-1} + \phi_2 Y_{t-2} + \cdots + \phi_pY_{t-p}+\epsilon_t\\
+    &\Leftrightarrow(1-\phi_1L-\phi_2L^2-\cdots-\phi_pL^p)Y_t = \alpha+\epsilon_t
+\end{align*}
+Necessary condition for stationarity:
+\begin{align*}
+    \phi_1+\phi_2+\cdots+\phi_p < 1
+\end{align*}
+Alternative expressions (ADF test regression):
+\begin{align*}
+    Y_t &= \alpha + \gamma_1Y_{t-1} + \gamma_2\Delta Y_{t-1} + \cdots + \gamma_p\Delta Y_{t-p+1} + \epsilon_t\\
+    \Rightarrow \Delta Y_{t} &= \alpha + (\gamma_1-1)Y_{t-1} + \gamma_2\Delta Y_{t-1} + \cdots + \gamma_p\Delta Y_{t-p+1} + \epsilon_t\\
+    (\gamma_1-1) &= \phi_1 + \phi_2 + \cdots + \phi_n
+\end{align*}
+
+\subsubsection{AR(p): estimation and forecasting}
+OLS:
+\begin{align*}
+    Y_t &= \hat\alpha + \hat\phi_1 Y_{t-1} + \hat\phi Y_{t-2} + \cdots + \hat\phi_p Y_{t-p} + \hat\epsilon_t
+\end{align*}
+Iterated forecasts:
+\begin{align*}
+    \hat{Y}_{T+h|T} &= \hat\alpha + \hat\phi_1\hat{Y}_{T+h-1|T} + \hat\phi_2 \hat{Y}_{T+h-2|T} + \cdots +
+    \hat\phi_p\hat Y_{T+h-p|T}
+\end{align*}
+Direct forecasts:
+\begin{align*}
+    Y_t &= \hat\alpha^* + \hat\phi_1^* Y_{t-h} + \hat\phi_2^* Y_{t-h-1} + \cdots + \hat\phi_p^* Y_{t-h-p+1} + \hat u_t\\
+    \hat{Y}_{T+h|T} &= \hat\alpha^* + \hat\phi_1^* Y_{t} + \hat\phi_2^* Y_{t-1} + \cdots + \hat\phi_p^* Y_{t-p+1}
+\end{align*}
+
+\section{ARMA(p, q) processes}
+
+Combining AR and MA model.\\
+Use low order, max ARMA(2, 2)
+
+Note: ARMA process has non zero component: $Cov(Y_{t-1}, Y_{t-2})\neq 0$
+
+ARMA(1, 1)
+\begin{align*}
+    Y_t &= \phi Y_{t-1} + \epsilon_t + \theta \epsilon_{t-1}, \epsilon_t \sim WN(0, \sigma^2)\\
+    \text{require: }   & |\phi| < 1 \text{ stationarity }, |\theta|  < 1 \text{ invertibility }
+\end{align*}
+
+ARMA(p, q)
+\begin{align*}
+    Y_t &= \epsilon_t + \sum_{i=1}^p \phi_i Y_{t-i} + \sum_{j=1}^q \theta_j \epsilon_{t-j}\\
+    \Leftrightarrow \Phi(L) Y_t &= \Theta(L) \epsilon_t\\
+    \Rightarrow Y_t &= \frac{\Theta(L)}{\Phi(L)}\epsilon_t
+\end{align*}
+Require: all roots of AR/MA polynomial outside the unit circle for stationarity/invertibility
+
+
+\section{Combining components}
+
+Recall:
+\begin{align*}
+    Y_t = T_t + S_t + C_t
+\end{align*}
+
+Trick:
+\begin{enumerate}
+    \item Lag the first equation
+    \item Multiply lagged equation with $\phi$
+    \item Subtract from original equation
+\end{enumerate}
+
+
+\subsection{Trend + Cycle model}
+Model:
+\begin{align*}
+    Y_t = T_t + C_t
+\end{align*}
+Supposed:
+\begin{align*}
+    C_t &= \phi C_{t-1} + \epsilon_t\\
+        &\sim AR(1)
+\end{align*}
+
+\subsubsection{constant trend}
+Supposed:
+\begin{align*}
+    T_t &= \mu\\
+    \Rightarrow Y_t &= \mu + C_t\\
+    \Rightarrow Y_t - \phi Y_{t-1} &=\mu + C_t - \phi(\mu + C_{t-1})\\
+                                   &= (1-\phi)\mu + C_t - \phi C_{t-1}\\
+    \Rightarrow Y_t &= (1-\phi)\mu + \phi Y_{t-1} + \epsilon_t\\
+                    &\sim AR(1)
+\end{align*}
+
+\subsubsection{linear trend}
+Supposed:
+\begin{align*}
+    T_t &= \mu_1 + \mu_2 t\\
+    C_t &= \phi C_{t-1} + \epsilon_t\\
+    \Rightarrow Y_t - \phi Y_{t-1} &= \mu_1 + \mu_2 t + C_t - \phi(\mu_1+\mu_2(t-1) + C_{t-1})\\
+                                   &= (1-\phi)\mu_1 + \phi\mu_2 + (1-\phi) \mu_2 t + C_t - \phi C_{t-1}\\
+    \Rightarrow Y_{t} &= \beta_0 + \beta_1 Y_{t-1} + \beta_2 t + \epsilon_t\\
+                      &\sim AR(1)
+\end{align*}
+
+\subsubsection{Trend + AR cycle}
+
+\begin{enumerate}
+    \item Constant or Linear time trend:\\
+        regression on trend variable + $p$ lags of $Y_t$,\\
+        where $C_t\sim AR(p)$
+    \item Quadratic trend: \\ same way (algebra messier)
+    \item Exponential trend: \\ logged series with linear trend
+\end{enumerate}
+
+Forecasting is same as AR(p), with trend components
+\begin{align*}
+    Y_t &= \alpha + \gamma t + \beta_1 Y_{t-h} + \cdots + \beta_p Y_{t-h-p+1} + \epsilon_t
+\end{align*}
+
+\subsubsection{Issue with omitted trend}
+
+Issue: $\hat\beta\approx 1$ (unit coefficient) on
+the lag due to misspecification (differ from true
+$\beta$)
+\begin{align*}
+    \text{True: }Y_t &= \alpha + \gamma t + \beta Y_{t-1} + \epsilon_t\\
+    \text{Misspecified: }Y_t &= \hat\alpha + \hat\beta Y_{t-1} + \hat\epsilon_t\\
+\end{align*}
+
+For example, true model: $ Y_t = \mu_1 + \mu_2t$
+\begin{align*}
+    \text{Estimated: } Y_t &= \mu_2 + Y_{t-1} \\ 
+                           &= \mu_2 + (\mu_1 + \mu_2(t-1))\\
+    \Rightarrow Y_t &= \hat\alpha + \hat\beta Y_{t-1} + \hat\epsilon_t
+\end{align*}
+where $\hat\alpha = \mu_2, \hat\beta = 1$ (wrong
+estimation)
+
+Therefore, consider using growth rate instead
+
+\subsection{Seasonal + Cycle model}
+Model:
+\begin{align*}
+    Y_t &= S_t + C_t
+\end{align*}
+Supposed:
+\begin{align*}
+    C_t &= \phi C_{t-1} + \epsilon_t\\
+        &\sim AR(1)\\
+    S_t &= \sum_{i=1}^s \gamma_i D_{it}\\
+    D_{it} &= I(t=i)
+\end{align*}
+
+\subsubsection{Estimation}
+$C_t \sim AR(1)$
+\begin{align*}
+    Y_t - \phi Y_{t-1} &= S_t + C_t - \phi(S_{t-1}+C_{t-1})\\
+    \Rightarrow Y_t &= \phi Y_{t-1} + S_t - \phi S_{t-1} + \epsilon_t
+\end{align*}
+Lagged seasonal dummy is redundant as it perfect
+collinear with current seasonal dummy
+\begin{align*}
+    \Leftrightarrow Y_t  &= \phi Y_{t-1} + S_t + \epsilon_t\\
+\end{align*}
+Final estimation
+\begin{align*}
+     Y_t &= \alpha_0 +
+     \sum_{t=1}^{s-1} \alpha_1 D_{it} + \beta
+     Y_{t-1} + \epsilon_t\\
+         &\Leftrightarrow \sum_{i=1}^s \alpha_i D_{it} + \beta Y_{t-1} + \epsilon_t
+\end{align*}
+
+
+$C_t \sim AR(p)$
+\begin{align*}
+    Y_t &= \alpha_0 + \sum_{t=1}^{s-1} \alpha_i D_{it} + \beta_1 Y_{t-1} + \cdots + \beta_p Y_{t-p} + \epsilon_t
+\end{align*}
+
+\subsection{Trend + Seasonal + Cycle model}
+Full model:
+\begin{align*}
+    Y_t &= T_t + S_t + C_t\\
+    T_t &= \mu_1 + \mu_2 t\\
+    S_t &= \alpha_0 + \sum_{i=1}^{s-1} \alpha_i D_{it}\\
+    C_t &= \phi_1 C_{t-1} + \cdots + \phi_p C_{t-p} + \epsilon_t\\
+\end{align*}
+Finally
+\begin{align*}
+     Y_t = \alpha_0 + \sum_{i=1}^{s-1} \alpha_i D_{it} + \gamma t + \beta_1 Y_{t-1} + \cdots + \beta_p
+    Y_{t-p} + \epsilon_t
+\end{align*}
+
+\section{Forecasting with regression models}
+
+\begin{align*}
+    Y_t = \alpha + \beta X_t + e_t
+\end{align*}
+
+When conditional mean of $Y_t$ depends on present period $X_t$, 
+we run into forecasting the right hand side variable problem.
+
+Solution:
+\begin{itemize}
+    \item Assume future value of $X$ (scenario analysis)
+    \item Build a model to forecast $X$
+\end{itemize}
+
+\subsubsection{Scenario/contingency analysis}
+
+Assume $X_{T+h} = X^*_{T+h}$ based on business assumption
+
+\subsubsection{Forecast models for Y and X}
+
+First predict $X_t$, then sub in $Y_t$
+\begin{align*}
+    \hat{Y}_{T+h|T} &= \alpha + \beta X_{T+h}\\
+    \hat{X}_{T+h} &= \gamma + \phi X_T
+\end{align*}
+
+\subsubsection{Direct forecasts}
+
+Combine model for $X_t$ and $Y_t$
+\begin{align*}
+    \hat{Y}_{T+h|T} &= \alpha + \beta(\gamma + \phi X_{T})\\
+                    &= \mu + \theta X_{T}
+\end{align*}
+helps to estimate standard error correctly
+
+\subsection{Distributed lag models}
+The general idea of direct forecasts
+\begin{align*}
+    Y_t &= \mu + \beta_1 X_{t-1} + \cdots + \beta_k X_{t-k} + e_t\\
+        &= \mu + B(L)X_{t-1} + e_t
+\end{align*}
+
+Interpretation of $\beta$ (under suitable assumption):
+\begin{itemize}
+    \item $\beta_k$ is dynamic multipliers at lag $k$
+    \item sum of coefficients $B(1)$ is the long-run dynamic multiplier
+\end{itemize}
+
+\subsection{ADL models}
+Distributed lag models + AR(p) = autoregressive distributed lag model
+\begin{align*}
+    Y_t =& \mu + \alpha_1 Y_{t-1} + \cdots + \alpha_p Y_{t-p}\\
+         &+ \beta_1X_{t-1} + \cdots + \beta_kX_{t-k} + e_t\\
+    A(L)Y_t &= \mu + B(L)X_{t-1} + e_t
+\end{align*}
+
+h-step ahead forecast
+\begin{align*}
+    Y_{t|t-h} =& \mu + \alpha_1 Y_{t-h} + \cdots + \alpha_p Y_{t-p-h+1}\\
+         &+ \beta_1X_{t-h} + \cdots + \beta_kX_{t-k-h+1} + e_t
+\end{align*}
+
+\subsection{Predictive (Granger) causality}
+Variable $X$ affects the forecast for $Y$ if (some of) the true
+coefficients on lags of $X$ in the ADL models are non-zero
+
+\begin{itemize}
+    \item Does not mean causality in the usual cause-and-effect sense.
+        True causality could be the reverse.
+    \item Testing: $H_0:$ all lags of $X$ jointly = 0 
+        (note: HAC errors with Stock-Watson default lag choice)
+    \item Eaiser to reject $H_0$ in small in-sample 
+    \item In-sample might not work out-of-sample
+\end{itemize}
+
+\section{Volatility modelling}
+
+Adjust for the white noise to be non i.i.d
+
+Mean model:
+\begin{align*}
+    Y_t &= \mu + \epsilon_t\\
+    \epsilon_t | \Omega_{t-1} &\sim N(0, \sigma_t^2)
+\end{align*}
+
+Key insight:
+\begin{itemize}
+    \item squared error could potentially be forecastable
+       \begin{align*}
+           Var(Y_t | \Omega_{t-1}) =
+           E(\epsilon^2_t|\Omega_{t-1}) =
+           \sigma_t^2
+       \end{align*}
+    \item time series is still covariance stationary
+
+\end{itemize}
+
+\subsubsection{Law of Iterated Expectation (LIE)}
+key trick for computing mean, var in this section
+\begin{align*}
+    E(X) &= E(E(X|\Omega))\\
+    E(\epsilon_t^2) &= \sigma^2\\
+    E(\epsilon_t^2) &=
+    E(E(\epsilon_t^2|\Omega_t)) = E(\sigma_t^2)\\
+                    &= E(model)\\
+                    &= \sigma^2
+\end{align*}
+
+
+\subsection{Conditional Variance}
+If squared white noise is forecastable, then conditional variance
+is time varying and serially correlated
+
+\begin{itemize}
+    \item error term is unforecastable (assumed)
+        \begin{align*}
+            E(\epsilon_t|\Omega_{t-1}) = 0
+        \end{align*}
+    \item conditional var of $Y_t$ is time varying (previously
+        assumed)
+        \begin{align*}
+            Var(Y_t|\Omega_{t-1}) &= E([Y_t -
+            E(Y_t|\Omega_{t-1})]^2|\Omega_{t-1}) \\
+                                  &= E(\epsilon_t^2|\Omega_{t-1})\\
+                                  &= \sigma_t^2\\
+                                  &\neq
+                                  E(\epsilon_t^2)
+                                  = \sigma^2
+            \end{align*}
+    \item conditional distribution of
+        $Y_t - E(Y_t) = \epsilon_t$
+        \begin{align*}
+            \epsilon_{t}|\Omega_{t-1} \sim (0, \sigma_t^2)
+        \end{align*}
+\end{itemize}
+
+Intuitively, high Volatility tend to be followed by more high
+volatility days
+
+\subsection{ARCH(1)}
+
+Model conditional var ($\sigma^2_t$) with
+autoregressive dynamics with squared mean-zero
+series ($\epsilon_t^2$) as a proxy for volatility
+\begin{align*}
+    \sigma_t^2 &= \omega + \alpha \epsilon_{t-1}^2\\
+               &\omega > 0, ~ 0 \leq \alpha < 1
+\end{align*}
+
+\begin{itemize}
+    \item Constant variance case when $\alpha=0
+        \Rightarrow
+        E(\epsilon_t^2|\Omega_{t-1})=\sigma^2_t=\sigma^2$
+    \item Spot ARCH by looking at ACF of squared white noise
+\end{itemize}
+
+
+\subsubsection{Unconditional Variance}
+Solve for $\sigma^2$
+\begin{align*}
+    \sigma^2 &= E(\epsilon_t^2) = E(E(\epsilon_t^2|\Omega_{t-1}))\\
+    \text{by LIE} &\\
+             &= E(\sigma^2_t) \\
+    \text{sub in ARCH(1)} &\\
+             &= E(\omega + \alpha \epsilon_{t-1}^2)
+    =\omega + \alpha E(\epsilon_{t-1}^2) \\&= \omega + \alpha
+             \sigma^2\\
+    \Rightarrow \sigma^2 &= \frac{\omega}{(1-\alpha)}
+\end{align*}
+
+Solve for $\sigma^2_t$ in ARCH(1)
+\begin{align*}
+    \omega &= \sigma^2 (1-\alpha)\\
+    \Rightarrow \sigma_t^2 &=
+    \sigma^2(1-\alpha)+\alpha\epsilon_{t-1}^2\\
+                           &= \sigma^2 +
+                           \alpha(\epsilon_{t-1}^2-\sigma^2)
+\end{align*}
+
+Conditional variance is a combination of unconditional variance and
+deviation of the squared error from average error value
+
+\subsubsection{Estimate ARCH(1) as AR(1)}
+Model:
+\begin{align*}
+    \sigma_t^2 &= E(\epsilon_t^2 | \Omega_{t-1}) = \omega + \alpha
+    \epsilon_{t-1}^2\\
+    v_t &:= \epsilon_t^2 - \sigma_t^2 \text{
+    (WN)}\\
+    \epsilon_t^2 - \sigma_t^2 + \sigma_t^2 &=  \omega + \alpha
+    \epsilon_{t-1}^2 + v_t
+\end{align*}
+AR(1) Regression:
+\begin{align*}
+    \epsilon_t^2 &= \omega + \alpha \epsilon_{t-1}^2 + v_t
+\end{align*}
+Estimate ARCH(1) (with regression parameter estimates):
+\begin{align*}
+    \hat\sigma_t^2 &=  \hat\omega + \hat\alpha
+    \hat\epsilon_{t-1}^2\\
+                   &= \hat\omega + \hat\alpha(Y_{t-1}-\hat\mu)^2
+\end{align*}
+Forecast (1-step ahead):
+\begin{align*}
+    \hat\sigma_{t+1|t}^2 &= \hat\omega + \hat\alpha(Y_{t}-\hat\mu)^2
+\end{align*}
+
+\subsubsection{Forecast interval}
+Adjust the forecast interval by including estimated variance (varying
+across time)
+\begin{align*}
+    \hat Y_{t+1|t} \pm Z_{\alpha/2} \hat\sigma_{t+1|t}
+\end{align*}
+
+\subsection{ARCH(p)}
+model
+\begin{align*}
+    Y_t &= B(L)\epsilon_t\\
+    \sigma_t^2 &= \omega + A(L)\epsilon_t^2
+\end{align*}
+where
+\begin{align*}
+               &\omega > 0, ~ A(L) =\sum_{i=1}^p \alpha_i L^i\\
+               &\alpha_i \geq 0 ~\forall~ i, ~ \sum_{i=1}^p \alpha_i < 1
+\end{align*}
+Note: 
+\begin{itemize}
+    \item $Y_t$ can be any stationary ARMA model
+    \item large lags ($>10$) are usually required for ARCH
+\end{itemize}
+
+\subsection{Detecting ARCH effects}
+
+\begin{enumerate}
+    \item Model conditional mean $Y_t = \beta_0 +
+        \epsilon_t$
+        \item Check for serial correlation in squared residuals: ACF,
+            Ljung-Box stats
+\end{enumerate}
+
+Formal test: Engle's LM test for ARCH effects
+\begin{align*}
+    \epsilon_t^2 &= \beta_0 + \sum_{i=1}^m\beta_i\epsilon_{t-i}^2 +
+    u_t\\
+    H_0 &= \beta_1 = \cdots = \beta_m = 0
+    \end{align*}
+
+\subsubsection{ARCH(p) order selection}
+
+\begin{itemize}
+    \item check PACF of squared residuals $\epsilon_t^2$ from mean model 
+    \item AIC/BIC for model selection
+    \item check if ARCH effect is captured well
+        with standardized return
+       \begin{align*}
+           &\epsilon_t^2|\Omega_{t-1}\sim N(0,
+           \sigma_t^2)\\
+           &\Rightarrow
+           \frac{\epsilon_t^2}{\sigma_t^2}\bigg|\Omega_{t-1}
+           \sim N (0, 1)
+       \end{align*}
+\end{itemize}
+
+\subsection{Generalized ARCH(1, 1)}
+Assume model
+\begin{align*}
+    Y_t &= \epsilon_t, ~ \epsilon_t|\Omega_{t-1} \sim N(0, \sigma_t^2)
+\end{align*}
+GARCH(1, 1):
+\begin{align*}
+    \sigma_t^2 &= \omega + \alpha \epsilon_{t-1}^2 + \beta \sigma_{t-1}^2\\
+             &\omega > 0, ~\alpha \geq 0,  ~\beta \geq 0, ~\alpha + \beta < 1
+\end{align*}
+where variance is a function of all past lags (ARCH($\infty$))
+\begin{align*}
+    \sigma_t^2 &= \omega + \alpha \epsilon_{t-1}^2 + \beta
+    \sigma_{t-1}^2 \\
+               &= \sum_{j=0}^\infty \beta^j (\omega + \alpha
+               \epsilon_{t-1-j}^2)
+\end{align*}
+
+\subsubsection{Unconditional Variance}
+Using Law of Iterated Expectation
+\begin{align*}
+    E(\epsilon_t^2) &=
+    E(E(\epsilon_t^2|\Omega_{t-1}))\\
+    &= E(\sigma_t^2) =
+    E(\omega+\alpha\epsilon_{t-1}^2+\beta\sigma_{t-1}^2)\\
+             &=\omega + \alpha\sigma^2 + \beta\sigma^2\\
+             &=\sigma^2\\
+    \Rightarrow \sigma^2 &= \frac{\omega}{1-\alpha-\beta}
+\end{align*}
+
+\subsubsection{Estimation GARCH(1, 1) as ARMA(1, 1)}
+Model:
+\begin{align*}
+    \sigma_t^2 &= \omega + \alpha\epsilon_{t-1}^2
+    + \beta \sigma_{t-1}^2\\
+    v_t &:= \epsilon_t^2 - \sigma_t^2 \text{
+    (WN)}\\
+    \epsilon_t^2 - \sigma_t^2 + \sigma_t^2 &= \omega + \alpha\epsilon_{t-1}^2
+    + \beta \sigma_{t-1}^2 + v_t\\
+    \epsilon_t^2 &= \omega + \alpha\epsilon_{t-1}^2
+    + \beta \sigma_{t-1}^2 + \beta
+    \epsilon_{t-1}^2 - \beta\epsilon_{t-1}^2 + v_t\\
+    \epsilon_t^2 &= \omega + (\alpha + \beta) \epsilon_{t-1}^2
+    + \beta (\sigma_{t-1}^2 -
+    \epsilon_{t-1}^2) + v_t
+\end{align*}
+ARMA(1, 1) Regression:
+\begin{align*}
+    \epsilon_t^2 &= \omega + (\alpha+\beta)\epsilon_{t-1}^2 - \beta
+    v_{t-1} + v_t
+\end{align*}
+
+\subsubsection{Forecast}
+Forecast (1-step ahead)
+\begin{align*}
+    \hat\sigma_{t+1|t}^2 &= \hat\omega +
+    \hat\alpha\hat\epsilon_{t}^2 +
+    \hat\beta \hat\sigma_{t}^2\\
+    \hat\epsilon_t^2 &= (Y_t - \hat Y_{t-1})^2 \text{ (squared error)}\\
+    \hat\sigma_t^2 &= \hat\omega + \hat\alpha\hat\epsilon_{t-1}^2 +
+    \hat\beta \hat\sigma_{t-1}^2 \text{ (fit var
+    iteratively)}
+\end{align*}
+Forecast (2-step ahead)
+\begin{align*}
+    \hat\sigma^2_{t+2|t} &= \omega + \alpha
+    E(\epsilon_{t+1}^2|\Omega_t) + \beta\hat\sigma_{t+1|t}^2\\
+                         &= \omega + \alpha\hat\sigma_{t+1|t}^2 +
+                         \beta\hat\sigma^2_{t+1|t} \\
+                         &= \omega + (\alpha + \beta)
+                         \hat\sigma_{t+1|t}^2
+\end{align*}
+Forecast (3-step ahead)
+\begin{align*}
+    \hat\sigma^2_{t+3|t} &= \omega + \alpha
+    E(\epsilon_{t+2}^2|\Omega_t) + \beta\hat\sigma_{t+2|t}^2\\
+                         &= \omega + \alpha\hat\sigma_{t+2|t}^2 +
+                         \beta\hat\sigma^2_{t+2|t} \\
+                         &= \omega + (\alpha + \beta)
+                         \hat\sigma_{t+2|t}^2\\
+                         &= \omega + (\alpha+\beta)(\omega + (\alpha + \beta)
+                         \hat\sigma_{t+1|t}^2)\\
+                         &= \omega + (\alpha+\beta)\omega +
+                         (\alpha+\beta)^2 \hat\sigma_{t+1|t}^2
+\end{align*}
+Converging into unconditional variance
+
+\subsubsection{h-step forecast is unconditional variance}
+Forecast error (h-step ahead)
+\begin{align*}
+    \epsilon_{t+h} - E(\epsilon_{t+h}|\Omega_t) = \epsilon_{t+h}
+\end{align*}
+Conditional variance
+\begin{align*}
+    &E\left[ (\epsilon_{t+h} - E(\epsilon_{t+h}|\Omega_t))^2 \right] =
+    E(\epsilon_{t+h}^2|\Omega_t)\\
+    &=\omega\left( \sum_{i=0}^{h-2} \left\{ \alpha(1) + \beta(1)
+    \right\}^i \right) + \left( \alpha(1) + \beta(1) \right)^{h-1}
+    \sigma^2_{t+1}
+\end{align*}
+Consider limits
+\begin{align*}
+    \lim_{h \rightarrow \infty}  \sum_{i=0}^{h-2} \left\{ \alpha(1) +
+    \beta(1) \right\}^i &= \frac{1}{1-\alpha(1)-\beta(1)}\\
+    \lim_{h \rightarrow \infty} \left( \alpha(1) + \beta(1)
+\right)^{h-1} &= 0
+\end{align*}
+Therefore
+\begin{align*}
+    \lim_{h \rightarrow \infty} E(\epsilon_{t+h}|\Omega_t) &=
+    \frac{\omega}{1-\alpha(1) - \beta(1)}
+    \end{align*}
+optimal forecast converges to the unconditional variance
+
+\subsection{Generalized ARCH(p, q)}
+Assume model:
+\begin{align*}
+    Y_t &= \epsilon_t, ~ \epsilon_t|\Omega_{t-1} \sim N(0, \sigma_t^2)
+\end{align*}
+GARCH(p, q):
+\begin{align*}
+    \sigma_t^2 &= \omega + \alpha(L) \epsilon_{t}^2 + \beta(L) \sigma_{t}^2\\
+             &\alpha(L) = \sum_{i=1}^p \alpha_i L^i, ~ \beta(L) = \sum_{j=1}^q
+    \beta_j L^j\\
+             &\omega > 0, ~\alpha_i \geq 0,
+             ~\beta_j \geq 0, ~\sum_{i=1}^p\alpha
+             + \sum_{j=1}^q\beta < 1
+\end{align*}
+
+Note:
+\begin{itemize}
+    \item GARCH(p,q) nests ARCH(p) and iid Gaussian WN
+    \item Generally never consider p, q $>$ 2
+\end{itemize}
+
+\subsubsection{Limitation and extensions}
+
+\begin{itemize}
+    \item Require less parameters than ARCH, works well in practice
+    \item Captures volatility clustering and leptokurtosis (fatter
+        tails)
+    \item Cannot capture asymmetric effect on volatility (leverage
+        effect)
+\end{itemize}
+
+\subsection{Asymmetric GARCH: Threshold GARCH}
+
+Corrects for leverage effect
+
+\begin{align*}
+    \sigma_t^2 &= \omega + \beta \sigma_{t-1}^2 + \alpha
+    \epsilon_{t-1}^2 + \gamma\epsilon_{t-1}^2 I(\epsilon_{t-1}<0)
+\end{align*}
+
+$I(\epsilon_{t-1}<0) = 1$ when last period shock was negative
+
+\subsection{Asymmetric GARCH: Exponential GARCH}
+
+Corrects for leverage effect
+
+\begin{align*}
+    \log(\sigma_t^2) &= \omega + \beta\log(\sigma_{t-1}^2) + \alpha
+    \left| \frac{\epsilon_{t-1}}{\sigma_{t-1}} \right| +  \gamma
+    \frac{\epsilon_{t-1}}{\sigma_{t-1}}
+\end{align*}
+
+$|\epsilon_{t-1}/\sigma_{t-1}|$ measures absolute magnitude of shock
+
+$\epsilon_{t-1}/\sigma_{t-1}$ measures sign of shock
+
+\subsection{GARCH in mean: GARCH-M}
+
+Expected return (mean) to be positively correlated
+with volatility $\Rightarrow$ add $\sigma_t^2$ to
+$Y_t$ model
+\begin{align*}
+    Y_t &= \beta_0 + \beta_1 \sigma_t^2 +
+    \epsilon_t \text{ (added }\sigma_t^2) \\
+    \sigma_t^2 &= \omega + \beta \sigma_{t-1}^2 +
+    \alpha
+    \sigma_{t-1}^2 \text{ (GARCH) }
+\end{align*}
+
+Model the risk return relationship in financial
+assets
+
+\subsection{Volatility ground truth}
+
+True daily volatility is not observed
+
+Approximation by
+\begin{itemize}
+    \item squared daily return (tradition, not recommended)
+    \item 5min high frequency data (new standard)\\
+        realised variance (RV) approximate integrated volatility (IV)
+        \begin{align*}
+            RV_t &= \sum_{i=1}^M r_{t, i}^2
+        \end{align*}
+\end{itemize}
+
+Note that only some loss functions (e.g. MSE, QLIKE) are robust to
+measurement errors and invariant to unit of measurement (assuming
+proxy is unbiased)
+
+\subsection{Heterogeneous Autoregressive (HAR)}
+
+Uses RV as forecast variable (but avoids long lags of using daily AR
+model with multi-period realised variance)
+\begin{align*}
+    RV_{t, t+h} &= \frac{1}{h}(RV_{t, t+1} + RV_{t, t+2}, \cdots +
+    RV_{t, t+h})\\
+    RV_{t+1} &= \alpha + \beta_D RV_t + \beta_W RV_{t-5, t} + \beta_M
+    RV_{t-22, t} + \epsilon_{t+1}
+\end{align*}
+Includes daily lag, 5-day average, and 22-day average
+
+\subsubsection{Robust Regression}
+
+Correct for leverage points by weighing observations (lesser weights
+for large leverage points)
+
+\end{multicols}
+\end{document}

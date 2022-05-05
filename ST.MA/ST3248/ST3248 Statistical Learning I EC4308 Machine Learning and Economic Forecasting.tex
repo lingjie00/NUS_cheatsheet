@@ -1,0 +1,1513 @@
+\documentclass[a4paper,12pt,landscape]{article}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[a4paper, landscape]{geometry}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{color,graphicx,overpic}
+\usepackage{hyperref}
+\usepackage{tabulary}
+\usepackage{soul} %for highlight
+\usepackage{xcolor} %color definition
+\usepackage{sectsty} %change section color
+\usepackage{tabulary} % better table
+
+% type codes
+\usepackage{listings} 
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=false,                 
+    captionpos=b,                    
+    keepspaces=false,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\pdfinfo{
+  /Title (ST3248 Statistical Learning I EC4308 Machine Learning)
+  /Creator (Ling)}
+
+% This sets page margins to .5 inch if using letter paper, and to 1cm
+% if using A4 paper. (This probably isn't strictly necessary.)
+% If using another size paper, use default 1cm margins.
+\ifthenelse{\lengthtest { \paperwidth = 11in}}
+    { \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
+    {\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
+        {\geometry{top=.5cm,left=.5cm,right=.5cm,bottom=.5cm} }
+        {\geometry{top=.5cm,left=.5cm,right=.5cm,bottom=.5cm} }
+    }
+
+% Turn off header and footer
+\pagestyle{empty}
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries\color{red}}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries\color{blue}}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries\color{violet}}}
+\makeatother
+
+% Define BibTeX command
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+
+%My Environments
+\newtheorem{example}[section]{Example}
+% -----------------------------------------------------------------------
+
+\begin{document}
+\raggedright
+\footnotesize
+\begin{multicols}{3}
+
+
+% multicol parameters
+% These lengths are set only within the two main columns
+\setlength{\columnseprule}{0.25pt}
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{1pt}
+\setlength{\columnsep}{2pt}
+
+\begin{center}
+     \Large{\underline{ST3248/EC4308}} \\
+     {Lingjie, \today}
+\end{center}
+
+Key problem: estimating the functional relationship in data
+
+\subsection{Definitions}
+
+\begin{tabulary}{\linewidth}{l @{ := } L}
+    Supervised & Predict an outcome variable $Y$ based on one or more inputs.\\
+    Unsupervised & No supervising outputs, learns rs between variables.\\
+    Error & $Y - \hat Y$\\
+    Bias & $E(\hat\theta - \theta)$, inflexible model has higher bias\\
+    Variance & highly flexible method follow data closely\\
+    Bias-variance trade-off & U shaped test MSE curve, higher flexibility result in low bias but high var\\
+    Curse of dimensionality & poor model performance at higher dimension\\
+    Parametric model & model with pre-determined specification\\
+    Non-parametric model & model without any pre-determined specification\\
+    Over-fitting & model is tailored to training data and perform badly on test data\\
+    Under-fitting & model failed to capture the underlying relationship in data\\
+    Reducible error & error can be reduced with better method or more data\\
+    Irreducible error & random error $\epsilon$ unable to be predict from $X$
+\end{tabulary}
+
+\subsection{Comment on parametric and non-parametric methods}
+
+\begin{itemize}
+    \item Parametric approach will work best when true $f$ is similar to parametric form chosen
+        \subitem (non-parametric can never beat parametric in this case)
+    \item However, if model specification is wrong, non-parametric outperform parametric in most cases
+    \item Some methods (e.g. KNN) perform worse than parametric methods in high dimension (curse of dimensionality)
+\end{itemize}
+
+\section{Regression problems}
+
+key problem: estimate
+\begin{align*}
+    E(Y|X=x) = E(f(x) + \epsilon|X=x) = f(x)
+\end{align*}
+
+
+\subsection{Irreducible error, Bias Var trade-off}
+
+Mean Squared Error\\
+$= \text{reducible} + \text{irreducible error}$\\
+$= bias^2 + var + \text{irreducible error}$
+
+\ \\
+$E \left[ \left( Y - f(x) \right)^2 | X = x  \right]$\\
+$=\left[ f(x) - \hat f(x)  \right]^2 + Var(\epsilon)$\\
+$=\left( E\left[ \hat f(x)  \right] - f(x) \right)^2
++E\left[ \left( \hat f(x) - E\left[ \hat f(x)  \right]  \right)^2  \right]
++Var(\epsilon)$
+
+where $ Y = f(x) + \epsilon$
+
+
+\section{Classification problems}
+
+key problem: estimate
+\begin{align*}
+    p_j(x) = P(Y=j|X=x_0)
+\end{align*}
+
+\subsection{Irreducible error}
+
+Bayes error rate
+\begin{align*}
+    1 - E(\max_j P(Y=j|X))
+\end{align*}
+
+lowest possible test error rate (irreducible error)
+
+\subsection{Bayes classifier}
+
+choose $\hat y_0 = j$ from data s.t.
+
+\begin{align*}
+    \max_j P(Y=j|X=x_0)
+\end{align*}
+
+Bayes decision boundary: $P(Y=1|X)=P(Y=2|X)=0.5$
+
+Bayes classifier achieves Bayes error rate.
+However, we need to estimate $P(Y=j|X=x_0)$
+before using Bayes classifier.
+
+
+\section{Model selection}
+
+Goal: reduce test error
+
+Problem: training loss underestimate the actual error
+
+Method:
+\begin{enumerate}
+    \item  Mathematical adjustment (Cp statistics, AIC, BIC)
+    \item Validation-set approach
+    \item Cross validation
+    \item Bootstrap
+\end{enumerate}
+
+\subsection{Regression loss}
+
+\subsubsection{Mean squared error}
+\begin{align*}
+    &L(e) = \frac{1}{n}\sum_{i=1}^n(y_i - \hat f(x_i))^2\\
+    &R(e) = E((y_0 - \hat f(x_0))^2)
+\end{align*}
+
+\subsubsection{Residual standard error}
+
+\begin{align*}
+    RSE &= \sqrt{\frac{1}{n-2}RSS}\\
+    RSS &= \sum_{i=1}^n(y_i-\hat y_i)^2
+\end{align*}
+
+\subsubsection{$R^2$}
+
+\begin{align*}
+    R^2 &= \frac{TSS-RSS}{TSS} = 1 - \frac{RSS}{TSS}\\
+    TSS &= \sum_{i=1}^n(y_i-\bar y)^2
+\end{align*}
+
+Adj $R^2$
+\begin{align*}
+    Adj R^2 &= 1 - \frac{RSS/(n-d-1)}{TSS(n-1)}
+\end{align*}
+
+\subsubsection{Information criterion}
+
+Smaller is better
+
+$C_p$ estimates test MSE
+\begin{align*}
+    C_p &= \frac{1}{n}(RSS + 2d\hat\sigma^2)
+\end{align*}
+
+$AIC$ (Akaike IC) for prediction
+\begin{align*}
+    AIC &= \frac{1}{n\hat\sigma^2}(RSS+2d\hat\sigma^2)
+\end{align*}
+
+$BIC$ (Bayesian IC) for true model, prefer smaller model
+\begin{align*}
+    BIC &= \frac{1}{n\hat\sigma^2}(RSS + \log(n)d\hat\sigma^2)
+\end{align*}
+
+Note
+\begin{itemize}
+    \item require to know number of features in considered model $d$
+    \item outcome variable $y$ and $n$ must be the same
+    \item require estimation of the response variance $\hat\sigma^2$
+        (can be estimated with model with all predictors)
+    \item $\log n > 2$ if $n>7$, BIC penalize training more heavily
+        than AIC when $n>7$
+\end{itemize}
+
+\subsection{Classification loss}
+
+\subsubsection{Error rate}
+\begin{align*}
+    &L(y, \hat y) = \frac{1}{n}\sum_{i=1}^n I(y_i \neq \hat y_i)\\
+    &R(y, \hat y) = E(I(y_0 \neq \hat y_0)) = P(y_0 \neq \hat y_0 |X_0)
+\end{align*}
+
+\subsubsection{Deviance}
+
+Generalization of "least squares" for general linear models.
+Measures distance between data and fit. Min = better
+\begin{align*}
+    Deviance &= -2 log(Likelihood) + Constant \geq 0\\
+             &\sim \chi^2_{df=Residual}
+\end{align*}
+In linear models, deviance is proportional to RSS
+
+
+\subsubsection{Confusion matrix}
+True class (horizontal)
+
+Predicted class
+\begin{tabular}{| l | l | l |}
+    \hline
+    & Positive & Negative\\
+    \hline
+    Positive & TP & FP\\
+    \hline
+    Negative & FN & TN\\
+    \hline
+\end{tabular}
+
+\begin{tabulary}{\linewidth}{l @{ := } L}
+    False positive (FP) rate & \% negative examples that are classified as positive\\
+    False negative (FN) rate & \% positive examples that are classified as negative\\
+    Sensitivity & True positive rate ($TP/(TP+FP)$)\\
+    Specificity & True negative rate ($TN/(TN+FP)$)
+\end{tabulary}
+
+\subsubsection{AUC, ROC}
+
+ROC: receiver operating characteristic curve\\
+AUC: area under the curve
+
+\begin{itemize}
+    \item Compares FP rate (x-axis) and TP rate (y-axis)
+    \item Higher AUC, larger area = better
+    \item Useful to compare different probability threshold
+    \item When threshold = 1, FP=0, TP=0 (lower left)
+    \item When threshold = 0, FP=1, TP=1 (upper right)
+\end{itemize}
+
+Note: $\hat{P}(Y|X) \geq $ threshold will be classify as positive
+
+\subsection{Cross-validation (CV)}
+
+One standard error rule: choose simplest model with test error
+estimate within one standard error of the min value
+
+\subsubsection{Validation-set approach}
+
+Divide samples into: \\
+1. Training set 2. Validation/hold-out set
+
+\begin{enumerate}
+    \item For $i=1, \cdots, N$:
+        \subitem[1.1] Randomly split $n$ samples into train, test group
+        \subitem[1.2] For model $j=1, \cdots, M$:
+        \subsubitem[1.2.1] Fit model $j$ on training group $i$
+        \subsubitem[1.2.2] Evaluate model $j$ based on test group $i$
+    \item Plot $i$th performance (e.g. MSE) against model $j$
+\end{enumerate}
+
+Limitation
+\begin{itemize}
+    \item High variance
+    \item Overestimate test error as only subset of data is used in training
+        (bias is reduced with more data possible)
+\end{itemize}
+
+\subsubsection{K-fold Cross-validation}
+
+\begin{enumerate}
+    \item Randomly split $n$ samples into $K$ blocks, each block has $n_K = n/K$ obs
+    \item For model $j = 1, \cdots, M$:
+        \subitem[2.1] For block $k = 1, \cdots, K$
+        \subsubitem[2.1.1] Fit model $j$ on all blocks except block $k$
+        \subsubitem[2.1.2] Evaluate model $j$ based on block $k$
+        \subitem[2.2.2] Calculate $CV_{(K)}^{(j)}=\sum_{k=1}^K (n_k/n) MSE_k$
+        \subitem Note $(n_k/n)\approx 1/K$
+\end{enumerate}
+
+Estimated test error
+\begin{align*}
+    CV_{(K)} = \frac{1}{K}\sum_{i=1}^K MSE_i
+\end{align*}
+
+Variance
+\begin{align*}
+    \hat{Var}(CV_{(K)}) &= \sum_{k=1}^K \frac{(MSE_k - \bar{MSE}_k)^2}{K-1}\\
+                    &= \frac{1}{K}\hat{Var}(CV_k) + 2 \sum_{i < j}^KCov(CV_i, CV_j)
+\end{align*}
+
+Limitation
+\begin{itemize}
+    \item Bias still exist (min bias when $K=n$)
+    \item CV should be performed before feature selection step
+\end{itemize}
+
+\subsubsection{Leave-one out CV (LOOCV)}
+
+Using Cross-validation with $K=n$
+
+Special result for least-squares linear, polynomial regression
+\begin{align*}
+    CV_{(n)} = \frac{1}{n}\sum_{i=1}^n \left( \frac{y_i-\hat y_i}{1-h_i}  \right)^2
+\end{align*}
+$h_i :=$ leverage, $n :=$ number of samples (i.e. LOOCV)
+
+Limitation
+\begin{itemize}
+    \item High variance since estimates from each fold might be highly correlated
+    \item Computational intensive
+\end{itemize}
+
+\subsection{Bootstrap}
+
+Useful to quantify uncertainty associated with a given estimator or statistical learning method.
+Usually used to quantify standard error of an estimator and prediction error (sd)
+
+Key idea: resampling with replacement
+
+\begin{enumerate}
+    \item Randomly sample n ($Z^{*(r)}, r=1,\cdots,B$) obs from n samples with replacement
+    \item Estimate $\theta_i$ with $Z^{*(r)}$ 
+    \item $\hat\theta = \frac{1}{B}\sum_{r=1}^B \hat\theta^{*(r)}$
+        \subitem \begin{align*}
+            SE_B(\hat\theta) &= \sqrt{\frac{1}{B-1}\sum_{r=1}^B (\hat\theta^{*(r)}-\hat\hat\theta^*)^2}
+        \end{align*}
+\end{enumerate}
+
+\subsubsection{Bootstrap for time series}
+
+Create blocks of consecutive observation and sample with replacement
+
+\section{Preprocessing}
+
+\subsection{Standardization of Numeric Features}
+
+Min-Max normalization
+\begin{align*}
+    X' = \frac{X - \min(X)}{\max(X) - \min(X)}
+\end{align*}
+
+Z-score standardization
+\begin{align*}
+    X' = \frac{X-\mu}{\sigma}
+\end{align*}
+
+Standardizing the predictors
+\begin{align*}
+    X' = \frac{X}{\sigma}
+\end{align*}
+
+\subsection{Transforming Nominal Features}
+
+One hot encoding
+\begin{align*}
+    X' = \begin{cases}
+        1, x = \text{class 1}\\
+        0, x = \text{class 2}\\
+    \end{cases}
+\end{align*}
+
+
+
+\section{Classic Regression models}
+
+\subsection{K Nearest Neighbourhood regressor}
+
+Estimate the mean outcome with the $K$ nearest obs
+\begin{align*}
+    f(x) &= E(Y| X\in N(x))\\
+    \hat f(x) &= \frac{1}{K} \sum_{i \in N(x)} y_i
+\end{align*}
+where $N(x)$ is some neighbourhood of $x$
+
+$K :=$ number of neighbourhood, optimal choice depends on bias-variance trade-off\\
+$1/K :=$ flexibility, higher (small $K$) is more flexible (low bias) but overfitting (high variance)
+
+\subsection{Linear Regression}
+
+\begin{align*}
+    y_i &= \beta_0 + \beta_1 x_1 + \\
+        &+\beta_2 x_1 x_2 + \beta_3 I(x_3 = 1) + \beta_4 x_1^2\\
+        &+\epsilon_i
+\end{align*}
+
+\begin{tabulary}{\linewidth}{l @{ : } l}
+    qualitative var & $I(x_3=1)$\\
+    interaction effect & $x_1x_2$\\
+    non-linear & $x_1^2$
+\end{tabulary}
+
+Note:
+\begin{itemize}
+    \item Due to hierarchical principle, should always include the main effects if
+        the interaction is significant
+\end{itemize}
+
+\subsubsection{Answering the questions}
+
+\begin{enumerate}
+    \item Is there a relationship between $X$ and $y$
+        \subitem[a] Test $F-stat$ hypothesis 
+            \begin{align*}
+                H_0: \beta = 0, H_1: \beta \neq 0
+            \end{align*}
+        \subitem[b] Visual plot $X, y$
+        \subitem[Conclude] there is/no linear/non-linear relationship
+    \item How strong is the relationship?
+        \subitem RSE, $R^2$
+    \item Which $X$ contribute to $y$
+        \subitem Examine p-value for $t-stat$ (individual) or $F-stat$ (categorical var)
+    \item How large is the effect of each $X$ on $y$?
+        \subitem Confidence interval for $\beta$
+        \subitem Collinearity: VIF
+    \item How accurately can we predict future $y$?
+        \subitem Report $\hat Y$
+        \subitem For $E(\hat Y)$, use CI
+        \subitem For $\hat Y$, use PI (capture additional uncertainty of irreducible error)
+    \item Is the relationship linear
+        \subitem Error plot to ensure no trend in errors
+    \item Is there interaction effect between $X$?
+        \subitem Fit interaction terms and test for significant and $R^2$
+\end{enumerate}
+
+\subsubsection{Estimate coefficients}
+
+Least squares estimates
+\begin{align*}
+    \min_{\beta_0, \beta_1} RSS &= \sum_{i=1}^n(y_i - \hat y_i)^2\\
+                                & = \sum_{i=1}^n(y_i - (\hat\beta_0 + \hat\beta_1 x))^2\\
+    \hat\beta_1^* &= \frac{\sum_{i=1}^n(x_i-\bar x)(y_i - \bar y)}{\sum_{i=1}^n(x_i-\bar x)^2}\\
+    \hat\beta_0^* &= \bar y - \hat\beta_1^* \bar x
+\end{align*}
+
+Note:
+\begin{itemize}
+    \item Least squares estimator is unbiased
+\end{itemize}
+
+\subsubsection{Standard error}
+
+Standard error = standard deviation of the estimator
+\begin{align*}
+    \epsilon_i \sim &(0, \sigma^2)\\
+    SE(\hat\beta_0)^2 &= \sigma^2\left[ \frac{1}{n} + \frac{\bar x^2}{\sum_{i=1}^n(x_i-\bar x)^2}  \right]\\
+    SE(\hat\beta_1)^2 &= \frac{\sigma^2}{\sum_{i=1}^n(x_i-\bar x)^2}
+\end{align*}
+
+Note:
+\begin{itemize}
+    \item Require data to be closer together $\Rightarrow$ low $\sigma^2$
+    \item Require data to have a wider range $\Rightarrow$ high $Var(X)$
+\end{itemize}
+
+\subsubsection{Residual standard error}
+
+Estimate $\sigma^2$, variance of $\epsilon_i$
+
+\begin{align*}
+    \hat\sigma = RSE = \sqrt{\frac{RSS}{n-2}}
+\end{align*}
+
+\subsubsection{Confidence intervals}
+
+$\Phi(\alpha/2)=F^{-1}(\alpha/2)$, quantile of standard normal
+
+\begin{align*}
+    \hat\beta_j \pm \Phi(\alpha/2) \cdot SE(\hat\beta_j)
+\end{align*}
+
+\subsubsection{Hypothesis tests}
+
+Testing
+\begin{align*}
+    &H_0: \beta_i = 0, ~H_1: \beta_i \neq 0\\
+    &t_{obs} = \frac{\hat\beta_i-0}{SE(\hat\beta_i)} \sim t_{n-p-1}
+\end{align*}
+\begin{align*}
+    &H_0: \beta_1 = \beta_2 = \cdots = \beta_p = 0\\
+    &H_1: \beta_i \neq 0, \text{ for any } i\\
+    & F_{obs} = \frac{(TSS-RSS)/p}{RSS/(n-p-1)} \sim F_{p, n-p-1}
+\end{align*}
+\begin{align*}
+    &H_0: \beta_{p-q+1} = \cdots = \beta_p = 0\\
+    &H_1 : \text{ Not } H_0\\
+    & F_{obs} = \frac{RSS_0 - RSS/q}{RSS/(n-p-1)} \sim F_{p, n-p-1}
+\end{align*}
+
+Note:
+\begin{itemize}
+    \item $p:=$ number of regressors, excluding $\beta_0$
+    \item either assume $\epsilon\sim N(0, \sigma^2)$, else by by LLN test
+        statistics still holds when $n$ is large
+    \item TSS = total sum of squares
+    \item RSS = residual sum of squares
+    \item F statistics is required as there is $\alpha\%$ chance of not rejecting
+        $t$-stat even though the model is insignificant
+\end{itemize}
+
+
+\subsubsection{Deciding on important variables}
+
+\begin{itemize}
+    \item Forward selection
+    \item Backward selection
+    \item Mixed selection
+\end{itemize}
+
+\subsubsection{Prediction}
+
+Sources of uncertainty
+\begin{itemize}
+    \item Model bias: $\hat{f}(X) - f(X)|X$
+    \item Irreducible error: $\epsilon$
+\end{itemize}
+
+Two intervals
+\begin{itemize}
+    \item Confidence interval: only quantify estimation uncertainty
+    \item Prediction interval: quantify both estimation uncertainty and irreducible.
+        \subitem Wider than CI
+        \subitem Require normality assumption for $\epsilon$
+\end{itemize}
+
+\subsubsection{Inference/Interpretation}
+
+\begin{tabulary}{\linewidth}{l @{ : } L}
+    simple model & $\beta_j$ is the average change in $Y$ in the model when $X_j$ is
+        changed by one unit holding all other predictors fixed\\
+    qualitative & $\beta_j$ is the difference between group 1 and 2\\
+                & $\beta_0$ is the average effect for base group
+\end{tabulary}
+
+\subsubsection{Multicollinearity}
+
+Collinearity refers to situation when two or more predictors are closely related to one another.
+
+Issues
+\begin{itemize}
+    \item Hard to determine individual impact of collinear predictors on response
+    \item Reduce accuracy of the regression coefficient estimate and increase standard error of $\beta_j$, decline in
+        the true T-stat
+    \item May cause $\beta_j$ and $x_j$ to relate to response when they are not. Reduce effectiveness of null hypothesis
+\end{itemize}
+
+VIF Test:
+
+\begin{align*}
+    VIF(\hat\beta_j) = \frac{1}{1 - R^2_{xj|x-j}}
+\end{align*}
+where $R^2_{xj|x-j}$ is the $R^2$ from a regression of $X_j$ onto all of the other predictors
+
+\subsubsection{Error analysis}
+
+\begin{itemize}
+    \item Non-linearity of the response-predictor relationship
+        \subitem Observe residual plot $(e_i=y_i-\hat y_i)$ to ensure "patternless" - without trend
+    \item Correlation of the error terms
+        \subitem $E(\epsilon_i|\epsilon_{i-1})=0$
+        \subitem correlated error term result in underestimated standard error - overconfident in inferences
+        \subitem Observe residual over time
+    \item Non-constant variance of error terms
+        \subitem $Var(\epsilon_i)\neq \sigma^2$
+        \subitem Observe for non "funnel shape" residual plot
+        \subitem Consider $Y' = log(Y), \sqrt(Y)$
+    \item Outliers
+        \subitem Outliers: values that don't fit the pattern on rest of data (comparing $Y, \hat Y$)
+        \subitem Does not affect least squares fit, but large effect on RSE - therefore standard error and intervals
+        \subitem Observe studentized residual - magnitude more than 3 is considered outlier
+    \item High-leverage points
+        \subitem Unusual in terms of features (only compare $X, x_i$)
+        \subitem require calculation of leverage in $>2$ dimension
+    \item Influential point
+        \subitem Both large studentized residual (outlier) and large leverage
+    \item Collinearity
+        \subitem Several predictors are strongly linearly related
+        \subitem Affect standard errors - intervals
+        \subitem require calculation of measures such as VIF in $>2$ dimension
+\end{itemize}
+
+\section{Extending linear regression}
+
+\subsection{Subset selection}
+
+\begin{itemize}
+    \item Identify irrelevant features and set their coefficients
+        exactly to zero
+    \item Best subset selection perform best in-sample, out-of-sample
+        performance is uncertain
+    \item Best subset, forward and backward might have different
+        models
+    \item model $K$ in Forward and Backward selection is a subset of
+        model $K+1$
+\end{itemize}
+
+\subsubsection{Best subset selection}
+
+\begin{enumerate}
+    \item Let $M_0$ denote intercept model (predicts sample mean)
+    \item For $k\in[1, p]$
+        \subitem[a] Fit all $\begin{pmatrix}p \\ k\end{pmatrix}$
+        models contain exactly $k$ predictors
+        \subitem[b] Let $M_k$ be the best model among $\begin{pmatrix}p \\ k\end{pmatrix}$
+        models (selected with smallest RSS, or largest $R^2$)
+    \item Select single best model from $M_0, M_1, \cdots, M_p$ using
+        cross-validation, $C_p (AIC), BIC$ or adjusted $R^2$ (or
+        deviance for classification problems)
+\end{enumerate}
+
+\subsubsection{Forward stepwise selection}
+
+\begin{enumerate}
+    \item Let $M_0$ denote intercept models
+    \item For $k=0, \cdots, p-1$
+        \subitem[a] Consider all $p-k$ models that adds one new
+        variable to $M_k$
+        \subitem[b] Denote $M_{k+1}$ as the best model among those
+        $p-k$ models
+    \item Select single best model from $M_0, \cdots, M_p$
+\end{enumerate}
+
+\subsubsection{Backward stepwise selection}
+
+\begin{enumerate}
+    \item Let $M_0$ denote intercept models
+    \item For $k=p, p-1, \cdots, 1$
+        \subitem[a] Consider all $k$ models that contain all but one
+        predictors in $M_k$ for a total of $k-1$ predictors
+        \subitem[b] Denote $M_{k+1}$ as the best model among those
+        $k$ models
+    \item Select single best model from $M_0, \cdots, M_p$
+\end{enumerate}
+
+\subsection{Shrinkage methods}
+
+\begin{itemize}
+    \item Use all $p$ features in model but shrunk estimates towards 0
+    \item Variable selection when coef are exactly 0, only in Lasso
+    \item Shrinkage methods are biased, but reduce variance
+    \item Shrinkage methods are have lesser degree of freedom than
+        least squares (constrain or regularize coefficient estimates)
+    \item Require scaling before model fitting
+\end{itemize}
+
+\subsubsection{Ridge (L2 norm)}
+
+\begin{align*}
+    \min_{\beta_0, \beta} \sum_{i=1}^n \left( y_i - \beta_0 -
+    \sum_{j=1}^p \beta_jx_{ij} \right)^2 + \lambda \sum_{i=1}^p
+    \beta_j^2
+\end{align*}
+
+$\ell_2$ norm
+\begin{align*}
+    ||\beta||_2 = \sqrt{\sum_{j=1}^p \beta_j^2}
+\end{align*}
+
+Note:
+\begin{itemize}
+    \item Plotting coefficients versus $\lambda$ with
+        \begin{align*}
+            {||\hat\beta_\lambda^R||_2}/{||\hat\beta||_2}
+        \end{align*}
+        \subitem when $\lambda = 0 \Rightarrow$ term = 1
+        \subitem when ${\lambda\rightarrow+\infty}\Rightarrow$ term =1
+    \item When express as constrained optimization problem, larger
+        budget $s\Leftrightarrow$ small $\lambda$
+        \subitem small budget $s\Rightarrow$
+        coefficients shrink towards 0
+\end{itemize}
+
+\subsubsection{Lasso (L1 norm)}
+
+yields sparse, easier to interpret models
+\begin{align*}
+    \min_{\beta_0, \beta} \sum_{i=1}^n \left( y_i - \beta_0 -
+    \sum_{j=1}^p \beta_jx_{ij} \right)^2 + \lambda \sum_{i=1}^p
+    |\beta_j|
+\end{align*}
+
+$\ell_1$ norm
+\begin{align*}
+    ||\beta||_1 = \sum_{j=1}^n |\beta_j|
+\end{align*}
+
+\subsubsection{Special case of Ridge and Lasso}
+
+Conditions
+\begin{itemize}
+    \item $n=p$
+    \item $\boldsymbol{X}$ is identity matrix
+    \item no intercept model $Y_j = \beta_j + \epsilon_j$
+\end{itemize}
+
+OLS estimate: $\beta_j=y_j$
+
+Special result for ridge
+\begin{align*}
+    \hat\beta_j^R = \frac{y_j}{1+\lambda}
+\end{align*}
+
+Special result for lasso
+\begin{align*}
+    \hat\beta_j^L = \begin{cases}
+        y_j - \lambda/2, & y_i > \lambda/2\\
+        y_j + \lambda/2, & y_i < -\lambda/2\\
+        0, & |y_j| \leq \lambda/2
+        \end{cases}
+\end{align*}
+
+Result
+\begin{itemize}
+    \item ridge shrinks by multiplicative factor [continuous]
+    \item lasso shrinks by constant $\lambda/2$, but thresholds to 0
+        when $|y_j|\leq \lambda/2$ (soft thresholding) [break point]
+\end{itemize}
+
+\subsection{Dimension reduction methods}
+
+Objective: fit least squares on a projected variable with $M$
+dimension, where $M<p$, the original dimension
+
+Let $Z_1, \cdots, Z_m$ denote projected variables
+\begin{align*}
+    Z_m &= \sum_{j=1}^p \phi_{jm} X_j
+\end{align*}
+
+We have constants $\phi_{1m}, \cdots, \phi_{pm}$ which forms projected
+variables as linear combination of original features
+
+\subsubsection{Least square on projected features}
+
+Fit linear regression on projected variables
+\begin{align*}
+    y_i &= \phi_0 + \sum_{m=1}^M \phi_m z_{im} + \epsilon_i, i\in[1, n]
+\end{align*}
+
+Can be viewed as constraining coefficients
+\begin{align*}
+    \sum_{m=1}^M \phi_{m}z_{im} = \sum_{m=1}^M
+    \theta_m  \left(\sum_{j=1}^p\phi_{jm}x_{ij} \right) \\
+    = \sum_{j=1}^p \left( \sum_{m=1}^M\theta_m\phi_{jm} \right) x_{ij} =
+    \sum_{j=1}^p\beta_jx_{ij}
+\end{align*}
+
+\subsubsection{Principal component analysis}
+
+PCA reduce features with minimal loss of information by maximising
+variance of the projected variables
+
+\begin{tabulary}{\linewidth}{l @{ := } l}
+    $\phi_{m1}$ & principal components loading,
+    $\sum_{m=1}^M\phi_{m1}^2 = 1$\\
+    $z_{i1}$ & principal component scores, $i\in[1, n]$
+\end{tabulary}
+
+Note:
+\begin{itemize}
+    \item first principal component direction of the data is the
+        direction along which observation vary the most
+    \item first principal component vector defines the line that is as
+        long as possible to the data (orthogonal)
+    \item with $p$ variables, max $p$ principal components
+    \item key assumption: the direction in which features $X_1,
+        \cdots, X_p$ are most variable are the directions that are
+        associated with $Y$
+    \item Principal components regression (PCR) does not do variable
+        selection, each principal component is a non-sparse linear
+        combination of the original feature
+    \item PCA should be done after standardizing predictors, unless
+        predictors are already in the same scale
+\end{itemize}
+
+\subsubsection{Partial least squares}
+
+PLS learns directions in supervised way
+
+\begin{itemize}
+    \item Require standardizing predictors
+    \item $Z_1$ is computed by setting $\phi_{j1}$ (weight on $X_j$ in
+        the projection) to be the simple linear regression coefficient
+        when regressing $Y$ on $X_j$
+    \item PLS places most weight on features that are highly
+        correlated to the response
+    \item PLS explains more variation of $X$ with $Y$, PCA explains
+        more variation in $X$ alone
+\end{itemize}
+
+\section{Classic Classifiers}
+
+\subsection{K Nearest Neighbourhood classifier}
+
+Estimate class prob by fraction of class $j$ in $K$ nearest obs
+\begin{align*}
+    P(Y=j|X=x_0) \approx \frac{1}{K}\sum_{i\in N_0} I(y_i = j)
+\end{align*}
+
+$K :=$ number of neighbourhood\\
+$1/K :=$ flexibility, higher is more flexible but overfitting
+
+\subsection{Logistic regression}
+
+\begin{align*}
+    p(X) = P(Y=1|X) &= \frac{e^{\beta_0+\beta_1 X}}{1 + e^{\beta_0+\beta_1 X}}\\
+    \Rightarrow \log\left(\frac{p(X)}{(1-p(X))}\right) &= \beta_0 + \beta_1X\\
+    P(Y=k|X) &= \frac{exp(X\beta)}{\sum_{i=1}^K exp(X\beta)}
+\end{align*}
+
+\begin{itemize}
+    \item $\log(\cdot)$ is called log odds or logit transformation of $p(X)$
+    \item Log odds can take any real value, and we model linear in log odds
+    \item $\beta_1$ represents the increase in the log odds of $Y=1$ for a one unit increase of $X$
+    \item No interpretation between $\beta_1$ and $p(X)$ for a one-unit increase in $X$
+    \item Regression estimates gives z-statistics by LLN (approximate distribution instead of exact t-stat in linear
+        regression)
+\end{itemize}
+
+\subsubsection{Linear probability regression}
+
+\begin{itemize}
+    \item For binary outcome, linear regression = linear discriminant analysis
+    \item Coding response $Y$ as an integer implies an ordering
+    \item However, linear regression produce probability outside $(0, 1)$
+    \item Linear regression does not work for more than 2 classes
+\end{itemize}
+
+\subsubsection{Estimation: MLE and Deviance}
+Assume Bernoulli distribution
+\begin{align*}
+    f_i(y_0) &= p(x_i)^{y_i}(1-p(x_i))^{1-y_i}, i\in[1, n]\\
+    lik(\beta_0, \beta) &= \prod_{i=1}^n p(x_i)^{y_i} (1-p(x_i))^{1-y_i}\\
+                         &= \prod_{i:y_i=1}p(x_i)\prod_{i:y_i=0}(1-p(x_i))\\
+                         &=\prod_{i=1}^n \left( \frac{exp(x_i'\beta)}{1+exp(x'_i\beta)}
+                         \right)^{y_i}\left(\frac{1}{1+exp(x'_i\beta)}\right)^{1-y_i}\\
+    \ell(\beta_0, \beta) & = \sum_{i=1}^N \left[ log(1+e^{(\beta_0+x'_i\beta)}) - y_i (\beta_0+x'_i\beta)  \right]
+\end{align*}
+
+\begin{align*}
+    Deviance &\propto \sum_{i=1}^N[log(1+e^{\beta_0+x'_i\beta}-y_i(\beta_0 + x'_i\beta)]\\
+             &= -2\ell(\beta_0, \beta) + C
+\end{align*}
+Note:
+\begin{itemize}
+    \item $C$ relates to the likelihood of the "perfect" model
+    \item Null deviance $D_0$: $\ell(\hat\beta_0)$ (intercept only)
+        \subitem $\ell(\hat\beta_0)$ small $\Rightarrow$ $D_0$ large
+    \item Perfect fit (overfitting): $\ell(\hat\beta_0, \hat\beta_1) = C/2$
+\end{itemize}
+
+\subsubsection{Interpretation}
+
+\begin{tabulary}{\linewidth}{l @{ $:=$ } L}
+    odds & $p(X)/(1-P(X))$ $ \in (0, \infty)$\\
+    log odds & $log(p(X)/(1-P(X)))$ $ \in (-\infty, \infty)$\\
+    $\beta_0$ & log-odds of $Y=1$ when $X=0$\\
+    $\beta_1$ & increase in the log odds of $Y=1$ for a one unit increase of $X$
+\end{tabulary}
+
+\subsubsection{Unbalanced dataset: Case-control sampling}
+
+\begin{align*}
+    \hat\beta_0^* = \hat\beta_0 + \log(\frac{\pi}{1-\pi}) - \log(\frac{\tilde{\pi}}{1-\tilde{\pi}})
+\end{align*}
+
+$\tilde{\pi}:=$ sample prevalence (proportion)\\
+$\pi:=$ population prevalence (proportion)
+
+\begin{itemize}
+    \item Case-control is when we intentionally oversampled minority class, usually due to class imbalanced.
+    \item $\beta_j$ will be accurate, but $\beta_0$ require adjustment
+    \item Sampling more controls than cases reduces the variance of the parameter estimates
+    \item Diminishing return: ratio of 5:1 (control:case, negative:positive) is best
+\end{itemize}
+
+\subsection{Discriminant Analysis}
+
+Based on Bayes theorem
+
+\begin{align*}
+    P(Y=k|X=x) &= \frac{P(X=x|Y=k)P(Y=K)}{P(X=x)}\\
+               &= \frac{\pi_kf_k(x)}{\sum_{i=1}^K \pi_i f_i(x)}\\
+               &\propto \pi_k f_k(x)
+\end{align*}
+
+$f_k(x) :=$ density for $X$ in class $k$\\
+$\pi_k:=$ marginal/ prior probability for class $k$
+
+Note:
+\begin{itemize}
+    \item We compare $\pi_kf_k(x)$ to determine the highest probability
+    \item When classes are well-separated, LDA perform better than LR
+    \item When assumption is right (normal distribution) and/or n is small, LDA outperform LR
+    \item LDA can be used to provide low-dimensional views of data
+    \item More commonly used for multi-class classification problem than logistic regression
+    \item Benchmark method for classification
+    \item Is a parametric model
+\end{itemize}
+
+\subsubsection{Linear Discriminant Analysis (LDA)}
+
+Assume $f_k(x) \sim N(\mu_k, \sigma^2)$, normal with same variance
+\begin{align*}
+    f_k(x) &= \frac{1}{\sqrt{2\pi}\sigma}exp\left(-\frac{1}{2}\left( \frac{x-\mu_k}{\sigma}  \right)^2\right)\\
+           &= \frac{1}{(2\pi)^{p/2}|\Sigma|^{1/2}}exp\left(-\frac{1}{2}(x-\mu)^T{\Sigma}^{-1}(x-\mu)\right)
+\end{align*}
+
+\subsubsection{Quadratic Discriminant Analysis (QDA)}
+
+Assume $f_k(x) \sim N(\mu_k, \sigma_k^2)$, normal with diff variance
+\begin{align*}
+    f_k(x) &= \frac{1}{\sqrt{2\pi}\sigma_k}exp\left(-\frac{1}{2}\left( \frac{x-\mu_k}{\sigma_k}  \right)^2\right)\\
+           &= \frac{1}{(2\pi)^{p/2}|\Sigma|^{1/2}}exp\left(-\frac{1}{2}(x-\mu)^T{\Sigma}_k^{-1}(x-\mu)\right)
+\end{align*}
+
+\subsubsection{Discriminant functions}
+
+By simplifying and cancelling, we can assign $x$ to the class with largest discriminant score
+
+LDA: linear (in x) discriminant function
+\begin{align*}
+    \delta_k(x) &= x \frac{\mu_k}{\sigma^2} - \frac{\mu_k^2}{2\sigma^2}+\log(\pi_k)\\
+                &= x^T \Sigma^{-1}\mu_k - \frac{1}{2}\mu_k^T\Sigma^{-1}\mu_k + \log(\pi_k)
+\end{align*}
+Decision boundary ($\delta_k(x) = \delta_i (x)$):
+when $K=2, \pi_1=\pi_2=0.5 \Rightarrow x = (\mu_1+\mu_2)/2$\\
+Assume $\pi_k=\pi_l\Rightarrow x^T\Sigma^{-1}\mu_k - \frac{1}{2}\mu_k^T\Sigma^{-1}\mu_k=x^T\Sigma^{-1}\mu_l - \frac{1}{2}\mu_l^T\Sigma^{-1}\mu_l$
+
+QDA: quadratic (in x) discriminant function
+\begin{align*}
+    \delta_k(x)    &= \log(\pi_k) - \frac{1}{2}(x-\mu_k)^T{\Sigma}_k^{-1}(x-\mu_k)-\frac{1}{2}\log|{\Sigma}_k|
+\end{align*}
+
+\subsubsection{Estimating parameter (LDA)}
+
+\begin{align*}
+    \hat\pi_k &= \frac{n_k}{n}\\
+    \hat\mu_k &= \frac{1}{n_k}\sum_{i:y_i=k}x_i\\
+    \hat\sigma^2 &= \frac{1}{n-K}\sum_{k=1}^K \sum_{i:y_i=k} (x_i - \hat\mu_k)^2\\
+                 &= \sum_{k=1}^K \frac{n_k-1}{n-K}\hat\sigma_k^2
+\end{align*}
+
+\subsubsection{Fisher's Discriminant Plot (LDA)}
+
+Use $K-1$ dimensional plot to represent $K$ classes
+
+When $K>3$, find "best" $2-d$ plane for visualisation
+
+\subsubsection{From $\delta_k(x)$ to probability}
+
+\begin{align*}
+    \hat{P}(Y=k|X=x) &= \frac{\pi_k exp(-\frac{1}{2} \left( \frac{(x-\mu_k)^2}{\sigma^2}  \right) )}
+    {\sum_{i=1}^K \pi_k exp(-\frac{1}{2} \left( \frac{(x-\mu_k)^2}{\sigma^2}  \right) )}
+\end{align*}
+
+\subsubsection{Naive Bayes}
+
+Assume independent features
+\begin{align*}
+    f_k(x)=f_{k1}(x_1)f_{k2}(x_2)\cdots f_{kp}(x_p)
+\end{align*}
+
+Laplace estimator
+\begin{itemize}
+    \item problem: $P(x_i|k)=0 \Rightarrow P(Y|X)=0$
+    \item solution: add 1 to counts
+    \item Note: denominator increase by $p$
+\end{itemize}
+
+
+\subsubsection{Estimating parameter (NB)}
+
+Estimate quantitative $X_j$ as univariate normal
+\begin{align*}
+    X_j|Y = k \sim N(\mu_{jk}, \sigma^2_{jk})
+\end{align*}
+
+Estimate qualitative $X_j$ as proportion count
+\begin{align*}
+    \hat{f_{kj}}(x_j) = \frac{N_{kj}}{N_j}
+\end{align*}
+
+\subsubsection{From NB to probability}
+
+\begin{align*}
+    \hat{P}(Y=k|X=x) = \frac{\pi_kf_k(X_k)}{\sum_{i=1}^K  \pi_k f_k(X_k)}
+\end{align*}
+
+\subsection{Comparing classification methods}
+
+Logistic regression is relate to LDA
+\begin{align*}
+    &log\left( \frac{p_1(x)}{1-p_1(x)}  \right) = \log \left( \frac{p_1(x)}{p_2(x)} \right) = c_0 + c_1 x\\
+    &c_0(\mu_1, \mu_2, \sigma^2), c_1(\mu_1, \mu_2, \sigma^2)
+\end{align*}
+difference in estimation method: MLE vs estimating normal class feature distributions
+
+\section{Tree-based methods}
+
+key: stratifying, segmenting predictor space into number of simple regions
+
+\subsubsection{Terminology}
+
+\begin{tabulary}{\linewidth}{l @{ : } L}
+    terminal nodes & ending leaves, or regions in graph\\
+    splitting & $X=\{X_j < t_k, X_j \geq t_k\}$\\
+    internal nodes & $t_k$, predictor space is split
+\end{tabulary}
+
+\subsection{Decision tree}
+
+advantage:
+\begin{itemize}
+    \item simple, useful for interpretation
+    \item graphical plotting
+    \item close to human decision-making
+\end{itemize}
+
+disadvantage:
+\begin{itemize}
+    \item low predictive power
+\end{itemize}
+
+\subsubsection{Tree building}
+
+\begin{tabulary}{\linewidth}{l @{ : } L}
+    Top down & start at top of tree then successively splits\\
+    Greedy approach & best split is made at each step, rather than
+        future steps\\
+    Prediction & mean outcome in region $R_j$
+\end{tabulary}
+
+\begin{enumerate}
+    \item Select cutpoint $s$ for $X_j$ such that $\{X|X_j < s\}\cup \{X|X_j \geq s\}$ minimises RSS
+    \item Repeat (1) for subsequent predictors, based on the previous identified regions
+    \item Process repeat till stopping criterion
+\end{enumerate}
+
+\begin{align*}
+    \min_{R_j} \sum_{j=1}^J \sum_{i\in R_j} (y_i - \hat{y_{R_j}})^2
+\end{align*}
+$R_j$: region $j$\\
+$\hat{y}_{R_j}$: average outcome within $j$th box
+
+\subsubsection{Tree pruning}
+
+Raw tree overfit training data\\
+Solution: smaller tree with lower variance but some bias
+
+\begin{enumerate}
+    \item[S1]: set high threshold RSS split criterion
+        \subitem However, this is short-sighted as split might leads to large reduction in RSS later on
+    \item[S2]: Cost complexity pruning/ weakest link pruning
+        \subitem Grow a large tree, then prune back to obtain subtree
+\end{enumerate}
+
+There exist a subtree $T \subset T_0$ for each $\alpha$ s.t.
+\begin{align*}
+    \min_{\alpha} \sum_{m=1}^{|T|}\sum_{i:x_i\in R_m} (y_i - \hat y_{R_m})^2 + \alpha |T|
+\end{align*}
+$|T|$: number of terminal nodes\\
+$R_m$: rectangle corresponding to the $m$th terminal node\\
+$\hat{y}_{R_m}$: mean outcome in $R_m$\\
+$\alpha$: controls trade-off between subtree complexity and training fit, selected through CV before applying to
+full data
+
+\begin{enumerate}
+    \item Use recursive binary splitting to grow large tree, stop when terminal nodes have few obs
+    \item Obtain sequence of best sub trees (function of $\alpha$) with cost complexity pruning
+    \item Use K-fold CV to select $\alpha$. For $k = 1, \cdots, K$
+        \subitem Repeat step 1 and 2 on $(K-1)/K$ fraction of data, less $k$ fold
+        \subitem Evaluate MSE based on $k$ fold, as a function of $\alpha$
+        \subitem Average MSE and pick $\alpha$ to min average error
+    \item Return subtree corresponds to the chosen values of $\alpha$
+\end{enumerate}
+
+\subsection{Classification tree}
+
+$\hat{y}$: most commonly occurring class\\
+$\hat{p}_{mk}$: proportion of obs in $m$ region from $k$ class
+
+\subsubsection{Loss function}
+
+Classification error rate (not sensitive to tree-growing)
+\begin{align*}
+    E = 1 - \max_k (\hat{p}_{mk})
+\end{align*}
+
+Gini index (measure purity)
+\begin{align*}
+    G = \sum_{k=1}^K \hat{p}_{mk} (1 - \hat{p}_{mk})
+\end{align*}
+$G$ is small when $\hat{p}_{mk}$ close to 0 or 1 (same class)
+
+Entropy (info gain)
+\begin{align*}
+    D = -\sum_{k=1}^K \hat{p}_{mk} \log (\hat{p}_{mk})
+\end{align*}
+
+\subsection{Bagging}
+
+Applying bootstrap to generate $B$ samples and take average\\
+$Var(\bar{Z}) = \sigma^2/n$ (i.i.d)
+
+\begin{align*}
+    \hat{f}_{bag}(x) = \frac{1}{B} \sum_{b=1}^B \hat{f}^{*(b)}(x)
+\end{align*}
+
+For classification: majority vote
+
+\subsubsection{Out-of-Bag Error Estimation}
+
+out-of-bag (OOB) observation: obs not used in fitting a given tree in bagging
+
+Predict $i$th obs using trees where obs is OOB ($\approx B/3$ trees)
+
+If $B$ is large, OOB estimate is essentially LOOCV
+
+\subsubsection{Random Forests}
+
+RF decorrelates bagged trees, reducing var (non-i.i.d)
+
+key: random selection of $m$ predictors, $m=\sqrt{p}$ (common)
+
+Bagging: $m=p$ (all predictors)
+
+\subsection{Boosting}
+
+Fit small, low variance ``weak leaders'' sequentially and aggregate them slowly to improve forecasting
+
+\begin{align*}
+    \text{Loss function} & \\
+    \min_{\{\beta^{(m)}, \gamma^{(m)}\}_1^M} & \sum_{i=1}^N L\left( y_i, f(x; \beta^{(m)}, \gamma^{(m)}) \right)\\
+    \text{with Basis function } & f(x) \\
+    f(x; \beta^{(m)}, \gamma^{(m)}) &= \sum_{i=1}^M \beta^{(m)} b(x;\gamma^{(m)})\\
+    \text{Iterative update version} & \\
+    \Rightarrow \min_{\beta, \gamma} & \sum_{i=1}^N L(y_i, f^{(m-1)} + \beta b(x_i; \gamma))
+\end{align*}
+
+Hyper-parameter:
+\begin{itemize}
+    \item number of trees $B$, larger is better
+    \item shrinkage parameter $\lambda$, small learning rate
+    \item number of splits $d$, smaller is better
+\end{itemize}
+
+\subsubsection{Forward stagewise additive modelling (FSAM)}
+
+\begin{enumerate}
+    \item Initialize $f^{(0)}(x) = 0$
+    \item For $m=1, \cdots M$:
+        \subitem[a.] Compute \begin{align*}
+            (\beta^{(m)}, \gamma^{(m)}) = \arg \min_{\beta, \gamma} \sum_{i=1}^N L(y_i, f^{(m-1)}(x_i) + \beta b(x_i, \gamma))
+        \end{align*}
+        \subitem[b.] set $f^{(m)}(x) = f^{(m-1)}(x) + \beta^{(m)} b(x, \gamma^{(m)})$
+    \item Final $f(x) = f^{(M)}(x) = \sum_{m=1}^M \beta^{(m)} b(x, \gamma^{(m)})$
+\end{enumerate}
+
+\subsubsection{Gradient Boosting}
+Friedman (1999) estimates gradient with tree model ($h^{(m)}$) and learning rate ($\lambda \leq 1$)
+
+\begin{enumerate}
+    \item Initialize $f_0(x) = \arg \min_\gamma \sum_{i=1}^N L(y_i, \gamma)$
+    \item For $m=1, \cdots M$:
+        \subitem[a.] Compute \begin{align*}
+            r_{i}^{(m)} &= - \frac{\partial L(y_i, f^{(m-1)}(x_i))}{\partial f^{(m-1)}(x_i)}, i \in[1, N]
+        \end{align*}
+        \subitem[b.] Fit base learner $h^{(m)}(x)$ to $\{r_{i}^{(m)}\}_{i=1}^N$
+        \subitem[a.] Compute step length $\beta^{(m)}$ for $h^{(m)}(x)$\begin{align*}
+            \beta^{(m)} = \arg \min_{\beta} \sum_{i=1}^N L(y_i, f^{(m-1)}(x_i) + \beta h^{(m)}(x_i))
+        \end{align*}
+        \subitem[b.] set $f^{(m)}(x) = f^{(m-1)}(x) + \lambda \beta^{(m)} h^{(m)}(x)$
+    \item Final $f(x) = f^{(M)}(x) = \sum_{m=1}^M \lambda \beta^{(m)} f^{(m)}(x)$
+\end{enumerate}
+
+\subsubsection{Gradient in gradient boosting}
+Deriving
+\begin{align*}
+    r_{i}^{(m)} &= - \frac{\partial L(y_i, f^{(m-1)}(x_i))}{\partial f^{(m-1)}(x_i)}, i \in[1, N]
+\end{align*}
+
+Solve
+\begin{align*}
+    \hat{f} &= \arg \min_f L(y_i, f(x_i))
+\end{align*}
+
+Arriving at
+\begin{align*}
+    -\frac{\partial L(y_i, f(x))}{\partial f(x)} &= -r_{i}^{(m)}
+\end{align*}
+
+\subsubsection{Regression gradient example}
+
+\begin{align*}
+    -\frac{\partial\frac{1}{2}(y_i - f(x_i))^2}{\partial f(x)} &= y_i - f(x_i)\\
+    -\frac{\partial |y_i - f(x_i)|}{\partial f(x)} &= sign(y_i - f(x_i))
+\end{align*}
+\begin{align*}
+    &-Huber = \begin{cases}
+        \frac{1}{2}(y_i - f(x_i))\\
+        \delta (|y_i - f(x_i)| - \frac{1}{2}\delta)
+        \end{cases} \Rightarrow \\
+    &\begin{cases}
+        y_i - f(x_i), &|y_i-f(x_i)| \leq \delta\\
+        \delta \cdot sign(y_i - f(x_i)), &|y_i - f(x_i)| > \delta
+    \end{cases}
+\end{align*}
+
+Therefore, the optimal $f^{(0)}(x), r_{i}^{(m)}, \beta^{(m)} (\gamma^{(m)})$ for MSE loss
+\begin{align*}
+    f^{(0)}(x) &= \bar{y}\\
+    r_{i}^{(m)} &= y_i - \hat{y}_i^{(m-1)}\\
+    \beta^{(m)} &= \frac{\sum_{x_i\in R_{j}^{(m)}} r_{i}^{(m)}}{count(R_{j}^{(m)})}
+\end{align*}
+
+Implementation (MSE)
+\begin{enumerate}
+    \item Initialize $f^{(0)}(x) = \bar y$
+    \item For $m = 1, \cdots, M$:
+        \subitem[a] For $i\in[1, N]$, compute\begin{align*}
+            r_i^{(m)} &= y_i - \hat{y}_i^{(m-1)}
+        \end{align*}
+        \subitem[b] Fit regression tree to $r^{(m)}$ with $d+1$ terminal nodes and terminal regions $R_j^{(m)}, j\in[1,
+        J^{(m)}=d+1]$
+        \subitem[c] For $j\in[1, J^{(m)}]$, compute \begin{align*}
+            \gamma_{j}^{(m)} &= \frac{\sum_{x_j\in R_j^{(m)}} r_{i}^{(m)}}{count(R_j^{(m)})}
+        \end{align*}
+        \subitem[d] Update \begin{align*}
+            f^{(m)}(x) &= f^{(m-1)}(x) + \lambda \sum_{j=1}^{J^{(m)}} \gamma_j^{(m)} I(x\in R_j^{(m)})
+        \end{align*}
+    \item Output $\hat{f}(x) = f^{(M)}(x)$
+\end{enumerate}
+
+\subsubsection{Classification gradient example}
+\begin{align*}
+    &-Deviance \Rightarrow I(y_i = G_k) - p_k(x_i)\\
+    &(binary) \begin{cases}
+        1 - p_i(x_i), & y_i = 1\\
+        - p_i(x_i), & y_i = 0
+    \end{cases}
+\end{align*}
+
+Therefore, the optimal $f^{(0)}(x), r_{i}^{(m)}, \beta^{(m)} (\gamma^{(m)})$ for Deviance
+\begin{align*}
+    f^{(0)}(x) &= \frac{\sum_{i=1}^N y_i}{N}\\
+    r_{i}^{(m)} &= y_i - p_i^{(m)}\\
+    \beta^{(m)} &= \frac{\sum_{x_i\in R_{ij}^{(m)}} (y_i-p^{(m)}_i)}{\sum_{x_i\in R_{ij}^{(m)}}
+    p^{(m)}_i(1-p^{(m)}_i)}\\
+                &= \frac{\sum_{x_i\in R_{ij}^{(m)}}r_{i}^{(m)}}{\sum_{x_i\in R_{ij}^{(m)}} p^{(m)}_i(1-p^{(m)}_i)}\\
+    \text{in binary case}&\\
+    p_i^{(m)} &= \frac{exp(log(odds))}{1+exp(log(odds))}\\
+              &=  \frac{exp(f^{(m-1)}(x))}{1+exp(f^{(m-1)}(x))}
+\end{align*}
+
+Implementation (K-class)
+\begin{enumerate}
+    \item Initialize $f_{k}^{(0)}(x) = 0, k\in[1, K]$
+    \item For $m = 1, \cdots, M$:
+        \subitem[a] Set \begin{align*}p_k^{(m)}(x) = \frac{exp(f_{k}^{(m-1)}(x))}{\sum_{j=1}^K exp(f_{j}^{(m-1)}(x))}, k\in[1,
+        K]\end{align*}
+        \subitem[b] Compute $r_{ik}^{(m)}=y_{ik}-p^{(m)}_k(x_i), i\in[1, N]$
+        \subitem[c] Fit a tree to $\{r_{ik}^{(m)}\}_{i=1}^N$ with terminal regions $R^{(m)}_{jk}, j\in[1, J^{(m)}]$
+        \subitem[d] Form $\gamma_{jk}^{(m)}$ \begin{align*}
+            \gamma_{jk}^{(m)} &= \frac{K-1}{K} \frac{\sum_{x_i\in R_{jk}^{(m)}} r_{ik}^{(m)}}{\sum_{x_i \in
+            R_{jk}^{(m)}} |r_{ik}^{(m)}|\cdot (1 - | r_{ik}^{(m)} | )}, j\in[1, J_m]
+        \end{align*}
+        \subitem[e] Update $f_{k}^{(m)}$ \begin{align*}
+            f_{k}^{(m)}(x) &= f_{k}^{(m-1)}(x) + \lambda \sum_{j=1}^{J^{(m)}} \gamma_{jk}^{(m)} I(x\in R_{jk}^{(m)})
+        \end{align*}
+    \item Output $\hat f_k(x)$ \begin{align*}
+        \hat{f}_k(x) &= f_k^{(M)}(x), k\in[1, K]
+        \end{align*}
+\end{enumerate}
+
+\subsubsection{Variable importance measure}
+
+Ordered by 
+\begin{itemize}
+    \item (Regression) Amount of RSS reduced due to splits over a given predictor, averaged over all $B$ trees
+    \item (Classification) Amount of Gini index decreased by splits over a given predictor, averaged over all $B$ trees
+\end{itemize}
+
+
+\section{Support Vector Machine}
+
+Expanding SVM for more than 2 classes:
+\begin{itemize}
+    \item OVA: One versus All
+        \subitem Fit $K$ different 2-class SVM classifiers for each
+        class vs the rest. Classify data to class which $\hat
+        f_k(x^*)$ is largest
+    \item OVO: One versus One
+        \subitem Fit all $\begin{pmatrix}K \\2 \end{pmatrix}$ pairwise
+        classifiers and classify $x^*$ to class that wins the most
+        pairwise competitions
+\end{itemize}
+use OVO if $K$ is not too large
+
+\subsection{Maximal Margin Classifier}
+
+Constrained quadratic programming
+\begin{align*}
+    &\max_{\beta_0, \beta} M\\
+    s.t.~ \sum_{j=1}^p \beta_j^2 = 1&, y_i\left(\beta_0+\sum_{j=1}^p\beta_j
+    x_{ip}\right) \geq M, i\in[1, N]
+\end{align*}
+\begin{enumerate}
+    \item Maximise margin
+    \item subject to length of normal vector = 1
+    \item and the distance of a point is larger than margin and is on
+        the right side of the margin (distance: $X^Tw+\beta_0=d$)
+\end{enumerate}
+
+\subsubsection{Alternative representation}
+\begin{align*}
+    &\min_{w, \beta_0} \frac{1}{2}||w||^2\\
+    s.t.~ &y_i (x_i^Tw + \beta_0) \geq 1, i\in[1, N]
+\end{align*}
+\begin{enumerate}
+    \item Minimise $\frac{1}{M} = ||w||, w = (\beta_1, \beta_2,
+        \cdots, \beta_p)^T$
+    \item Equivalent to original programming by fixing $M=1$
+\end{enumerate}
+
+\subsubsection{Lagrange primal problem}
+\begin{align*}
+    \min_{w, \beta_0} L_p = \frac{1}{2}||w||^2 - \sum_{i=1}^N \alpha_i [y_i(x_i^Tw +
+    \beta_0)-1]
+\end{align*}
+\begin{enumerate}
+    \item by KKT, support vectors are points with $\alpha_i>0$
+        (active constraint)
+        \begin{align*}
+            \alpha_i = 
+            \begin{cases}
+                 0, & y_i(w_i^Tw + \beta_0) - 1 > 0\\
+                >0, & y_i(w_i^Tw + \beta_0) - 1 = 0
+            \end{cases}
+        \end{align*}
+    \item Solutions to the primal problem
+        \begin{align*}
+            \frac{\partial L}{\partial w} = 0 \Rightarrow w &= \sum_{i=1}^N \alpha_iy_ix_i\\
+            \frac{\partial L}{\partial \beta_0} = 0 \Rightarrow 0 &= \sum_{i=1}^N \alpha_iy_i = y^T\alpha\\
+            \text{Dual: } \Rightarrow L &= \sum_{i=1}^N\alpha_i -
+            \frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N \alpha_i\alpha_jy_iy_j
+            (x_i^Tx_j)
+        \end{align*}
+        \subitem Note: $\alpha_i\alpha_jy_iy_j$ is scalar, $x_i^Tx_j$
+        is dot product
+    \item Decision rule (positive class: $w\cdot u + \beta_0 \geq 0$)
+        \begin{align*}
+            \left(\sum_{i=1}^N \alpha_iy_i x_i\right) \cdot u + \beta_0 \geq 0
+        \end{align*}
+        \subitem $u$ is the test data
+        \subitem decision is $\geq 0$ instead of $\geq 1$ as we care
+        only about direction now
+    \item Solve for $\alpha_i$ in dual problem
+\end{enumerate}
+
+\subsubsection{Lagrange dual problem}
+\begin{align*}
+    &\max_{\alpha} \frac{1}{2}\alpha^T
+    \begin{pmatrix}
+        y_1y_1 x_1^Tx_1 & \cdots & y_1y_Nx_1^Tx_N\\
+        \vdots & \cdots & \vdots\\
+        y_Ny_1 x_N^Tx_1 & \cdots & y_Ny_Nx_N^Tx_N
+    \end{pmatrix}\alpha + (-1^T)\alpha\\
+    &\Leftrightarrow\max_{\alpha} \sum_{i=1}^N \alpha -
+    \frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N \alpha_i \alpha_j y_i
+    y_j (x_i \cdot x_j)
+\end{align*}
+subject to
+\begin{align*}
+    \sum_{i=1}^N \alpha_i y_i = 0, \alpha \geq 0
+\end{align*}
+
+\subsection{Support Vector Classifier}
+
+Instead of using hard decision boundary, a soft margin is used
+\begin{align*}
+    &\max_{\beta, \beta_0, \epsilon} M\\
+    s.t. \sum_{j=1}^p\beta_j^2 = 1&, y_i\left( \beta_0 + \sum_{j=1}^p
+    \beta_jx_{ip} \right) \geq M(1-\epsilon_i)\\
+        \epsilon_i \geq 0&, \sum_{i=1}^n \epsilon_i \leq C
+\end{align*}
+\begin{enumerate}
+    \item C is a regularization parameter, larger C = more budget for
+        error tolerance
+\end{enumerate}
+
+\subsection{Kernel formulation of SVM}
+\subsubsection{Expanding to non-linear boundary}
+Expand linear boundary to non-linear boundary by replacing
+\begin{align*}
+    &x_i^T \cdot x_j \Rightarrow z_i^T \cdot z_j, z_i = \Phi(x_i)\\
+    &\Rightarrow L_p = \sum_{i=1}^N\alpha_i -
+    \frac{1}{2}\sum_{ij}\alpha_i\alpha_jy_iy_j(z_i^T z_j)
+\end{align*}
+\begin{enumerate}
+    \item Decision rule (positive class: $w\cdot z_u + \beta_0 \geq 0$)
+        \begin{align*}
+            \left(\sum_{i=1}^N \alpha_iy_iz_i\right) \cdot z_u +
+            \beta_0 \geq 0
+        \end{align*}
+\end{enumerate}
+
+\subsubsection{Kernel trick}
+Computing $z_i\cdot z_j$ directly is computational intensive, replace
+$z_i\cdot z_j$
+with $K(x_i, x_j)$
+\begin{align*}
+    &x_i^T \cdot x_j \Rightarrow z_i^T \cdot z_j = K(x_i, x_j)\\
+    &\Rightarrow L_p = \sum_{i=1}^N\alpha_i -
+    \frac{1}{2}\sum_{ij}\alpha_i\alpha_jy_iy_j K(x_i, x_j)
+\end{align*}
+
+\subsubsection{Common kernels}
+polynomial of degree exactly d
+\begin{align*}
+    K(x_i, x_j) = (x_i\cdot x_j)^d
+\end{align*}
+polynomial of degree up to d
+\begin{align*}
+    K(x_i, x_j) = (x_i\cdot x_j + 1)^d
+\end{align*}
+Gaussian kernel (infinite features)
+\begin{align*}
+    K(x_i, x_j) &= exp\left(-\frac{\sum_{m=1}^p
+        (x_{im}-x_{jm})^2}{2\sigma^2}\right)\\
+                &= exp\left( -\frac{||x_i-x_j||^2_2}{2\sigma^2} \right)
+\end{align*}
+
+
+\end{multicols}
+\end{document}

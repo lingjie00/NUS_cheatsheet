@@ -1,0 +1,1368 @@
+\documentclass[a4paper,12pt,landscape]{article}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[a4paper, landscape]{geometry}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{color,graphicx,overpic}
+\usepackage{hyperref}
+\usepackage{tabulary}
+\usepackage{soul} %for highlight
+\usepackage{xcolor} %color definition
+\usepackage{sectsty} %change section color
+\usepackage{tabulary} % better table
+
+% type codes
+\usepackage{listings} 
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=false,                 
+    captionpos=b,                    
+    keepspaces=false,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\pdfinfo{
+  /Title (ST3247 Simulation.pdf)
+  /Creator (Ling)
+  /Subject (Simulation)}
+
+% This sets page margins to .5 inch if using letter paper, and to 1cm
+% if using A4 paper. (This probably isn't strictly necessary.)
+% If using another size paper, use default 1cm margins.
+\ifthenelse{\lengthtest { \paperwidth = 11in}}
+    { \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
+    {\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
+        {\geometry{top=.5cm,left=.5cm,right=.5cm,bottom=.5cm} }
+        {\geometry{top=.5cm,left=.5cm,right=.5cm,bottom=.5cm} }
+    }
+
+% Turn off header and footer
+\pagestyle{empty}
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries\color{red}}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries\color{blue}}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries\color{violet}}}
+\makeatother
+
+% Define BibTeX command
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+
+%My Environments
+\newtheorem{example}[section]{Example}
+% -----------------------------------------------------------------------
+
+\begin{document}
+\raggedright
+\footnotesize
+\begin{multicols}{3}
+
+
+% multicol parameters
+% These lengths are set only within the two main columns
+\setlength{\columnseprule}{0.25pt}
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{1pt}
+\setlength{\columnsep}{2pt}
+
+\begin{center}
+     \Large{\underline{ST4231 Computer Intensive}} \\
+     {Lingjie, \today}
+\end{center}
+
+\section{Fundamental Theorem of Simulation}
+
+If $X$ is a random variable with pdf $f(x)$,
+then simulating $X$ is equivalent to simulating a pair of
+random variable $(X, U)$ jointly from
+\begin{align*}
+    (X, U) \sim unif\left\{(x, u): 0 < u < f(x)\right\}
+\end{align*}
+
+\subsection{Explanation}
+Let $S = \left\{(x, u): 0 < u < f(x)\right\}$
+\begin{tabulary}{\linewidth}{l L}
+    want: & generate $x\sim F(x)$ (area)\\
+    method: & (1) generate $x \in D_F$, domain of distribution\\
+              & (2) generate $u\sim unif(0, f(x))$\\
+              & (3) resultant area is $F(x)$
+\end{tabulary}
+
+Generating directly from $S$ may be difficult, use rejection sampling
+to generate from a proxy distribution instead.
+
+\section{Misc}
+
+\subsection{Finding distribution following an algorithm}
+
+The goal is to deduce the distribution of a random variable
+$ X $, following a given algorithm.
+
+\begin{enumerate}
+    \item Determine individual distributions in the algo
+        \subitem e.g. $ y_1 \sim
+        exp(1), v \sim unif(0, 1)$
+    \item Determine marginal or joint distribution in final
+        step
+        \subitem[a] independent joint probability
+        \begin{align*}
+            f(x, y)=f(x)f(y) 
+        \end{align*}
+        \subitem[b] constrained joint probability
+        \begin{align*}
+            \tilde{f}(x, y) = \frac{1}{c}f(x,y), x<y
+        \end{align*}
+        \subitem[c] marginal distribution
+        \begin{align*}
+            f(y) = \int_D^{x<y}\tilde{f}(x,y)dx
+        \end{align*}
+        \subitem Remember to find normalizing constant $ C $
+    \item Determine distribution of final RV $ X $
+        \subitem[a] if $ X = Y \Rightarrow f_X(x) =f_Y(y) $
+        \subitem[b] if $ X = \frac{1}{2}Y + \frac{1}{2}(-Y) $
+        \begin{align*}
+            \Rightarrow P(X\leq x) &= \frac{1}{2}P(Y\leq x) +
+            \frac{1}{2}P(Y \geq -x)\\
+            &= \begin{cases} 
+                \frac{1}{2}(0) + \frac{1}{2} P(Y \geq - x), & x < 0\\
+                \frac{1}{2}P(Y\leq x) + \frac{1}{2}(1), &x\geq 0
+            \end{cases}
+        \end{align*}
+        deduce $ f_X(x) $ based on $ P(X = x) =
+        \frac{d}{dx} P(X \leq x) $
+\end{enumerate}
+
+\subsection{Determine mixture distribution}
+
+Given a mixture distribution
+\begin{align*}
+    f(x) \propto f_1(x) + f_2(x)
+\end{align*}
+Trick: $ f_1(x), f_2(x) $ must be pdf $ \Rightarrow \int_D f_i(x) =1 $
+
+e.g.
+\begin{align*}
+    f(x) &\propto cf_1(x) + \frac{c}{2} 2f_2(x) \\
+    &\Rightarrow c
+    + \frac{c}{2} = 1\\ 
+    &\Rightarrow c = \frac{2}{3}
+\end{align*}
+
+\subsection{Beta ordered statistics}
+
+Given 
+$ X_1, X_2, \cdots, X_n \sim unif(0, 1)$
+
+the ordered statistics $X_{(1)} \leq X_{(2)} \leq \cdots \leq X_{(n)} $
+
+has property
+\begin{align*}
+    X_{(k)} \sim Beta(k, n+1-k)
+\end{align*}
+
+\section{Monte Carlo Methods}
+
+\subsection{Monte Carlo Integration}
+
+Key: with $\mathbf{U}\sim unif(a, b)$, identify
+\begin{itemize}
+    \item $g(\mathbf{U})$
+    \item $\theta = E[g(\mathbf{U})]$
+\end{itemize}
+
+LLN Condition must be met:
+$E[g(X)] < \infty$
+
+Procedure:
+\begin{enumerate}
+    \item Generate rectangle enclosing function: $\mathbf{U}\sim(a, b)$
+    \item Calculate area of interest: $g(\mathbf{U})$
+    \item Calculate percentage of sample within area: $\theta$
+    \item Multiply area of rectangle
+\end{enumerate}
+
+Example: finding $ln(3) = \int_1^3 (1/t) dt$
+\begin{enumerate}
+    \item Generate $U_1\sim unif(1, 3), U_2 \sim unif(0, 1)$
+    \item $g(\mathbf{U}) = I\left(U_1 \leq (1/U_2)\right)$
+    \item $\hat\theta = (1/M)\sum_{i\in M} g(\mathbf{U_i})$
+    \item $\hat{ln(3)} = 2\times \hat\theta$
+\end{enumerate}
+where $M$ is number of sample generated and 
+$ \left\{ (x, y) : 1 < x < 3, 0 < y < \frac{1}{x} \right\} $
+
+Code:
+\begin{lstlisting}[language=R]
+M <- 10^6
+U1 <- runif(M, min=1, max=3)
+U2 <- runif(M, min=0, max=1)
+g <- U1 <= (1/U2)
+theta <- mean(g)
+ln3.est <- 2 * theta
+\end{lstlisting}
+
+\section{Generating Random Variable}
+
+\subsection{Inversion Method}
+
+Limitation:
+\begin{itemize}
+    \item Discrete: time-consuming (but default for this mod)
+    \item Continuous: explicit and invertible cdf $F$
+\end{itemize}
+
+\subsubsection{Discrete Random Number Generators}
+
+Let
+\begin{align*}
+    P(X=x_j)=p_j, j=0,1,\cdots, \sum_jp_j=1
+\end{align*}
+
+\hl{Sequential Inversion}
+\begin{enumerate}
+    \item generate $U\sim unif(0, 1)$
+    \item set $X=0, S=p_0$
+    \item while $U > S:$
+        \subitem[3.1] $X = X + 1$
+        \subitem[3.2] $S = S+p_x$
+    \item return $X$
+\end{enumerate}
+
+\subsubsection{Continuous Random Variable}
+
+Assume we know an invertible cdf
+\begin{align*}
+    F(x) = \int_D f(x)
+\end{align*}
+
+\hl{Inverse Transform Algorithm}
+\begin{enumerate}
+    \item generate $U\sim unif(0, 1)$
+    \item return $X = F^{-1}(U)$
+\end{enumerate}
+
+\subsection{Rejection Sampling}
+\subsubsection{Theorem}
+If $X$ is generated via rejection sampling method,
+$X$ has pdf $f(X)$
+
+\subsubsection{Algorithm}
+Based on Fundamental Theorem of Simulation
+
+Let
+\begin{align*}
+    &g := \text{proposal distribution}\\
+    &f := \text{target distribution}\\
+    &M := \text{scaling parameter}, M > 1
+\end{align*}
+
+\hl{Rejection sampling}
+\begin{enumerate}
+    \item generate $Y\sim g$
+    \item generate $U\sim unif(0, 1)$
+    \item if $U \leq \frac{f(Y)}{Mg(Y)}$:
+        \subitem set $X=Y$, exit
+    \item else: return to step 1
+\end{enumerate}
+
+
+\subsubsection{Efficiency = finding optimal $M$}
+
+Optimal $M$ = smallest $M$ possible
+\begin{align*}
+    M^* &= \sup_{x\in \mathbb{R}^d} \frac{f(x)}{g(x)}\\
+        &\Leftrightarrow \sup_{x\in \mathbb{R}^d} log(f(x)) - log(g(x))
+\end{align*}
+where
+\begin{align*}
+    &\sup = \max \text{ but allow } \infty\\
+    &P\{(Y, U) \text{ is accepted}\} = \frac{1}{M}\\
+    &c := E(N) = M \sim geometric(1/M)
+\end{align*}
+
+\subsubsection{Condition}
+
+Must check for the following conditions
+\begin{itemize}
+    \item Domain of $g(x)$ must include domain of $f(x)$
+    \item Tail of $g(x)$ must be heavier than $f(x)$, check
+        \begin{align*}
+            \lim_{x\rightarrow|\infty|} \frac{f(x)}{g(x)} < \infty\\
+        \end{align*}
+        \subitem[edge case 1] $x\rightarrow|\infty|$
+        \subitem[edge case 2] $f(x)\rightarrow\infty$
+        \subitem[checking case] need to check if parameter for $g(x)$ will not violate this condition
+\end{itemize}
+
+
+\subsubsection{Unknown Normalizing Constant}
+
+Suppose $f(x)=c\tilde{f(x)}$, where $\tilde{f(x)}$ is known and $c$ is unknown.
+
+We can find $\tilde{M}$ satisfies that $\tilde{f(x)} \leq \tilde{M}g(x), ~\forall x$
+
+Useful to ignore the normalising constant of $f(x)$, even normalizing constant for $g(x)$ can be ignored.
+
+\subsection{Polar Method for Bivariate Normal}
+
+Box-Muller Algorithm v1
+\begin{enumerate}
+    \item Generate $U_1\sim Unif(0, 1)$, $U_2\sim Unif(0, 1)$
+    \item Set $R=\sqrt{-2log(U_1)}$, $\theta=2\pi U_2$
+    \item Set
+        \begin{align*}
+            X &= \sqrt{-2log(U_1)} cos(2\pi U_2)\\
+            Y &= \sqrt{-2log(U_1} sin(2\pi U_2)
+        \end{align*}
+\end{enumerate}
+
+Box-Muller Algorithm v2
+\begin{enumerate}
+    \item Generate $U_1\sim Unif(0, 1)$, $U_2\sim Unif(0, 1)$
+    \item Set $V_1 = 2U_1-1$, $V_2=2U_2-1$, $S=V_1^2+V_2^2$
+    \item If $S > 1$ return to step 1 (rejection sampling)
+    \item Return the independent unit normals
+        \begin{align*}
+            X &= \sqrt{-2log(S)/S} V_1\\
+            Y &= \sqrt{-2log(S)/S} V_2
+        \end{align*}
+\end{enumerate}
+
+\subsection{General Multivariate Normal}
+
+$d-$dimensional normal with mean $\mu$, covariance matrix $\sum$
+
+\begin{enumerate}
+    \item Generate
+        \begin{align*}
+            Z = \begin{pmatrix}
+                Z_1\\ \vdots\\ Z_d
+            \end{pmatrix},
+            Z_1, \cdots, Z_d \text{ i.i.d } N(0, 1)
+        \end{align*}
+    \item Set 
+        \begin{align*}
+            X = LZ + \mu
+        \end{align*}
+        \subitem where $L$ satisfies $LL^T=\sum$
+        \subitem usually $L$ is taken as the Cholesky factor, a lower 
+        triangular matrix with positive diagonal entries
+\end{enumerate}
+
+\section{Variance Reduction Techniques}
+
+Goal: estimate
+\begin{align*}
+    \theta = E[\varphi(x)] = \int_S \varphi(x)f(x)dx
+\end{align*}
+$S:=$ support\\
+$f(x) :=$ pdf
+
+Explain the manner of uncertainty/CI: smaller asymptotic
+variance.
+
+
+\subsection{Simple Sampling}
+
+$X_i\sim f(x)$
+\begin{align*}
+    \hat\theta_{SS} = \frac{1}{n}\sum_{i=1}^n \varphi(X_i)
+\end{align*}
+By SLLN, $\hat\theta\rightarrow \theta$ as $n\rightarrow \infty$ with probability 1
+
+Potential Issues
+\begin{itemize}
+    \item Variance $\sigma^2=Var(\varphi(X))$ can be infinity
+    \item We can find an estimator with smaller variance than $Var(\hat\theta)=\sigma^2/n$
+    \item Might not be possible to sample from $f(x)$
+\end{itemize}
+
+\subsubsection{Variance}
+
+Asymptotic variance
+\begin{align*}
+    Var(\varphi(X)) &= \left(\int_S \varphi^2(x)f(x)dx - \theta^2\right)\\
+                    &=\sigma^2
+\end{align*}
+
+Exact/Approximate (with CLT) variance
+\begin{align*}
+    Var(\hat\theta) &= \frac{1}{n}Var(\varphi(X))\\
+                    &= \frac{1}{n}\sigma^2
+\end{align*}
+
+Estimated asymptotic variance
+\begin{align*}
+    \hat\sigma^2 = \frac{1}{n}\sum_{i=1}^n\varphi^2(X_i) - \hat\theta ^2
+\end{align*}
+
+\subsubsection{Asymptotic Confidence Interval}
+asymptotic $95\%$ confidence interval for $\theta$
+\begin{align*}
+    \hat\theta &\pm 1.96 \frac{\hat\sigma}{\sqrt{n}}
+\end{align*}
+
+\subsection{Importance Sampling}
+Instead, we sample from the important part of the sample space and re-weight
+
+$Y_i\sim g(x)$
+\begin{align*}
+    \hat\theta_{IS} &= \frac{1}{n}\sum_{i=1}^n \varphi(Y_i)w(Y_i)\\
+    w(Y_i) &= \frac{f(Y_i)}{g(Y_i)}
+\end{align*}
+Note: $\hat\theta_{IS}$ is unbiased
+
+Arise from
+\begin{align*}
+    \theta = E_f(\varphi(X)) &= \int_S \varphi(x)f(x) dx \\
+                             &= \int_S \frac{\varphi(x)f(x)}{g(x)} g(x) dx\\
+                             &= E_g[\varphi(Y)w(Y)]
+\end{align*}
+
+\hl{Importance Sampling Algorithm}
+\begin{enumerate}
+    \item Draw $X_1, \cdots, X_n$ from proposal density $g$
+    \item Calculate importance weight $w(X_i) = f(X_i)/g(X_i)$
+    \item Approximate $\theta$ with $\hat\theta_{IS}$
+\end{enumerate}
+
+\subsubsection{Variance}
+Asymptotic variance
+\begin{align*}
+    \sigma^2 &= Var(\varphi(Y)w(Y))\\
+             &= \int_S \frac{\varphi^2(y)f^2(y)}{g(y)}dy - \theta^2
+\end{align*}
+
+Estimated asymptotic variance
+\begin{align*}
+    \hat\sigma^2 &= \frac{1}{n}\sum_{i=1}^n \varphi^2(Y_i)w^2(Y_i) - \hat\theta^2_{IS}
+\end{align*}
+
+Calculation for Exact variance and confidence interval using $\sigma^2$ is same as Simple Sampling
+
+\subsubsection{Optimal proposal density $g$}
+Optimal choice of $g(x)$
+\begin{align*}
+    g(x) \propto |\varphi(x)|f(x)
+\end{align*}
+
+In general, choose $g(x)$ with heavier tail than $f(x)$
+
+If $g(x)$ not chosen properly, $\hat\theta_{IS}$ may have larger variance than $\hat\theta_{SS}$
+
+\subsubsection{Condition}
+
+\begin{enumerate}
+    \item Able to sample from $g(x)$
+    \item Finite variance $Var(\hat\theta_{IS}) < \infty$
+        \subitem Sufficient condition: $\int_S \varphi^2(x)f^2(x)/g(x) < \infty$
+\end{enumerate}
+
+\subsubsection{Checking finite variance}
+
+\begin{align*}
+    \int_1^{+\infty} \frac{1}{x^p} dx &= \begin{cases}
+        + \infty, &p \leq 1\\
+        < + \infty, &p > 1
+    \end{cases}\\
+        \int_0^1 \frac{1}{x^p} dx &= \begin{cases}
+            <+\infty, &p < 1\\
+            +\infty, &p \geq 1
+        \end{cases}
+\end{align*}
+
+If $g(x)$ is different trend from $f(x)$ then proposal is inappropriate
+
+We can say: as $ x\rightarrow 0+ $, function $
+\frac{exp(2x)}{2x} $ behaves similarly to $ \frac{1}{2x} $.
+However, $ \int_0^\epsilon \frac{1}{2x} dx = +\infty $ for
+any small $ \epsilon > 0 $.
+Therefore, infinite variance.
+
+\subsubsection{Rare events}
+
+When relative s.d. is large, simple sampling is inefficient
+\begin{align*}
+    \text{relative s.d.} = \frac{\text{exact s.d.}}{p_*} &= \frac{\sqrt{p_*(1-p_*)/n}}{p_*}\\
+                                                         &=\frac{1}{\sqrt{np_*}}\\
+    \Rightarrow n  &= \frac{1}{\text{relative var} \times p_*}
+\end{align*}
+where $p_*$ is the probability of interest (e.g. $P(X>4), X\sim N(0, 1)$)
+
+\subsection{Self-Normalizing Importance Sampling}
+
+When $f(x), g(x)$ is only known up to a normalizing constants $Z_f > 0, Z_g > 0$
+
+\begin{align*}
+    f(x) = \frac{1}{Z_f}\tilde{f}(x), ~g(x) = \frac{1}{Z_g}\tilde{g}(x),~\tilde{w}(x) = \frac{\tilde{f}(x)}{\tilde{g}(x)}
+\end{align*}
+
+With the generalized weights $\tilde{w}(x)$, we have self-normalized importance sampling estimator
+\begin{align*}
+    \hat\theta_{SIS} &= \frac{\sum_{i=1}^n\varphi(X_i)\tilde{w}(X_i)}{\sum_{i=1}^n \tilde{w}(X_i)}\\
+                     &= \frac{\hat\theta_{IS}}{\sum_{i=1}^n\tilde{w}(X_i)}
+\end{align*}
+
+\subsubsection{Bias}
+$\hat\theta_{SIS}$ is bias. But bias and fluctuation decreases as sample increase
+\begin{align*}
+    \text{bias}(\hat\theta_{SIS}) = \mathcal{O}(1/n), ~\text{fluctuation}(\hat\theta_{SIS}) = \mathcal{O}(1/\sqrt{n})
+\end{align*}
+
+\subsubsection{Variance}
+Asymptotic variance
+\begin{align*}
+    \sigma^2_{SIS} &= E_g\left[w^2(X)[\varphi(X)-\theta]^2\right]\\
+    w(x) &= \frac{f(x)}{g(x)}\\
+         &= \frac{Z_g}{Z_f}\tilde{w}(x)
+\end{align*}
+
+Estimated exact variance (note: do not divide by n again)
+\begin{align*}
+    \frac{\hat\sigma_{SIS}^2}{n} &= \frac{\sum_{i=1}^n\left\{ \tilde{w}^2(X_i) \left[\varphi(X_i) - \hat\theta_{SIS}
+    \right]^2  \right\}}{\left( \sum_{i=1}^n \tilde{w}(X_i)  \right)^2}
+\end{align*}
+
+95\% Confidence interval
+\begin{align*}
+    \hat\theta_{SIS} \pm 1.96 \sqrt{\frac{\sum_{i=1}^n\left\{ \tilde{w}^2(X_i) \left[\varphi(X_i) - \hat\theta_{SIS}
+    \right]^2  \right\}}{\left( \sum_{i=1}^n \tilde{w}(X_i)  \right)^2}}
+\end{align*}
+
+Note:
+\begin{itemize}
+    \item Usually $\sigma^2_{SIS} > \sigma^2_{IS}$
+    \item $\sigma^2_{SIS}$ is computable if and only if $Z_f, Z_g$ is known
+    \item $Var(\hat\theta_{SIS})$ is unknown (hard to find var of ratio of 2 RV)
+    \item Estimated $Var(\hat\theta_{SIS}) = n \times $ estimated exact variance
+\end{itemize}
+
+\subsection{Control Variates Method}
+
+Widely used in Bayesian statistics
+
+\begin{tabulary}{\linewidth}{l @{ : } L}
+    Want & reduce $Var(\hat\theta)$, where $\hat\theta$ estimates $\theta = E_f[\varphi(X)]$\\
+    Main idea & use control variate $\hat{h}$ that is correlated with $\hat\theta$
+\end{tabulary}
+
+Assumption: supposed we know all of following
+\begin{enumerate}
+    \item an unbiased estimator $\hat{h}$ of $E_f[h(X)]$
+    \item $E_f[h(X)]$ and $Var(\hat h)$
+    \item the value or sign of $Cov(\hat\theta, \hat h)$
+\end{enumerate}
+
+\subsubsection{Construction}
+
+\begin{align*}
+    \tilde{\theta} &= \hat\theta + \beta\{ \hat{h} - E_f[h(X)]  \}\\
+    E_f[\tilde{\theta}] &= E_f[\hat\theta]\\
+    Var(\tilde{\theta}) &= Var(\hat\theta) + \beta^2 Var(\hat h) + 2\beta Cov(\hat\theta, \hat h)\\
+    \arg_{\beta} \min Var(\tilde{\theta}) &= - \frac{Cov(\hat\theta, \hat h)}{Var(\hat h)} = \beta^*\\
+    \Rightarrow Var(\tilde{\theta} | \beta = \beta^*) &= (1 - \rho^2) Var(\hat\theta), \rho = Cor(\hat\theta, \hat h)\\
+                                    & < Var(\hat\theta) \text{ if } \rho \neq 0
+\end{align*}
+
+\subsubsection{Expectation of Indicator function}
+
+\begin{align*}
+    I_A I_B &= \begin{cases}
+        1, A \cap B\\
+        0, \text{otherwise}
+    \end{cases}\\
+            &= I_{A\cap B}\\
+        I_{A \cup B} &= 1 - I_{A^C} I_{B^C}
+\end{align*}
+
+Therefore,
+\begin{align*}
+    &Cov[I(X_i > a), I(X_i > 0)]\\
+    &=E[I(X_i > a)\cdot I(X_i > 0)] - E[I(X_i > a)]E[I(X_i > 0)]\\
+    &\because E[I(X_i > a, X_i > 0)] = E[I(X_i > a)]\\
+    &\therefore  Cov[I(X_i > a), I(X_i > 0)] = E\left[I(X_i > a)\right]\left[1 - P(X_i > 0)\right]
+\end{align*}
+
+\subsubsection{Estimating $\beta^*$}
+
+Hard to obtain $\beta^*$ in practice. Use linear regression instead.
+\begin{align*}
+    \hat\theta = \alpha + \beta \hat{h}
+\end{align*}
+with sample $\hat\theta, \hat h$
+
+\subsection{Antithetic Variates Method}
+
+\begin{align*}
+    \hat{I}_{SS} &= \frac{1}{2n}\sum_{i=1}^{2n} h(U_i)\\
+    \hat{I}_{An} &= \frac{1}{2n} \sum_{i=1}^n \left( h(U_i) + h(1-U_i)  \right)
+\end{align*}
+
+\subsubsection{Construction}
+If $X, X'$ has same distribution (but not independent), then
+
+\begin{align*}
+    &2Cov(X, X')\\
+    &= E\{ [g(U_1)-g(U_2)][g(1-U_1) - g(1-U_2)]  \} \leq 0
+\end{align*}
+
+Where $X, X'$ is generated with $g(U)$ and $g(1-U)$ respectively.
+
+\begin{align*}
+    Var(\frac{X + X'}{2}) \leq \frac{1}{2}Var(X)
+\end{align*}
+
+\subsubsection{Supporting facts}
+
+Constructs the Antithetic Variates Method
+
+\begin{enumerate}
+    \item $X = F^{-1}(U) = h(U)$, $X' = F^{-1}(1-U) = h(1-U)$ has same distribution $F$
+        \subitem $U\sim Unif(0, 1)$, $F^{-1}(U)$ is quantile function, $X$ generated from inversion method
+    \item If $g(\cdot)$ is monotone function (either increasing/decreasing), then
+        \begin{align*}
+            [g(u_1) - g(u_2)][g(1-u_1)-g(1-u_2)] \leq 0
+        \end{align*}
+        for any $u_1, u_2 \in [0, 1]$
+\end{enumerate}
+
+\subsubsection{Calculate An Var}
+
+\begin{align*}
+    Var(\hat{I}_{SS}) &= \frac{1}{2n} Var[h(U)]\\
+    Var(\hat{I}_{An}) &= \frac{1}{4n} Var[h(U) + h(1-U)]\\
+                      &= \frac{1}{2n} \left\{ Var\left[h(U)\right] + Cov\left[h(U), h(1-U)\right]  \right\}
+\end{align*}
+
+Note: $Cov\left[h(U), h(1-U)\right]$
+\begin{align*}
+     &= E\left[ h(U)\cdot h(1-U)  \right] - E(h(U))E(h(1-U))\\
+                                 &= E\left[ h(U)\cdot h(1-U)  \right] - E(h(U))^2\\
+                                 &= E\left[ h(U)\cdot h(1-U)  \right] - \hat{I}^2
+\end{align*}
+Since $E(h(U)) = E(h(1-U))$
+
+Also, to calculate the empirical var, we need $n \times M$ samples. $n :=$ num of sample, $M := $ num of trials
+
+\subsubsection{An Var Example}
+
+Estimate $ \int_0^1 x^2 dx , X \sim Unif(0,1)$
+\begin{align*}
+    \hat I_{SS} &= \frac{1}{2n}\sum_{i=1}^2n (U_i^2)\\
+    \hat I_{AN} &= \frac{1}{2n}\sum_{i=1}^n (U_i^2 + (1-U_i)^2)
+\end{align*}
+
+\section{Expectation-Maximization (EM)}
+
+EM algorithm is used to find the MLE for a particular class of models, with unobserved latent variables
+
+Key points
+\begin{itemize}
+    \item iterative method 
+    \item finds maximum likelihood estimate of parameters in statistical models
+    \item models contain either missing data or unobserved latent variables
+\end{itemize}
+
+\subsubsection{Required knowledge}
+
+\begin{itemize}
+    \item Convex function \begin{align*}
+            H_f \geq 0 \end{align*}
+     Positive semi-definite hessian matrix, or non-negative second derivatives
+ \item Jesen Inequality
+     \subitem Let $f$ be a convex function and $X$ be a random variable
+     \begin{align*}
+         f(E[X]) &\leq E[f(X)]\\
+         \Rightarrow \log\left( \int \varphi(x)q(x) dx  \right) &\geq \int \log[\varphi(x)] q(x) dx
+     \end{align*}
+ \item Maximum Likelihood Estimation 
+     \subitem with data $D$ and parameter $\theta$
+     \begin{align*}
+         \max_{\theta} L(D; \theta) &= \prod_{i=1}^n f(D|\theta)\\
+         \hat{\theta}_{ML} &= \arg \max_{\theta\in\Theta} L(D; \theta)
+     \end{align*}
+     \subitem Issue: MLE exist but no closed-form expression
+\end{itemize}
+
+\subsection{Latent Variable Model}
+
+Goal: Compute MLE $\hat\theta_{ML}$ (parameter) from $Y$ (data)
+
+Trick: use Latent (unobserved variables/hidden state) $Z$
+
+Original problem: $\theta \rightarrow Y$\\
+Hierarchical model: $\theta \rightarrow Z \rightarrow Y$
+
+\subsection{EM algorithm}
+
+Steps:
+\begin{enumerate}
+    \item Initialize $\theta_0$
+    \item E-Step: in the $k$ th iteration
+        \subitem given $\theta^{(k)}$, calculate $\alpha_i^{(k, j)}, i\in[1, n], j\in Z$
+    \item M-Step: update
+        \subitem $\theta^{(k+1)}$ with $\alpha_i^{(k, j)}$
+    \item Iterate between E-step and M-step until convergence
+        \subitem $|\theta^{(k+1)} - \theta^{(k)}| < \epsilon$
+\end{enumerate}
+
+\subsubsection{Expectation (E-step)}
+
+Given $\theta^{(k)}$, calculate 
+\begin{align*}
+    Q(\theta|\theta^{(k)}) &= \sum_{i=1}^n \int_{z_i \in Z} \{\log p(y_i, z_i | \theta\} p(z_i | y_i, \theta^{(k)}) d z_i\\
+                           &= E_Z[\ell^c(Y, Z; \theta)|Y, \theta^{(k)}]\\
+                           &= E_Z[\log P(Y, Z| \theta)|Y, \theta^{(k)}]
+\end{align*}
+
+$\ell^c :=$ complete log-likelihood
+\begin{align*}
+    \ell^c(Y, Z; \theta) &=\log p(Y, Z|\theta) = \sum_{i=1}^n \log p(y_i, z_i|\theta)
+\end{align*}
+
+\subsubsection{Maximization (M-step)}
+
+Calculate $\theta^{(k+1)}$
+\begin{align*}
+    \theta^{(k+1)} &= \arg \max_{\theta\in\Theta} Q(\theta|\theta^{(k)})
+\end{align*}
+
+\subsection{Example: Mixture of Normals}
+
+\subsubsection{Problem setup}
+
+Model:
+\begin{align*}
+    p(y|\theta) &= p\cdot \frac{1}{\sqrt{2\pi\sigma_1^2}}exp\left(-\frac{(y-\mu_1)^2}{2\sigma_1^2}\right)\\
+                &+(1-p)\cdot\frac{1}{\sqrt{2\pi\sigma_2^2}}exp\left(-\frac{(y-\mu_2)^2}{2\sigma_2^2}\right) 
+\end{align*}
+
+Parameter:
+\begin{align*}
+    \theta &= (\mu_1, \mu_2, \sigma_1^2, \sigma_2^2, p)
+\end{align*}
+
+Goal: Find the MLE of $\theta$
+
+\subsubsection{Finding complete log-likelihood function}
+
+Define $Z = \{1, 2\}$, if data belong to Normal 1 or 2
+
+$\ell^c(Y, Z; \theta) = \log p(Y, Z|\theta)$
+\begin{align*}
+    =& \sum_{i:z_i=1} \log (p) - \log({\sigma_1}) - \frac{(y-\mu_1)^2}{2\sigma_1^2}\\
+                    &+\sum_{i:z_i=2}\log(1-p)-\log(\sigma_2)-\frac{(y-\mu_2)^2} {2\sigma_2^2} \\
+    =& \sum_{i=1}^n \{I(z_i=1)\cdot\left[\log (p) - \log({\sigma_1}) - \frac{(y-\mu_1)^2}{2\sigma_1^2} \right]\\
+                    &+I(z_i=2)\cdot\left[\log(1-p)-\log(\sigma_2)-\frac{(y-\mu_2)^2} {2\sigma_2^2} \right]\}
+\end{align*}
+
+\subsubsection{Finding Q-function}
+$Q(\theta|\theta^{(k)}) = E_Z[\log p(Y, Z|\theta)|Y, \theta^{(k)}]$
+\begin{align*}
+    Q(\theta|\theta^{(k)}) =& E_Z(I(z_i=1)|Y, \theta^{(k)})\cdot f_1(p, \sigma_1, \mu_1, y)\\
+                            &+E_Z(I(z_i=2)|Y, \theta^{(k)})\cdot f_2(p, \sigma_2, \mu_2, y)\\
+    =& p(z_i=1|Y, \theta^{(k)})\cdot f_1(p, \sigma_1, \mu_1, y) \\
+     &+p(z_i=2|Y, \theta^{(k)})\cdot f_2(p, \sigma_2, \mu_2, y)\\
+    =&\alpha_i^{(k, 1)} f_1(\cdot) + \alpha_i^{(k, 2)} f_2(\cdot)
+\end{align*}
+
+Using Bayes rule $p(z_i=1|Y, \theta^{(k)})$
+\begin{align*}
+     &=  \frac{p(y_i|z_i=1, \theta^{(k)})p(z_i=1|\theta^{(k)})}{ \sum_{j=1}^2 p(y_i|z_i=j, \theta^{(k)})p(z_i=j|\theta^{(k)})}\\
+     &= \alpha_i^{(k, 1)}
+\end{align*}
+
+where $p(y_i|z_i=1, \theta^{(k)})p(z_i=1|\theta^{(k)})$
+\begin{align*}
+    p^{(k)}\cdot \frac{1}{\sqrt{2\pi\sigma_1^{2(k)}}}exp\left(-\frac{(y_i-\mu_1^{(k)})^2}{2\sigma_1^{2(k)}}\right)
+\end{align*}
+
+and $\alpha_i^{(k, 2)} = 1 -\alpha_i^{(k, 1)} $
+
+Finally, we have 
+\begin{align*}
+    Q(\theta|\theta^{(k)})=& \sum_{i=1}^n \{\alpha_i^{(k, 1)}\cdot\left[\log (p) - \log({\sigma_1}) - \frac{(y-\mu_1)^2}{2\sigma_1^2} \right]\\
+                          &+\alpha_i^{(k, 2)}\cdot\left[\log(1-p)-\log(\sigma_2)-\frac{(y-\mu_2)^2} {2\sigma_2^2} \right]\}
+\end{align*}
+
+\subsubsection{Iterate to find MLE estimators}
+Solving $\theta^{(k+1)}=\arg \max_{\theta\in\Theta} Q(\theta|\theta^{(k)})$ by FOC
+\begin{align*}
+    \mu_1^{(k+1)} &= \frac{\sum_{i=1}^n\alpha_i^{(k, 1)}y_i}{\sum_{i=1}^n\alpha_i^{(k, 1)}}\\
+    \mu_2^{(k+1)} &= \frac{\sum_{i=1}^n\alpha_i^{(k, 2)}y_i}{\sum_{i=1}^n\alpha_i^{(k, 2)}}\\
+    p^{(k+1)} &= \frac{\sum_{i=1}^n\alpha_i^{(k, 1)}}{n}\\
+    \sigma^{2(k+1)}_1 &= \frac{\sum_{i=1}^n \alpha_i^{(k, 1)}(y_i - \mu_1^{(k+1)})^2}{\sum_{i=1}^n\alpha_i^{(k, 1)}}\\
+    \sigma^{2(k+1)}_2 &= \frac{\sum_{i=1}^n \alpha_i^{(k, 2)}(y_i - \mu_2^{(k+1)})^2}{\sum_{i=1}^n\alpha_i^{(k, 2)}}
+\end{align*}
+
+\subsection{Example: Zero-Truncated Poisson}
+
+\subsubsection{Problem setup}
+
+Model:
+\begin{align*}
+    p(Y_i=k|\lambda) &= \frac{1}{1-e^{-\lambda}}\cdot \frac{\lambda^ke^{-\lambda}}{k!}, k\geq 1
+\end{align*}
+
+Parameter: $\lambda$
+
+Goal: Find MLE of $\lambda$
+
+\subsubsection{Finding complete log-likelihood function}
+
+Define $Z=$ number of zeros
+
+$\log p(Y, Z|\lambda) =$
+\begin{align*}
+    (\sum y_i)\log\lambda - (n+z)\lambda + Const
+\end{align*}
+
+\subsubsection{Finding Q-function}
+$Q(\lambda|\lambda^{(k)}) = E_Z[\log p(Y, Z|\lambda)|Y, \lambda^{(k)}]$
+\begin{align*}
+    &= (\sum y_i)\log\lambda - [n+E_Z(z|Y, \lambda^{(k)})]\lambda + Const\\
+    &= (\sum y_i)\log\lambda - n\left( 1 + \frac{exp(-\lambda^{(k)})}{1-exp(-\lambda^{(k)})} \right)\lambda + Const\\
+    &= (\sum y_i)\log\lambda - \frac{n}{1-exp(-\lambda^{(k)})} \lambda + Const
+\end{align*}
+Note:
+\begin{align*}
+    P(Z=z_i) &= P(Y=0)^{z_i}[1-P(Y=0)]\\
+             &=exp(-\lambda z_i)[1-exp(-\lambda)]\\
+    E(z_i) &= \frac{exp(-\lambda)}{1-exp(-\lambda)}\\
+    E_Z(z) &= \sum_{i=1}^n E(z_i)\\
+           &= n\frac{exp(-\lambda)}{1-exp(-\lambda)}
+\end{align*}
+
+\subsubsection{Iterate to find MLE estimators}
+
+Solving $\lambda^{(k+1)} - \arg \max{\lambda} Q(\lambda|\lambda^{(k)})$
+\begin{align*}
+    \lambda^{(k+1)} &= \frac{(1-exp(-\lambda^{(k)})) \sum y_i }{n}
+\end{align*}
+
+\section{Markov Chain}
+
+\subsection{Stochastic processes}
+
+Sequence of random variable indexed by a time index $t\geq 0$
+\begin{align*}
+    X &= \{X_t\}_{t\geq 0}
+\end{align*}
+
+Discrete stochastic processes: discrete $t, t = 0, 1, 2, \cdots$
+
+Continuous stochastic processes: continuous $t, t \in [0, +\infty)$
+
+\subsection{Markov Property}
+
+Distribution of $X_t$ only depends upon $X_{t-1}$
+\begin{align*}
+    P(X_t \in A|X_0, \cdots, X_{t-1}) &= P(X_t \in A|X_{t-1})
+\end{align*}
+for any set $A$
+
+\subsubsection{Transition (one-step)}
+
+Transition of a Markov chain determines its property.
+\begin{align*}
+    p_{ij} &= P(X_{t+1}=j|X_t = i)\\
+    p_{ij} & \geq 0, ~\forall (i, j)\\
+    \sum_{j} p_{ij} &= 1, ~\forall i
+\end{align*}
+transition probability from state $i$ to state $j$ at time $t+1$
+
+Note:
+\begin{itemize}
+    \item We assume Markov chain $X$ is homogeneous in time: $\Rightarrow P(X_{t+1}=j|X_t = i)$ does not change with time $t$
+\end{itemize}
+
+\subsubsection{Transition matrix (one-step)}
+If $X$ has finite $K$ states (possible positions), then transition probabilities constitute a $P_{K\times K}$ matrix.
+\begin{align*}
+    P &= \begin{pmatrix}
+        p_{11} & p_{12} & \cdots & p_{1K}\\
+        p_{21} & p_{22} & \cdots & p_{2K}\\
+        \vdots & \vdots & & \vdots \\
+        p_{K1} & p_{K2} & \cdots & p_{KK}\\
+    \end{pmatrix}
+\end{align*}
+
+\subsubsection{Multi-Step Transition (m-step)}
+
+Transition from one state to another over some fixed number of steps m
+\begin{align*}
+    p_{ij}(m) &= P(X_{t+m}=j|X_t=i), m=1, 2, \cdots
+\end{align*}
+m-step transition probability from state $i$ to state $j$
+\begin{align*}
+    p_{ij}(m+1) &= \sum_k p_{ik}(m)p_{kj}, m = 1, 2, \cdots
+\end{align*}
+(recursion formula) view $p_{ij}(m)$ as sum over all possible `paths' with length $m$ that connects $i$ to $j$
+
+\subsubsection{Transition matrix (m-step)}
+Note: $P^{(1)}=P$
+\begin{align*}
+    P^{(m)} &= \begin{pmatrix}
+        p_{11}(m) & p_{12}(m) & \cdots & p_{1K}(m)\\
+        p_{21}(m) & p_{22}(m) & \cdots & p_{2K}(m)\\
+        \vdots & \vdots & & \vdots \\
+        p_{K1}(m) & p_{K2}(m) & \cdots & p_{KK}(m)
+    \end{pmatrix}
+\end{align*}
+From recursion formula
+\begin{align*}
+    P^{(m)} &= P^m = P\cdot P \cdots P
+\end{align*}
+
+\subsubsection{State Distribution}
+
+$\pi^{(0)}$ is the initial distribution ($t=0$) over all possible states (row vector)
+\begin{align*}
+    \pi^{(0)} &= (p_1, p_2, \cdots, p_k)\\
+    \pi^{(t)} &= \pi^{(t-1)} P \\
+              &=\pi^{(0)}P^t
+\end{align*}
+
+\subsubsection{Stationary Distribution}
+Invariant/Stationary distribution: $\boldsymbol{\pi} = (\pi_1, \cdots, \pi_K)$ 
+
+transition tends towards steady-state probability
+\begin{align*}
+    \lim_{t\rightarrow \infty} p_{ij}^{(t)} &= \pi_j\\
+    \lim_{t\rightarrow \infty} P^t &= \begin{pmatrix}
+        \pi_1 & \pi_2 & \cdots & \pi_K\\
+        \pi_1 & \pi_2 & \cdots & \pi_K\\
+        \vdots & \vdots & & \vdots\\
+        \pi_1 & \pi_2 & \cdots & \pi_K\\
+    \end{pmatrix}\\
+                                   &=\begin{pmatrix}
+                                       \pi\\\pi\\\vdots\\\pi
+                                   \end{pmatrix} = \boldsymbol{1}\boldsymbol{\pi}\\
+        \boldsymbol{\pi} &= (\pi_1, \cdots, \pi_K)\\
+        \boldsymbol{1} &= (1, 1, \cdots, 1)^T
+\end{align*}
+
+If such $\boldsymbol{\pi}$ exist
+\begin{align*}
+    \lim_{t\rightarrow \infty} \pi^{(0)}P^t = \pi^{(0)}\boldsymbol{1\pi} = \boldsymbol{\pi}
+\end{align*}
+Regardless of initial state, Markov chain converge to $\boldsymbol{\pi}$
+
+\subsubsection{Solving stationary distribution}
+
+\begin{itemize}
+    \item Stationary distribution $\boldsymbol{\pi}$ exist and unique if Markov chain is irreducible and positive
+        recurrent
+    \item If $\boldsymbol{\pi}$ exists and is unique, $\lim_{t\rightarrow\infty}P^t=\boldsymbol{1\pi}$ holds true
+        if Markov chain is irreducible, positive current and aperiodic
+    \item To find stationary distribution $\boldsymbol{\pi}$ given transition matrix $P$, solve $\boldsymbol{\pi}P
+        =\boldsymbol{\pi}$, or use detailed balance condition (form $x_0(x_j)$ then sub to $\sum x_i = 1$)
+\end{itemize}
+
+Note:
+\begin{itemize}
+    \item Instead of solving $\pi P = \pi$, let the last equation be $\sum_k \pi_k = 1$  (else result will be $\boldsymbol{\pi}=0$)
+    \item Draw the diagram and for transient state, $\pi_i=0$
+    \item Solving $\pi P = \pi \Leftrightarrow \pi(P - 1)^T = 0$
+\end{itemize}
+
+\subsubsection{Irreducible}
+
+A Markov Chain $X$ is called irreducible if for all pairs of states $i, j$, there exists a $t>0$ s.t. $p_{ij}(t)>0$
+
+\begin{tabulary}{\linewidth}{l @{ := } L}
+    accessible & state $i$ can transit to state $j$ with positive probability\\
+    communicate & state $i$ and $j$ are accessible to each other\\
+    class & states can communicate with each other\\
+    irreducible & all states belonging to same class\\
+    leaking probability & probability escape from the current class
+\end{tabulary}
+
+\subsubsection{Recurrent and Transient state}
+
+Recurrent state $i$: Markov chain returns to state $i$ with probability 1.
+State reoccurs for infinite number of times
+\begin{align*}
+    f_i &= P(\text{ever returning to state } i) = 1
+\end{align*}
+
+Transient state $i$: $f_i < 1$. State reoccurs for finite number of times
+
+\subsubsection{Recurrent and Transient chain}
+
+Let $\tau_{ii}$ be the time of first return to state $i$
+\begin{align*}
+    \tau_{ii} &= \min\{ t > 0: X_t = i | X_0 = i \}
+\end{align*}
+
+Irreducible Markov chain $X$ is recurrent if $P(\tau_{ii} < \infty) = 1$ for some (and hence for all) state $i$.
+Else, $X$ is transient
+
+Alternatively, for recurrent chain:
+\begin{align*}
+    \sum_t p_{ii}(t) &= \infty, ~\forall i
+\end{align*}
+
+Note:
+
+It's easier to draw the states to determine if chain is recurrent
+
+\subsubsection{Positive Recurrent}
+
+Irreducible Markov chain $X$ is called positive recurrent if 
+\begin{align*}
+    E[\tau_{ii} < \infty] ~\forall i
+\end{align*}
+Otherwise, it is called null recurrent
+
+Note:
+\begin{itemize}
+    \item All states in a communication class $C$ are all together either positive recurrent, null recurrent, or
+        transient
+    \item In an irreducible Markov chain, all states must together be positive recurrent, null recurrent or transient.
+    \item If a Markov chain only has a finite number of states, and if it is irreducible, then it must be positive recurrent.
+\end{itemize}
+
+\subsubsection{Positive Recurrent (alternative condition)}
+
+Positive recurrence has a stationary pmf $\pi(\cdot)$ on the state space of $X$ s.t.
+\begin{align*}
+    \sum_i \pi_i p_{ij}(t) &= \pi_j, ~\forall j, t \geq0
+\end{align*}
+
+If at time $t$, $\pi^{(t)}=\pi$ $\Rightarrow \pi^{(t)} = \pi = \pi^{(t+1)}$
+
+Note:
+
+Every irreducible Markov chain with finite number of states has a unique stationary distribution
+
+\subsubsection{Aperiodic}
+
+An irreducible chain $X$ is called aperiodic if for some (and hence for all) $i$
+\begin{align*}
+    \text{Greatest common divisor of } \{ t: p_{ii}(t) >0 \} = 1
+\end{align*}
+
+Simply, if chain has both 2, 3 periods then it's aperiodic
+
+\subsubsection{Convergence Theorem (Ergodic Theorem)}
+
+$X$ is ergodic:
+
+If $X=\{ X_1, X_2, \cdots \}$ is a positive recurrent and aperiodic Markov Chain, then its stationary distribution
+$\pi(\cdot)$ is the unique probability
+
+The following holds
+\begin{enumerate}
+    \item $p_{ij}(t)\rightarrow \pi_j$ as $t\rightarrow \infty$ $\forall i, j$
+    \item (Ergodic Theorem) For a function $h(x)$, if $E_\pi[|h(X)|] < \infty$, then
+        \begin{align*}
+            \frac{1}{N} \sum_{k=1}^N h(X_k) \rightarrow E_\pi[(h(X))]
+        \end{align*} as $N\rightarrow \infty$, with probability 1
+        \subitem where $E_\pi[h(X)] = \sum_i h(i)\pi_i$, the expectation of $h(x)$ with respect to $\pi(\cdot)$
+\end{enumerate}
+
+\subsubsection{Finding Stationary probability}
+
+In general, solve system of equations or detailed balance condition (explained here)
+
+However, suppose we have positive number $x_j, j=1, 2, \cdots, K$ (finite state space), such that
+\begin{align*}
+    x_ip_{ij} &= x_j p_{ji}, i \neq j, \sum_{j=1}^K x_j = 1
+\end{align*}
+$\Rightarrow \pi$ satisfies $\pi_j \propto x_j, j = 1, 2, \cdots, K$ because $\{\pi_j, j=1, 2, \cdots, K\}$ are the 
+unique solution to $\pi P = \pi$
+
+\subsection{Simulation of Discrete Markov Chains}
+
+\begin{lstlisting}[language=R]
+# transition matrix
+P <- rbind(c(0.2, 0.8), c(0.6, 0.4))
+# total number of steps
+N <- 5000
+# path taken
+path <- rep(0, N)
+path[1] <- 1 # starting point
+# simulation
+for (i in 2:N) {
+    path[i] <- sample(
+        # next state space
+        c(1, 2),
+        size = 1,
+        # transition matrix
+        P[path[i-1], ]
+    )
+}
+\end{lstlisting}
+
+\subsection{Bayesian Inference}
+
+Data: $Y = \{y_1, \cdots, y_n\}$
+
+Parameters: $\theta = (\theta_1, \cdots, \theta_p)$ which lies in a
+set $\Theta$
+
+Model (Likelihood): $p(Y|\theta) \Leftrightarrow L(Y; \theta)$
+
+Prior distribution: $\pi(\theta)$
+
+Posterior distribution: $\pi(\theta|Y)$ (inference based on)
+\begin{align*}
+    \pi(\theta|Y) &= \frac{p(Y|\theta)\pi(\theta)}{\int_\Theta
+    p(Y|\theta)\pi(\theta)d\theta}\\
+                  &\propto p(Y|\theta) \pi(\theta)
+\end{align*}
+
+\subsubsection{Difficulty in Posterior Calculation}
+\begin{itemize}
+    \item normalizing constant does not have closed form (closed form
+        only available when prior is conjugate $\Rightarrow$ prior and
+        posterior fall into the same parametric family)
+    \item When $\theta$ is multi-dimensional, difficult to find
+        conjugate priors for the entire vector of $\theta$
+\end{itemize}
+
+\subsection{Metropolis Algorithm}
+
+General, always require transition kernel $Q(\theta^{(t)}, \theta)$
+\begin{enumerate}
+    \item Initial state $\theta^{(t)}$
+    \item Generate $\theta^*$ from density
+        $q(\theta|\theta^{(t)})=Q(\theta^{(t)}, \theta)$
+    \item Compute acceptance probability
+        \begin{align*}
+            \alpha(\theta^{(t)}, \theta^*) &= 
+            \min \left( 1, \frac{\pi(\theta^*|Y)Q(\theta^*, \theta^{(t)})}
+        {\pi(\theta^{(t)}|Y)Q(\theta^{(t)}, \theta^{*})} \right)\\
+                                           &=
+            \min \left( 1, \frac{p(Y|\theta^*)\pi(\theta^*)Q(\theta^*, \theta^{(t)})}
+        {p(Y|\theta^{(t)})\pi(\theta^{(t)})Q(\theta^{(t)}, \theta^{*})} \right)
+        \end{align*}
+    \item Set next state
+        \begin{align*}
+            \theta^{(t+1)} = \begin{cases}
+                \theta^*, & p = \alpha(\theta^{(t)}, \theta^*)\\
+                \theta^{(t)}, & p = 1-\alpha(\theta^{(t)}, \theta^*)
+                \end{cases}
+        \end{align*}
+\end{enumerate}
+
+\subsubsection{Transition Kernels}
+
+Properties
+\begin{itemize}
+   \item Probability of transit to all states = 1 
+    \begin{align*}
+        \int_\Theta Q(\theta_a, \theta) d\theta = 1
+    \end{align*}
+    \item If transition kernel is symmetric
+        \begin{align*}
+            Q(\theta^{*}, \theta^{(t)}) = Q(\theta^{(t)}, \theta^{*})
+        \end{align*}
+\end{itemize}
+
+Common symmetric transition kernel
+\begin{itemize}
+    \item Uniform kernel
+        \begin{align*}
+            Q(\theta_a, \theta_b) = \frac{1}{2\delta} \sim
+            Unif(\theta_a-\delta, \theta_a + \delta)
+        \end{align*}
+    \item Normal kernel
+        \begin{align*}
+            Q(\theta_a, \theta_b) &= 
+            \frac{1}{\sqrt{2\pi\delta^2}} 
+            exp\left\{ - \frac{(\theta_b-\theta_a)^2}{2\delta^2} \right\}
+        \end{align*}
+\end{itemize}
+
+\subsection{Metropolis-Hasting Algorithm}
+
+\begin{enumerate}
+    \item set $\theta^{(0)}$
+    \item for $t\in[0, T-1]$ do
+        \subitem[1] Propose $\theta^*$ from density
+        $q(\theta|\theta^{(t)})=Q(\theta^{(t)}, \theta)$
+        \subitem[2] Compute acceptance probability
+        \begin{align*}
+            \alpha(\theta^{(t)}, \theta^*) &= 
+            \min \left( 1, \frac{p(Y|\theta^*)\pi(\theta^*)Q(\theta^*, \theta^{(t)})}
+        {p(Y|\theta^{(t)})\pi(\theta^{(t)})Q(\theta^{(t)}, \theta^{*})} \right)
+        \end{align*}
+        \subitem[3] Generate $U\sim Unif(0, 1)$
+        \subitem[4] If $U<\alpha(\theta^{(t)}, \theta^*)$, set
+        $\theta^{(t+1)}=\theta^*$
+        \subitem[5] Else set $\theta^{(t+1)}=\theta^{(t)}$
+    \item end for
+\end{enumerate}
+If symmetric kernel (Random Walk), then $Q(\theta^{(t)} \theta)$
+cancels
+
+\subsubsection{MH conditions}
+Want stationary distribution
+\begin{align*}
+    \int_\Theta \pi(\theta_a) K(\theta_a, \theta) d\theta_a =
+    \pi(\theta)
+\end{align*}
+
+Sufficient condition: detailed balanced conditions holds
+\begin{align*}
+    \pi(\theta_a) K(\theta_a, \theta_b) = \pi(\theta_b)K(\theta_b,
+    \theta_a)
+\end{align*}
+
+MH algorithm converge to stationary distribution $\pi(\theta|Y)$ if
+\begin{align*}
+    \pi&(\theta^{(t)}|Y) Q(\theta^{(t)}, \theta^*)\alpha(\theta^{(t)},
+    \theta^*)\\
+                       &= \pi(\theta^*|Y)Q(\theta^*,
+                       \theta^{(t)})\alpha(\theta^*, \theta^{(t)})
+\end{align*}
+since transition kernel in MH is $K(\theta^{(t)}, \theta^*)\approx
+Q(\theta^{(t)}, \theta^*)\alpha(\theta^{(t)}, \theta^*)$
+
+\subsubsection{MH tricks}
+
+\begin{itemize}
+    \item Parameter space
+        \subitem Transform parameters to unbounded real line
+        \subitem e.g. $\theta = Var(x) \geq 0 \Rightarrow \log(\theta)\in
+            \boldsymbol{R}$
+    \item Initial value $\theta^{(0)}$
+        \subitem Select maximised parameter for log posterior $\log\pi(\theta|Y)$
+        \subitem Can retrive Hessian matrix (usually negative definite
+        matrix)
+    \item Normal proposal kernel
+        \subitem optimal acceptance rate: 0.234
+        \subitem optimal variance ($d:=$dimension of $\theta$, best
+        $\geq 3$)
+        \begin{align*}
+            \sigma^2 &= c^2\Sigma,
+            ~\Sigma = (-H)^{-1}, ~c = \frac{2.4}{\sqrt{d}}
+        \end{align*}
+    \item Burn-in
+        \subitem drop initial $t_0$ draws as burn-in
+    \item Thinning
+        \subitem thin the chain by taking 1 from every 10 draws etc
+    \item Diagnostics
+        \subitem check trace plots have stabilized visually
+        \subitem check autocorrelations $\{\theta^{(t)}\}_{t=1}^T$ are
+        decreasing fast
+\end{itemize}
+
+\subsection{Gibbs Sampler}
+
+Idea: sample conditional distribution $\pi(\theta_i|Y, \theta_j),
+j\neq i$ to retrieve posterior distribution $\pi(\theta|Y), \theta =
+(\theta_1, \cdots, \theta_d)$
+
+\begin{enumerate}
+    \item Initialize $\theta^{(0)}$
+    \item At step $t \in [0, T-1]$
+        \subitem Sample 
+        $\theta_1^{(t+1)}\sim
+        \pi(\theta_1|\theta_2^{(t)}, \theta_3^{(t)}, \cdots,
+        \theta_d^{(t)}, Y)$
+        \subitem Sample
+        $\theta_2^{(t+1)}\sim
+        \pi(\theta_2|\theta_1^{(t+1)}, \theta_3^{(t)}, \cdots,
+        \theta_d^{(t)}, Y)$
+        \subitem $\cdots$
+        \subitem Sample
+        $\theta_d^{(t+1)}\sim
+        \pi(\theta_d|\theta_1^{(t+1)}, \theta_2^{(t+1)}, \cdots,
+        \theta_{d-1}^{(t+1)}, Y)$
+    \item Set $\theta^{(t+1)}=(\theta_1^{(t+1)}, \cdots,
+        \theta_d^{(t+1)})$
+    \item Repeat the steps until time $T$. Output $(\theta^{(1)},
+        \cdots, \theta^{(T)})$
+\end{enumerate}
+
+\subsubsection{Ex: Multivariate Dirichlet Density}
+
+Dirichlet Density
+\begin{align*}
+    &f(x_1, x_2, \cdots, x_d) 
+    \propto x_1^{\alpha_1 - 1} x_2^{\alpha_2 - 1} \cdots 
+    x_d^{\alpha_d - 1}\\
+    &\sum_{i=1}^d x_i = 1, ~x_i > 0
+\end{align*}
+
+Conditional distribution
+\begin{align*}
+    x_i | x_j \sim Beta(\alpha_i - 1, 2), j\neq i
+\end{align*}
+
+Marginal distribution
+\begin{align*}
+    x_i \sim Beta \left(\alpha_i, \sum_{j\neq i} \alpha_j \right)
+\end{align*}
+
+Note: for change of variable remember
+\begin{align*}
+    x &= g(y)\\
+    \Rightarrow f_x(x) &= f_y(g^{-1}(y)) \bigg| \frac{dy}{dx} \bigg|
+\end{align*}
+
+\subsubsection{Ex: Posterior of a Normal Model}
+
+Let $\pi(\mu, \sigma^2)\approx \frac{1}{\sigma^2}$ (improper prior)
+
+$Y=\{y_1, \cdots, y_n\}\sim N(\mu, \sigma^2)$ iid
+\begin{align*}
+    \pi(\mu, \sigma^2 | Y) &\propto \prod_{i=1}^n
+    \frac{1}{\sqrt{2\pi\sigma^2}} exp \left\{ -
+    \frac{(y_i-\mu)^2}{2\sigma^2} \right\} \cdot \frac{1}{\sigma^2}\\
+                           &\propto \left( \frac{1}{\sigma^2}
+                           \right)^{\frac{n}{2}+1}
+                           exp\left\{-\frac{\sum_{i=1}^n (y_i-\mu)^2}{2\sigma^2}\right\}
+\end{align*}
+key trick: Let $\tau = 1/\sigma^2$
+\begin{align*}
+    \pi|\sigma^2, Y &\sim N\left(\bar y, \frac{\sigma^2}{n} \right)\\
+    \tau|\mu, Y & \sim Gamma\left(\frac{n}{2}, \frac{\sum_{i=1}^n
+    (y_i-\mu)^2}{2} \right)
+\end{align*}
+
+\end{multicols}
+\end{document}

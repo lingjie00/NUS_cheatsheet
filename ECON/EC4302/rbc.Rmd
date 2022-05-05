@@ -1,0 +1,194 @@
+Key difference compared to other growth models:
+
+- Focus on short-run fluctuations
+- Allow shocks in technology and government sector
+- Adds leisure choice to consumers
+
+Model overview
+
+- Built on Ramsey model
+- Discrete time
+- Consist of:
+  1. Competitive identical, price-taking firms
+  2. Identical, price-taking households
+  3. Infinitely lived households
+  4. Government collect non-distortionary taxes and makes
+     purchases
+
+Players
+
+- Production, capital dynamics, wage and rent
+  - $Y_t = K_t^\alpha(A_tL_t)^{1-\alpha}, 0 < \alpha < 1$
+  - $K_{t+1} = K_{t} + I_t - \delta K_t = (1-\delta) K_t +
+    Y_t - C_t - G_t$
+  - $w_t = \frac{\partial Y_t}{\partial L_t} = (1-\alpha)
+    \left(\frac{K_t}{A_tL_t}\right)^\alpha$
+  - $r_t = \frac{\partial Y_t - \delta K_t}{\partial K_t} =
+    \alpha\left(\frac{A_tL_t}{K_t}\right)^{1-\alpha} - \delta$
+- Representative Household: maximise expected value of
+  lifetime utility
+  - $U = \sum_{t=0}^\infty exp(-\rho t) u(c_t, 1-l_t)
+    \frac{N_t}{H}$
+  - $N_t:=$ population, $H:=$ number of households, $\rho:=$
+    discount rate, $l_t :=$ labour supply
+  - Budget constraint: $c_1 + \frac{1}{1+r} c_2 = w_1l_1 +
+    \frac{1}{1+r}w_2l_2$
+  - Population growth: $\ln N_t = \bar{N} + nt, n < \rho$
+    (growth rate = $n$)
+  - $u_t = \ln c_t + b\ln(1-I_t)$
+  - $c_t := \frac{C}{N}$, consumption per household member
+  - $1 - l_t := 1 - \frac{L}{N}$, leisure per household member
+- Shocks: technology 
+  - growth rate $g$ and random shock
+  - $\ln A_t = \bar{A} + gt + \tilde{A}_t$
+  - AR(1) disturbances: $\tilde{A}_t =\rho_A \tilde{A}_{t-1}
+    + \epsilon_{A, t}$, $-1 < \rho_A < 1$
+- Shocks: government purchases
+  - per capital trend growth rate $g$ $\Rightarrow$ growth
+    rate $n+g$
+  - $\ln G_t = \bar{G} + (g+n)t + \tilde{G}_t$
+  - AR(1) disturbances: $\tilde{G}_t = \rho_G
+    \tilde{G}_{t-1} + \epsilon_{G. t}$, $-1 < \rho_G < 1$
+
+Household decisions
+
+- Labor supply: FOC after solving Lagraian for utility maximisation
+  - $(l_1) :$ $\frac{b}{1-l_1} = \lambda w_1$
+  - $(l_2) :$ $\frac{exp(-\rho)b}{1-l_2} = \frac{1}{1+r}\lambda w_w$
+- Elasticity of substitution between leisure
+  - From $(l_1)/(l_2):$ $\frac{1-l_1}{1-l_2} =
+    \frac{1}{exp(-\rho) (1+r)}\frac{w_2}{w_1}$
+    (intertemporal subsitution in labor supply)
+  - elasticity of substitution between leisure in the two
+    periods is 1
+  - increase in $r$ also increase first-period labor supply
+    ($l_1$) relative to second-period supply ($l_2$)
+- Optimization under uncertainty by changing consumption
+  this period (inter-temporal)
+  - Marginal cost of reducing consumption = expected
+    marginal benefit of saving and consume in next period
+  - Marginal utility in period $t:$ $exp(-\rho t)\frac{N_t}{H}\frac{1}{c_t}$
+  - Increase in consumption in $t+1:$
+    $exp(-n)(1+r_{t+1})\Delta c$
+  - Marginal utility in period $t+1:$
+    $exp(-\rho(t+1))\frac{N_{t+1}}{H} \frac{1}{c_{t+1}}$
+  - $MC_t = MU_{t+1}\cdot\Delta c_{t+1}$:
+    $\Rightarrow exp(-\rho t)\frac{N_t}{H}\frac{\Delta c}{c_t} =
+    E_t\left[exp(-\rho(t+1))\frac{N_{t+1}}{H} \frac{1}{c_{t+1}} exp(-n)(1+r_{t+1}) \right]\Delta c$
+  - Simplified solution: $\frac{1}{c_t} = exp(-\rho) E_t
+    \left[ \frac{1}{c_{t+1}} (1+r_{t+1}) \right]$
+- Optimization by changing leisure this period (intra-temporal)
+  - Marginal dis-utility of labour = marginal utility
+    benefit of consumption
+  - $exp(-\rho t)\frac{N_t}{H}\frac{b}{1-l_t} \Delta l =
+    exp(-\rho t)\frac{N_t}{H} \frac{1}{c_t} w_t \Delta l$
+  - Simplified solution: $\frac{c_t}{1-l_t} = \frac{w_t}{b}$
+  - Note that uncertainty does not affect decision between
+    current labour and consumption
+
+## Simplified RBC - without government
+
+Changes
+
+- No government $G_t$
+- Complete depreciation $\delta = 1$
+- $K_{t+1} = Y_T - C_t$
+- $1+r_t = \alpha(\frac{A_tL_t}{K_t})^{1-\alpha}$
+- Note consumption now is simply $C_t = (1-s)Y_t, c_t = (1-s)\frac{Y_t}{N_t}$
+
+Simplified equations
+
+- inter-temporal Optimization: $\frac{1}{c_t} =
+  exp(-\rho)E_t\left[ \frac{1+r_{t+1}}{(1-s_t)\frac{Y_t}{N_t}} \right]$
+  with $c_{t} = (1-s_t) \frac{Y_t}{N_t}$
+- consider $1+r_{t+1} = \alpha \frac{Y_{t+1}}{K_{t+1}}$, $K_{t+1} =
+  s_tY_t$, $\ln N_{t+1} = \ln N_t + n$
+- intra-temporal Optimization simplifies to:
+  $\frac{1}{c_t} = -\rho + \ln\alpha + \ln N_t + n - \ln s_t - \ln Y_t + \ln
+  E_t\left[ \frac{1}{1-s_{t+1}} \right]$
+- Final equation: $\ln s_t - \ln(1-s_t) = -\rho + \ln\alpha
+  + n + \ln E_t\left[ \frac{1}{1-s_{t+1}} \right]$
+
+Solving the equation with constant saving rate $\hat{s}$
+
+- Consider $\hat{s} = s_t = S_{t+1}$
+- Previous final equation reduced to $\ln\hat{s} = \ln
+  \alpha + n - \rho \Rightarrow \hat{s} = \alpha exp(n-\rho)$
+- Given $\hat{s}$, we can solve for constant labor supply
+  $\hat{l}$, consider $\frac{c_t}{1-l_t} = \frac{w_t}{b}$,
+  $c_t = \frac{C_t}{N_t} = \frac{(1-\hat{s})Y_t}{N_t}$,
+  $w_t = (1-\alpha)\frac{Y_t}{L_t} =
+  (1-\alpha)\frac{Y_t}{\hat{l}N_t}$
+- constant labour supply: $\hat{l} = \frac{1-\alpha}{1-\alpha + b(1-\hat{s})}$ 
+
+Consider Pareto optimum to solve for the model equilibrium
+
+- Using the $\hat{s}, \hat{l}$, $K_t = \hat{s} Y_{t-1}, L_t
+  = \hat{l} N_t$
+- Production function:
+  $\ln Y_t = \alpha \ln \hat{s} +
+  \alpha \ln Y_{t-1} + (1-\alpha)(\bar{A} + gt + \tilde{A}_t)
+  + (1-\alpha)(\ln\hat{l} + \bar{N} + nt)$
+- Define $\ln Y_t^*$ as the value of $\ln Y_t$ if $\ln A_t$
+  equate to $\bar{A} + gt$ each period
+- $\ln Y_t^* = \alpha \ln \hat{s} +
+  \alpha \ln Y_{t-1} + (1-\alpha)(\bar{A} + gt)
+  + (1-\alpha)(\ln\hat{l} + \bar{N} + nt)$
+- $\tilde{Y}_t := \ln Y_t - \ln Y_t^* = \alpha
+  \tilde{Y}_{t-1} + (1-\alpha)\tilde{A}_t$
+- Since $\tilde{Y}_{t-1} = \alpha \tilde{Y}_{t-2} +
+  (1-\alpha)\tilde{A}_{t-1} \Rightarrow \tilde{A}_{t-1} =
+  \frac{1}{1-\alpha} (\tilde{Y}_{t-1} - \alpha \tilde{Y}_{t-2})$
+- And $\tilde{A}_t = \rho_A \tilde{A}_{t-1} + \epsilon_{A, t}$
+- Final expression: $\tilde{Y}_t = (\alpha +
+  \rho_A)\tilde{Y}_{t-1} - \alpha\rho_A \tilde{Y}_{t-2} +
+  (1-\alpha)\epsilon_{A, t}$ (AR2)
+- Implication: since $\alpha$ is small (~$\frac{1}{3}$),
+  dynamics determined largely by $\rho_A$ and if $|\rho_A| <
+  1$, the disturbances does not translate into long-lasting
+  output movements (stationary)
+
+Issues with simplified equation
+
+- Model saving rate $\hat{s}$ is constant: in reality
+  investment varies much more than consumption and saving
+  rate is low in recessions
+- Model labour input $\hat{l}$ is constant: in reality
+  employment and hours are strongly pro-cyclical
+- Model wage $w_t = \frac{(1-\alpha)Y_t}{L_t}$ is
+  proportional to output: in reality wages are not
+  pro cyclical
+
+## General RBC - solution with log-linearization
+
+Key trick:
+
+- Converting agents' decision rule with Taylor approximation
+  in the logs of the variables along path where shocks are
+  not present
+- E.g. $\tilde{Y}_t = \ln Y_t - \ln Y_t^*$
+
+General model
+
+- State variables (cannot be changed instantaneous): $K_t,
+  A_t, G_t$
+- Choice variables (can be changed instantaneous): $C_t, L_t$
+
+Want to solve:
+
+1. $\tilde{C}_t = a_{CK}\tilde{K}_t + a_{CA}\tilde{A}_t +
+   a_{CG}\tilde{G}_t$
+2. $\tilde{L}_t = a_{LK}\tilde{K}_t + a_{LA}\tilde{A}_t +
+   a_{LG} \tilde{G}_t$
+3. From $\tilde{C}_t, \tilde{L}_t$, derive $\tilde{K}_t$
+
+Six equations
+
+1. $a_{CK} + \left( \frac{l^*}{1-l^*} + \alpha \right)a_{LK}
+   = \alpha$
+2. $a_{CA} + \left( \frac{l^*}{1-l^*} + \alpha \right)a_{LA}
+   = 1-\alpha$
+3. $a_{CG} + \left( \frac{l^*}{1-l^*} + \alpha \right)a_{LG}
+   = 0$
+- 3 more equations from $\frac{1}{c_t} =
+  exp(-\rho)E_t\left[ \frac{1}{c_{t+1}}(1+r_{t+1}) \right]$

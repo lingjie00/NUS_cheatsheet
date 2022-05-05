@@ -1,0 +1,147 @@
+Key changes compare to previous growth models:
+
+- country specific policies affect the permanent growth rate $A_t$
+- endogenous growth is driven by innovative activities (R&D)
+
+Sectors and dynamics:
+
+- $a_k :=$ fraction of capital in used in R&D (and $a_k$ for
+  labour)
+- $1 - a_k :=$ fraction of capital in goods-producing
+ (and $1-a_l$ for labour)
+- labor ($L$), capital ($K$), technology ($A$), output ($Y$) 
+- Assume no depreciation $\delta = 0$
+- Continuous time
+- Both sectors uses full stock of knowledge $A$ (non rival)
+
+1. Output ($Y_t$): combine inputs to produce final goods
+   $$
+   Y(t) = \left[(1-a_k)K(t)\right]^\alpha
+   \left[A(t)(1-a_L)L(t)\right]^{1-\alpha}
+   $$
+   - $0\leq \alpha \leq 1$
+2. R&D ($A_t$): innovate and produce new ideas
+   $$
+   \dot{A}(t) = B\left[ a_K K(t) \right]^\beta
+   \left[ a_L L(t) \right]^\gamma A(t)^\theta
+   $$
+   - $B>0, \beta \geq 0, \gamma \geq 0$
+3. Capital dynamics with exogenous saving rate
+   $$
+   \dot{K}(t) = sY(t)
+   $$
+   - $0 < s < 1$
+4. Exogenous population growth
+   $$
+   \dot{L}(t) = nL(t)
+   $$
+   - $n \geq 0$
+
+## Simplified model - without capital
+
+Simplified environment
+
+- $Y(t) = A(t)(1-a_L)L(t)$
+- $\dot{A}(t) = B\left[ a_L L(t) \right]^\gamma A(t)^\theta$
+
+Dynamics of $A$
+
+- $g_A(t) := \frac{\dot{A}(t)}{A(t)} = Ba_L^\gamma
+  L(t)^\gamma A(t)^{\theta-1}$
+- $\frac{\dot{g_A}(t)}{g_A(t)} = \gamma g_L + (\theta -
+  1)g_A(t)$ $\Rightarrow \dot{g_A}(t) = \gamma ng_A(t) +
+  (\theta-1)[g_A(t)]^2$
+
+Consider cases for $\dot{g_A}(t)$ vs $g_A$
+
+1. $\theta < 1$: concave function
+   - $g^*_A = \frac{\gamma}{1-\theta}n$: BGP
+2. $\theta > 1$: convex function
+   - No BGP, $\dot{g_A}$ increase to infinity as $g_A$
+     increases
+3. $\theta = 1$: linear function
+   - If $n > 0$: No BGP, $\dot{g_A}$ increase to infinity as
+     $g_A$ increases
+   - If $n=0$: BGP with constant growth rate $g_A = g_Y =
+     g_{Y/L} = BA_L^\gamma \bar{L}^\gamma$, $a_L$
+     interpreted as the saving rate
+
+Policy implications
+
+- Higher population growth $g_L = n$ will lead to higher income growth
+- However, it should actually be world population growth
+  since knowledge is mobile and has learning or spillover effects
+
+## General model - with capital
+
+Endogenous state variables: $A, K$
+
+- State variable: stock variable, agent take as given in
+  time $t$ and does not change instantaneously
+- Choice variable: decision variable, can be change instantaneously
+
+Dynamics of Capital
+
+- $\dot{K}(t) =
+  s(1-a_K)^\alpha(1-a_L)^{1-\alpha}K(t)^\alpha
+  A(t)^{1-\alpha} L(t)^{1-\alpha}$
+- $c_K := s(1-a_K)^\alpha(1-a_L)^{1-\alpha}$
+- $g_K(t) := \frac{\dot{K}(t)}{K(t)} = c_k\left[
+  \frac{A(t)L(t)}{K(t)} \right]^{1-\alpha}$
+- $\frac{\dot{g_K}(t)}{g_K(t)} = (1-\alpha)[g_A(t) + n -
+  g_K(t)]$
+
+Dynamics of Knowledge
+
+- $c_A := Ba_K^\beta a_L^\gamma$
+- $g_A(t) := \frac{\dot{A}(t)}{A(t)} = c_A K(t)^\beta
+  L(t)^\gamma A(t)^{\theta-1}$
+- $\frac{\dot{g_A}(t)}{g_A(t)} = \beta g_K(t) + \gamma n +
+  (\theta - 1) g_A(t)$
+
+Locus of points where $\dot{g_K}, \dot{g_A} = 0$ is a constant:
+
+- $\dot{g_K}(t) = 0 \Rightarrow g_K(t) = g_A(t) + n$
+- $\dot{g_A}(t) = 0 \Rightarrow g_K(t) = - \frac{\gamma n}{\beta} + \frac{1-\theta}{\beta}g_A(t)$
+
+Phase Diagram of $g_A$ and $g_K$: solve $\dot{g_A}=0, \dot{g_K}$
+
+1. $\beta + \theta < 1$: unique BGP
+   - $g^*_A = \frac{\beta+\gamma}{1-(\theta+\beta)}n$
+   - $g_K^* = g_A^* + n$
+   - $g_Y^* = \alpha g_K^* + (1-\alpha)(g_A^*+n) = g^*_A + n$
+   - $g_{Y/L}^* = g_A^*$
+2. $\beta + \theta = 1, n = 0$: unique BGP
+   - $g_K(t) = g^* = c_K \bar{L}^{1-\alpha}\left[ \frac{A(t)}{K(t)} \right]^{1-\alpha}$
+   - $g_A(t) = g^* = c_A \bar{L}^\gamma \left[\frac{K(t)}{A(t)}\right]^\beta$
+3. $\beta + \theta = 1, n > 0$: no BGP
+   - similar outcome as $\theta=1, n>0$ or
+     $\beta + \theta > 1$, $\theta > 1$ (without capital)
+
+## Simplified general model - learning by doing
+
+All inputs engaged in goods production:
+
+- $Y(t) = K(t)^\alpha\left[ A(t)L(t) \right]^{1-\alpha}$
+
+Learning occurs as side effect of new capital production
+
+- $g_A = \phi g_K, \phi > 0$
+- $\Rightarrow A(t) = BK(t)^\phi$
+- $\Rightarrow Y(t) = K(t)^\alpha B^{1-\alpha} K(t)^{\phi(1-\alpha)}L(t)^{1-\alpha}$
+
+Dynamics of capital
+
+- $\dot{K}(t) = sY(t) = sB^{1-\alpha} K(t)^{\alpha + \phi(1-\alpha)} L(t)^{1-\alpha}$
+- The BCP depends on how $\alpha + \phi(1-\alpha) compares to 1$
+
+### "Y=AK" models
+
+Consider case where $\phi = 1 \Rightarrow \alpha + \phi(1-\alpha) = 1, n = 0$
+
+- $Y(t) = bK(t)$, $b := B^{1-\alpha}\bar{L}^{1-\alpha}$
+  - often represent $b$ as $A$, thus the $Y=AK$ model
+- $\dot{K}(t) = sbK(t)$
+- BCP: $g^*_Y = g^*_K = sb$
+  - saving rates affect long run growth because capital
+    helps learning

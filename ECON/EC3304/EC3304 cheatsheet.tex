@@ -1,0 +1,697 @@
+\documentclass[12pt,landscape]{article}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[landscape]{geometry}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{color,graphicx,overpic}
+\usepackage{hyperref}
+\usepackage{soul} %for highlight
+\usepackage{xcolor} %color definition
+\usepackage{sectsty} %change section color
+\usepackage{tabulary} %better table
+
+
+\pdfinfo{
+  /Title (EC3304 Econometrics cheatsheet)
+  /Creator (Lingjie)}
+
+% This sets page margins to .5 inch if using letter paper, and to 1cm
+% if using A4 paper. (This probably isn't strictly necessary.)
+% If using another size paper, use default 1cm margins.
+\ifthenelse{\lengthtest { \paperwidth = 11in}}
+    { \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
+    {\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
+        {\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+        {\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+    }
+
+% Turn off header and footer
+\pagestyle{empty}
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries\color{red}}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries\color{blue}}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries\color{violet}}}
+\makeatother
+
+% Define BibTeX command
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+
+%My Environments
+\newtheorem{example}[section]{Example}
+% -----------------------------------------------------------------------
+
+\begin{document}
+\raggedright
+\footnotesize
+\begin{multicols}{3}
+
+
+% multicol parameters
+% These lengths are set only within the two main columns
+%\setlength{\columnseprule}{0.25pt}
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{1pt}
+\setlength{\columnsep}{2pt}
+
+\begin{center}
+     \Large{\underline{EC3304 Econometrics II}} \\
+     {Lingjie, \today}
+\end{center}
+
+\section{Probability, statistics and linear regression}
+	Econometrics is about statistical modelling and data analysis for economic usages, concerning theory, methodology and empirics of analysing data\\
+	Economists are interested in casual effects and forecasts
+
+\subsection{Random Variables}
+
+	\begin{tabular}{l@{ :  }l}
+		types				&		continuous, discrete\\
+		event				&		$(Y=a), (Y < a), (b < Y < a)$\\
+		distribution			&		$f_X, F_X$\\
+		summary stat			&		$E(Y), Var(Y)$\\
+		joint distribution			&		$(Y\in A,X\in B)$\\
+		marginal distribution		&		$(Y\in A, X\in x)$\\
+		identical distribution		&		$F_X = F_Y$\\
+		independence			&		\scriptsize{$P(Y\in A\mid X\in B) = P(Y\in A)$}\\
+		uncorrelated			&		$Cov(Y, X) = 0$\\
+		random sample ($i.i.d$)	&		$(F_{Y_i}, F_{X_i}) = (F_{Y_j}, F_{X_j})$\\
+							&		$P(Y_i, X_i \mid Y_j, X_j) = P(Y_i, X_i)$\\
+							&		$E(Y_i) = E(Y_j)$\\
+							&		$Var(Y_i) = Var(Y_j)$
+	\end{tabular}
+
+\subsection{Inference}
+	basic principle
+	\begin{enumerate}
+		\item specific statistical model with parameter of interest\\
+		\item assume model accuracy\\
+		\item use data to learn about parameter
+	\end{enumerate}
+
+\subsubsection{Set estimate: Sampling distribution}
+	Exact sampling distribution\\
+	$X\sim Ber(p)$, when $n = 2$, $P(X=0), P(X=1/2), P(X=1)$ etc and plot the prob against value of sample average
+
+%yet to learn
+%\subsubsection{Moment based}
+
+\subsection{Finite sample properties}
+
+\subsubsection{Unbiasedness}
+	$E(\hat\theta) = \sum_{t\in T}tP(\hat\theta = t) = \theta$
+
+\subsubsection{Efficiency}
+	Evaluate efficiency by loss function, such as $MSE$\\
+	\begin{tabular}{rl}
+		$MSE =$ 		&	$E(\hat\theta - \theta)^2 = E(\hat\theta - E(\hat\theta) + E(\hat\theta) - \theta)^2$\\
+		$=$			&	$Var(\hat\theta) + (E(\hat\theta) - \theta)^2$
+	\end{tabular}
+
+\subsection{Large sample properties}
+
+\subsubsection{Consistency}
+	$\hat\theta$ is consistent estimator if\\
+	$\lim_{n\rightarrow\infty}P(|\hat\theta-\theta|\leq c)=1~\forall~c>0$\\
+	$\hat\theta \rightarrow \theta$ converge in probability to $\theta$
+
+\subsubsection{Sample average vs Expectation}
+	average: $\frac{\sum_{i\in n} X_i}{n}$, Expectation: $\sum_{x\in S}xP(X=x)$
+
+\subsubsection{Consistency and LLN}
+	convenient way to prove consistency\\
+	if $\{X_i\}_{i=1}^n$ is $i.i.d$ with $Var(X_i)<\infty$\\
+	then $\bar X\rightarrow E(X_i)$ converge in probability\\
+	since $E(\bar X)=E(X_i)$ and\\ $Var(\bar X)=\frac{Var(X_i)}{n}\rightarrow 0$ as $n\rightarrow\infty$
+
+\subsubsection{Asymptotic Normality and CLT}
+	when $n$ is large but not infinite, standardised sample average is approximated by $N(0,1)$\\
+	if $\{X_i\}_{i=1}^n$ is $i.i.d$ with $Var(X_i)<\infty$\\
+	then $\frac{\bar X - E(\bar X)}{\sqrt{Var(\bar X)}} \approx N(0,1)$ for large $n$
+
+\subsubsection{Confidence interval}
+	by CLT, $P(\frac{\hat X - X}{\hat\sigma} \leq c)\approx \Phi(c)$\\
+	CI: $(\hat X \pm \sigma_{\hat X}Z_{\{(1-\alpha)/2\}})$, $Z_{0.025}=1.96$ for 95\% CI
+
+\subsubsection{Hypothesis test}
+	test $H_0: X = 0$ vs $H_1: X \neq 0$\\
+	reject $H_0$ if $|\frac{\hat X - X}{\hat\sigma}| > 1.96$ or $2\Phi(-|\frac{\hat X - X}{\hat\sigma}|) < 5\%$
+
+\section{Linear Regression}
+	including $\{Y, log(Y)\} \times \{X, log(X), X^k\}$
+
+\subsubsection{Properties of OLS Estimators}
+	model: $Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + u$\\
+	interpretation of $\beta_1$: $\frac{d}{dX}E(Y\mid X_1=x_1)$
+
+\subsection{Assumptions (LSA)}
+	model: $Y_i = \beta_0 + \beta_1X_{2i} + \beta_2X_{2i} + u_i$
+	\begin{enumerate}
+		\item $\{(Y_i, X_{1i}, \cdots, X_{2i})\}_{i=1}^n$ is i.i.d
+		\item $E(u_i\mid X)=0 \Leftrightarrow E(Y_i\mid X) = \beta_0+\beta_1X_{1i}+\beta_2X_{2i}$
+		\item finite $E(Y_i^4), E(X_i^4)$, no outliers
+		\item No perfect multicollinearity (only essential for multi-linear models)
+	\end{enumerate}
+
+\subsubsection{Least Squares}
+	$E(Y\mid X) = \arg \min_{m(\cdot)\in\mathbb{M}} E(Y-m(X))^2$\\
+	For $(\beta_0, \beta_1)$: $\min_{\beta_0, \beta_1} E(Y-\beta_0-\beta_1X)^2$\\
+	\begin{tabular}{l@{ = }l}
+		$\hat\beta_0$ 		&		$\bar Y - \hat\beta_1\bar X$\\
+		$\hat\beta_1$		&		$\frac{\hat{Cov}(X_i, Y_i)}{\hat Var(X_i)}$ = $\frac{E[X-E(X)]-E[Y-E(Y)]}{E[X-E(X)]^2}$
+	\end{tabular}
+
+\subsubsection{Unbiasedness \& Large Sample Properties}
+	$\hat\beta_1 = \frac{\hat{Cov}(X_i, \beta_0+\beta_1X_i+u_i)}{\hat{Var}(X_i)} = \beta_1+\frac{\hat{Cov}(X_i, u_i)}{\hat{Var}(X_i)}$\\
+	by CLT:\\
+	\begin{tabular}{ll}
+		if LSA (2) true,			&		$E(u_i\mid X_i)=0\Rightarrow Cov(X_i, u_i)=0$\\
+							&		$\hat\beta_1 \rightarrow \beta_1$\\
+		if large but finite n, 		&		$\hat\beta_1 \approx N(\beta_1, \sigma^2_{\hat\beta_1})$\\
+							&		$\sigma^2_{\hat\beta_1} = \frac{1}{n}\frac{Var((X_i-\mu_X)u_i)}{[Var(X_i)]^2}$
+	\end{tabular}\\
+	if LSA(2) failed, then $\hat\beta_1 \rightarrow \beta_1+\frac{Cov(X_i, u_i)}{Var(X_i)}\neq\beta_1$
+
+\subsubsection{Homoskedasticity}
+	\begin{tabular}{ll}
+		heteroskedastic:		&		$Var(u_i\mid X_i) = \sigma^2_{u_i}(X_i)$, fn of X\\
+		homoskedastic:			&		$Var(u_i\mid X_i) = \sigma^2_{u_i}$, constant\\
+	\end{tabular}
+	if LSA holds, by CLT: $\hat\beta_1\approx N(\beta_1, \sigma^2_{\hat\beta_1})$\\
+	\begin{tabular}{ll}
+		heteroskedastic		&		$\sigma^2_{\hat\beta_1} = \frac{1}{n}\frac{Var((X_i-\mu_X)u_i)}{(Var(X_i))^2}$\\
+		homoskedastic		&		$\sigma^2_{\hat\beta_1} = \frac{1}{n}\frac{Var(u_i)}{Var(X_i)}$
+	\end{tabular}
+
+\subsubsection{Gauss Markov}
+	in addition to LSA, assume homoskedasticity, then OLS is \textbf{B}est \textbf{L}inear \textbf{U}nbiased \textbf{E}stimator
+
+\subsection{Perfect Multicollinearity}
+	$ X = \begin{pmatrix}
+		1		&	X_{11}		&	X_{k1}\\
+		\vdots	&	\vdots		&	\vdots\\
+		1		&	X_{1n}		&	X_{kn}\\
+	\end{pmatrix}$,
+	PM when $Rank(X) \neq k$\\
+	when little or no variation in $\{X_i\}_{i=1}^n$\\
+	$\sigma^2_{\hat\beta_1}=\frac{1}{n}(\frac{1}{1-corr(X_{1i}, X_{2i})^2})\frac{Var(u_i)}{Var(X_i)}$ is large
+
+\subsubsection{Dummy variable trap}
+	includes all one hot encoded dummies and not drop one dummy or $\beta_0$
+
+\subsubsection{Imperfect multicollinearity}
+	covariates have high correlation but not perfectly collinear
+
+\subsection{$R^2$}
+	keywords: Explained/Total Sum of Squares, Sum of Squares Errors, adjusted $R^2$\\
+	\begin{tabular}{l@{ = }l}
+		$R^2$		&	$1-\frac{SSR}{TSS}$\\
+		$\hat{R}^2$	&	$1-(\frac{n-1}{n-k-1})\frac{SSR}{TSS}$
+	\end{tabular}
+	\begin{tabular}{l@{ = }l}
+		ESS		&		$\sum(\hat Y_i - E(Y))^2$\\
+		SSR		&		$\sum(Y_i - \hat Y_i)^2$\\
+		TSS		&		$\sum(Y_i - E(Y))^2$
+	\end{tabular}
+
+\subsection{Omitted Variable Bias}
+	let $Y = \beta_0+\beta_1X+\beta_2Z+u_i$\\
+	OVB arise when $Cov(X, Z)\neq 0$ and $Cov(Y, Z)\neq 0$\\
+	but we assume $Y = \beta_0+\beta_1X+\epsilon_i$\\
+	then $\hat\beta_1 = \beta_1 + \beta_2\frac{Cov(X, Z)}{Var(X)}\neq\beta_1$
+
+\section{Panel Data (Longitudinal data)}
+	useful to control for time invariant factors (OVB)\\
+	\textbf{balanced panel} when all variables are observed for all entities and all time periods\\
+	\textbf{unbalanced panel} when missing observations are present, not a worry if missing mechanism is exogenous
+
+\subsection{Data Structure}
+	\begin{itemize}
+		\item Repeated cross-sections: different groups, heterogeneous data and more is good\\
+		\item Panel data: same group over time, correlation between entity (or cluster) over time\\
+		\item Time series: same entity over time, correlation between obs will be key feature
+	\end{itemize}
+
+\columnbreak
+
+\subsection{Least Squares Assumptions (LSA-FE)}
+	model: $Y_{it} = \beta_0 + \beta_1X_{it} + \alpha_i + u_{it}$\\
+	A time invariant covariates $\alpha_i$ that is not able to be observe through data\\
+	\begin{enumerate}
+		\item $\{(Y_i, X_{i1}, \cdots, X_{iT})\}_{i=1}^n$ or $\{(\alpha_i, X_{i1}, \cdots, X_{iT}, u_{it}, \cdots, u_{iT})\}_{i=1}^n$ is i.i.d
+		\item $E(u_i\mid X_{i1}, \cdots, X_{iT}, \alpha_i)=0$
+		\item finite $E(Y_i^4), E(X_i^4)$, no outliers
+		\item No perfect multicollinearity (only essential for multi-linear models)
+	\end{enumerate}
+
+\subsection{Random Effects (RE) Model}
+	RE model assumes $E(\alpha_i\mid X_{i1}, \cdots, X_{iT}) = 0$,\\
+	then $\frac{\delta}{\delta X_{it}}E(Y_{it}\mid X_{i1}, \cdots, X_{iT}) = \beta_1$\\
+	we can run OLS straight since $\alpha_i$ will not affect our result.\\
+	However, since composite error $\epsilon_{it} = \alpha_i + u_{it}$ is correlated across $i$ and possibly $t$\\
+	$Var(\epsilon_{it}) = \sigma^2_{\alpha} + \sigma^2_{u}$ and $Cov(\epsilon_{it}, \epsilon_{is}) = Cov(\alpha_i, \alpha_i) = \sigma^2_{\alpha}$\\
+	assuming $\{u_{it}\}$ to be uncorrelated. Generalised least squares (GLS) is needed.
+
+\subsection{Fixed Effects (FE) Model}
+	FE model assumes $E(\alpha_i\mid X_{i1}, \cdots, X_{iT})\neq 0$,\\
+	then $\frac{\delta}{\delta X_{it}}E(Y_{it}\mid X_{i1}, \cdots, X_{iT}, \alpha_i) = \beta_1$\\
+	therefore we can't run OLS straight since $\alpha_i$ is not observed
+
+\subsubsection{n-1 binary regressor regression model}
+	Since
+	\begin{tabular}{l@{ = }l}
+		$Y_{1,t}$		&		$(\beta_0+\beta_2Z_1) + \beta_1X_{1,t} + u_{1,t}$\\
+		$Y_{2,t}$		&		$(\beta_0+\beta_2Z_2) + \beta_1X_{2,t} + u_{2,t}$\\
+		$Y_{3,t}$		&		$(\beta_0+\beta_2Z_3) + \beta_1X_{3,t} + u_{3,t}$
+	\end{tabular}
+	$Y_{i,t} = \beta_0+\beta_1X_{i,t}+\gamma_{Z_1}DZ_1+\gamma_{Z_2}DZ_2+u_{it}$\\
+	where $DZ_1 = 1$ for $Z_1$ and $DZ_2 = 1$ for $Z_2$ are time dummy variables. $DZ_3$ is omitted to avoid perfect multicollinearity
+
+\subsubsection{Fixed Effect regression model}
+	another way to represent omitted time invariant factors\\
+	$Y_{it} = \beta_0 + \beta_1X_{it}+\alpha_i+u_{it}$\\
+	where $\alpha_1 = \beta_0$ and $\alpha_i = \beta_0 + \gamma_i$ for $i > 1$, when related to n-1 binary regressor
+
+\subsubsection{First Differencing estimator, $FD$}
+	\begin{tabular}{l@{ : }l}
+		model		&		$\Delta Y_{it} = \beta_1\Delta X_{it} + \Delta u_{it}$\\
+		method		&		$Y_{i(t+1)} - Y_{i(t)}~\forall~t \in [1, T] $\\
+		since			&		$E(\Delta u_{it} \mid \Delta X_{i2}, \cdots, \Delta X_{iT}) = 0~\forall~t>1$\\
+					&		$\Rightarrow E(\Delta Y_{it}\mid \Delta X_{it})=\beta_1\Delta X_{it}$\\
+		OLS			&		$\min Q_{FD}(b_1) = \sum_{t=2}^{T}\sum_{i=1}^{n} (\Delta Y_{it} - b_1\Delta X_{it})^2$
+	\end{tabular}
+
+\subsubsection{Fixed Effects estimator $FE$}
+	\begin{tabular}{l@{ : }l}
+		model		&		$\tilde Y_{it} = \beta_1\tilde X_{it} + \tilde u_{it}$\\
+		method		&		$\tilde Y_{it} = Y_{it} - \bar Y_{i}$\\
+		since			&		$E(\tilde u_{it} \mid \tilde X_{i2}, \cdots, \tilde X_{iT}) = 0~\forall~t>1$\\
+					&		$\Rightarrow E(\tilde Y_{it}\mid \tilde X_{it})=\beta_1\tilde X_{it}$\\
+		OLS			&		$\min Q_{FE}(b_1) = \sum_{t=2}^{T}\sum_{i=1}^{n} (\tilde Y_{it} - b_1\tilde X_{it})^2$
+	\end{tabular}
+
+\subsection{Regression Errors}
+	\begin{tabular}{l@{ : }l@{ = }l}
+		RE			&		$\epsilon_{it}$		&		$\alpha_i + u_{it}$\\
+		FE(FD)		&		$\Delta u_{it}$		&		$u_{it} - u_{it-1}$\\
+		FE(FE)		&		$\tilde u_{it}$		&		$u_{it} - \bar u_{i}$
+	\end{tabular}\\
+	note how even if $\{u_{it}\}$ is i.i.d., regression errors can still be correlated
+	
+\subsection{Clustered Variance}
+	To allow the correlation in regression errors, we consider the following sample average\\
+	\begin{tabular}{l@{ = }l}
+		RE		&		$\frac{1}{nT}\sum_{i=1}^{n}\sum_{t=1}^T{\epsilon_{it}}$\\
+				&		$\frac{1}{n}\left(\frac{1}{T}\sum_{t=1}^{T}{\epsilon_{it}}\right)$ = $\frac{1}{n}\sum_{i=1}^{n}\bar\epsilon_i$\\
+		FE(FD)	&		$\frac{1}{n(T-1)}\sum_{i=1}^{n}\sum_{t=2}^{T}\Delta u_{it}$\\
+				&		$\frac{1}{n}\sum_{i=1}^{n}\left(\frac{1}{T-1}\sum_{t=2}^{T}\Delta u_{it}\right)$\\
+		FE(FE)	&		$\frac{1}{nT}\sum_{i=1}^{n}\sum_{t=1}^{T}\tilde u_{it}$\\
+				&		$\frac{1}{n}\sum_{i=1}^{n}\left(\frac{1}{T}\sum_{t=1}^{T}\tilde u_{it}\right)$
+	\end{tabular}
+
+\columnbreak
+
+\section{Binary dependent variables}
+	Let $Y\sim Ber(p)$, $E(Y\mid X) = P(Y=1\mid X)$\\
+	\begin{tabulary}{\linewidth}{L@{ : }l}
+	linear probability model		&		$P(Y=1\mid X) = \beta_0+\beta_1X$\\
+	generalised linear model		&		$P(Y=1\mid X) = F(\beta_0+\beta_1X)$
+	\end{tabulary}
+
+\subsection{Binary Choice Assumptions (BCA)}
+	\begin{enumerate}
+		\item \textbf{latent variable} $Y_i^* = \beta_0 + \beta_1X_1 + \cdots + \beta_kX_{ki} + u_i$\\
+			s.t. $-u_i\mid X_{1i},\cdots,X_{ki}$ has known cdf $F(\cdot)$\\
+		\item $Y_i^*$ is not observed but \textbf{limited dependent variable} $Y_i = 1_{\{Y_i^*\geq0\}}$ is observed\\
+		\item $\{(Y_i, X_{1i}, \cdots, X_{ki})\}_{i=1}^{n}$ is i.i.d. across i\\
+		\item no perfect multicollinearity + no outliers
+	\end{enumerate}
+	the latent variable can be interpreted as utility that determines the outcome of decision. e.g. if utility gain in smoking $>$ 0.5 then individual smoke
+
+\subsection{Linear Probability Model (LPM)}
+	\begin{tabular}{ll}
+		model:		&		$Y_i = \beta_0 + \beta_1X_i+u_i$\\
+		where		&		$Y_i\sim Ber(p)$ and $E(u_i\mid X_i)=0$\\
+		then			&		$E(Y_i\mid X_i) = P(Y_i = 1 \mid X_i)$\\
+		$\beta_1$		&		$=\frac{\partial}{\partial x}P(Y_i=1\mid X_i=x)$
+	\end{tabular}\\
+	and $\hat Y_i = \hat\beta_0 + \hat\beta_1 X_i$ is the predicted probability that $Y_i =1$ given $X_i$
+
+\subsubsection{Remarks about LPM}
+	\begin{enumerate}
+		\item 	if $Y_i\sim Ber(p)$, heteroskedastic robust SE must be use\\
+				$Var(Y_i\mid X_i) = \theta(1-\theta)$ \\
+				$= P(Y_i=1\mid X_i)-(1-P(Y_i=0\mid X_i))$\\
+				$=\beta_0+\beta_1X_i$, depends on x\\
+		\item		LPM is not suitable to use as probabilities fall outside $[0,1]$ and $\frac{\partial}{\partial X}$ is constant
+	\end{enumerate}
+
+\subsection{Probit Model}
+	$P(Y=1\mid X) = \Phi(\beta_0+\beta_1X+\beta_2Z)$\\
+	where $\beta_0+\beta_1X+\beta_2Z$ is called index\\
+	and $\Phi(z) = P(N(0,1)\leq z)$\\
+	we can use index as z-value to compute predicted probabilities for any x
+
+\subsubsection{Partial effect}
+	$\frac{d}{dX}\hat P(Y=1\mid X) = \hat\beta_1\Phi'(\hat\beta_0+\hat\beta_1X)$
+
+\subsubsection{Percentage point}
+	$100\times(\hat P(Y=1\mid X=x') - \hat P(Y=1\mid X=x))$
+
+\subsubsection{Percentage change}
+	$\frac{\hat P(Y=1\mid X=x') - \hat P(Y=1\mid X=x)}{\hat P(Y=1\mid X=x)}$
+
+\subsection{Logit Model}
+	$P(Y=1\mid X) = \frac{1}{1+e^{-(\beta_0+\beta_1X)}}$\\
+	where Logit function: $F(z) = (1+e^{-z})^{-1}$\\
+	
+
+\subsubsection{Comparing Probit and Logit Estimates}
+	\begin{itemize}
+		\item Probit and Logit are qualitatively the same
+		\item but dont compare magnitude of parameter
+		\item test should done on individual model
+		\item instead look at predicted probabilities
+		\item measure of model fit by Pseudo-$R^2$
+	\end{itemize}
+
+\subsubsection{Maximum Likelihood Estimation}
+	likelihood of sample $\{Y_i\}_{i=1}^n$\\
+	\begin{tabular}{l@{ : }l}
+		w/o covariates		&		$L(\theta) = \theta^{\sum^{n}_{i=1}Y_{i}}(1-\theta)^{n-\sum^{n}_{i=1}Y_i}$\\
+		w covariates		&		$L(\beta_0,\beta_1)$
+	\end{tabular}
+	$= F(\beta_0+\beta_1x_i1)^{\sum^{n}_{i=1}Y_{i}}(1-F(\beta_0+\beta_1x_i1))^{n-\sum^{n}_{i=1}Y_i}$
+
+\subsection{Pseudo-$R^2$}
+	pseudo-$R^2 = 1- \frac{\ell_{(\text{Probit  \textit{or} Logit})}}{\ell_{\text{bernoulli}}}$\\
+	where $\ell_{\text{bernoulli}}$ is max log-MLE without covariates\\
+	where $\ell_{\text{probit/logit}}$ is max log-MLE with covariates\\
+
+\subsection{STATA command}
+	\begin{tabulary}{.3\textwidth}{lL}
+		set pannel data			&		\textsl{xtset panel time}\\
+		FE with cluster errors	&		\textsl{xtreg Y X, fe vce(cluster panel)}\\
+		probit				&		\textsl{probit Y X, r}\\
+		logit					&		\textsl{logic Y X, r}
+	\end{tabulary}
+
+\section{Instrumental Variable}
+
+General solution to endogeneity problem caused by omitted variable bias \textbf{(OVS)}
+
+Satisfying conditions
+
+\begin{enumerate}
+	\item Exclusion, $Z_i$ is different to $X_i$
+	\item Relevance, Partial $Corr(Z_i, X_i) \neq 0$
+	\item Exogeneity, $Cov(Z_i, u_i) = 0$
+\end{enumerate}
+
+Since $0 = Cov(Z_i, u_i) \Rightarrow \beta_{1, IV} = \frac{Cov(Z_i, Y_i)}{Cov(Z_i, X_i)}$\\
+Contrast to $\beta_{1, OLS} = \frac{Cov(X_i, Y_i)}{Var(X_i)}$\\
+\ \\
+$\beta_{0, OLS} = \bar Y - \bar X \beta_{0, OLS}$\\
+$\beta_{0, IV} = \bar Y - \bar X \beta_{0, IV}$\\
+\ \\
+$\hat\beta_{1, IV} = \frac{\hat Cov(Z_i, Y_i)}{\hat Cov(Z_i, X_i)} = \beta_1 + \frac{\hat Cov(Z_i, u_i)}{\hat Cov(Z_i, X_i)}$
+
+\subsubsection{IV vs OLS}
+Both OLS and IV estimators are biased in finite sample
+
+$\hat \beta_{1, OLS} \rightarrow \beta_1 + Corr(X_i, u_i)\frac{\sigma_u}{\sigma_X}$\\
+$\hat \beta_{1, IV} \rightarrow \beta_1 + \frac{Corr(Z_i, u_i)}{Corr(Z_i, X_i)}\frac{\sigma_u}{\sigma_X}$\\
+\ \\
+\textbf{weak instrument}: $Corr(Z_i, X_i)$ is small, then bias will be huge. F-stat $< 10$ is consider weak IV
+
+\subsubsection{Partial correlation, Structural equation, Reduced form equation}
+
+\begin{tabulary}{\linewidth}{lL}
+	structural: & $Y_i = \beta_0 + \beta_1 X_i + \beta_2 W_{1i} + \cdots + \beta_{r+1}W_{ri} + u_i$\\
+	reduced form: & $X_i = X_i^* + v_i$\\
+	where & $X_i^* = \pi_0 + \pi_1W_{1i} + \cdots + \pi_rW_{ri} + \pi_{r+1}Z_i$
+\end{tabulary}
+
+Structural equation
+\begin{itemize}
+	\item Meaningful parameters (causal)
+	\item regressors may be endogenous
+	\item consistently estimate by TSLS
+\end{itemize}
+
+Reduced form equation
+\begin{itemize}
+	\item Parameters are correlations
+	\item regressors must be exogenous
+	\item consistently estimate by OLS
+\end{itemize}
+
+\subsection{Threats to internal validity}
+
+exogenous variable: variable uncorrelated with $u_i$\\
+endogenous variable: variable correlated with $u_i$
+
+\begin{itemize}
+	\item Omitted variable that is relevant and correlated to the observed regressor
+	\item Measurement errors
+	\item Simultaneous causality
+\end{itemize}
+
+\subsubsection{Measurement Errors}
+
+$X_i = X_i^* + v_i$, Observed data is actual data + error
+\begin{tabular}{ll}
+	true model: & $Y_i = \beta_0 + \beta_1 X^*_i + \epsilon_i$\\
+	observed model: & $Y_i = \beta_0 + \beta_1 X_i + u_i$\\
+	where & $u_i = \epsilon_i - \beta_1v_i$\\
+	$\Rightarrow Cov(u_i, X_i) \neq 0$
+\end{tabular}
+
+\subsubsection{Simultaneous Equations}
+
+\begin{tabular}{ll}
+	$Y_{1i}$ & $= \alpha_0 + \alpha_1 Y_{2i} + u_{1i}$\\
+	$Y_{2i}$ & $= \beta_0 + \beta_1 Y_{2i} + u_{2i}$
+\end{tabular}
+$\Rightarrow Cov(u_{1i}, Y_{2i}) \neq 0, Cov(u_{2i}, Y_{1i}) \neq 0$
+
+Supply shifter: does not directly affect demand equation other than through the equilibrium price
+
+\subsection{Consistency of IV estimator}
+
+\begin{enumerate}
+	\item $\{ (Y_i, X_i, Z_i) \}_{i=1}^{n}$ is i.i.d.
+	\item $Y_i = \beta_0 + \beta_1 X_i + u_i$, such that $E(u_i) = 0$
+	\item $E(Y_i^4), E(X_i^4), E(Z_i^4)$ are finite
+	\item $Z_i$ is a valid instrument
+\end{enumerate}
+
+Then IV estimator is consistent (while biased in finite sample) and has asymptotic normal distribution\\
+\ \\
+OLS estimator will be biased and inconsistent
+
+\subsection{Testing for relevance}
+
+$X_i = \pi_0 + \pi_1Z_i + \pi_2 W_i + v_i$\\
+Since $\hat\pi_1 \rightarrow \frac{Cov(Z_i, X_i)}{Var(Z_i)} = Corr(Z_i, X_i)Var(X_i)$\\
+Then we just have to test $H_0: \pi_1 = 0$
+
+\subsection{Two Stage Least Squares (TSLS)}
+
+Stages:
+\begin{enumerate}
+	\item OLS on the reduced form equation\\
+		Regress $X_i$ on $W_{1i}, \cdots, W_{ri}, Z_{1i}, Z_{2i}$
+	\item OLS on the structural equation with $\hat X_i$
+		Regress $Y_i$ on $\hat X_i, W_{1i}, \cdots, W_{ri}$
+\end{enumerate}
+
+where $\hat X_i$ is the fitted value from Stage 1
+
+\section{Time Series}
+
+\subsubsection{Definitions}
+
+\begin{tabulary}{\linewidth}{l@{ : }L}
+	time series (process) & data collected on the same observational unit at multiple time periods\\
+	forecasing & focus on model fit and external validity\\
+	$j^{th}$ lag & $Y_{t-j}$\\
+	first difference & $\Delta Y_t = Y_t - Y_{t-1}$\\
+	first autocovariance & $Cov(Y_t, Y_{t-1})$\\
+	first autocorrelation & $Corr(Y_t, Y_{t-1})$\\
+	& $\rho_1 = \frac{Cov(Y_t, Y_{t-1})}{\sqrt{Var(Y_t)Var(Y_{t-1})}}$
+\end{tabulary}
+
+\subsection{Least Squared Assumption for TS}
+
+\begin{enumerate}
+	\item $E(u_t|I_t) = 0$ \\
+		where $ I_t = (Y_{t-1}, Y_{t-2}, \cdots, X_{t-1}, X_{t-2}, \cdots)$
+	\item $\{(Y_t, X_t)\}_{t=1}^T$ is stationary and weakly dependent process
+	\item $E(Y_t^4)$ and $E(X_t^4)$ are finite
+	\item There is no perfect multicollinearity
+\end{enumerate}
+
+$\{u_t\}_{t=1}^T$ denote a noise process with mean zero and variance $\sigma^2_u$
+
+Stationary and weakly dependent assumptions are required to relax the i.i.d assumption to ensure LLN and CLT can be applied to time series data
+
+\subsubsection{Stationary}
+
+Condition:
+
+\begin{itemize}
+	\item $Y_t$ is the same for all $t$
+	\item $\{Y_{t_1}, \cdots,Y_{t_n}\}, \{Y_{t_1+s}, \cdots, Y_{t_n+s}\}$ are the same $\forall$ $s, \{t_1, \cdots, t_n\}$
+\end{itemize}
+
+Properties:
+
+\begin{itemize}
+	\item $E(Y_t)$ is the same $\forall~t$
+	\item $Var(Y_t)$ is the same $\forall~t$
+	\item $Corr(Y_t, Y_{t+s}) = \rho(s)$ $\forall~t,s$
+\end{itemize}
+
+if $\beta_p < 1~\forall~p$ then AR(p) is a stationary process
+
+\subsubsection{Weakly Dependent Processes}
+
+$\lim_{s\rightarrow\infty}Corr(Y_t, Y_{t+s}) = 0$\\
+$\Rightarrow Y_t, Y_{t+s}$ are asymptotically uncorrelated
+
+\subsubsection{Roots}
+
+$L:=$ lag operators\\
+$LY_t = Y_{t-1}, L^2Y_t = Y_{t-2}$ etc\\
+\ \\
+Then $Y_t = \beta_0 + \beta_1Y_{t-1} + \cdots + \beta_p Y_{t-p} + u_t$\\
+$\iff (1-\beta_1L-\cdots-\beta_pL^p)Y_t = \beta_0 + u_t$\\
+$\Rightarrow (1-\beta_1L-\cdots-\beta_pL^p) = (1-\lambda_1L)\cdots(1-\lambda_pL)$\\
+\ \\
+
+$\{\lambda_i\}_{i=1}^p$ are the roots and stationarity and weak dependence require all $\lambda_i < 1$\\
+unit root is when $\lambda_i = 1$ for any $i$
+\subsection{Autoregressive Model, $AR(p)$}
+
+$Y_t = \beta_0 + \beta_1 Y_{t-1} + \cdots + \beta_pY_{t-p}u_{t}$\\
+
+$\hat\beta_1 \rightarrow \frac{Cov(Y_t, Y_{t-1})}{Var(Y_t)}$
+
+\subsection{Forcasting}
+
+Focus on out-of-sample prediction
+
+$Y_{T+1} = \beta_0 + \beta_1 Y_T + u_{T+1} = Y_{T+1|T} + u_{T+1}$
+
+\subsubsection{Accuracy of Forecast: MSFE}
+
+mean squared forecast error (MSFE)
+
+$MSFE = E\left[ (Y_{T+1} - \hat Y_{T+1|T})^2 \right]$
+
+95\% forecast interval: $(\hat Y_{T+1|T} \pm 1.96 \hat{RMSFE} )$\\
+68\% forecast interval: $(\hat Y_{T+1|T} \pm \hat{RMSFE} )$
+
+\subsubsection{Forecasting Errors}
+
+(one-period ahead) forecasting error
+$Y_{T+1} - \hat Y_{T+1|T}$
+
+\subsection{BIC(p), AIC(p)}
+
+Helps to decide on optimal period. We can use adjusted $R^2$ and t/F statistics as well\\
+\ \\
+Bayes information criterion and Akaike information criterion
+
+\begin{tabular}{l@{ = }l}
+	$BIC(p)$ & $ln\left[ \frac{SSR(p)}{T} \right] + (p+1)\frac{ln(T)}{T}$\\
+	$AIC(p)$ & $ln\left[ \frac{SSR(p)}{T} \right] + (p+1)\frac{2}{T}$\\
+\end{tabular}
+
+where $T$ is the sample size and $p$ is the number of lags
+
+\subsection{ADL(p, q)}
+
+Autoregressive distributed lag includes predictors in time series analysis
+\begin{tabular}{ll}
+	$Y_t =$ & $\beta_0 + \beta_1 Y_{t-1} + \cdots + \beta_p Y_{t-p}$\\
+	& $+\delta_1 X_{t-1} + \cdots + \delta_q X_{t-q} + u_t$
+\end{tabular}
+
+popular choice is to set $p = q$
+
+\subsubsection{Granger Causality test}
+
+test $H_0: \delta_1 = \cdots = \delta_q = 0$
+
+\subsection{Non-stationary Process}
+
+\subsubsection{deterministic trend}
+
+$Y_t = \alpha + \beta t + u_t$\\
+where $E(Y_t) = \alpha + \beta t$ depends on $t$
+
+\subsubsection{stochastic trend}
+
+\begin{tabulary}{\linewidth}{l@{ = }L}
+	$Y_t$ & $\beta_0 + Y_{t-1} + u_t$\\
+	& $\beta_0 t + Y_0 + \sum_{s=1}^T u_s$
+\end{tabulary}
+
+where $Var(Y_t) = Var(Y_{t-1}) + \sigma^2_u$ and $Var(Y_t)$ increases in $t$ \\
+drift: presence of $\beta_0$\\
+
+\subsubsection{issues with non-stationary process}
+
+\begin{itemize}
+\item Estimators can be biased
+\item Normal approximation is invalid
+\item Spurious regression: intuitively unrelated variables may appear highly correlated
+\end{itemize}
+
+	
+
+\subsubsection{Differencing}
+
+Case 1: $Y_t = \alpha + \beta t + u_t$\\
+\begin{tabulary}{\linewidth}{l@{ = }L}
+	$\Delta Y_t$ & $Y_t - Y_{t-1}$\\
+	& $(\alpha + \beta t + u_t) - (\alpha + \beta(t-1) + u_{t-1})$\\
+	& $\beta + u_t - u_{t-1}$
+\end{tabulary}
+
+$u_t - u_{t-1}$ has a stationary distribution\\
+
+\ \\
+
+Case 2: $Y_t = \beta_0 + Y_{t-1} + u_t$\\
+\begin{tabulary}{\linewidth}{l@{ = }L}
+	$\Delta Y_t$ & $Y_t - Y_{t-1}$\\
+	& $\beta_0 + u_t$
+\end{tabulary}
+
+so $\Delta Y_t$ is just noise plus a constant
+
+\end{multicols}
+\end{document}

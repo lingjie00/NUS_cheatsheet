@@ -1,0 +1,55 @@
+---
+title: EC4302 Macroeconomics Analysis III
+author: ling
+date: "`r Sys.Date()`"
+output:
+    bookdown::pdf_document2:
+        toc: true
+        toc_depth: 4
+geometry: margin=1.5cm
+---
+
+# Basic Growth Facts
+
+```{r child="basic_growth_facts.Rmd"}
+```
+
+# Solow Growth Model
+
+```{r child="solow_growth.Rmd"}
+```
+
+# Ramsey model: Solow with infinitely lived consumers determining saving rate
+
+```{r child="ramsey_growth.Rmd"}
+```
+
+# Diamond/OLG model: Discrete-time Solow with consumers living for two periods determining saving rate
+
+```{r child="olg_growth.Rmd"}
+```
+
+# Growth accounting: Malthusian to Solow
+
+```{r child="malthusian_growth.Rmd"}
+```
+
+# Endogenous Growth
+
+```{r child="endogenous_growth.Rmd"}
+```
+
+# Endogenous Growth - Romer Model
+
+```{r child="endogenous_romer_growth.Rmd"}
+```
+
+# Real Business Cycle
+
+```{r child="rbc.Rmd"}
+```
+
+# Unemployment
+
+```{r child="unemployment.Rmd"}
+```

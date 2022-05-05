@@ -1,0 +1,1377 @@
+\documentclass[a4paper,12pt,landscape]{article}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[a4paper, landscape]{geometry}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{color,graphicx,overpic}
+\usepackage{hyperref}
+\usepackage{soul} %for highlight
+\usepackage{xcolor} %color definition
+\usepackage{sectsty} %change section color
+\usepackage{tabulary}
+\usepackage{makecell}
+
+
+\pdfinfo{
+  /Title (ST2132 Mathematical Statistics.pdf)
+  /Creator (Ling)
+  /Subject (Mathematical Statistics)}
+
+% This sets page margins to .5 inch if using letter paper, and to 1cm
+% if using A4 paper. (This probably isn't strictly necessary.)
+% If using another size paper, use default 1cm margins.
+\ifthenelse{\lengthtest { \paperwidth = 11in}}
+    { \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
+    {\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
+        {\geometry{top=.5cm,left=.5cm,right=.5cm,bottom=.5cm} }
+        {\geometry{top=.5cm,left=.5cm,right=.5cm,bottom=.5cm} }
+    }
+
+% Turn off header and footer
+\pagestyle{empty}
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries\color{red}}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries\color{blue}}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries\color{violet}}}
+\makeatother
+
+% Define BibTeX command
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+\renewcommand{\arraystretch}{1.5}
+
+%My Environments
+\newtheorem{example}[section]{Example}
+% -----------------------------------------------------------------------
+
+\begin{document}
+\raggedright
+\footnotesize
+\begin{multicols}{3}
+
+
+% multicol parameters
+% These lengths are set only within the two main columns
+\setlength{\columnseprule}{0.25pt}
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{1pt}
+\setlength{\columnsep}{2pt}
+
+\begin{center}
+     \Large{\underline{ST2132 Mathematical Statistics}} \\
+     {Lingjie, \today}
+\end{center}
+
+    \section{Flow of analysis}
+    \begin{enumerate}
+        \item Proposal $\rightarrow$ Identify distribution
+            \subitem[Discrete] i.i.d.
+            \subitem[Discrete] multinomial
+            \subitem[Continuous] i.i.d.
+        \item Data $\rightarrow$ sufficient statistics
+        \item Training $\rightarrow$ finding parameters $\hat\theta$
+            \subitem[method] MoM, MLE
+            \subitem[kind] point estimate, confidence interval
+        \item Compare performance $\rightarrow$ varaince, bias trade off
+            \begin{align*}
+                MSE = Var(\hat\theta) + [E(\hat\theta)-\theta]^2
+            \end{align*}
+        \item Evaluate $\rightarrow$ goodness of fit
+            \subitem[general] likelihood ratio test
+            \subitem[discrete] perason chi-sq statistics
+        \item A/B testing $\rightarrow$ comparing average effect
+            \subitem two sample mean test
+    \end{enumerate}
+
+    \section{Review of Probability}
+
+        \subsection{Conditional Probability}
+        \hl{Definition 1}: conditional probaility
+            \begin{align*}
+                P(A|B) = \frac{P(A\cap B)}{P(B)}
+            \end{align*}
+            Theorem 1: Law of Total Probability \& Bayes' Rule
+            \begin{align*}
+                P(A) &= \sum_{i=1}^nP(A|B_i)P(B_i)\\
+                P(B_j|A) &= \frac{P(A|B_j)P(B_j)}{\sum_{i=1}^n P(A|B_i)P(B_i)}
+            \end{align*}
+
+        \subsection{Independent}
+        \hl{Definition 2}: independent event
+        \begin{align*}
+            P(A \cap B) = P(A)P(B)
+        \end{align*}
+        Pairwise independence does not guarantee mutal independence. Mutal independence:
+        \begin{align*}
+            P(A_{i1}\cap \cdots \cap A_{im}) = P(A_{i1})\cdots P(A_{im})
+        \end{align*}
+        \hl{Definition 3}: independent RV
+        \begin{align*}
+            F(X_1, x_2, \cdots, x_n) = F_{X_1}(x_1)F_{X_2}(x_2)\cdots F_{X_n}(x_n)
+        \end{align*}
+
+        \subsection{Functions of a $RV$}
+        \hl{Proposition 1}
+
+            $X\sim N(\mu, \sigma^2), Y = aX + b \Rightarrow Y \sim N(\alpha\mu + b, a^2 \sigma^2)$
+            
+            \hl{Proposition 2}
+
+            $Y = g(X) \Rightarrow f_Y(y) = f_X\left[g^{-1}(y)\right]|\frac{d}{dy}g^{-1}(y)|$ 
+
+            Note:\\
+            When function is not strictly monotonic (e.g. $g(z)=z^2$), proposition 2 cannot be used.
+            Instead, solve $F_x(x) = P(X\leq x) = P(Z^2 \leq x) = P(-\sqrt{x}\leq Z \leq \sqrt{x}) =
+            F_Z(\sqrt{x})-F_Z(-\sqrt{x}), x\geq 0$
+
+        \begin{subsection}{Multinomial Distribution}
+            $n:=$ num of independent trials\\
+            $r:=$ num of types\\
+            $X_i:=$ total number of outcomes of type $i$ in the $n$ trials\\
+            $p(x_1, x_2, \cdots, x_r) = \begin{pmatrix} n \\ x_1 \cdots x_r \end{pmatrix} p_1^{x_1}, p_2^{x_2} \cdots p_r^{x_r}$\\
+            note: multi-nomial are not independent
+        \end{subsection}
+
+        \begin{subsection}{Quotient of two continuous RV}
+            Given $f(x, y)$ and $Z = Y / X$ then
+            \begin{align*}
+                F_Z(z) &= P(Z \leq z) \\
+                       &=P(\frac{Y}{X} \leq z)\\
+                       &= P(X \leq 0, Y \geq Xz) + P(X > 0, Y \leq Xz)\\
+                       &=\int_{-\infty}^0\int_{xz}^\infty f(x, y) dy dx + \int_{0}^{\infty}\int_{-\infty}^{xz}f(x,y)dydx
+            \end{align*}
+            let $v := y/x$
+            \begin{align*}
+                &=\int_{-\infty}^0\int_{-\infty}^z(-x)f(x, xv)dvdx + \int_{0}^{\infty}\int_{-\infty}^z xf(x, xv) dvdx\\
+                &=\int_{-\infty}^z\int_{-\infty}^{\infty}|x|f(x, xv)dxdv
+            \end{align*}
+            $\therefore f_Z(z) = \int_{-\infty}^{\infty}|x|f(x, xz) dx$\\
+            if $X, Y$ independent $\Rightarrow f_Z(z) = \int_{-\infty}^{\infty}|x|f_X(x)f_Y(xz)dx$
+        \end{subsection}
+
+        \subsection{Extrema}
+            $X_1, X_2, \cdots, X_n$ are i.i.d RV with $F, f$
+
+            \subsubsection{Maximum: $U=\max\{X_1, X_2, \cdots, X_n\}$}
+                For given $u$ $U\leq u \Leftrightarrow X_i \leq u$
+                \begin{align*}
+                    F_U(u) &= P(U\leq u)\\
+                           &=P(X_1\leq u)\cdots P(X_n \leq u)\\
+                           &=F(u)^n\\
+                    f_U(u) &= nf(u)F(u)^{n-1}
+                \end{align*}
+
+                \subsubsection{Minimum: $V=\min\{X_1, X_2, \cdots, X_n\}$}
+                For given $v$, $V \geq u \Leftrightarrow X_i \geq v$
+                \begin{align*}
+                    1 - F_V(v) &= P(V\geq v)\\
+                               &=P(X_1\geq v)\cdots P(X_n \geq v)\\
+                               &=\left[ 1-F(v)  \right]^n\\
+                    \Rightarrow F_V(v) &= 1- \left[ 1-F(v)  \right]^n\\
+                    f_V(v) &= nf(v)\left[ 1-F(v)  \right]^{n-1}
+                \end{align*}
+
+                \subsubsection{$U_n=\max\{X_1, \cdots, X_n\}, X_i\sim unif(0,1)$}
+                \begin{align*}
+                    U_n &\sim Beta(n, 1)\\
+                    f_n(u) &= nu^{n-1}, u\in[0,1]\\
+                    F_n(u) &= u^n\\
+                    E(U_n) &= \frac{n}{n+1}=:\mu_n\\
+                    Var(U_n) &= \frac{n}{(n+1)^2(n+2)}=:\sigma^2_n
+                \end{align*}
+                Note: convert any $unif(\theta-1, \theta+1)$ to $unif(0,1)$ and apply known knowledge
+
+                \subsubsection{$V_n=\min\{X_1, \cdots, X_n\}, X_i\sim unif(0,1)$}
+                \begin{align*}
+                    V_n &\sim Beta(1, n)\\
+                    f_n(v) &= n(1-v)^{n-1}, u\in[0,1]\\
+                    F_n(v) &= 1-(1-v)^n\\
+                    E(V_n) &= \frac{1}{n+1}=:\mu_n\\
+                    Var(V_n) &= \frac{n}{(n+1)^2(n+2)}=:\sigma^2_n
+                \end{align*}
+
+                \subsubsection{Limiting value for maximum}
+                Note: this is not a question on central limit theorem
+                \begin{align*}
+                    Z_n &= \frac{U_n-\mu_n}{\sigma_n} = aU_n + b, a = \frac{1}{\sigma_n}, b = -\frac{\mu_n}{\sigma_n}\\
+                    F_{Z_n}(z) &= F_n(z/a-b/a) = \begin{cases}
+                        0, & \mu_n+z\sigma_n <0\\
+                        (\mu_n+z\sigma_n)^n, & 0\leq \mu_n+z\sigma_n \leq 1\\
+                        1, &\mu_n + z\sigma_n > 1
+                    \end{cases}\\
+                        \lim_{n\rightarrow \infty} & F_{Z_n}(z) \rightarrow F_Z(z) = \begin{cases}
+                            e^{z-1}, & z\leq 1\\
+                            1, & z> 1
+                        \end{cases}
+                \end{align*}
+                \begin{align*}
+                    \mu_n + z\sigma_n &= \frac{n}{n+1}+ \frac{z}{n}\frac{n}{n+1}\sqrt{\frac{n}{n+2}}\\
+                                      &= (1-\frac{1}{n}\frac{n}{n+1})(1+\frac{z}{n}\sqrt{\frac{n}{n+2}})\\
+                    \lim_{n\rightarrow\infty} (\mu_n+z\sigma_n)^n &= e^{-1}\cdot e^z, z \leq 1
+                \end{align*}
+
+                \subsubsection{MLE for maximum}
+                consider i.i.d $X_1, X_2, \cdots, X_n \sim unif(0,\theta)$
+                \begin{align*}
+                    \ell(\theta) &= \begin{cases}
+                        -n\log(\theta), & 0 \leq X_i \leq \theta~\forall i\\
+                        -\infty, & \text{otherwise}
+                    \end{cases}\\
+                        \Leftrightarrow \ell(\theta) &= \begin{cases}
+                            -n \log(\theta), & \max\{X_1, \cdots, X_n\} \leq \theta\\
+                            -\infty, & \text{otherwise}
+                        \end{cases}
+                \end{align*}
+                Since $\ell(\theta)$ is strictly decreasing function of $\theta$ ($\ell'(\theta) < 0$) 
+                for $\theta \geq \max\{X_1, \cdots, X_n\} (>0)$, $\max \ell(\theta)$ at 
+                $\theta_{\min} = \max\{X_1, \cdots, X_n\}$\\
+                Basically, the smallest $\theta$ possible
+
+            \subsection{Expected Values}
+            \hl{Definition 4}
+            \begin{align*}
+                E(X) = \begin{cases}
+                        \sum_i x_ip(x_i)\\
+                        \int_{-\infty}^{\infty}xf(x)dx
+                        \end{cases}
+            \end{align*}
+            \hl{Theorem 2}: $Y=g(X)$
+            \begin{align*}
+                E(Y) = \begin{cases}
+                    \sum_i g(x_i)p(x_i)\\
+                    \int_{-\infty}^{\infty}g(x) f(x) dx
+                \end{cases}
+            \end{align*}
+            \hl{Theorem 3}: $Y = g(\mathbf{X}) = g(X_1, \cdots, X_n)$
+            \begin{align*}
+                E(Y) = \begin{cases}
+                    \sum_{x_1, \cdots, x_n} g(x_i)p(x_i)\\
+                    \int\cdots\int g(x_i) f(x_i) dx_1 \cdots dx_n
+                \end{cases}
+            \end{align*}
+            \hl{Corollary 1}: $X,Y$ are independent and $g,h$ are fixed fn
+            \begin{align*}
+                E\left[ g(X)h(y)  \right] = E[g(X)]\cdot E[h(Y)]
+            \end{align*}
+            \hl{Theorem 4}: $Y = a + \sum_{i=1}^n b_iX_i$
+            \begin{align*}
+                E(Y) = a + \sum_{i=1}^n b_i E(X_i)
+            \end{align*}
+
+            \subsubsection{Even Odd function}
+            For odd functions ($f_1(x) = xe^{-x^2/2}$), integral over a symmetric interval about 0 is zero.
+            \begin{align*}
+                \int_{-\infty}^\infty g_{odd}(x) dx = 0
+            \end{align*}
+
+            For even functions ($f_0(x) = e^{-x^2/2}$, $f_2(x) = x^2 e^{-x^2/2}$)
+            \begin{align*}
+                \int_{-\infty}^{\infty} g_{even}(x) dx = 2\cdot\int_0^{\infty} g_{even}(x) dx
+            \end{align*}
+
+
+    \subsection{Variance and Standard Deviation}
+    \hl{Definition 5}: $\mu=E(X)$
+    \begin{align*}
+        Var(X) = E[(X-\mu)^2] = \begin{cases}
+            \sum_i (x_i-\mu)^2p(x_i)\\
+            \int_{-\infty}^\infty (x-\mu)^2 f(x) dx
+                                \end{cases}
+        \end{align*}
+
+        \hl{Theorem 5}: if $Var(X)$ exist and $Y = a+bX$
+        \begin{align*}
+            Var(Y) = b^2Var(X)
+        \end{align*}
+
+        \hl{Theorem 6}: if $Var(X)$ exist then 
+        \begin{align*}
+            Var(X) = E(X^2) - [E(X)]^2
+        \end{align*}
+
+        \hl{Theorem 7}: Chebyshev's Inequality: for any $t>0$
+        \begin{align*}
+            P(|X-\mu|>t) \leq \frac{\sigma^2}{t^2}
+        \end{align*}
+        if $\sigma^2$ is very small, there is a high probability that X will not deviate much from $\mu$
+
+        \hl{Corollary 2}:
+        \begin{align*}
+            Var(X) = 0 \Rightarrow P(X=\mu)=1
+        \end{align*}
+
+        \hl{Corollary 3}: if $X_i$ are independent
+        \begin{align*}
+            Var\left( \sum_{i=1}^n X_i  \right) = \sum_{i=1}^n Var(X_i)
+        \end{align*}
+
+    \subsection{Moment-Generating Function}
+    \hl{Definition 6} The moment generating function (mgf) of a RV $X$ is
+\begin{align*}
+    M(t) = E[e^{tX}] = \begin{cases}
+        \sum_i e^{tx_i}p(x_i), & \text{[discrete]}\\
+        \int_{-\infty}^{\infty} e^{tx}f(x)dx & \text{[continuous]}
+    \end{cases}
+\end{align*}
+
+    \subsection{Limit Theorems}
+
+    \subsubsection{The Law of Large Numbers}
+    \hl{Theorem 8} Let $X_1, \cdots, X_n$ be i.i.d RV with $E(X_i)=\mu, Var(X_i)=\sigma^2$.
+    $\bar X_n = (1/n)\sum_{i=1}^n X_i$
+
+    For any $\epsilon > 0$
+    \begin{align*}
+        P(|\bar X_n - \mu| > \epsilon)\rightarrow 0, n \rightarrow \infty
+    \end{align*}
+    From Chebyshev's inequality with $E(\bar X_n) = \mu, Var(\bar X_n)=\sigma^2/n$
+
+    Converge in probability to $\alpha$ $\Leftrightarrow$ $P(|Z_n - \alpha|>\epsilon)\rightarrow 0, n\rightarrow \infty$
+
+    \subsubsection{Proving consistency with WLLN}
+    Claim: $\sigma^2$ is consistently estimated by $(1/n)\sum_{i=1}^n X_i^2 - \bar X^2$
+
+    \begin{itemize}
+        \item From WWLN, $(1/n)\sum_{i=1}^n X_i^2 - \bar X^2$
+        \item $\bar X^2 \rightarrow_p [E(X)]^2$ \\
+            ($Z_n \rightarrow_p \alpha \Rightarrow g(Z_n) \rightarrow_p g(\alpha)$ for any continuous $g$)
+        \item $(1/n)\sum_{i=1}^n X_i^2 - \bar X^2 \rightarrow_p E(X^2) - [E(X)]^2 = Var(X)$
+    \end{itemize}
+
+    \subsubsection{Convergence in Distribution}
+    \hl{Definition 7} Let $X, X_1, X_2, \cdots$ be sequence of RV with cdf $F, F_1, F_2, \cdots$. $X_n$ converges in distribution to $X$ if
+    \begin{align*}
+        F_n(x) \rightarrow F(x), n\rightarrow \infty
+    \end{align*}
+    for every cdf at every point at which $F$ is continuous
+
+    \subsubsection{Central Limit Theorem}
+    Consider $X_1, X_2, \cdots$ sequence of i.i.d. with mean $\mu$ and variance $\sigma^2$. 
+    Let $S_n = \sum_{i=1}^n X_i$, then for $-\infty < x < \infty$
+    \begin{align*}
+        P(\frac{S_n-n\mu}{\sigma\sqrt{n}} \leq x) \rightarrow \Phi(x), n\rightarrow \infty
+    \end{align*}
+    CLT is concerned with how $S_n/n$ fluctuates around $\mu$
+
+    \begin{section}{Sampling Distribution}
+
+        \begin{subsection}{$\chi^2$ distribution}
+            Note: $\chi^2$ test is always right tailed
+            \begin{align*}
+                P\left(\chi^2_n(1-\alpha/2) \leq x \leq \chi^2_n(\alpha/2)\right)
+            \end{align*}
+            \hl{Definition 8:} if $Z\sim N(0, 1)$, then
+            \begin{align*}
+                U&=Z^2\sim \chi_1^2,~df=1\\
+                f(u)&=\frac{1}{\sqrt{2\pi}}{u^{-{1}/{2}}e^{-{u}/{2}}},~u\geq 0\\
+                F(u)&=\frac{1}{\sqrt{\pi}}\gamma(\frac{1}{2}, \frac{u}{2})\\
+                \chi_1^2 &\sim \Gamma(\alpha=\frac{1}{2}, \lambda = \frac{1}{2})
+            \end{align*}
+            Note: $\Gamma(1/2) = \sqrt{\pi}$
+
+            \begin{subsubsection}{multiple $\chi^2_1 = \chi^2_n$}
+                \hl{Definition 9:} if $U_1, U_2, \cdots, U_n$ are independent $\chi^2_1$, then
+                \begin{align*}
+                    V &= U_1 + U_2 + \cdots + U_n \sim \chi^2_n\\
+                    f(v) &= \frac{v^{n/2-1}e^{-v/2}}{2^{n/2}\Gamma(n/2)}, ~v\geq 0\\
+                    F(v) &= \frac{1}{\Gamma(n/2)}\gamma(\frac{n}{2}, \frac{v}{2})\\
+                    \chi^2_n &\sim \Gamma(\alpha = \frac{n}{2}, \lambda = \frac{1}{2})
+                \end{align*}
+                Note: $E(V)=n, Var(V) = 2n$\\
+                if $U\sim\chi_m^2, V\sim\chi_n^2 \Rightarrow U+V \sim\chi_{m+n}^2$
+            \end{subsubsection}
+        \end{subsection}
+
+        \begin{subsection}{$t$ distribution}
+            \hl{Definition 10:} if $Z\sim N(0, 1), U\sim\chi_n^2$ and $Z, U$ independent
+             \begin{align*}
+                 T &= \frac{Z}{\sqrt{U/n}} \sim t_n,~df=n
+             \end{align*}
+             \hl{Proposition 3:}
+             \begin{align*}
+                 f(t) &= \frac{\Gamma[(n+1)/2]}{\Gamma(n/2)\sqrt{n\pi}} \left(1+\frac{t^2}{n}\right)^{-(n+1)/2}, ~-\infty < t < \infty
+             \end{align*}
+             $E(T) = 0$ for df $>$ 1, else undefined\\
+             $Var(T) = (df)/(df-2)$ for df $>$ 2, $\infty$ if 1 $<$ df $\leq$ 2, else undefined\\
+             Note:\\
+             $t$ is symmetric about 0 $\because f(t) = f(-t)$\\
+             $t_1$ is Cauchy distribution\\
+             $t_n \rightarrow N(0, 1)$ as $n\rightarrow \infty$ (tail become lighter)
+        \end{subsection}
+
+        \begin{subsection}{$F$ distribution}
+            \hl{Definition 11:} if $U\sim\chi_m^2, V\sim\chi_n^2$, $U, V$ independent
+            \begin{align*}
+                W &= \frac{U/m}{V/n}\sim F_{m, n},~df:~m, n
+            \end{align*}
+            \hl{Proposition 4:} for $w\geq 0$
+            \begin{align*}
+                f(w) &= \frac{\Gamma[(m+n)/2]}{\Gamma(m/2)\Gamma(n/2)}{\frac{m}{n}}^{m/2}w^{m/2-1}\left(1+\frac{m}{n}w\right)^{-(m+n)/2}
+            \end{align*}
+            $E(W) = n/(n-2), n>2$\\
+            $Var(W) = (2n^2(m+n-2))/(m(n-2)^2(n-4))$\\
+            Note:\\
+            no $E(W)$ for $n \leq 2$\\
+            $t_n^2 \sim F_{1, n}$
+        \end{subsection}
+
+        \subsection{Double exponential ($\mu, \lambda$)}
+        $x\in\mathbb{R}$
+            \begin{align*}
+                f(x) &= \frac{1}{2\lambda}exp({-\frac{|x-\mu|}{\lambda}})\\
+                F(x) &= \begin{cases}
+                    \frac{1}{2}exp(\frac{x-\mu}{\lambda}), & x\leq\mu\\
+                    1-\frac{1}{2}exp(-\frac{x-\mu}{\lambda}), & x\geq \mu
+                \end{cases}
+            \end{align*}
+            $E(X)=\mu, Var(X)=2\lambda^2$
+
+            \subsection{Beta ($\alpha, \beta$)}
+        $x\in[0,1]$
+            \begin{align*}
+                f(x) &= \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}x^{\alpha-1}(1-x)^{\beta-1}\\
+                F(x) &= I_x(\alpha, \beta) = \frac{B(x;\alpha, \beta)}{B(\alpha, \beta)}\\
+                B(x;\alpha, \beta) &= \int_0^x t^{\alpha-1}(1-t)^{\beta-1}dt
+            \end{align*}
+            $E(X) = \alpha/(\alpha+\beta)$\\
+            $Var(X) = (\alpha\beta)/((\alpha+\beta)^2(\alpha+\beta+1))$
+
+            \subsection{Angular density ($\alpha$)}
+        Consider the angle $\theta$ at which electrons are emited in muon decay with $x\in[-1, 1], \alpha \in [-1, 1]$, $x = cos(\theta)$
+        \begin{align*}
+            f(x|\alpha) &= \frac{1+\alpha x}{2}
+        \end{align*}
+        $E(X) = {\alpha}/{3}$\\
+        $Var(X) = \frac{1}{3}-\frac{\alpha}{3}^3=\frac{3-\alpha^2}{9}$
+
+        \subsection{unknown dist}
+        $x\in[0, 1]$
+
+        \begin{align*}
+            f(x) &= \theta x^{\theta-1}\\
+            F(x) &= x^{\theta}
+        \end{align*}
+        $E(x) = \frac{\theta}{\theta+1}$\\
+        $E(X^2) = \frac{\theta}{\theta+2}$\\
+        $Var(x) = -\frac{\theta}{(\theta+2)(\theta+1)}$
+
+        \begin{subsection}{Sample Mean: $\bar X$, Sample Variance: $S^2$}
+            Let $X_1, \cdots, X_n \sim N(\mu, \sigma^2)$ independently\\
+            \begin{align*}
+                \bar X &:= \frac{1}{n}\sum_{i=1}^nX_i\\
+                S^2 &:= \frac{1}{n-1}\sum_{i=1}^n(X_i-\bar X)^2
+            \end{align*}
+            
+            \hl{Theorem 10:}\\
+            $\bar X$ and $(X_1 - \bar X, X_2 - \bar X, \cdots, X_n - \bar X)$ are independent
+
+            \hl{Corollary 4:}\\
+            $\bar X$ and $S^2$ are independent
+
+            \hl{Theorem 11:}\\
+            \begin{align*}
+                \frac{(n-1)S^2}{\sigma^2}&\sim\chi_{n-1}^2
+            \end{align*}
+
+            \hl{Corollary 5:}
+            \begin{align*}
+                \frac{\bar X - \mu}{S / \sqrt{n}}&\sim t_{n-1}
+            \end{align*}
+        \end{subsection}
+    \end{section}
+    
+    \subsubsection{Comparing variance estimates}
+    Comparing
+    \begin{align*}
+        S^2 &= \frac{1}{n-1}\sum_{i=1}^n(X_i-\bar X)^2\\
+        \hat\sigma^2 &= \frac{1}{n}\sum_{i=1}^n(X_i-\bar X)^2\\
+        \tilde{\sigma}^2 &= \rho\sum_{i=1}^n(X_i-\bar X)^2
+    \end{align*}
+    Now, since $(n-1)S^2/\sigma^2 \sim \chi^2_{n-1}$
+    \begin{align*}
+        E\left[ \frac{(n-1)S^2}{\sigma^2}  \right] &= n - 1 \Rightarrow E(S^2) = \sigma^2\\
+        \hat\sigma^2 &= \frac{n-1}{n}S^2 \Rightarrow E(\hat\sigma^2) = \frac{n-1}{n}\sigma^2\\
+        E(\tilde{\sigma}^2) &= \rho(n-1)S^2 \Rightarrow\rho(n-1)\sigma^2
+    \end{align*}
+    $\rho$ that $\min MSE$ is $1/(n+1)$
+
+\section{Estimation of Parameters and Fitting of Distribution}
+
+\subsection{Parmeter Estimation}
+    For independent and identically distributed (i.i.d) RV
+    \begin{align*}
+        f(x_1, \cdots, x_n|\theta) = f(x_1|\theta)\cdots f(x_n|\theta)
+    \end{align*}
+    An estimate of $\theta$ will be RV with sampling distribution.\\
+    Variability will be estimated through standard error, $SE$
+
+\subsection{The Method of Moments}
+\hl{Definition 12}
+    \begin{tabular}{l@{ : }l}
+        population kth moment   &   $\mu_k = E(X^k)$\\
+        sample kth moment   &   $\hat\mu_k = \frac{1}{n}\sum_{i=1}^nX_i^k$
+    \end{tabular}
+
+    Procedure to construct method of moments estimate
+    \begin{enumerate}
+        \item Express low-order moments in terms of the parameters
+            \subitem $\mu_1 = E(X) = \mu, \mu_2 = E(X^2) = \mu^2+\sigma^2$
+        \item Invert to express the paraameters in terms of the moments
+            \subitem $\Rightarrow \mu = \mu_1, \sigma^2 = \mu_2 - \mu_1^2$
+        \item Insert sample moments to obtain estimate of the parameters
+            \subitem $\Rightarrow \hat\mu = \bar X, \hat\sigma^2 = \frac{1}{n}X_i^2-\bar X^2=\frac{1}{n}\sum_{i=1}^n(X_i-\bar X)^2$
+    \end{enumerate}
+    WLLN ensures that $\hat\mu_k \rightarrow_p \mu_k$\\
+    MoM is useful as the starting point for MLE estimation
+
+\subsubsection{$\delta$ method}
+    for $\hat\theta_X=g(\bar X)$
+    \begin{align*}
+        E(\hat\theta_X) & \approx g[E(\bar X)] + \frac{1}{2}g''[E(\bar X)]Var(\bar X)\\
+        Var(\hat\theta_X) & \approx g'[E(\bar X)]^2Var(\bar X)
+    \end{align*}
+
+\subsection{Consistency}
+\hl{Definition 13:}
+    $\hat\theta_n$ is consistent in probability if $\hat\theta_n$ converges in probability to $\theta$ as $n \rightarrow \infty$.
+    i.e. for any $\epsilon > 0$
+    \begin{align*}P(|\hat\theta_n-\theta|>\epsilon)\rightarrow0, n\rightarrow\infty\end{align*}
+
+
+\subsection{The Method of Maximum Likelihood}
+\hl{Definition 14:}
+    $f(\mathbf{X}|\theta) = f(x_1, \cdots, x_n|\theta)$
+
+    mle of $\theta$ is the value that $\max_{\theta} lik(\theta)=f(\mathbf{X}|\theta)\Leftrightarrow \max_{\theta}\ell(\theta)$
+    \begin{align*}
+        lik(\theta) &= \prod_{i=1}^n f(X_i|\theta) = f(X_1|\theta)\cdots f(X_n|\theta)\\
+        \ell(\theta) &= \sum_{i=1}^n\log\left[ f(X_i|\theta) \right]
+    \end{align*}
+    Note: \\
+    1. use $\ell(\theta) \dot{=}$ to omit the constant terms\\
+    2. eaiser to compute MLE for individual $X_i$ and take sum\\
+    3. Sampling distribution of MLE are typically substantially less dispersed than MOM estimates. Therefore, more precise.
+
+\subsubsection{MLEs of multinomial cell probabilities}
+    \begin{align*}
+        f(\mathbf{X}|p_1,\cdots,p_m) &= \frac{n!}{x_1!\cdots x_m!}p_1^{x_1}\cdots p_m^{x_m}\\
+        \ell(p_1, \cdots, p_m) &= \log n! - \sum_{i=1}^mlog X_i! + \sum_{i=1}^m X_i \log p_i
+    \end{align*}
+    in terms of other parameters
+    \begin{align*}
+        \ell(\theta) &= \log n! - \sum_{i=1}^mlog X_i! + \sum_{i=1}^m X_i \log p_i(\theta)
+    \end{align*}
+    solve (Substitution)
+    \begin{align*}
+        p_m & := 1 - \sum_{i=1}^{m-1} p_i\\
+        \ell(p_1, \cdots, p_{m-1}) &\dot{=} \sum_{i=1}^{m-1} X_i \log(p_i) + X_m \log\left( 1 - \sum_{i=1}^{m-1}p_i  \right)\\
+        \frac{\partial\ell}{\partial p_j} &= \frac{X_j}{p_j} - \frac{X_m}{p_m} = 0, j\in[1, m-1]\\
+        \Rightarrow \frac{X_1}{\hat p_1} &= \frac{X_2}{\hat p_2} = \cdots = \frac{X_m}{\hat p_m} = \lambda = n
+    \end{align*}
+    solve (Lagrange multiplier)
+    \begin{align*}
+        \max_{p_1, \cdots, p_m} &\log n! - \sum_{i=1}^mlog X_i! + \sum_{i=1}^m X_i \log p_i\\
+        s.t. &\sum_{i=1}^m p_i = 1
+    \end{align*}
+    result: $\hat p_j = \frac{X_j}{n}, j\in[1,m]$
+
+\subsubsection{MLE with param depending on $\theta$}
+    Suppose iid $X_1, X_2, \cdots, X_n \sim unif(0,\theta)$
+    \begin{align*}
+        f(x|\theta) &= \begin{cases} \frac{1}{\theta}, &0\leq x \leq \theta \\ 0, & \text{otherwise}  \end{cases}\\
+        log(f(x|\theta)) &= \begin{cases} - log(\theta), & 0\leq x \leq \theta \\ -\infty, & \text{otherwise} \end{cases}\\
+        \ell(\theta) &= \begin{cases} -nlog(\theta), & 0\leq X_i \leq \theta ~\forall i \\ 
+        - \infty, & \text{otherwise}\end{cases}
+    \end{align*}
+
+\subsubsection{Fisher information}
+    Fisher information (in one observation)
+    \begin{align*}
+        I(\theta) &= E\left\{ \left[ \frac{\partial}{\partial\theta}\log f(X|\theta)  \right]^2  \right\}
+    \end{align*}
+    \hl{Lemma 1}
+    under appropriate smoothness condition
+    \begin{align*}
+        I(\theta) &= -E\left[ \frac{\partial^2}{\partial\theta^2} \log f(X|\theta) \right]
+    \end{align*}
+
+\subsubsection{Large sample theory for MLEs}
+Note: this is approximation using LLN\\
+\hl{Theorem 12:} under appropriate smoothness condition on f
+    \begin{enumerate}
+        \item the mle $\hat\theta$ from an i.i.d. sample is consistent
+        \item probability distribution $\sqrt{nI(\theta_0)}(\hat\theta-\theta_0)\rightarrow N(0,1)$\\
+            where $\theta_0$ is the true value of $\theta$
+    \end{enumerate}
+    Comments
+    \begin{itemize}
+        \item $\hat\theta\sim N(\theta_0, \frac{1}{nI(\theta_0)})$ for large sample
+        \item mle is asymptotically unbiased
+        \item asymptotic = $\lim_{n\rightarrow\infty}\frac{1}{nI(\theta_0)}=0$ (very close)
+        \item For \hl{i.i.d.} sample size n
+            \subitem Fisher information: $nI(\theta)$
+            \subitem asymptotic variance: $1/[nI(\theta_0)]$
+        \item For general sample size n
+            \subitem Fisher information: $E[\ell(\theta)^2]$ or $-E[\ell''(\theta)]$
+            \subitem asymptotic variance: $1/E[\ell'(\theta)^2]$ or $-1/E[\ell''(\theta)]$
+    \end{itemize}
+
+\subsubsection{Confidence intervals from MLEs}
+\hl{Definition 15:} $100(1-\alpha)\%$ confidence interval for $\theta$ contains $\theta$ with probability $1-\alpha$. e.g. $\alpha = 0.05$ and CI = $95\%$
+
+Want: (exact method)
+\begin{align*}
+    P\left\{ f(\frac{\alpha}{2}) \leq \mu \leq f(1-\frac{\alpha}{2})  \right\} = 1-\alpha
+\end{align*}
+Result:
+\begin{align*}
+    \mu \in & ~\bar X \pm \frac{S}{\sqrt{n}}t_{n-1}(\frac{\alpha}{2})\\
+    \sigma^2 \in &~ \left( \frac{n\hat\sigma^2}{\chi^2_{n-1}(\alpha/2)}, \frac{n\hat\sigma^2}{\chi^2_{n-1}(1-\alpha/2)}  \right)
+\end{align*}
+
+Want: (approximate method)
+\begin{align*}
+    P\left\{ z(\frac{\alpha}{2}) \leq \sqrt{nI(\hat\theta)}(\hat\theta - \theta_0) \leq z(1-\frac{\alpha}{2})  \right\} \approx 1 - \alpha
+\end{align*}
+
+Result:
+\begin{align*}
+    \theta \in & ~\hat\theta \pm {z(\alpha/2)}/{\sqrt{nI(\hat\theta)}}
+\end{align*}
+
+For multinomial (non i.i.d)
+\begin{align*}
+    \theta \in & ~ \hat\theta \pm z(\alpha/2)/\sqrt{-E[\ell''(\hat\theta)]}\\
+               & ~ \hat\theta \pm z(\alpha/2)\sqrt{\frac{\hat\theta(1-\hat\theta)}{2n}}
+\end{align*}
+
+\subsection{Efficiency}
+\hl{Definition 16}
+\begin{enumerate}
+    \item mean squared error of $\hat\theta$
+        \begin{align*}
+            MSE(\hat\theta) = E[(\hat\theta - \theta_0)^2] = Var(\hat\theta) + [E(\hat\theta)-\theta_0]^2
+        \end{align*}
+    \item efficiency of $\hat\theta$ relative to $\tilde\theta$ \\ (both unbiased or has the same biased)
+        \begin{align*}
+            \text{eff}(\hat\theta, \tilde\theta) = \frac{Var(\tilde\theta)}{Var(\hat\theta)}
+        \end{align*}
+\end{enumerate}
+
+\subsubsection{Cramer-Rao lower bound}
+\hl{Theorem 13} \\
+$T := t(X_1, \cdots, X_n)$ be \hl{unbiased} estimate of $\theta$
+\begin{align*}
+    Var(T) &\geq \frac{1}{nI(\theta)}\\
+    Var(T) &\geq \frac{1}{I(\theta)} \text{ (multinomial)}
+\end{align*}
+comments
+\begin{itemize}
+    \item provides the lower bound on the variance of any unbiased estimate
+    \item unbiased estimate achieve lower bound is efficient
+    \item mle are asymptotically efficient as asymptotic variance = lower bound
+\end{itemize}
+
+\subsection{Sufficiency}
+\hl{Definition 17} \\
+$T(X_1, \cdots, X_n)$ is sufficient for $\theta$ if the conditional distribution of $X_1, \cdots, X_n$ given $T=t$ does not depend on $\theta$ for any value of $t$. \\
+$T$ is called a sufficient statistic\\
+
+Note: sufficiency is unique upto monotone transformation (e.g. $\log(x), x$)
+
+\subsubsection{A factorization theorem}
+\hl{Theorem 14}\\
+Express joint probability into functions containing only $\mathbf{X}$
+\begin{align*}
+    f(\mathbf{X}|\theta) = g[T(\mathbf{X}), \theta]h(\mathbf{X}) \Leftrightarrow T(\mathbf{X}) \text{ is sufficient stat}
+\end{align*}
+\begin{enumerate}
+    \item Identify joint probability function
+    \item Group terms into $g(t(x), \theta)h(x)$
+    \item $t(x)$ is the sufficient statistic
+\end{enumerate}
+
+\hl{Corollary 6}\\ If $T$ is sufficient for $\theta$, then the mle is a function of $T$\\
+Note: to max MLE, it is sufficient to max $T$ in this case.\\
+
+This identify is useful for ratio test as well
+\begin{align*}
+    \frac{lik(\theta_0)}{lik(\theta_1)} = \frac{g(T,\theta_0)h(x)}{g(T, \theta_1)h(x)} = \frac{g(T,\theta_0)}{g(T, \theta_1)}
+\end{align*}
+
+\subsubsection{Exponential family of distributions}
+    RV with same dimension of "sufficient statistics" as "parameter space" regarldess of sample size
+
+    One parameter members (e.g. Ber, Binomial, Poisson)
+    \begin{align*}
+        f(x|\theta) = \begin{cases}
+            exp[c(\theta)T(x) + d(\theta) + S(x)], &x\in A\\
+            0, &x \not\in A
+        \end{cases}
+    \end{align*}
+    k-parameter member (e.g. Normal, Gamma)
+    \begin{align*}
+        f(x|\theta) = \begin{cases}
+            exp\left[ \sum_{i=1}^k c_i(\theta)T_i(x) + d(\theta) + S(x)  \right], & x\in A\\
+            0, &x\not\in A
+        \end{cases}
+    \end{align*}
+    where set $A$ does not depend on $\theta$
+
+    \subsubsection{Checking exponential family}
+    Since
+    \begin{align*}
+        \alpha^\beta &= e^{\beta\log(\alpha)}
+    \end{align*}
+    We can convert any function into a exp base. 
+    Therefore, taking $\log(f(x))$ and check which family dist belongs to
+
+\subsubsection{The Rao-Blackwell theorem}
+\hl{Theorem 15} \\
+$\hat\theta$ is estimator of $\theta$, $T$ is sufficient for $\theta$, $\tilde\theta=E(\hat\theta|T)$
+\begin{align*}
+    E[(\tilde\theta - \theta)^2] \leq E[(\hat\theta - \theta)^2]
+\end{align*}
+If an estimator is not a function of a sufficient statistic, it can be improved
+
+\section{Testing Hypotheses and Assessing Goodness of Fit}
+Statistical hypothesis testing is a formal means 
+of distinguishing between probability distributions on the basis of RV generated from one of the distribution
+
+key idea: likelihood ratio
+\begin{align*}
+    \frac{P(x|H_0)}{P(x|H_1)}
+\end{align*}
+
+\subsection{The Neyman-Pearson Paradigm}
+Hypothesis testing as a decision problem
+\begin{tabulary}{\linewidth}{l@{ : }L}
+        $H_0$ & null hypothesis\\
+        $H_1$ & alternative hypothesis\\
+        Type I error & rejecting $H_0$ when it is true\\
+        $\alpha$ & significance level, probability of Type I error (e.g. 0.05)\\
+        Type II error, $\beta$ & accepting $H_0$ when it is false\\
+        Power, $1-\beta$& probability of rejecting $H_0$ when it is false\\
+        test statistic & likelihood ratio\\
+        rejection region & set of values of test statistic leads to rejection of $H_0$\\
+        acceptance region & set of values of test statistic lead to acceptance of $H_0$\\
+        null distribution & probability distribution of test statistic when $H_0$ is true\\
+        simple hypothesis & $H_i$ completely specifies the probability distribution\\
+        composite hypothesis & hypothesis does not completely specify the probability distribution
+    \end{tabulary}
+    \hl{Theorem 16} 
+
+    Given simple hypotheses $H_0$, $H_1$ and test that reject $H_0$ with likelihood ratio $<c$ has significance level $\alpha$
+
+    Then any other test with sifnificance level $\leq\alpha$ has power $\leq$ that of the likelihood ratio test
+
+    Or: Among all tests with given P(type I error), likelihood ratio test minimizes P(type II error)
+
+
+\subsection{Specifying the significance level and the concept of p-value}
+    \begin{enumerate}
+        \item Specifying the significance level $\alpha$
+            \subitem Find $\alpha$ s.t. $P(|T\geq t_0|H_0)=\alpha$
+        \item Reporting the p-value
+            \subitem summarise evidence against $H_0$ with p-value
+            \subitem p-value = smallest sig level to reject $H_0$
+    \end{enumerate}
+
+\subsection{The null hypothesis $H_0$}
+    Asymmetry in the Neyman-Pearson paradigm between the null and alternative hypotheses
+    \begin{itemize}
+        \item Conventional to choose simpler hypotheses as null
+        \item Choose hypothesis with greater consequences when incorrectly rejected (e.g. new drug). 
+            \subitem Because probability of rejecting can be controlled by $\alpha$
+        \item In scientific investigation, null hypothesis is simple explanation that must be discredited to demonstrate presence of a physical phenomenon or effect
+    \end{itemize}
+
+\subsection{Uniformly most powerful tests}
+    Given a composite $H_1$, a uniformly most powerful test is one that is most powerful for every simple alternative $H_1$
+
+    E.g. happen when test does not depend on $\mu_1$
+
+    Note: in typical composite situations, there is no uniformly most powerful test
+
+    Answering: The test is most powerful for testing $\lambda = \lambda_0$ vs $\lambda=\lambda_1>\lambda_0$ and is the same for every such alternative
+
+\subsection{The Duality of Confidence Intervals and Hypothesis Tests}
+    Inversion: confidence set can be obtained by "inverting" a hypothesis test, and vice versa
+
+    \hl{Theorem 17}\\
+    Suppose that for every value $\theta_0$ in $\Theta$ there is a test at level $\alpha$ of the hypothesis $H_0:\theta=\theta_0$
+    with acceptance region $A(\theta_0)$. Then the set
+    \begin{align*}
+        C(\bold{X}) = \{ \theta: \bold{X} \in A(\theta) \}
+    \end{align*}
+    is a $100(1-\alpha)$\% confidence region for $\theta$\\
+    In words: A $100(1-\alpha)$\% confidence region for $\theta$ consists of those values of $\theta_0$ for which
+    $H_0: \theta = \theta_0$ will not be rejected at level $\alpha$
+
+    \hl{Theorem 18}\\
+    Suppose that $C(\bold{X})$ is a $100(1-\alpha)$\% confidence region for $\theta$.
+    Then an acceptance region for a level $\alpha$ test of the hypothesis $H_0:\theta=\theta_0$ is
+    \begin{align*}
+        A(\theta_0) = \{ \bold{X}:\theta_0 \in C(\bold{X})  \}
+    \end{align*}
+    In words: The hypothesis that $\theta=\theta_0$ is accepted if $\theta_0$ lies in the confidence region.
+
+\subsection{Generalized Likelihood Ratio Tests}
+    Given $\bold{X} = (X_1, \cdots, X_n)$ with $f(\bold{X}|\theta)$.\\
+    Let $\omega_0, \omega_1$ be subsets of all possible values of $\theta$ s.t. 
+    $\omega_1$ is disjoint from $\omega_0$ and $\Omega = \omega_0 \cup \omega_1$
+
+    For testing $H_0:\theta\in\omega_0$ v.s. $H_1: \theta\in\omega_1$
+
+    \begin{align*}
+        \Lambda = \frac{\max_{\theta\in\omega_0}lik(\theta)}{\max_{\theta\in\Omega}lik(\theta)}
+    \end{align*}
+
+    Reject $H_0$ for a small $\Lambda$
+
+    $S=\{x: T(x) >/< c\}$, $P(S)=\alpha$
+
+    \hl{Theorem 19}\\
+    Under smoothness conditions on the probability density or frequency functions involved
+    \begin{align*}
+        -2\log(\Lambda) \sim \chi^2_{df}, n\rightarrow \infty
+    \end{align*}
+    df = dim $\Omega$ - dim $\omega_0$\\
+    Reject $H_0$ for large $-2\log\Lambda > \chi^2_{df}(\alpha)$
+
+    \ \\
+
+    degree of freedom: number of free parameters under $\Omega$ and $\omega_0$ respectively.\\
+    e.g. $H_0: \mu = \mu_0, H_1: \mu \neq \mu_0$, df = $1 - 0$\\
+    $\mu$ is specified under $H_0$ but needs to be esitmated under $H_1$
+
+    \subsubsection{General steps for Ratio test}
+    Refer: problem 50
+    \begin{enumerate}
+        \item Identify hypothesis as simple/composite
+            \subitem[simple] subsitute into lik
+            \subitem[composite] find MLE estimate
+        \item Set up likelihood ratio and find $\Lambda$
+            \begin{align*}
+                \Lambda = \frac{f(\mathbf{X}|H_0)}{f(\mathbf{X}|H_1)}
+            \end{align*}
+        \item Find extreme values ($c$) that $\min\Lambda$ and reject $H_0$
+            \subitem[max] $P(g(T(\bold{X}), \theta)>c|H_0)=\alpha$
+            \subitem[min] $P(g(T(\bold{X}), \theta)<c|H_0)=\alpha$
+        \item Often, find  $T(\bold{X})$ is easier
+            \subitem[one tail] $P(T(\bold{X}) > c) = \alpha$
+            \subitem[two tail] $P(-c < T(\bold{X}) < c) = \alpha$
+        \item If exact $\Lambda$ is hard to find, use $-2\log(\Lambda)\sim\chi^2_{df}$ by large sample approx
+    \end{enumerate}
+
+\subsection{Likelihood Ratio Tests for the Multinomial Distribution}
+    $H_0:p=p(\theta), \theta\in\omega_0$\\
+    e.g. $\lambda$ in Pois\\
+
+    \begin{align*}
+        -2\log(\Lambda) = 2\sum_{i=1}^m O_i \log\left(\frac{O_i}{E_i}\right)
+    \end{align*}
+    $X^2$ and $-2\log(\Lambda)$ are asymptotically equivalent under $H_0$
+
+\subsubsection{Pearson's $\chi^2$ statistics}
+    Pearson's chi-square statistic (assess goodness of fit)
+    \begin{align*}
+        X^2 = \sum_{\text{all cells}}\frac{(O_i-E_i)^2}{E_i} \sim \chi^2_{df}, n\rightarrow\infty
+    \end{align*}
+    $O_i :=$ observed count\\
+    $E_i :=$ expected count\\
+    df := \#cell - \#independent parameters - 1
+
+    Require expected counts $\geq 5$
+
+    \subsubsection{Investigate when goodness-of-fit test failed}
+    Look for cells that make large contributions to $X^2$ and note whether $O > E$ or $O < E$
+
+\subsection{Comparing Two Samples}
+In many experiments, the two samples maybe regarded as being independent of each other.
+
+Only continuous measurements and parametric methods are discussed in this module
+
+\subsubsection{Comparing Two Independent Samples}
+Model:
+\begin{itemize}
+    \item Observations from control group are independent RV with common distribution $F$
+    \item Treatment group are independent RV with common distribution $G$
+\end{itemize}
+Objective: inference about the comparison of $F, G$ (usually difference of means) based on normal distribution
+
+\subsubsection{Methods based on Normal distribution}
+Note:
+\begin{itemize}
+    \item mle of $\mu_X-\mu_Y = \bar X - \bar Y$
+    \item $\bar X - \bar Y \sim N(\mu_X-\mu_Y, \sigma^2\left[\frac{1}{n}+\frac{1}{m}\right])$
+    \item If $\sigma^2$ is known
+        \begin{align*}
+            Z = \frac{(\bar X - \bar Y) - (\mu_X-\mu_Y)}{\sigma\sqrt{1/n+1/m}}\sim N(0,1)
+        \end{align*}
+    \item If $\sigma^2$ is unknown, it can be estimated with pooled sample variance
+        \begin{align*}
+            s^2_p &= \frac{(n-1)S^2_X+(m-1)S^2_Y}{m+n-2}\\
+            \hat\sigma &= s_{\bar X - \bar Y} = s_p\sqrt{1/n+1/m}
+        \end{align*}
+    \end{itemize}
+
+\hl{Theorem 20}\\
+Supposed that $X$s are independent of $Y$s with\\
+iid $X_i\sim N(\mu_X, \sigma^2)$, $i\in[1, n]$ and\\
+iid $Y_j\sim N(\mu_Y, \sigma^2)$, $j\in[1, m]$
+\begin{align*}
+    t &= \frac{(\bar X - \bar Y) - (\mu_X - \mu_Y)}{s_{\bar X - \bar Y}} \sim t_{df}
+\end{align*}
+$df = m + n - 2$
+
+\hl{Corollary 7}\\
+Under assumptions of Theorem 20, a $100(1-\alpha)\%$ CI for $\mu_X - \mu_Y$ is
+\begin{align*}
+    (\bar X - \bar Y) \pm t_{m+n-2}(\alpha/2)s_{\bar X - \bar Y}
+\end{align*}
+
+\subsubsection{Test for unequal variance}
+
+\begin{align*}
+    \frac{\hat\sigma_0^2}{\hat\sigma_1^2} = 
+    \frac{\sum_{i=1}^n(X_i-\hat\mu_0)^2+\sum_{j=1}^m(Y_j-\hat\mu_0)^2}
+    {\sum_{i=1}^n(X_i-\bar X)^2+\sum_{j=1}^m(Y_j-\bar Y)^2} \sim |t|
+\end{align*}
+
+\subsubsection{Unequal variance}
+\begin{align*}
+    t &= \frac{(\bar X - \bar Y) - (\mu_X - \mu_Y)}{\sqrt{S^2_X / n + S_Y^2 / m}}\\
+    df &= \frac{(S^2_X/n + S^2_Y/m)^2}{(S^2_X/n)^2/(n-1) + (S_Y^2/m)^2/(m-1)}
+\end{align*}
+
+\section{Specific Example questions}
+
+\subsection{Capture/Recapture Method}
+Known $t:=$ number of animals captured, tagged, and released\\
+$m:=$ number of animals captured in the second try\\
+$r:=$ number of animals tagged (in second capture)\\
+Interested to know the size of population ($n$)
+
+\begin{align*}
+    L_n &= \begin{pmatrix}t\\r\end{pmatrix}
+    \begin{pmatrix}n-t\\m-r\end{pmatrix}/
+    \begin{pmatrix}n\\m\end{pmatrix}
+\end{align*}
+$L_n:=$ probability of $r$ capture, assuming equal probability among $\begin{pmatrix}n\\m\end{pmatrix}$ groups
+
+Solution: $\max$ integer s.t. $n < mt/r$
+
+\subsection{Discrete RV}
+Given sample space $\Omega = \{hhh, hht, hth, htt, thh, tht, tth, ttt\}$\\
+$X := $ number of heads of first toss\\
+$Y :=$ total number of heads
+
+\begin{tabular}{c | c c c c @{ $\rightarrow$ } c}
+    $p(x,y)$ & $y=0$ & $y=1$ & $y=2$ & $y=3$ & $p_X(x)$\\
+    \hline
+    $x=0$ & $1/8$ & $2/8$ & $1/8$ & $0$ & $1/2$\\
+    $x=1$ & $0$ & $1/8$ & $2/8$ & $1/8$ & $1/2$\\
+    $\downarrow$ &$\downarrow$ &$\downarrow$ &$\downarrow$ &$\downarrow$ &\\
+    $p_Y(y)$ & $1/8$ & $3/8$ & $3/8$ & $1/8$
+\end{tabular}\\
+cell shows the joint frequency function\\
+summing across the rows and columns will get the marginal frequency functions. 
+
+\subsection{Finding pivot, exact CI}
+Tutorial 6: consider $\bar Y \sim \Gamma(\alpha=n, \lambda =n\theta)$
+\begin{align*}
+    2n\theta\bar Y &\sim \Gamma(\alpha=n, \lambda=1/2) \Leftrightarrow \chi^2_{2n}
+\end{align*}
+$2n\theta\bar Y$ is a pivot
+\begin{align*}
+    1 - \alpha &= P\{ \chi^2_{2n}(1-\alpha/2) \leq 2n\theta \bar Y \leq \chi^2_{2n}(\alpha/2) \}\\
+               &= P\left\{\frac{\chi^2_{2n}(1-\alpha/2)}{2n\bar Y} \leq \theta \leq \frac{\chi^2_{2n}(\alpha/2)}{2n\bar Y}  \right\}
+\end{align*}
+
+\subsection{Twins}
+    Reference: Problem 8, 36, 39
+
+    \subsubsection{Find distribution}
+    Problem 8: In the population of twins, male (M) and females (F) are equal likely to occur and probability of identical twins are $\alpha$.
+    If twins are not identical, their genes are independent.
+
+    Let $B_1 :=$ identical twins, $B_2 :=$ non identical twins
+
+    \begin{align*}
+        P(MM) &= P(MM|B_1)P(B_1) + P(MM|B_2)P(B_2)\\
+              &=\frac{1}{2}\alpha + (\frac{1}{2}\cdot\frac{1}{2})(1-\alpha)\\
+              &=\frac{1+\alpha}{4} = P(FF)\\
+        P(MF) &= 1-P(MM)-P(FF) = \frac{1-\alpha}{2}\\
+        p_1(\alpha) &= P(MM)  = \frac{1+\alpha}{4}\\
+        p_2(\alpha) &= P(FF)  = \frac{1+\alpha}{4}\\
+        p_3(\alpha) &= P(MF)  = \frac{1-\alpha}{2}
+    \end{align*}
+
+    \subsubsection{Find MLE}
+    Problem 36: Supposed $n$ twins are sampled. $n_1$ are MM, $n_2$ are FF, $n_3$ are MF. But unknown which tiwns are identical.
+
+    Find mle of $\alpha$
+    \begin{align*}
+        f(X_1, X_2, X_3 | \alpha) &= \begin{pmatrix}
+            n \\
+            X_1, X_2, X_3
+    \end{pmatrix} p_1(\alpha)^{X_1}p_2(\alpha)^{X_2}p_3(\alpha)^{X_3}
+    \end{align*}
+    \begin{align*}
+        \ell(\alpha) & \dot{=} X_1 \log p_1(\alpha) + X_2 \log p_2(\alpha) + X_3 \log p_3 (\alpha)\\
+                     & \dot{=} X_1 \log(1-\alpha) + X_2 \log (1+\alpha) + X_3 \log(1-\alpha)\\
+                     & = (X_1 + X_2) \log(1+\alpha) + X_3 \log(1-\alpha)\\
+        \ell'(\alpha) & = \frac{X_1+X_2-X_3-n\alpha}{(1+\alpha)(1-\alpha)}
+    \end{align*}
+    Since $X_1 + X_2 + X_3 = n$, if $X_1 + X_2 - X_3 < 0 \Rightarrow \ell'(\alpha) < 0$
+    \begin{align*}
+        \Rightarrow \hat\alpha = \begin{cases}
+            0, & X_1 + X_2 - X_3 < 0\\
+            (X_1 + X_2 - X_3)/n, & \text{otherwise}
+        \end{cases}
+    \end{align*}
+
+    \subsubsection{Find asymptotic variance of MLE}
+    \begin{align*}
+        \ell(\theta) &= X_1\log(p_1)+X_2\log(p_2)+X_3\log(p_3)\\
+        \ell'(\theta) &= \frac{X_1+X_2}{1-\alpha}-\frac{X_3}{1-\alpha}\\
+        \ell''(\theta) &= -\frac{X_1+X_2}{(1+\alpha)^2} - \frac{X_3}{(1-\alpha)^2}\\
+        I(\theta) &= -E[\ell''(\theta)] = \frac{n}{1-\alpha}
+    \end{align*}
+
+
+\subsection{Hardy-Weinberg Law}
+    Reference: Problem 9, 40\\
+    In general, questions like this
+    \begin{enumerate}
+        \item find the conditional probability
+        \item using Law of Total Probability to find the exact probability
+    \end{enumerate}
+
+    \subsubsection{Find distribution}
+    Problem 9: Assumes genes can either be $a, A$. The possible genotypes are $AA, Aa, aa$. \\
+    When two organisms mate, each independently contribute one of genes with probability $p, 2q, r$ respectively
+
+    \begin{tabular}{l   l   l}
+        1st generation & probability & 2nd generation\\
+        \hline
+        \hline
+        $B_1 = \{AA_1, AA_1\}$ & $P(B_1) = p^2$ & $P(AA_2|B_1)=1$\\
+        \hline
+        $B_2 = \{AA_1, Aa_1\}$ & $P(B_2) = 2pq$ & \makecell{$P(AA_2|B_2)=0.5$\\ $P(Aa_2|B_2)=0.5$}\\
+        \hline
+        $B_3 = \{AA_1, aa_1\}$ & $P(B_3) = pr$ & $P(Aa_2|B_3)=1$\\
+        \hline
+        $B_4 = \{Aa_1, AA_1\}$ & same $B_2$\\
+        \hline
+        $B_5 = \{Aa_1, Aa_a\}$ & $P(B_5)=(2q)^2$ & 
+        \makecell{$P(AA_2|B_5)=0.25$ \\ $P(Aa_2|B_5)=0.5$ \\ $P(aa_2|B_5) = 0.25$}\\
+        \hline
+        $B_6 = \{Aa_1, aa_1\}$ & $P(B_6) = 2qr$ & \makecell{$P(Aa_2|B_6)=0.5$ \\ $P(aa_2|B_6)=0.5$}\\
+        \hline
+        $B_7 = \{aa_1, AA_1\}$ & same as $B_3$\\
+        \hline
+        $B_8 = \{aa_1, Aa_1\}$ & same as $B_6$\\
+        \hline
+        $B_9 = \{aa_1, aa_1\}$ & $P(B_9)=r^2$ & $P(aa_2|B_9)=1$\\
+        \hline
+        \hline
+    \end{tabular}
+    
+    with $\theta = q+r, 1-\theta=p+q$
+    \begin{align*}
+        P(AA_2) &= \sum_{i=1}^9 P(AA_2|B_i)P(B_i) = (p+q)^2\\
+                &=(1-\theta)^2\\
+        P(Aa_2) &= 2(p+q)(q+r)\\
+                &= 2\theta(1-\theta)\\
+        P(aa_2) &= (q+r)^2\\
+                &=\theta^2
+    \end{align*}
+    with $p'=(1-\theta)^2, q'=\theta(1-\theta), r'=\theta^2$
+    \begin{align*}
+        P(AA_3) &= (p'+q')^2 = (1-\theta)^2\\
+        P(Aa_3) &= 2(p'+q')(q'+r') = 2\theta(1-\theta)\\
+        P(aa_3) &= (q'+r')^2 = \theta^2
+    \end{align*}
+
+    \subsubsection{Find MLE}
+    If gene frequencies are in equilibrium, the genotypes $AA, Aa, aa$ occur with probabilities 
+    $(1-\theta)^2, 2\theta(1-\theta)$ and $\theta^2$ respectively.
+
+    \begin{align*}
+        &f(X_1, X_2, X_3|\theta) =&\\
+        &\begin{pmatrix}
+            n \\ X_1, X_2, X_3
+        \end{pmatrix} [(1-\theta)^2]^{X_1} [2\theta(1-\theta)]^{X_2} [\theta^2]^{X_3}\\
+    \end{align*}
+    \begin{align*}
+        \ell(\theta) &\dot{=} X_1 \log(1-\theta)^2 + X_2 \log2\theta(1-\theta) +X_3\log(\theta^2)\\
+                &\dot{=} (2X_1 + X_2)\log(1-\theta) + (X_2+2X_3)\log(\theta)\\
+        \hat\theta &= \frac{X_2+2X_3}{2n}
+    \end{align*}
+
+    \subsubsection{Find asymptotic variance of MLE}
+    \begin{align*}
+        \ell(\theta) &= X_1 \log(p_1) + X_2\log(p_2) + X_3 \log(p_3)\\
+        \ell'(\theta) &= -\frac{2X_1+X_2}{1-\theta} + \frac{2X_3+X_2}{\theta}\\
+        \ell''(\theta) &= -\frac{2X_1+X_2}{(1-\theta)^2} - \frac{2X_3+X_2}{\theta^2}\\
+        I(\theta) &=-E(\ell''(\theta)) = \frac{2n}{(1-\theta)\theta}
+    \end{align*}
+
+
+\end{multicols}
+
+\newpage
+
+\newcommand{\n}{8}
+
+\begin{tabulary}{\linewidth}{| C | c || c || c|| c | C || c || C |}
+    \hline
+    Distribution & 
+    Parameters ($\theta$) & 
+    MOM &
+    MLE & 
+    \makecell{Fisher information \\ $I(\theta)$} & 
+    MLE asymptotic variance &
+    \makecell{Sufficient statistics \\ $T(\bold{X})$}  &
+    question ref\\
+    \hline
+    \hline
+    \multicolumn{\n}{|c|}{Discrete Distribution (i.i.d.)}\\
+    \hline
+
+    Bernoulli & 
+    $p$ & 
+    $\hat p = \bar X$ & 
+    $\hat p = \bar X$ & 
+    ${1}/{pq}$ & 
+    ${pq}/n$           &
+    $\sum_{i=1}^n X_i$ &
+    \makecell{suff: ex26, 27 \\ fam: ex29}
+    \\
+    \hline
+
+    Poisson & 
+    $\lambda$  &
+    $\hat\lambda = \bar X$ & 
+    $\hat\lambda = \bar X$  & 
+    ${1}/{\lambda}$ & 
+    $\lambda/n$                &
+    $\sum_{i=1}^n X_i$ &
+    \makecell{MOM: ex12\\ MLE: ex16 \\ eff: ex25 \\ htest: q49, ex31} \\
+    \hline 
+
+    Geometric & 
+    $p$  & 
+    $\hat p = {1}/{\bar X}$ & 
+    $\hat p = {1}/{\bar X}$ & 
+    $1/\left[(p^2(1-p))\right]$                  &
+    $p^2(1-p)/n$                  &
+    $\sum_{i=1}^n (k_i - 1)$&
+    \makecell{MOM: q29 \\MLE: q33 \\ MLE var: q37}\\
+    \hline
+    \multicolumn{\n}{|c|}{Multinomial (Discrete, not independent)}\\
+    \hline
+
+    Binomial & 
+    $p$ & 
+    $\hat p = {X}/{n}$  & 
+    $\hat p = {X}/{n}$ & 
+    $\frac{n}{p(1-p)}$ &
+    $\frac{p(1-p)}{n}$&
+    $X$&
+    \makecell{MLE: q32\\ eff: q43 \\ htest: q48, q56 \\ q58} \\
+    \hline
+
+    \makecell{Negative Binomial \\ (note: pmf diff from wiki)} & 
+    $p$ & 
+    $p=1-\frac{E(X)}{Var(X)}$ & 
+    $\hat p = \frac{r}{r+k}$& 
+    $\frac{n}{p^2(1-p)}$ &
+    $\frac{p^2(1-p)}{n}$&
+    $X$&
+    \\
+    \hline
+
+
+    twins & 
+    $\alpha$ & 
+    - & 
+    $\max\{ 0, \frac{X_1+X_2-X_3}{n} \}$ & 
+    $n/(1-\alpha^2)$&
+    $(1-\alpha^2)/n$&
+    $X_1, X_2, X_3$&
+                                         \makecell{MLE: q36\\ var: p39} \\
+    \hline
+
+    H-W equilibrium & 
+    $\theta$ & 
+    - & 
+    $\hat\theta = {(X_2+2X_3)}/{2n}$ & 
+    $-2n/[\theta(1-\theta)]$ &
+    $\theta(1-\theta)/2n$                 &
+    $X_1, X_2, X_3$&
+    \makecell{MLE: ex20\\ var: ex23 \\ htest: ex37, q59}\\
+    \hline
+
+    cell probabilities & 
+    $p_i$ & 
+    - & 
+    $\hat p_i = {X_i}/{n}$ 
+          -& 
+          -&
+          -&
+          -&
+          \\
+    \hline
+
+\end{tabulary}
+
+\newpage
+
+\begin{tabulary}{\linewidth}{| C | c || c || c|| c | c || c || C |}
+    \hline
+    Distribution & 
+    Parameters ($\theta$) & 
+    MOM &
+    MLE & 
+    \makecell{Fisher information \\ $I(\theta)$} & 
+    MLE asymptotic variance &
+    \makecell{Sufficient statistics \\ $T(\bold{X})$}  &
+    question ref\\
+    \hline
+    \hline
+    \multicolumn{\n}{|c|}{Continuous Distribution (i.i.d)}\\
+    \hline
+
+    Uniform $[0, \theta]$ & 
+    $\theta$  & 
+    $\hat\theta = 2\bar X$ & 
+    $\hat\theta = \max\{X_1, \cdots, X_n\}$ &
+    - &
+    - &
+    - &
+    \makecell{MOM: q31 \\ MLE: q35 \\ eff: q41 \\ htest: q57}\\
+    \hline
+    
+    Uniform $[\theta-1, \theta+1]$ & \
+    $\theta$ & 
+    $\hat\theta = \bar X$ &
+    $\hat\theta = X_i$, any $i$&
+    - &
+    - &
+    - &
+    MLE: q35              \\
+    \hline
+
+
+    $f(x|\theta)=\theta x^{\theta-1}$ & 
+    $\theta$ & 
+    $\hat\theta = {\bar X}/({1-\bar X})$ &
+    $\hat\theta = -{n}/({\sum_{i=1}^n log(X_i)})$ & 
+    ${n}/{\theta^2}$&
+    $\theta^2/n^2$&
+    $\prod_{i=1}^nX_i$&
+    MOM: tut4\\
+    \hline
+
+    Exponential & 
+    $\lambda$ &
+    $\hat\lambda = 1/\bar X$          &
+    $\hat\lambda = 1 / \bar X$          & 
+    $n/\lambda^2$& 
+    $\lambda^2/n^2$&
+    $\sum_{i=1}^n X_i$ &
+    \makecell{MOM: tut4\\ MLE: tut5 \\ E, Var: tut5 \\ suff: q45 \\ htest: q55} \\
+    \hline
+
+    Double exponential [scale] & 
+    $\sigma$  & 
+    $\hat\sigma = \sqrt{{\hat\mu_2}/{2}}$ &
+    $\hat\sigma = \frac{1}{n}\sum_{i=1}^n |X_i|$ & 
+    $-1/\sigma^2$           &
+    $\sigma^2/n$                                &
+    $\sum_{i=1}^n|x_i|$&
+    \makecell{MOM: q30 \\ MLE: q34 \\ var: p38 \\ suff:q44} \\
+    \hline
+
+    Gamma & 
+    $\alpha, \lambda$ & 
+    \makecell{$\hat\lambda = \bar X / \hat\sigma^2$ \\ $\hat\alpha = \bar X^2 / \hat\sigma^2$ 
+    \\ $\hat\sigma^2 = \hat\mu_2 - \hat\mu_1^2$}& 
+    \makecell{$\hat\lambda = \hat\alpha \bar X$ \\ 
+    $\hat\alpha$:  
+$n\log(\hat\alpha)-n\log(\bar X) $\\ $ + \sum_{i=1}^n \log(X_i) - \frac{n\Gamma'(\hat\alpha)}{\Gamma(\hat\alpha)} =0$ } & 
+    $n\alpha\lambda^2$&
+    $1/(n\alpha\lambda^2)$&
+    \makecell{$\prod_{i=1}^n X_i$\\$\sum_{i=1}^n X_i$}&
+    \makecell{MOM: ex14 \\ MLE: ex18 \\ suff: q46 \\ fam:47}           \\
+    \hline
+
+    Normal & 
+    $\mu, \sigma^2$  & 
+    \makecell{$\hat\mu = \bar X$ \\ $\hat\sigma = \hat\mu_2 - \bar X^2$} &
+    \makecell{$\hat\mu = \bar X$ \\ $\hat\sigma^2 = \sqrt{\frac{1}{n}\sum_{i=1}^n(X_i-\bar X)^2}$} & 
+    $n/(2\sigma^2)$& 
+    $(2\sigma^2)/n$&
+    \makecell{$\prod_{i=1}^n X_i$\\$\sum_{i=1}^n X_i$} &
+    \makecell{MOM: ex13\\ MLE: ex17 \\ eff: q42 \\ suff: ex28\\ htest: ex30, q52, \\ ex35} \\
+    \hline
+
+    Angular [muon decay] & 
+    $\alpha$  & 
+    $\hat\alpha = 3 \bar X$ & 
+    $\hat\alpha$: $\sum_{i=1}^n {X_i}/({1+\hat\alpha X_i})=0$ & 
+    $(n\alpha)/(3-\alpha^2)$&
+    $(3-\alpha^2)/(n\alpha)$&
+        -                        &
+                                \makecell{MOM ex15 \\ MLE: ex19 \\E,Var :q28 \\ eff: ex24}\\
+    \hline
+
+    Beta &
+    $\alpha, \beta$     &
+        \makecell{
+            $\hat\alpha = \bar X \left[ \frac{\bar X(1-\bar X)}{S^2} - 1  \right]$\\
+            $\hat\beta = (1-\bar X)\left[ \frac{\bar X (1-\bar X)}{S^2} -1  \right]$
+        }&
+         -&
+         -&
+         -&
+    \makecell{$\prod_{i=1}^n X_i$ \\ $\prod_{i=1}^n(1-X_i)$  } &
+         \\
+    \hline
+
+\end{tabulary}
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

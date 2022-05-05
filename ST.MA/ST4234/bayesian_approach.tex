@@ -1,0 +1,689 @@
+    \section{Bayesian approach}
+    \begin{align*}
+        p(\theta|y)\propto p(y|\theta)p(\theta)
+    \end{align*}
+
+    \subsubsection{Ingredients for modelling}
+    \begin{enumerate}
+        \item data
+        \item model
+        \item parameter
+        \item sampling distribution
+    \end{enumerate}
+
+    \subsubsection{Frequentist vs Bayesian approach}
+    \begin{tabulary}{\linewidth}{| L | L | L|}
+        \hline
+        & Frequentist & Bayesian\\
+        \hline
+        \hline
+        tools & MLE, hypothesis testing, confidence interval
+              & prior distribution, posterior distribution\\
+              \hline
+        true $\theta$ & fixed but unknown
+                      & not fixed but follows a
+                      distribution\\
+                      \hline
+    \end{tabulary}
+
+    \subsubsection{Key terms}
+
+    Techniques\\
+    \begin{tabulary}{\linewidth}{L L}
+        \hline
+        term & meaning\\
+        \hline
+        \hline
+        Monte Carlo method & a method for approximating
+        quantities via simulation of random variables\\
+        Markov chain Monte Carlo (MCMC) & generated
+        variables form a Markov chain\\
+        Estimation vs prediction &
+        Frequentist method estimates parameters by
+        optimizing within a given dataset. Predictive
+        performance on new dataset is not guaranteed,
+        especially if there is a large number of parameters
+        compared to sample size.\\
+        Shrinkage & Penalized likelihood to shrink the
+        estimate towards a given value, such as 0 or the
+        group mean. Shrinkage happen naturally in Bayesian
+        (towards the prior or hyper-prior)\\
+        Hierarchical model & Models in which observations
+        are clustered into groups. Parameters can be common
+        within and across groups.
+    \end{tabulary}
+
+    Bayesian\\
+    \begin{tabulary}{\linewidth}{l L}
+        \hline
+        term & meaning\\
+        \hline
+        \hline
+        $p(\theta)$ & prior density of $\theta$\\
+        $p(\theta|y)$ & posterior density of $\theta$ given $y$\\
+        $p(y|\theta)$ & likelihood of $\theta$ at $y$\\
+        Odds & if an event occurs with probability $p$ then
+        odds of it occurring is $\frac{p}{1-p}$\\
+        Bayes factor & an integral likelihood ratio between
+        two models in a Bayesian setting\\
+    \end{tabulary}
+
+    Prior\\
+    \begin{tabulary}{\linewidth}{l L}
+        \hline
+        term & meaning\\
+        \hline
+        \hline
+        Conjugate prior & family of prior distribution such
+        that posterior distribution belong to the same
+        family\\
+        Semi-Conjugate prior & prior for multiple parameters
+        in which prior of each parameter conditioned on the
+        other parameters is a conjugate prior\\
+        hyper-prior & Priors of hyper parameters\\
+        Within-group variability & variability between
+        measurements of different units in the same group\\
+        Between-group variability & The variability between
+        population means of different groups. (Across groups)\\
+        Improper prior & prior density which does not
+        integrate to $1$\\
+        non-informative prior & a prior which does not give
+        the impression that you are favoring one parameter
+        over another\\
+        Jeffrey's prior & prior invariant to a change of
+        variable
+    \end{tabulary}
+
+    Posterior distribution\\
+    \begin{tabulary}{\linewidth}{l L}
+        \hline
+        term & meaning\\
+        \hline
+        \hline
+        Posterior mean & mean of posterior distribution\\
+        MAP & maximum a posterior probability, the mode of
+        the posterior distribution\\
+        $\theta_{0.95}$ & $0.95-$ quantile of $\theta$,
+        threshold value of $\theta$ such that probability
+        that the parameter is less than or equal to this
+        value is $0.95$
+    \end{tabulary}
+
+    Credible set\\
+    \begin{tabulary}{\linewidth}{l L}
+        \hline
+        term & meaning\\
+        \hline
+        \hline
+        Credible set (interval) & set of parameter values
+        constructed from posterior distribution. It is an
+        interval if parameter is 1-dimensional\\
+        $95\%$ credible set & credible set containing at
+        least $95\%$ of the parameters in the posterior
+        distribution.\\
+        Exact $95\%$ credible set & a credible set
+        containing exactly $95\%$ of the parameters in the
+        posterior distribution\\
+        HPB region & Highest Posterior Density region. A
+        credible interval with the shortest length or a
+        credible set with the smallest area, volume etc at a
+        particular level. The posterior density within HPD
+        region is always uniformly larger than outside the
+        region.
+    \end{tabulary}
+
+    Confidence set (frequentist)\\
+    \begin{tabulary}{\linewidth}{L L}
+        \hline
+        term & meaning\\
+        \hline
+        \hline
+        Confidence sets (intervals) & a set of parameter
+        values constructed from data\\
+        $95\%$ confidence set & on average 95\% of the data
+        contains the true parameter\\
+        $0.95-$quantile of a test statistics & threshold
+        value of a test statistic such that the probability
+        that the test statistics is equal to or below this
+        value is $0.95$\\
+    \end{tabulary}
+
+    Prediction\\
+    \begin{tabulary}{\linewidth}{L L}
+        \hline
+        term & meaning\\
+        \hline
+        \hline
+        (Posterior) predictive distribution & distribution
+        of future observation or test statistic based on
+        the posterior distribution. Note: this is not
+        posterior distribution, it is distribution of
+        observation\\
+    \end{tabulary}
+
+
+    \subsection{Bayes Theorem}
+    For events
+    \begin{align*}
+        P(A|B) &= \frac{P(B|A)P(A)}{P(B)}\\
+               &= \frac{P(B|A)P(A)}{P(B|A)P(A)+P(B|A^c)P(A^c)}
+    \end{align*}
+
+    For densities
+    \begin{align*}
+        p(\theta|y) &= \frac{p(y|\theta)p(\theta)}{m(y)}\\
+        m(y) &:= \int p(y\theta)p(\theta)d\theta
+    \end{align*}
+
+    \subsection{Sensitivity analysis}
+    Analysis of how estimate depends on the chosen prior
+
+    \subsection{Credible interval}
+
+    In general, $100(1-\alpha)\%$ credible set for $\theta$
+    is a set $C$ s.t.
+    \begin{align*}
+        P(\theta \in C | y) = \int_C p(\theta|y) d\theta
+        \geq 1 - \alpha
+    \end{align*}
+
+    There is no unique credible interval for $[\theta_z,
+    \theta_{z+0.95}]$
+    \begin{tabulary}{\linewidth}{L | L}
+        \hline
+        common & $[\theta_{0.025}, \theta_{0.975}]$\\
+        \hline
+        highest posterior density (HPD) & density at
+        $\theta_z$ is the same as $\theta_{0.95+z}$
+        (numerical solution)\\
+        \hline
+        $\infty$ & $[\theta_0, \theta_{0.95}]$\\
+        \hline
+    \end{tabulary}
+
+    \subsection{Predictive distribution}
+
+    With the known posterior $P(\theta|Y)$,
+    calculate the associated $P(Y=y)$ unconditional on
+    $\theta$.
+
+    \subsection{Posterior density of the difference}
+    $d := \theta_1 - \theta_2$ where $\theta_i$ are
+    independent and $\theta_i \sim \Gamma \in[0, \infty]$
+
+    recall (assuming independent)
+    \begin{align*}
+        p(\theta_1 - \theta_2 \leq t) &= \int_{D_2}
+        \int_{D_1}^{\theta_2 + t} f_{\theta_1}(\theta_1) f_{\theta_2}
+        (\theta_2) d\theta_1 d\theta_2\\
+                                      &= \int_{D_2}
+                                      p(\theta_1 \leq
+                                      \theta_2 + t |
+                                      \theta_2)
+                                      f_{\theta_2}(\theta_2)d\theta_2
+    \end{align*}
+
+    Therefore,
+    \begin{align*}
+        p(d = t|Y, Z) &= \int_{D_2}
+        p(\theta_1 = \theta_2+t|Y, \theta_2)p(\theta_2|Z)d\theta_2\\
+        p(d \leq t |Y, Z) &= \int_{D_2} p(\theta_1 \leq \theta_2
+        + t |Y, \theta_2) p(\theta_2|Z) d\theta2
+    \end{align*}
+
+    Note:
+    \begin{itemize}
+        \item No close form, require numerical computation for each $z$
+        \item Domain is $(0, \infty)$ due to $Gamma$ distribution
+        \item $\theta_1$ is the prior distribution,
+            $p(\theta_1|Y)$ is the posterior distribution with data $Y$
+    \end{itemize}
+
+
+    \subsection{Reporting of posterior}
+    Different way of reporting due to different target
+    audience
+
+    \begin{itemize}
+        \item whole distribution
+        \item credible interval
+        \item summary statistics
+    \end{itemize}
+
+    \subsection{Bayes factor}
+    Informs which model the data favours
+
+    \begin{align*}
+        BF_{12} &= \frac{m_1(y)}{m_2(y)} = 
+        \frac{\int p_1(\theta)p(y|\theta)d\theta}
+        {\int p_2(\theta)p(y|\theta)d\theta}
+    \end{align*}
+
+    \subsection{Mixture of priors}
+
+    Combining multiple priors as a mixture
+    \begin{align*}
+        p(\theta) &= \alpha p_1(\theta) +
+        (1-\alpha)p_2(\theta), \alpha \in [0, 1]
+    \end{align*}
+
+    $\alpha$ is probability model 1 is correct. Prior odds
+    that first model is correct is $\frac{\alpha}{1-\alpha}$
+
+    \subsubsection{Posterior $p(\theta|y)$}
+    \begin{align*}
+        p(\theta|y) &= \beta p_1(\theta|y) +
+        (1-\beta)p_2(\theta|y)\\
+        \left(\frac{\beta}{1-\beta}\right) &=
+        BF_{12} \left(\frac{\alpha}{1-\alpha}\right)\\
+        \Rightarrow \beta &= \frac{\alpha BF_{12}}
+        {\alpha BF_{12} + (1 - \alpha)}
+                          = \frac{\alpha m_1(y)}
+                          {\alpha m_1(y) + (1-\alpha) m_2(y)}
+    \end{align*}
+
+    Bayes factor $BF_{12}$ updates prior odds
+    $\frac{\alpha}{1-\alpha}$ to posterior odds
+    $\frac{\beta}{1-\beta}$,
+    $BF_{12} > 1 \Rightarrow \beta > \alpha$
+
+    \subsubsection{Three priors}
+
+    \begin{align*}
+        p(\theta) &= \alpha_1 p_1(\theta_1) + \alpha_2
+        p_2(\theta_2) + \alpha_3 p_3(\theta_3)\\
+        p(\theta|y) &= \beta_1 p(\theta_1|y) + \beta_2
+        p(\theta_2|y) + \beta_3 p(\theta_3|y)
+    \end{align*}
+
+    We have:
+    \begin{align*}
+        BF_{12} &= \frac{m_1(y)}{m_2(y)} =
+        \frac{m_1(y)/m_3(y)}{m_2(y)/m_3(y)} =
+        \frac{BF_{13}}{BF_{23}}\\
+        \beta_i &= \frac{\alpha_i m_i(y)}{\alpha_1 m_1(y) +
+        \alpha_2 m_2(y) + \alpha_3 m_3(y)}
+    \end{align*}
+
+    \subsection{Hierarchical Modeling}
+
+    Setup
+    \begin{itemize}
+        \item consider $\mathbf{y}_j$ be math scores for $n_j$
+            students in School $j$, $j \in [1, m]$
+        \item all test score: $\mathbf{y} = (\mathbf{y_1, y_2, \cdots, y_m})$
+        \item individual score of $i$th student in School $j$:
+            $Y_{ij} \sim N(\theta_j, \frac{1}{\lambda})$
+        \item total number of students: $n = \sum_{j=1}^m n_j$
+    \end{itemize}
+
+    Prior
+    \begin{itemize}
+        \item $\theta_j \sim N(\mu, \frac{1}{\xi})$
+        \item $\lambda \sim \Gamma(\frac{\nu_0}{2},
+            \frac{\nu_0\sigma_0^2}{2})$
+    \end{itemize}
+
+    Hyper-prior
+    \begin{itemize}
+        \item $\mu \sim N(\omega_0, \frac{1}{\gamma_0})$
+        \item $\xi \sim \Gamma(\frac{\eta_0}{2},
+            \frac{\eta_0\tau_0^2}{2})$
+    \end{itemize}
+
+    Interpretation of model
+    \begin{itemize}
+        \item Within group variation: $\frac{1}{\lambda}$
+            (different students in the same school)
+        \item Across group variation: $\frac{1}{\xi}$
+            (differences between schools)
+        \item $\sigma_0^2$ is prior belief of the
+            variability of scores between students of the
+            same school ($\because E(\lambda) =
+            \frac{1}{\sigma_0^2}$)
+        \item $\tau_0^2$ is prior belief of how much
+            $\theta_j$ varies between schools ($\because
+            E(\xi) = \frac{1}{\tau_0^2}$)
+        \item $\omega_0$ is prior belief of typical math
+            score
+    \end{itemize}
+
+    \subsubsection{Bayes formula and likelihood}
+
+    $\Theta = (\theta_1, \cdots, \theta_m, \mu, \xi, \lambda)$,
+    $p(\Theta|\mathbf{y})\propto p(\mathbf{y}|\Theta)p(\Theta)$
+
+    Likelihood $Y_{ij} \sim N(\theta_j, \frac{1}{\lambda})$
+    \begin{align*}
+        p(\mathbf{y}|\Theta)
+        = \prod_{j=1}^m p(\mathbf{y}_j|\Theta)
+        = \prod_{j=1}^m \lambda^{\frac{n_j}{2}}
+        \exp\left[
+            -\frac{\lambda}{2} \sum_{i=1}^{n_j}
+            (y_{ij}-\theta_j)^2
+        \right]
+    \end{align*}
+
+    Prior
+
+    Assuming $\mu, \lambda, \xi$ are independent in prior
+    $\Rightarrow p(\mu, \lambda, \xi) = p(\mu)p(\lambda)p(\xi)$
+    \begin{align*}
+        \mathbf{\theta}
+        & = (\theta_1, \cdots, \theta_m)\\
+        p(\Theta)
+        & = p(\mu, \lambda, \xi)p(\mathbf{\theta}|\mu, \lambda, \xi)
+        =p(\mu)p(\lambda)p(\xi)p(\mathbf{\theta}|\mu,
+        \lambda, \xi)\\
+        p(\mathbf{\theta}|\mu, \lambda, \xi)
+        & = \prod_{j=1}^m p(\theta_j|\mu, \lambda, \xi)\\
+        & \propto \xi^{\frac{m}{2}}\exp\left[
+            -\frac{\xi}{2} \sum_{j=1}^m (\theta_j - \mu)^2
+        \right]
+    \end{align*}
+
+
+    
+    \subsubsection{Posterior}
+
+    Priors are Semi-Conjugate
+
+    Let $\Theta^{(-\mu)} :=$ all parameters except $\mu$ etc
+    \begin{align*}
+        \theta_j | \mathbf{y}, \Theta^{(-\theta_j)}
+            & \sim N\left(\mu_j, \frac{1}{\xi_j}\right)\\
+        \lambda | \mathbf{y}, \Theta^{(-\lambda)}
+            & \sim \Gamma\left(\frac{\nu_n}{2},
+            \frac{\nu_n\sigma_n^2}{2}\right)\\
+        \mu | \mathbf{y}, \Theta^{(-\mu)}
+            & \sim N\left(\omega_n, \frac{1}{\gamma_n}\right)\\
+        \xi | \mathbf{y}, \Theta^{(-\xi)}
+            & \sim \Gamma\left(\frac{\eta_n}{2},
+            \frac{\eta_n\tau_n^2}{2}\right)
+    \end{align*}
+
+    \begin{tabulary}{\linewidth}{l @{ = } L}
+        $\bar{y}_j$ & $\frac{1}{n_j}\sum_{i=1}^{n_j}
+        y_{ij}$, sample average within group $j$\\
+        $\bar{\theta}$ & $\frac{1}{m}\sum_{j=1}^m \theta_j$,
+        average population means over the $m$ groups\\
+        $\xi_j$ & $\xi + n_j\lambda$\\
+        $\mu_j$ & $\frac{\xi\mu + n_j\lambda\bar{y}_j}
+        {\xi+n_j\lambda}$\\
+        $\nu_n$ & $\nu_0 + n$\\
+        $\sigma_n^2$ & $\frac{\nu_0\sigma_0^2 +
+        \sum_{j=1}^m\sum_{j=1}^{n_j} (y_{ij}-\theta_j)^2}
+        {\nu_0+n}$\\
+        $\gamma_n$ & $\gamma_0 + m\xi$\\
+        $\omega_n$ & $\frac{\gamma_0\omega_0 + m\xi\bar{\theta}}
+        {\gamma_0 + m\xi}$\\
+        $\eta_n$ & $\eta_0 + m$\\
+        $\tau_n^2$ & $\frac{\eta_0\tau_0^2 + \sum_{j=1}^m
+        (\theta_j - \mu)^2}{\eta_0+m}$
+    \end{tabulary}
+
+    \subsection{Mixture model}
+
+    Setup
+    \begin{itemize}
+        \item consider $n$ samples with unobserved group membership
+            $X_i\in\left\{ 1, 2 \right\}$, $p(X_i = 1) = p = 1 -
+            p(X_i = 2)$
+        \item $Y_i \sim N(\theta_1,
+            \frac{1}{\lambda_1})$
+            when $X_i = 1$
+        \item $Y_i \sim N(\theta_2,
+            \frac{1}{\lambda_2})$ when $X_i = 2$
+        \item $n_1:=$ number of observations belong to group
+            $1$, $n_2$ is defined similarly
+    \end{itemize}
+
+    Prior
+    \begin{itemize}
+        \item $p\sim Beta(a, b)$
+        \item $\theta_j \sim N(\mu_0, \frac{1}{\xi_0})$
+        \item $\lambda_j \sim \Gamma\left(\frac{\nu_0}{2},
+            \frac{\nu_0\sigma_0^2}{2}\right)$
+    \end{itemize}
+    \begin{align*}
+        \Theta &= (p, \theta_1, \theta_2, \lambda_1,
+        \lambda_2, X_1, \cdots, X_n)\\
+        p(p) &\propto p^{a-1} (1-p)^{b-1} p^{n_1}
+        (1-p)^{n_2}
+             \propto p^{a+n_1-1} (1-p)^{b+n_2 - 1}\\
+        p(\theta_j) &\propto
+        \exp(-\frac{\xi_0}{2}(\theta_j - \mu_0)^2)\\
+        p(\lambda_j) &\propto \lambda_j^{\frac{\nu_0}{2}-1}
+        \exp\left(
+            -\frac{\nu_0\sigma_0^2}{2}\lambda_j
+        \right)\\
+        p(X_i|p) &= \begin{cases}
+            p, & X_i = 1\\
+            1-p, & X_i = 2
+        \end{cases}
+    \end{align*}
+
+    Likelihood
+    \begin{align*}
+        p(\mathbf{y}|\Theta)
+        &= \prod_{i:X_i = 1}\lambda_1^{\frac{1}{2}}
+        \exp\left(
+            -\frac{\lambda_1}{2}[y_i - \theta_1]^2
+        \right)
+        \prod_{i:X_i = 2}\lambda_1^{\frac{1}{2}}
+        \exp\left(
+            -\frac{\lambda_2}{2}[y_i - \theta_2]^2
+        \right) \\
+        &= \lambda_1^{\frac{n_1}{2}}
+        \exp\left(
+            -\frac{\lambda_1}{2}
+            \sum_{i:X_i=1}[y_i^2 + \theta_1^2 - 2y_i\theta_1]
+        \right)\\
+        &\times \lambda_2^{\frac{n_2}{2}}
+        \exp\left(
+            -\frac{\lambda_2}{2}
+            \sum_{i:X_i=2}[y_i^2 + \theta_2^2 - 2y_i\theta_2]
+        \right)\\
+        p(\mathbf{y}, p |\Theta^{(-p)})
+            &\propto 1\\
+        p(\mathbf{y}, \theta_j | \Theta^{(-\theta_j)})
+            &\propto \exp\left(
+                -\frac{\lambda_j}{2}[n_j\theta_j^2 -
+                2n_j\bar{y}_j\theta_j]
+            \right)\\
+        p(\mathbf{y}, \lambda_j | \Theta^{(-\lambda_j)})
+            &\propto \lambda_j^{\frac{n_j}{2}}
+        \exp\left(
+            -\frac{\lambda_j}{2}
+            \sum_{i:X_i=j}[y_i^2 + \theta_j^2 - 2y_i\theta_j]
+        \right)\\
+        p(\mathbf{y}, X_i = j | \Theta^{(-X_i)})
+            &= \sqrt{\frac{\lambda_j}{2\pi}}
+        \exp\left(
+            -\frac{\lambda_j}{2}
+            [y_i^2 + \theta_j^2 - 2y_i\theta_j]
+        \right)
+    \end{align*}
+
+    Posterior
+    \begin{align*}
+        p(p|\Theta^{(-p)}, \mathbf{y})
+        &= p(\mathbf{y}, p | \Theta^{(-p)})
+        p(p|\Theta^{(-p)})
+        \propto p^{a+n_1-1} (1-p)^{b+n_2 - 1}\\
+        p(\theta_j|\Theta^{(-\theta_j)}, \mathbf{y})
+        &\propto \exp\left(
+            -\frac{ \xi_0 + \lambda_jn_j }{2}
+            \left[
+                \theta_j - \frac{\xi_0\mu_0 + n_j\bar{y}_j}
+                { \xi_0 + \lambda_jn_j }
+            \right]^2
+        \right)\\
+        &\propto \exp\left(
+            -\frac{\xi_n}{2}[\theta_j - \mu_n]^2
+        \right)\\
+        p(\lambda_j|\Theta^{(-\lambda_j)}, \mathbf{y})
+        &\propto \lambda_j^{\frac{\nu_0+n_j}{2}-1}
+        \exp\left(
+            -\frac{\lambda_j}{2}\left[
+                \nu_0\sigma_0^2 + \sum_{i:X_i = j}
+                [y_i^2+\theta_j^2-2y_i\theta_j]
+            \right]
+        \right)\\
+        &\propto \lambda_j^{\frac{\nu_n}{2}-1}
+        \exp\left(
+            -\frac{\lambda_j}{2}\nu_n\sigma_n^2
+        \right)\\
+        p(X_i|\Theta^{(-X_i)}, \mathbf{y}) &=
+        \begin{cases}
+        p
+        \sqrt{\frac{\lambda_1}{2\pi}}
+        \exp\left(
+            -\frac{\lambda_1}{2}
+            [y_i^2 + \theta_1^2 - 2y_i\theta_1]
+        \right), & X_i = 1\\
+        (1-p)
+        \sqrt{\frac{\lambda_2}{2\pi}}
+        \exp\left(
+            -\frac{\lambda_2}{2}
+            [y_i^2 + \theta_2^2 - 2y_i\theta_2]
+        \right), & X_i = 2
+        \end{cases}
+    \end{align*}
+
+    \subsection{Sufficiency, exponential families and
+    conjugate priors}
+    
+    \begin{tabulary}{\linewidth}{l L}
+        \hline
+        Term & explanation\\
+        \hline
+        \hline
+        Sufficient statistic
+        & summary data that provide as much information as
+        the original data for parameter estimation or
+        inference\\
+        Exponential families
+        & family of distributions whose densities are of a
+        given form. Goal here is to identify exponential
+        families and their priors
+    \end{tabulary}
+
+    \subsubsection{Sufficiency}
+
+    Summary test statistics $T(\mathbf{Y})$ is sufficient
+    for $\theta$ if $\mathbf{Y}$ has a density
+    $p(\mathbf{y}|\Theta)$ that can be factorized as
+    \begin{align*}
+        p(\mathbf{y}|\theta) &= h(\mathbf{y})g(\theta,
+        T(\mathbf{y}))\\
+        \Rightarrow p(\theta|\mathbf{y}) &\propto
+        p(\theta)g(\theta, T(\mathbf{y}))
+    \end{align*}
+
+    \subsubsection{Exponential families}
+
+    General form
+    \begin{align*}
+        p(y|\theta) = h(y)c_1(\theta)^{t_1(y)}\cdots
+        c_J(\theta)^{t_J(y)}
+    \end{align*}
+
+    Log transformed: $\eta_j = \log c_j(\theta)$
+    \begin{align*}
+        p(y|\mathbf{\eta}) = h(y) \exp\left(
+            \sum_{j=1}^J \eta_j t_j(y)
+        \right)
+    \end{align*}
+
+    Sufficient statistic for exponential families
+    \begin{align*}
+        p(\mathbf{y}|\theta)
+        &= \prod_{i=1}^n p(y_i|\theta)\\
+        &= \left[\prod_{i=1}^n h(y_i)\right]
+        [c_1(\theta)]^{T_1(\mathbf{y})}
+        \cdots
+        [c_J(\theta)]^{T_J(\mathbf{y})}\\
+        T_1(\mathbf{y}) &= \sum_{i=1}^n t_1(y_i),
+        \cdots,
+        T_J(\mathbf{y}) = \sum_{i=1}^n t_J(y_i)
+    \end{align*}
+    $(T_1(\mathbf{y}), \cdots, T_J(\mathbf{y}))$ is
+    sufficient for $\mathbf{y}$
+
+    \subsubsection{Conjugate priors for exponential families}
+
+    Choose distribution with densities where $a_1, \cdots,
+    a_J$ are hyperparameters
+    \begin{align*}
+        p(\theta) \propto [c_1(\theta)]^{a_1}, \cdots,
+        [c_J(\theta)]^{a_J}
+    \end{align*}
+
+    The posterior will have the "same" conjugate
+    distribution but with hyperparameter updated to
+    $(a_1+T_1(\mathbf{y}), \cdots, a_J + T_J(\mathbf{y}))$
+    \begin{align*}
+        p(\theta|\mathbf{y}) \propto
+        [c_1(\theta)]^{a_1+T_1(\mathbf{y})}
+        \cdots
+        [c_J(\theta)]^{a_J+T_J(\mathbf{y})}
+    \end{align*}
+
+    \subsection{Change of variables in priors. Improper,
+    non-informative and Jeffrey's prior}
+
+    \subsubsection{Improper priors}
+    prior $p(\theta)\propto f(\theta)$ is improper if $\int
+    f(\theta) d\theta = \infty$\\
+    Therefore, it is impossible to simulate $\theta \sim p$.\\
+    However, improper priors are used because they often
+    lead to proper posteriors.
+
+    \subsubsection{Non-informative priors}
+
+    A prior is non-informative if it does not give the
+    impression that you are favouring one parameter over
+    another.\\
+    Non-informative prior can be considered to avoid
+    criticisms that prior favor a positive conclusion.\\
+    However, if there is outside information, then choosing
+    non-informative prior leads to less accurate
+    estimates.\\
+    Furthermore, shrinkage effect might be loss if
+    non-informative prior is chosen.
+
+    \subsubsection{Change in variable formula}
+
+    Note: changing $p(\mathbf{y}|\theta)$ to 
+    $p(\mathbf{y}|\eta)$ only require replacing $\theta$ to
+    $\eta(\theta)$ since $\theta$ is given.
+
+    For a change of variable $\theta$ to $\eta$, use
+    Jacobian $\frac{d\theta}{d\eta}$
+    \begin{align*}
+        p(\eta) = p(\theta)\left|
+        \frac{d\theta}{d\eta}
+        \right|
+    \end{align*}
+
+    \subsubsection{Jeffrey's prior}
+
+    Note: uniform prior is not invariant under a change of
+    variables. Jeffrey's prior is an alternative
+    non-informative prior that is in fact invariant. Note
+    $I(\theta)$ is the fisher information.
+
+    \begin{align*}
+        p(\theta) &\propto \sqrt{I(\theta)}\\
+        I(\theta) &= \int \left[
+            \frac{d}{d\theta} \log p(y|\theta)
+        \right]^2
+        p(y|\theta)dy\\
+            p(\eta) &\propto
+            \left|\frac{d\theta}{\eta}\right|
+            \sqrt{I(\theta)}
+            \propto
+            \left|\frac{d\theta}{\eta}\right|p(\theta)\\
+                    &\propto \sqrt{I(\eta)}
+    \end{align*}

@@ -1,0 +1,122 @@
+1. Evolution of capital
+   $$
+   \dot{K}(t) = Y(t) - C(t)L(t)
+   $$
+2. Dynamics of $c$ ($\dot{c}$ line in $(k, c)$ space)
+   $$
+   \frac{\dot{c}(t)}{c(t)} = \frac{f'(k(t))-\rho - \theta g}{\theta}
+   $$
+   - $\dot{c}(t) = 0$ when $f'(k)=\rho + \theta g
+     \Rightarrow k = k^*$
+   - $\dot{c}(t) < 0$ when $f'(k)<\rho + \theta g
+     \Rightarrow k > k^*$
+   - $\dot{c}(t) > 0$ when $f'(k)>\rho + \theta g
+     \Rightarrow k < k^*$
+3. Dynamics of $k$ ($\dot{k}$ curve in $(k, c)$ space)
+   $$
+   \dot{k}(t) = f(k(t))-c(t)-(n+g)k(t)
+   $$
+   - $\dot{k}(t) = 0 \Rightarrow c(t) = f(k(t)) - (n+g)k(t)$
+   - $k < k_{GR} \Rightarrow c$ is increasing
+   - $k > k_{GR} \Rightarrow c$ is decreasing
+4. Golden-rule of capital accumulation
+   $$
+   f'(k) = (n+g)
+   $$
+   - Modified Golden-rule capital stock: $k_{KG} = n+g$
+5. Equilibrium: a pair of functions $(c(t), k(t))$ s.t.
+   1. Household: $\frac{\dot{c}(t)}{c(t)} =
+      \frac{f'(k(t))-\rho-\theta g}{\theta}$
+   2. Capital: $\dot{k}(t) = f(k(t))-c(t) - (n+g)k(t)$
+   3. No-Ponzi-game: $\lim_{s\rightarrow \infty}
+      e^{-R(s)}e^{(n+g)s}k(s)\geq 0$
+   4. Non zero capital: $k(0)=k_0, k(t) \geq 0$
+6. Welfare is maximised (by First welfare theorem)
+   - Households utility is maximised
+   - Planner face same technology as firm, thus obeying
+     evolution of $k(t)$
+7. Steady-state
+   $$
+   \dot{c} = 0 \Rightarrow f'(k) = \rho + \theta g
+   $$
+   $$
+   \dot{k} = 0 \Rightarrow f(k) - (n+g)k = c
+   $$
+   - Saving rate: $\frac{y-c}{y}$ is constant (as $c, k, y$
+     are constant)
+8. Effects of a fall in the discount rate ($\rho$)
+   - $\rho$ decreases $\Rightarrow$ only $c$-locus is
+     affected $\Rightarrow$ increase in $k^*$
+9. Effects of a fall in growth rate of knowledge ($g$)
+   - If $g>0$, $k^*$ increases with willingness to smooth
+     consumption ($1/\theta$)
+   - If $g = 0$, $k^*$ is not affected by $\theta$
+10. Adding Government to the model
+   - Government buys at rate $G(t)$ per unit of effective
+     labor per time
+   - $\dot{k}(t) = f(k(t))-c(t)-G(t)-(n+g)k(t)$
+   - Higher $G$ shifts $\dot{k}(t)=0$ locus down
+   - Unexpected, permanent increase in $G \Rightarrow$
+     consumption immediately jumps to new saddle path
+   - Unanticipated, temporary increase in $G \Rightarrow$
+     effect on $(c,k)$, $r(t)$, $c(t)$, $k(t)$
+
+Most important result:
+
+1. Optimising saving rate does not change Solow results
+2. Saddle Path: There is a unique initial level of $c$ that is consistent
+   with the equilibrium conditions
+
+
+## Households
+
+Note:
+
+- $C(t) :=$ consumption per person
+- $c(t) :=$ consumption per unit of effective labour
+- $H :=$ number of households
+- $\rho :=$ rate of time preference
+- $\theta :=$ determines household's willingness $( 1/\theta
+  )$ to shift consumption between periods
+  - $\theta =0 \Rightarrow u(C(t)) = C(t)$ (more willing to shift)
+  - $\theta = 1 \Rightarrow u(C(t)) = \ln(C(t))$ (less willing to shift)
+
+1. Utility
+   $$
+   U = \int_0^\infty e^{-\rho t}u(C(t))\frac{L(t)}{H} dt
+   $$
+2. Instantaneous utility function
+   $$
+   u(C(t)) = \frac{C(t)^{1-\theta}}{1-\theta}
+   $$
+   - $\theta > 0, \rho - n - (1-\theta)g > 0$
+   - Constant relative risk aversion (CRRA) $\frac{-Cu''(C)}{u'(C)}=\theta$
+3. Budget constraint
+   $$
+   \int_{0}^\infty e^{-R(t)}C(t)\frac{L(t)}{H} dt \leq
+   \frac{K(0)}{H} + \int_0^\infty e^{-R(t)}W(t)\frac{L(t)}{H} dt
+   $$
+   - $R(t) = \int0^t r(\tau) d\tau :=$ growth rate of investment at time $0$ to time $t$
+4. No-Ponzi-game conditions (from budget constraint)
+   $$
+   \lim_{s\rightarrow \infty} e^{-R(s)}\frac{K(s)}{H} \geq 0
+   $$
+   - Present value of the household's asset holdings cannot
+     be negative in the limit
+5. Household behavior (intensive form)
+    $$
+    L = B\int_0^\infty e^{-\beta}t
+    \frac{c(t)^{1-\theta}}{1-\theta}dt + \lambda\left[
+    k(0) + \int_0^\infty e^{-R(t)}(w(t)-c(t))e^{(n+g)t}dt
+    \right]
+    $$
+    - $-\beta = -\rho + (1-\theta)g + n$
+6. Euler equation (growth rate of intensive consumption)
+   $$
+   \frac{\dot{c}(t)}{c(t)} = \frac{r(t)-\rho-\theta
+   g}{\theta}
+   $$
+7. Consumption per worker
+   $$
+   \frac{\dot{C}(t)}{C(t)} = \frac{r(t) - \rho}{\theta}
+   $$

@@ -1,0 +1,204 @@
+Key different from the endogenous growth model where
+allocation of resources to R&D sector is exogenous
+
+- R&D is undertaken by profit-maximizing economic actors
+- Ideas are excludable (e.g. patent) 
+- Monopolistic power of R&D firm (goods sector is still
+  perfectly competitive)
+
+Production Function (final goods and services)
+
+- $Y = \left[ \int_{i=0}^A L(i)^\phi di \right]^{1/\phi}$,
+  $0 < \phi < 1$
+  - $Z(i)$ denotes the specialised inputs
+  - $L(i)$ denotes the quantity of labour used and the
+    quantity of input used, $L(i) = Z(i)$
+  - Available ideas extending continuously from 0 to $A$,
+    $A$ is a function of time but we look at a point in
+    time here
+- $Y = \left[ A\left( \frac{L_Y}{A} \right)^\phi  \right]^{1/\phi} = A^{(1-\phi)/\phi}L_Y$
+  - $L_Y :=$ total number of workers producing inputs
+  - Suppose the number of workers producing each available
+    input is the same: $L(i) = L_Y/A$ for any $i \in (0, A)$
+  - Constant returns to $L_Y$
+  - Output is increasing in $A$
+
+Market structure
+
+- Monopolist patent holder
+  - Hires workers in a competitive market and pay $w(t)$ to
+    produce the inputs associated with his/her idea
+  - Charges a constant price for each unit of the input
+- Final output produced by a competitive firms who takes
+  input prices as given
+
+1. Cost minimization of output producer
+   - $\min_{L(i)} \int_{i=0}^A p(i)L(i) di ~ s.t.
+     \left[ \int_{i=0}^A L(i)^\phi di  \right]^{1/\phi} = 1$
+       - Normalise the budget constraint to 1
+   - FOC: $L(i): p(i) = \lambda(1/\phi)\left[ \int_{i=0}^A
+     L(i)^\phi di \right]^{1/\phi - 1} = \lambda L(i)^{\phi
+     - 1}$
+   - $L(i) = \left[ \frac{\lambda}{p(i)} \right]^{1/(1-\phi)}$
+     - Holder of idea patent faces an elasticity of demand
+       of $\eta = \frac{1}{1-\phi}$
+2. Economic Aggregates
+   - Labour market clears: $L_A(t) + L_Y(t) = \bar{L}$
+     - $L_A(t) :=$ total number of workers in R&D,
+     - $L_Y(t) = \int_{i=0}^A(t) L(i, t) di:=$ total number of workers producing inputs
+   - Production of new ideas: $\dot{A}(t) = BL_A(t)A(t)$
+     - $B>0, A>0, A(0) > 0$
+3. Utility maximising household
+   - $\max_{C(t)} U = \int_{t=0}^\infty exp(-\rho t)\ln C(t) dt$ s.t.
+   $\int_{t=0}^\infty exp(-rt)C(t) dt \leq X(0) + \int_{t=0}^\infty exp(-rt)w(t) dt$
+    - $r :=$ interest rate, $X(0) :=$ initial wealth, $w(t) :=$ wage at time $t$
+4. Free-entry condition in R&D:
+   - Anyone can hire $\frac{1}{BA(t)}$ units of labour at the
+     wage $w(t)$ and produce a new idea
+   - $V(i, t) = \int_{\tau = t}^\infty exp(-r(\tau -
+     t))\pi(i, \tau) d\tau = \int_{\tau = 0}^\infty
+     exp(-r\tau) \pi(i, t+\tau) d\tau$
+     - $\pi(i, \tau) :=$ profits earned profits earned by
+       the creator if idea $i$ at time $\tau$
+   - $V(i, t) = \frac{w(t)}{BA(t)}$
+     - present value of selling the idea-specific inputs $V(i, t)$ equals cost $w(t) \cdot \frac{1}{BA(t)}$
+5. General equilibrium
+   - Competitive labor markets imply that wages paid in R&D
+     and input producers are equal
+   - $C(t)\bar{L} = Y(t)$
+     - Only use of output good is for consumption
+     - All individuals are the same thus having identical
+       consumption path
+
+## Solving the model
+
+Steps:
+
+1. Given a value of $L_A$, find the present value $V(i, t)$
+   and cost of creating an idea $\frac{w(t)}{BA(t)}$
+2. Use the free-entry condition to solve for $L_A$
+3. Verify that the $L_A^*$ is constant over time
+   - However, if $L_A^*$ is time-varying, then there is not
+     equilibrium solution
+
+- Profits of a monopolist patent holder
+  - Given: profit maximization price of a monopolist is
+    $\frac{\eta}{\eta - 1} \cdot MC$, where $\eta = \frac{1}{1-\phi}$
+  - Therefore, patent holder charges charges price $p(i) =
+    \frac{\eta}{\eta-1} w(t) = \frac{w(t)}{\phi}$
+  - Since the price all inputs are the same (i.e. $p(i)$ is
+    a constant), quantity of each input $L(i)$ is the same
+    and labour used for each patent is $\frac{\bar{L} - L_A}{A(t)}$
+  - The profit at time $t$ (quantity times per quantity profit) is: $\pi(t) = \frac{\bar{L}-L_A}{A(t)}
+    \left[\frac{w(t)}{\phi} - w(t)\right]=
+    \frac{1-\phi}{\phi}\frac{\bar{L} - L_A}{A(t)}w(t)$ 
+
+- Growth rates in equilibrium
+  - When $L_A(t)$ is constant, $\dot{A}(t) = BL_A A(t)
+    \Rightarrow g_A = BL_A$
+  - When $L_Y(t)$ is constant, $g_Y = \frac{1-\phi}{\phi}g_A$
+  - Since all outputs are consumed, $g_C = g_Y$
+  - Since all payments goes to worker (no capital) and
+    $L_Y(t)$ is constant $\Rightarrow w(t)$ grows at rate
+    $g_Y$
+
+- Interest rate $r(t)$
+  - Solving FOC for household utility maximisation problem,
+    $C(t): exp(-\rho t)\frac{1}{C(t)} = \lambda exp(-r(t)t)$
+  - Solving for growth rate of $C(t)$: $g_c = \frac{\dot{C}(t)}{C(t)} = r(t) - \rho$
+  - Using the result of $g_C$ from growth rates in
+    equilibrium $g_C = \frac{1-\phi}{\phi} BL_A$
+    $\Rightarrow r(t) = r = \rho + \frac{1-\phi}{\phi} BL_A$
+
+- Present Value of discovering ideas
+  - Note that $\pi(t) = \frac{1-\phi}{\phi} \frac{\bar{L} -
+    L_A}{A(t)} w(t)$, which grows at $g_W - g_A$ and
+    discount rate is $r$
+  - Solving for $V(i, t) = \int_{\tau = 0}^\infty exp(-r\tau)
+    \pi(i, t + \tau) d\tau= \int_{\tau=0}^\infty exp(-r\tau)
+    \pi(t)exp((g_w - g_A)\tau) d\tau =
+    \pi(t)\int_{\tau=0}^\infty exp((g_w - g_A - r)\tau)
+    d\tau$
+  - Given expression for $\pi(t)$ and $g_W - g_A - r = g_Y -
+    g_A - (\rho + g_Y) = - (g_A + \rho)$ $\Rightarrow V(i, t) =
+    \pi(t) \int_0^\infty exp(-(g_A + \rho)\tau)d\tau =
+    \pi(t)\cdot -\frac{1}{g_A + \rho} exp(-(g_A +
+    \rho)\tau)\vline_{0}^\infty =
+    \pi(t) \cdot \frac{1}{g_A + \rho}$
+
+- Equilibrium $L_A$
+  - Given $g_A = BL_A$, solution of $V(i, t)$ and equate to the cost: $\frac{1-\phi}{\phi} \frac{\bar{L} - L_A}{g_A
+    + \rho} \frac{w(t)}{A(t)} = \frac{w(t)}{BA(t)}
+      \Rightarrow L_A = (1-\phi)\bar{L} - \frac{\phi \rho}{B}$
+  - Since $L_A < 0$ implies patent holder will gain negative
+    profit $\Rightarrow L_A = \max\left\{ (1-\phi)\bar{L} - \frac{\phi\rho}{B}, 0 \right\}$
+  - And growth rate of output: $g_Y = \frac{1-\phi}{\phi}
+    BL_A = \max\left\{ \frac{(1-\phi)^2}{\phi}B\bar{L} - (1-\phi)\rho, 0 \right\}$
+
+- Implications on long-run growth
+  - increase $\rho$ reduce growth due to lower patience
+  - increase $\phi$ reduces growth: more substitutability
+    among inputs, less monopoly power and lower $L_A$
+  - Increase $B$ increase growth: higher $g_A$
+  - Increase population size $\bar{L}$ raises growth
+
+- Equilibrium versus Optimal growth
+  - $L_A^{EQ} = (1-\phi)L_A^{OPT}$ $\Rightarrow L_A^{EQ}$ is
+    always smaller than $L_A^{OPT}$. Therefore growth always
+    inefficiently slow due to externalities
+
+## Empirical implications
+
+Long-run growth
+
+- Correlates of changes in long-run
+  - From learning-by-doing model: $Y(t) = bK(t) \Rightarrow
+    \frac{Y(t)}{L(t)} = b\frac{K(t)}{L(t)}$ and $g_{Y/L}(t)
+    = g_{K}(t) - g_L(t)$
+  - $g_K = \frac{sY(t)}{K(t)} - \delta$
+  - Since $s$ grows and $Y/K, \delta$ is stable $\Rightarrow
+    g_{Y/L}$ increases
+- Magnitudes of changes in long-run
+  - Model prediction: with $Y/K = 0.4$, $s$ increase 1
+    percentage point per decade
+  - $\Rightarrow g_K and
+    g_{Y/L}$ increase by 0.4 percentage points per decade
+- Trend of growth rates in data
+  - OLS: $g_{Y/L} = a + bt + e_t$
+  - $b \in (-0.026, 0.028)$, does not contain the model
+    prediction 0.04
+
+Population growth
+
+- Context
+  - Population grew rapidly, but $Y/L$ does not change much
+    pre-industrial revolution, only after that period
+  - $\Rightarrow$ technological progress mainly increase $L$
+    instead of $Y/L$
+  - $\Rightarrow$ endogenous growth model suggest rate of
+    population growth should been rising
+- Kremer framework
+  - Output: $Y(t) = T^\alpha[A(t)L(t)]^{1-\alpha}$
+  - Knowledge: $\dot{A}(t) = BL(t)A(t)^\theta$
+  - Malthusian assumption: $\frac{Y(t)}{L(t)} = \bar{y}$, a
+    fixed level
+  - $\Rightarrow g_L \propto L(t)^\psi$, $\psi = 1 - \left[\frac{(1-\theta)\alpha}{1-\alpha}\right]$
+  - Data shows indeed $g_L \propto L_t$
+- Population prediction when regions are cut off from one
+  another
+  - No worldwide technological growth, model predicts
+    population growth is proportional to land areas
+  - $\Rightarrow$ regions with larger population have larger
+    $g_A$ thus higher $g_L$. Therefore, larger regions grow
+    to have higher population densities before contact is
+    reestablished
+  - Data shows lesser land area proportional to smaller
+    density, suggesting innovations are made by people
+- $g_L$ and $g_{Y/L}$ over very long run
+  - When $g_A$ is small, population adjusts rapidly enough to
+    keep $Y/L$ close to $\bar{y}$
+  - However, this is no longer true when $L$ is large enough
+    and technological grows rapidly. Then population appears
+    to be decreasing in $y$ when $y$ exceed some level
+  - In cases where $\theta \leq 1$, $\lim_{t\rightarrow
+    \infty} g_A = \lim_{t\rightarrow \infty} L = 0$

@@ -1,0 +1,177 @@
+    \section{Distributions (Prior and Predictive)}
+    \begin{align*}
+        p(\theta)
+    \end{align*}
+
+    \subsection{Beta distribution}
+
+    $a > 0, b > 0, B(a, b) = \int_0^1 x^{a-1}(1-x)^{b-1}dx$
+    \begin{align*}
+        p(\theta) & \propto \theta^{a-1}(1-\theta)^{b-1}
+        , \theta \in (0, 1)\\
+                  &= \frac{1}{B(a, b)}\theta^{a-1}(1-\theta)^{b-1}
+    \end{align*}
+
+    \subsubsection{Properties}
+    \begin{align*}
+        E(\theta) &= \frac{a}{a+b}\\
+        Var(\theta) &= \frac{ab}{(a+b)^2(a+b+1)}\\
+        Mode(\theta) &= \frac{a-1}{a+b-2}, \text{ if } a > 1, b>1\\
+        B(a, b) &= \frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)}\\
+        \Gamma(a) &= \int_0^\infty z^{a-1}e^{-z}dz
+    \end{align*}
+
+    \subsubsection{Choice of $a$ and $b$}
+
+    Given the mean (or proportion), we set
+    $E(\theta)=\frac{a}{a+b}=mean$
+
+    Choosing large $a, b$ result in smaller variance (avoid)
+
+    \subsection{Gamma distribution}
+
+    $\theta \sim Gamma(a, b), a > 0, b > 0$
+
+    \begin{align*}
+        p(\theta) &=
+        \frac{b^a}{\Gamma(a)}\theta^{a-1}e^{-b\theta},
+        \theta > 0
+    \end{align*}
+
+    $\Gamma(a)=\int_0^\infty x^{a-1}e^{-x}dx=(a-1)!$
+
+
+    \subsubsection{Properties}
+
+    \begin{itemize}
+        \item $E(\theta) = \frac{a}{b}$\\
+        \item $Var(\theta) = \frac{a}{b^2}$\\
+        \item $Mode(\theta) = \frac{a-1}{b}, a > 1$
+        \item $cX \sim \Gamma(a, \frac{b}{c})$
+        \item Chi-square: $\chi_{\nu}^2 \sim
+            \Gamma(\frac{\nu}{2}, \frac{1}{2})$
+    \end{itemize}
+
+    If $a=1 \Rightarrow p(\theta)\sim exp(b)$ with mean
+    $\frac{1}{b}$
+
+    \subsubsection{Selection of $a$ and $b$}
+
+    With given mean, a large $b$ will result in smaller
+    variance ($Var(\theta)=\frac{E(\theta)}{b}$)
+
+    \subsection{Negative binomial distribution}
+
+    $Y\sim NB(r, p)$ if
+    \begin{align*}
+        P(Y=y) &= \begin{pmatrix}
+            r + y - 1\\
+            y
+            \end{pmatrix} p^r (1-p)^y, y = 0, 1, 2, \cdots
+    \end{align*}
+
+    This is the probability of $r$ success and $y$ number of
+    failures (note we count the failures)
+
+    \subsection{Dirichlet distribution}
+
+    $Dir(a_1, \cdots, a_K)$ is extension of $Beta$ prior to $K \geq 2$
+
+    \begin{align*}
+        p(\theta) &= \frac{1}{B(a_1, \cdots,
+            a_K)}\theta_1^{a_1-1}\cdots \theta_K^{a_K-1}\\
+            a_i \leq 1,~ & \sum_{i\in K}\theta_i = 1
+    \end{align*}
+
+    where $B(a_1, \cdots, a_K) =
+    \frac{\Gamma(a_1)\times\cdots\Gamma(a_K)}{\Gamma(a_1+\cdots+a_K)}$
+
+    \subsubsection{Marginal Dirichlet is Beta}
+
+    \begin{align*}
+        p(\theta_i | \theta^{(-i)}) \sim Beta\left(a_i,
+        \sum_{j\neq i} a_j\right)
+    \end{align*}
+
+    \subsection{Normal distribution}
+
+    $Y\sim(\theta, \sigma^2)$
+    \begin{align*}
+        p(y|\theta, \sigma^2) &=
+        \frac{1}{\sqrt{2\pi\sigma^2}}exp\left(-\frac{(y-\theta)^2}{2\sigma^2}\right)
+    \end{align*}
+
+    Properties
+    \begin{itemize}
+        \item Symmetric about $\theta$. Median and mode are
+            both $\theta$
+        \item Affine transformation of Normal is Normal
+        \item Standard normal $Z = \frac{Y-\theta}{\sigma}$
+        \item Precision of sum is sum of precision $W = \sum_{i\in N} \lambda_i$
+        \item $Q/(n-1)\sim \Gamma(\frac{n-1}{2},
+            \frac{n-1}{2})$
+            \subitem $Y_1, \cdots, Y_n \sim N(\theta,
+            \sigma^2)$ independently
+            \subitem $Q:= \frac{1}{\sigma^2}\sum_{i=1}^n (Y_i -
+            \bar{Y})^2 \sim \chi_{n-1}^2$
+    \end{itemize}
+
+    \subsubsection{Precision}
+
+    Precise $\lambda$: measurements tend to be close to each other
+    \begin{align*}
+        \lambda = \frac{1}{\sigma^2}
+                =\Sigma^{-1}
+    \end{align*}
+
+    \subsubsection{Highest precision (smallest variance)}
+
+    Let $Y_1\sim N(\theta, \sigma_1^2), Y_2 \sim N(\theta,
+    \sigma_2^2)$
+    \begin{align*}
+        Z &= wY_1 + (1-w)Y_2\\
+        \Rightarrow E(Z) &= E(wY_1 + (1-w)Y_2) = \theta\\
+        \Rightarrow Var(Z) &= w^2 Var(Y_1) + (1-w)^2
+        Var(Y_2)\\
+        \text{solve } \min_w & \frac{w^2}{\lambda_1} +
+        \frac{(1-w)^2}{\lambda_2}\\
+        \Rightarrow w^* &=
+        \frac{\lambda_1}{\lambda1+\lambda2}\\
+        \Rightarrow Var_{\min}(Z) &=
+        \left(\frac{\lambda_1}{\lambda_1+\lambda_2}\right)^2
+        \frac{1}{\lambda_1}
+        + 
+        \left(\frac{\lambda_2}{\lambda_1+\lambda_2}\right)^2
+        \frac{1}{\lambda_2}\\
+                           &= \frac{1}{\lambda_1+\lambda_2}
+    \end{align*}
+
+    Generally the precision of $Z$ is the sum of precision
+    of $Y$s
+    \begin{align*}
+        Z &= \left(\frac{\lambda_1}{\sum_{i\in
+        n}\lambda_i}\right) Y_1 + \cdots +
+        \left(\frac{\lambda_n}{\sum_{i\in
+        n}\lambda_i}\right) Y_n\\
+          &= \frac{1}{\sum_{i\in n}\lambda_i}\\
+                    \Rightarrow \lambda_Z &= {\sum_{i\in
+                    n}\lambda_i}\\
+    \end{align*}
+
+    \subsection{Student's t-distribution}
+
+    $Z\sim N(0, 1), Q\sim \chi_\nu^2$
+    \begin{align*}
+        T = \frac{z}{\sqrt{Q/\nu}}\sim t_\nu
+    \end{align*}
+
+    Properties
+    \begin{itemize}
+        \item $T = \frac{\sqrt{n}(\bar{Y}-\theta)}{s_Y}\sim
+            t_{n-1}$
+            \subitem $Y_1, \cdots, Y_n \sim N(\theta,
+            \sigma^2)$ independently
+            \subitem $\bar{Y} = \frac{1}{n}\sum_i Y_i$
+            \subitem $S_Y =
+            \sqrt{\frac{1}{n-1}\sum_i(Y_i-\bar{Y})^2}$
+    \end{itemize}

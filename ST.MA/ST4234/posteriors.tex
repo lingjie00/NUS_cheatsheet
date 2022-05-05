@@ -1,0 +1,386 @@
+    \section{Posterior distributions}
+    \begin{align*}
+        p(\theta|y)
+    \end{align*}
+
+    \subsection{Binomial data distribution}
+    \begin{align*}
+        p(y|\theta) &\propto \theta^y (1-\theta)^{n-y}
+    \end{align*}
+
+    \subsubsection{Beta prior (conjugate prior)}
+    $p(\theta|y) \propto
+    \theta^y(1-\theta)^{n-y}\theta^{a-1}(1-\theta)^{b-1}
+    \propto \theta^{a+y-1}(1-\theta)^{b+n-y}$
+    \begin{align*}
+        \Rightarrow p(\theta|y)\sim Beta(a+y, b+n-y)
+    \end{align*}
+
+    Interpretation: $a$ is the number of prior successes, 
+    $b$ is the number of prior failures
+
+    \subsubsection{Sensitivity analysis with beta prior}
+
+    $w:= \frac{a+b}{a+b+n}$, $\bar y = \frac{y}{n}$
+    \begin{align*}
+        E(\theta|y) &= \frac{a+y}{a+b+n} = 
+        w\left(\frac{a}{a+b}\right) + (1-w)\bar y\\
+                    &=wE(\theta) + (1-w)\bar y
+    \end{align*}
+    Posterior mean is weighted average of prior mean and
+    sample mean, weight determined by choice of $a, b$.
+    However, as sample size $n$ increase, influence of data
+    increase.
+
+    \subsubsection{Predictive distribution}
+
+    3 coin tosses, $Y^*\sim Binom(2, \theta), \theta \sim
+    p(\theta|Y)$
+    \begin{tabulary}{\linewidth}{l @{ = } l}
+        $P(Y^*=0|Y)$ & $E((1-\theta)^2|Y)$\\
+        $P(Y^*=1|Y)$ & $E(2\theta(1-\theta)|Y)$\\
+        $P(Y^*=2|Y)$ & $E(\theta^2|Y)$
+    \end{tabulary}
+
+    \subsection{Poisson data distribution}
+
+    $Y\sim Poisson(\theta), \theta > 0$
+    \begin{align*}
+        p(y|\theta) &= P(Y=y|\theta) =
+        \frac{\theta^y}{y!}e^{-\theta}, y \geq 0\\
+                    &\propto \theta^ye^{-\theta}\\
+        p(Y|\theta) &= \prod_{i=1}^np(y_i|\theta)\\
+                    &\propto \theta^{\sum_{i=1}^n y_i} e^{-n\theta}
+    \end{align*}
+
+    Properties
+    \begin{itemize}
+        \item $E(Y|\theta) = Var(Y|\theta) = \theta$
+        \item If $Y_i \sim Poisson(\theta_i), i \in [1, n]$
+            are independent, then
+            \begin{align*}
+                S_n &= \sum_{i=1}^n Y_i \sim
+                Poisson\left(\sum_{i=1}^n\theta_i\right)
+            \end{align*}
+        \item If $\theta_1=\cdots = \theta_n$, then 
+            $S_n\sim Poisson(n\theta)$
+    \end{itemize}
+
+    \subsubsection{Relation with Poisson process}
+
+    Consider a Poisson process on the positive real line
+    with constant rate $b$
+    \begin{itemize}
+        \item the number of events $Y$ observed on interval
+            $[0, \theta]$ is distributed as
+            $Poisson(b\theta)$
+        \item waiting time till occurrence of the $\alpha$th
+            event $\sim Gamma(a, b)$
+    \end{itemize}
+
+    E.g. if on average $b=10$ accidents per day, number of
+    accident in 3 days $\sim Poisson(30)$, waiting time till
+    3rd accident is $Gamma(3, 10)$
+
+    \subsubsection{Gamma prior (conjugate prior)}
+
+    $p(\theta|Y)\propto p(\theta) p(Y|\theta) \propto 
+    \theta^{a+s-1}e^{-(b+n)\theta}$
+    \begin{align*}
+        \Rightarrow p(\theta|Y)\sim \Gamma(a+s, b+n)
+    \end{align*}
+    $s=\sum y_i$
+
+    \subsubsection{Sensitivity analysis with Gamma prior}
+    $w := \frac{b}{b+n}, \bar{y} = \frac{y}{n}$
+    \begin{align*}
+        E(\theta|Y) &= \frac{a+s}{b+n} = 
+        w\left(\frac{a}{b}\right) + (1-w)\bar y\\
+                    &= wE(\theta) + (1-w)\bar y
+    \end{align*}
+
+    $b$ is the weightage (sample size) the prior
+
+    \subsubsection{Predictive distribution: Negative binomial}
+
+    If $Y\sim Poisson(\theta)$ with prior $p(\theta)\sim
+    \Gamma(a, b)$, then unconditional on $\theta$
+    \begin{align*}
+        P(Y=y) &= \int_0^\infty
+        P(Y=y|\theta)p(\theta)d\theta\\
+               &=\begin{pmatrix}
+                   a + y - 1\\
+                   y
+               \end{pmatrix}
+               \left(\frac{b}{b+1}\right)^a
+               \left(\frac{1}{b+1}\right)^y\\
+               &\sim NB\left(r=a, p=\frac{b}{b+1}\right)
+    \end{align*}
+
+    \subsection{Multinomial data distribution}
+
+    $Y \sim$ Multinomial with $K, \theta_1, \theta_2,
+    \cdots, \theta_K, \sum_{i\in K} \theta_i = 1$
+
+    \begin{align*}
+        p(y|\theta) &= P(Y=y|\theta)\\
+                    &= \begin{pmatrix}
+                        n\\
+                        y_1, y_2, \cdots, y_k
+                    \end{pmatrix}
+                    \theta_1^{y_1}\theta_2^{y_2}\cdots
+                    \theta_K^{y_K}\\
+                    &\propto 
+                    \theta_1^{y_1}\theta_2^{y_2}\cdots
+                    \theta_K^{y_K}
+    \end{align*}
+    where $\begin{pmatrix}
+        n\\
+        y_1, y_2, \cdots, y_k
+    \end{pmatrix} = \frac{n!}{y_1!\cdots y_K!}$
+
+    \subsubsection{Dirichlet prior (conjugate prior)}
+
+    \begin{align*}
+        p(\theta|Y) &\propto p(Y|\theta)p(\theta) \\
+                    &\propto
+                    \theta_1^{y_1}\cdots\theta_K^{y_K}
+                    \theta_1^{a_1-1}\cdots\theta_K^{y_K-1}\\
+                    &\sim Dir(a_1+y_1, \cdots, a_K + y_K)
+    \end{align*}
+
+    \subsection{Normal data distribution (known variance)}
+
+    $Y\sim N(\theta, \sigma^2) = N(\theta,
+    \frac{1}{\lambda})$\\
+    $\theta:=$ mean, $\sigma^2:=$
+    variance, $\lambda:=$ precision
+
+    \begin{align*}
+        p(y|\theta, \sigma^2) &=
+        \frac{1}{\sigma\sqrt{2\pi}}exp\left(-\frac{(y-\theta)^2}{2\sigma^2}\right)\\
+                              &=
+          \sqrt{ \frac{ \lambda
+          }{2\pi}}exp\left(-\frac{\lambda}{2}(y-\theta)^2\right)
+      \end{align*}
+
+
+      \subsubsection{Normal prior}
+
+      Note:
+      \begin{itemize}
+          \item $\bar{y} = \frac{1}{n}\sum_{i\in N}y_i$
+              $\Rightarrow p(\bar{y}|\theta)\sim N(\theta,
+              \frac{1}{ n\lambda })$
+          \item $p(\theta)\sim N(\mu_0, \frac{1}{m_0\lambda})$
+          \item We decide on
+              $\sigma_0^2=\frac{1}{m_0\lambda}$,
+              then use population $\sigma^2$ to determine
+              $\frac{1}{\lambda}$ and deduce $m_0$
+      \end{itemize}
+
+      $p(\theta|\bar{y})\propto
+      p(\bar{y}|\theta)p(\theta)$
+      $\propto
+      \exp(n\lambda(-\frac{\theta^2}{2}+\theta\bar{y}))
+      \exp(m_0\lambda(-\frac{\theta^2}{2}+\theta\mu_0))$
+
+      \begin{align*}
+          p(\theta|\bar{y}) &\sim N\left(\mu_n,
+          \frac{1}{(m_0+n)\lambda}\right)
+          \end{align*}
+
+          \subsubsection{Sensitivity analysis with Normal prior}
+
+          $w := \frac{m_0}{m_0+n}$
+
+          \begin{align*}
+              E(\theta|Y) = \mu_n &=
+              \frac{m_0\mu_0+n\bar{y}}{m_0+n}\\
+                                  &= w\mu_0 + (1-w)\bar{y}
+          \end{align*}
+
+          $m_0$ is the weightage (sample size) of prior
+
+          \subsubsection{Predictive distribution}
+
+          Let future observation be $Y=\theta + \epsilon$ (independent)
+
+          $\theta\sim N(\mu_n \frac{1}{( m_0+n )\lambda}),
+          \epsilon\sim N(0, \frac{1}{\lambda})$
+
+          \begin{align*}
+              Y \sim N\left(\mu_n, \frac{1}{( m_0+n )\lambda +
+              \frac{1}{\lambda}}\right)
+          \end{align*}
+
+          \subsection{Normal data distribution (unknown variance)}
+
+          Same Normal data distribution with known variance
+          case. However, now $\sigma^2$ is not known.
+
+          \subsubsection{Normal-Gamma prior}
+
+          \begin{itemize}
+              \item $\lambda(\nu_0, \sigma_0^2) \sim \Gamma(\frac{\nu_0}{2},
+                  \frac{\nu_0\sigma_0^2}{2})$
+              \item $E(\lambda) =
+                  \frac{1}{\sigma_0^2}$
+                  \subitem initial guess of
+                  $\lambda$ is $\frac{1}{\sigma_0^2}$
+              \item $Var(\lambda) =
+                  \frac{2}{\nu_0\sigma_0^4}$
+                  \subitem smaller $\nu_0
+                  \Rightarrow$ higher confidence in prior $\lambda$
+              \item $\theta|\lambda \sim N(\mu_0,
+                  \frac{1}{m_0\lambda})$
+          \end{itemize}
+
+          \begin{align*}
+              \theta|\lambda, \mathbf{y} &\sim N\left(\mu_n,
+              \frac{1}{m_n\lambda}\right)\\
+                  \lambda|\mathbf{y} &\sim \Gamma\left(\frac{\nu_n}{2},
+                  \frac{\nu_n\sigma_n^2}{2}\right)
+          \end{align*}
+
+          Where we have
+
+          \begin{align*}
+              \nu_n &= \nu_0 + n\\
+              m_n &= m_0 + n\\
+              m_n\mu_n &= m_0\mu_0 + n\bar{y}\\
+              \Rightarrow \mu_n &=
+              \frac{m_0\mu_0+n\bar{y}}{m_0+n}\\
+              \nu_n\sigma_n^2 + m_n\mu_n^2 &= \nu_0\sigma_0^2 +
+              m_0\mu_0^2 + n\bar{y}^2 + (n-1)s^2\\
+              \Rightarrow \sigma_n^2 &= \frac{\nu_0\sigma_0^2 +
+              \frac{m_0n}{m_0+n}(\bar{y}-\mu_0)^2+(n-1)s^2}{\nu_0+n}
+          \end{align*}
+
+          \subsubsection{Deriving Prior $(\theta, \lambda)$}
+
+          \begin{align*}
+              p(\theta, \lambda) &=
+              p(\lambda)p(\theta|\lambda)\\
+                                 &\propto
+                                 \lambda^{\frac{\nu_0-1}{2}}
+                                 \exp\left(-\frac{\lambda}{2}
+                                     \left[m_0\theta^2
+                                         - 2m_0\mu_0\theta +
+                                 (\nu_0\sigma_0^2+m_0\mu_0^2)\right]\right)\\
+              p(\mathbf{y}|\theta, \lambda) &= \prod_{i=1}^n
+              p(y_i|\theta, \lambda)\\ 
+                                            &=
+                                            \lambda^{\frac{n}{2}}\exp\left\{
+                                                -\frac{\lambda}{2} \left[
+                                                    n\theta^2 - 2\theta n \bar{y} +
+                                                    n\bar{y}^2
+                                                    + \sum_{i=1}^n (y_i - \bar{y})^2
+                                                \right]
+                                            \right\}\\
+              p(\theta, \lambda | \mathbf{y}) &\propto
+              p(\theta, \lambda)p(\mathbf{y}|\theta, \lambda)
+          \end{align*}
+
+          \subsubsection{Inference on mean $\theta$}
+
+          Frequentist: $95\%$ confidence interval
+          \begin{itemize}
+              \item If $\sigma^2$ is known
+              \begin{align*}
+                  \left(\bar{y} \pm
+                      z_{0.975}\frac{\sigma}{\sqrt{n}}\right)
+              \end{align*}
+          \item If $\sigma^2$ is unknown
+              \begin{align*}
+                  \left(\bar{y} \pm t_{0.975,
+                  n-1}\frac{s_Y}{\sqrt{n}}\right)
+              \end{align*}
+      \end{itemize}
+
+      Bayesian: $95\%$ credible interval
+      \begin{itemize}
+          \item If $\sigma^2$ is known
+              \begin{align*}
+                  \left(\mu_n \pm
+                  z_{0.975}\frac{\sigma}{\sqrt{m_n}}\right)
+              \end{align*}
+          \subitem $Z = \frac{\theta-\mu_n}{\sigma/\sqrt{m_n}}$
+              \begin{align*}
+                  \theta &= \mu_n + \frac{\sigma}{\sqrt{m_n}}Z
+              \end{align*}
+          \item If $\sigma^2$ is unknown
+              \begin{align*}
+                  \left(\mu_n \pm t_{0.975,
+                  \nu_n}\frac{\sigma_n}{\sqrt{m_n}}\right)
+              \end{align*}
+          \subitem $T = \frac{Z}{\sqrt{\sigma_n^2\lambda}},
+          Z = \sqrt{m_n\lambda}(\theta-\mu_n)$
+              \begin{align*}
+                  \theta &= \mu_n +
+                  \frac{\sigma_n}{\sqrt{m_n}}T
+              \end{align*}
+      \end{itemize}
+
+      \subsection{Difference in mean of two normal groups}
+
+      Consider
+
+     \begin{itemize}
+         \item Model: $Y_i\sim N(\mu+\delta, \frac{1}{\lambda})$,
+         $Z_i \sim N(\mu-\delta, \frac{1}{\lambda})$
+     \item Prior: $\mu\sim N(\mu_0, \frac{1}{\lambda_0})$,
+         $\delta \sim N (\delta_0, \frac{1}{\tau_0})$,
+         $\lambda \sim \Gamma(\frac{\nu_0}{2},
+         \frac{\nu_0\sigma_0^2}{2})$
+     \item Independence:
+         $p(\mu, \delta, \lambda) = p(\mu) p(\delta) p(\lambda)$
+     \end{itemize}
+
+     Data likelihood
+     \begin{align*}
+         &p(\mathbf{y, z}|\mu, \delta, \lambda)\\
+         &\propto
+         \lambda^{\frac{n+m}{2}}
+         \exp\left\{ 
+             -\frac{\lambda}{2} \left[
+                 \sum_{i=1}^n (y_i - \mu - \delta)^2 +
+                 \sum_{i=1}^m (z_i - \mu + \delta)^2
+             \right]
+         \right\}
+     \end{align*}
+
+     Posterior:\\
+     \begin{tabulary}{\linewidth}{l L}
+         $p(\mu|\mathbf{y, z}, \delta, \lambda)$
+         & $\propto p(\mathbf{y, z}|\mu, \delta, \lambda)
+         p(\mu|\delta, \lambda)$\\
+         & $= N(\mu_n, \frac{1}{\lambda_n})$\\
+         $p(\delta|\mathbf{y, z}, \mu, \lambda)$
+         & $=N(\delta_n, \frac{1}{\tau_n})$\\
+         $p(\lambda | \mathbf{y, z}, \mu, \delta)$
+         & $=\Gamma(\frac{\nu_n}{2},
+         \frac{\nu_n\sigma_n^2}{2})$
+     \end{tabulary}
+
+     Updated parameters:\\
+     \begin{tabulary}{\linewidth}{l L}
+         $\lambda_n$
+         & $=\lambda_0 + (n+m)\lambda$\\
+         $\mu_n$
+         &
+         $=\frac{\mu_0\lambda_0+[n(\bar{y}-\delta)+m(\bar{z}+\delta)]\lambda}
+         {\lambda_0 + (n+m)\lambda}$\\
+         $\tau_n$
+         & $= \tau_n + (n+m)\lambda$\\
+         $\delta_n$
+         & $=\frac{\delta_0 \tau_0 +
+         [n(\bar{y}-\mu)+m(\mu-\bar{z})]\lambda}{\tau_0 + (n+m)\lambda}$\\
+         $\nu_n$
+         & $=\nu_0 + n + m$\\
+         $\sigma_n^2$
+         & $=\frac{\nu_0\sigma_0^2 + \sum_{i=1}^n (y_i -
+         \mu-\delta)^2 + \sum_{i=1}^m (z_i - \mu + \delta)^2}
+         {\nu_0 + n + m}$
+     \end{tabulary}
+

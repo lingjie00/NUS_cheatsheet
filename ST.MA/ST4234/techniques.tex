@@ -1,0 +1,329 @@
+      \section{Techniques}
+
+      MCMC techniques: Gibbs sampling, Metropolis-Hastings
+
+      MC techniques: rejection sampling, importance
+      sampling, sampling importance resampling
+
+      \subsection{MCMC and MCMC Diagnostics}
+
+      \begin{tabulary}{\linewidth}{l L}
+          \hline
+          Terms & Explanation\\
+          \hline
+          \hline
+          MCMC sample & time-series of the
+          parameters generated from the posterior
+          distribution using MCMC\\
+          MCMC diagnostics & statistical tools to judge the
+          quality of MCMC samples, suggesting quality and
+          area for improvements\\
+          coda & R package used for MCMC diagnostics\\
+          burn-in period & initial period of MCMC sample
+          discarded during estimation. Suggested 20\%
+          burn-in\\
+          Autocorrelation & correlation between time-series
+          and lags\\
+          Autocorrelation function (ACF) & function of ac
+          with different lags\\
+          Naive SE & (wrong) standard error that assumes
+          independence\\
+          Time-series SE & (right) standard error that takes
+          into consideration time-series correlation\\
+          Effective sample size & relating time-series SE
+          with independent Monte Carlo samples. For example,
+          ESS = 100 means MCMC estimates has time-series ES
+          equal to the SE of 100 independent samples\\
+          Trace plots & plots of MCMC samples as a function
+          of time\\
+          Density plots & estimated density based on the MCMC
+          samples\\
+          Summary stats & showing the average and
+          time-series standard errors
+      \end{tabulary}
+
+      \subsection{Gibbs sampling (MCMC)}
+
+      Key: generate samplings sequentially from conditional
+      posterior distribution.\\For large $k$,
+      $\theta^{(k)}, \lambda^{(k)}\sim p(\theta,
+      \lambda|\mathbf{y})$
+
+      Algorithm:
+
+      \begin{enumerate}
+          \item For $k\geq 1$:
+              \subitem[1.1] Generate $\theta^{(k)}\sim p(\theta| \lambda^{(k-1)}, \mathbf{y})$
+              \subitem[1.2] Generate $\lambda^{(k)}\sim p(\lambda| \theta^{(k)}, \mathbf{y})$
+          \item After $K$ iterations return output
+              $\{\theta^{(k)}, \mu^{(k)}\}_{k=1}^K$
+      \end{enumerate}
+
+      Results such as credible interval can be obtained
+      through the simulated samples.
+      E.g. Estimating $E(f(\theta, \lambda)|\mathbf{y})$
+      \begin{align*}
+          \frac{1}{K}\sum_{k=1}^K f(\theta^{(k)},
+          \lambda^{(k)})
+      \end{align*}
+
+      \subsection{Metropolis-Hastings (MCMC)}
+
+      Key: acceptance probability, probability that a
+      proposed $\theta^*$ is accepted. If $\theta^*$ is not
+      accepted, $\theta^{(k)} = \theta^{(k-1)}$. The
+      desirable acceptance probability is large such that
+      MCMC does not stuck at $\theta$ for long.
+
+      Generates Markovian sample $\mathbf{\theta} =
+      (\theta^{(1)}, \cdots, \theta^{(K)})$ with posterior
+      $p(\theta|\mathbf{y})$ as the stationary distribution.
+
+      \begin{itemize}
+          \item Metropolis Algorithm: first version of the
+              MH algorithm with symmetric proposal $q$
+          \item Random-Walk MH: proposal $q$ is a random
+              walk (popular)
+          \item Independence MH: proposal $q$ is independent
+      \end{itemize}
+
+      Metropolis-Hastings is considered last resort in
+      complicated Bayesian problems as it does not require
+      for conditional posterior distribution and works for
+      any distribution even without normalising constant.
+      However, MH has high autocorrelation as a result of
+      $\theta$ stucking in same $\theta$ value for a long
+      time.
+
+      \subsubsection{Understanding the MH algo}
+
+      Consider two countries $A, B$ with population $f(A),
+      f(B)$. Probability of individual migrating from $A$ to $B$ is
+      $q(B|A)$. Probability of individual migration
+      application getting accepted is $\alpha(B|A)$.
+
+      Question: How to choose $\alpha(B|A), \alpha(A|B)$
+      such that population size are maintained?
+
+      Consider:
+      \begin{itemize}
+          \item Total number of people migrating:
+              $f(A)q(B|A)$ and $f(B)q(A|B)$
+          \item If $f(A)q(B|A) < f(B)q(A|B)$,
+              net migration to $A$ is more than $B$
+              \subitem $\alpha(B|A)=1$, $B$ should accept
+              everyone
+              \subitem $\alpha(A|B) = \frac{f(A)q(B|A)}
+              {f(B)q(A|B)}$, $A$ should accept only a
+              fraction of applicants such that total
+              population unchanged i.e.
+              $\alpha(A|B)f(B)q(A|B)=f(A)q(B|A)$
+          \item Therefore,
+              $\alpha(A|B) = \min\left\{
+                  1, \frac{f(A)q(B|A)}{f(B)q(A|B)}
+              \right\}$,
+              $\alpha(B|A) = \min\left\{
+                  1, \frac{f(B)q(A|B)}{f(A)q(B|A)}
+              \right\}$
+      \end{itemize}
+
+      In the context of Metropolis-Hastings, the $A$, $B$
+      are the transition from $\theta^{(k-1)}$ to
+      $\theta^{(k)}$
+
+      \subsubsection{Random walk}
+
+      Generate $p(\theta|\mathbf{y})\propto f(\theta)$
+      with $z\sim N(0, 1)$
+
+      \begin{enumerate}
+          \item Generate $\theta^* = \theta^{(k-1)}+z$,
+              $z\sim N(0, 1)$ $\Rightarrow \theta^* \sim
+              N(\theta^{(k-1)}, 1)$
+              \subitem $q(\theta^*|\theta^{(k-1)})=
+              \frac{1}{\sqrt{2\pi}}
+              exp(-\frac{1}{2}(\theta^* - \theta^{(k-1)})^2)$
+          \item Accept $\theta^*$ with probability
+              $\alpha(\theta^*|\theta^{(k-1)}) = \min(r, 1)$,
+              $r =
+              \frac{f(\theta^*) q(\theta^{(k-1)}|\theta^*)}
+              {f(\theta^{(k-1)}) q(\theta^*|\theta^{(k-1)})}$
+          \item If $\theta^*$ is accepted,
+              $\theta^{(k)}=\theta^*$, else
+              $\theta^{(k)}=\theta^{(k-1)}$
+      \end{enumerate}
+
+      In general, we can use any $g$ distribution such that
+      $z\sim g$, $q(\theta^*|\theta^{(k-1)}) = g(\theta^* -
+      \theta^{(k-1)})$
+
+      \subsubsection{Symmetric proposal}
+
+      If the choice of $g$ is symmetric such that $g(z) =
+      g(-z)$ $\Rightarrow q(\theta^*|\theta^{(k-1)})
+      =q(\theta^{(k-1)}|\theta^*)$, then
+      \begin{align*}
+          r = \frac{f(\theta^*)}{f(\theta^{(k-1)})}
+      \end{align*}
+      where the MH algorithm does not depend on the
+      expression of $q$
+
+      \subsubsection{Independence MH}
+
+      Special case when $\theta^*\sim q$ that is independent
+      of $\theta^{(k-1)}$ e.g. $\theta^*\sim N(0,
+      \sigma^2)$,\\
+      then $q(\theta^*|\theta^{(k-1)})=q(\theta^*)$ and
+      \begin{align*}
+          r = \frac{f(\theta^*)q(\theta^{(k-1)})}
+          {f(\theta^{(k-1)}q(\theta^*))}=
+          \frac{w(\theta^*)}{w(\theta^{(k-1)})}
+      \end{align*}
+      where $w(\theta) = \frac{f(\theta)}{q(\theta)}$ are the same
+      weights in importance sampling and SIR. If the
+      $\theta^{(k-1)}$ is under-represented in $q$ then
+      $w(\theta^{(k-1)})$ is large so probability of moving
+      to a new value is low. Hence more samples are
+      generated with $\theta^{(k-1)}$ to compensate for its
+      under-representation in $q$.
+
+      \subsubsection{Metropolis-within-Gibbs}
+
+      \subsection{MC}
+
+      \begin{tabulary}{\linewidth}{l L}
+          \hline
+          Terms & Explanation\\
+          \hline
+          \hline
+          Monte Carlo standard error (SE)
+                & Errors due to randomness of Monte Carlo
+                method.\\
+          Efficient
+                & MC method is more efficient if it has a
+                smaller Monte Carlo SE for the same
+                computation time.\\
+          Target distribution
+                & Distribution of interest, i.e. posterior
+                $p(\theta|\mathbf{y})$\\
+          Proposal distribution
+                & distribution $q$ which we simulate random
+                parameters from. In direct MC $p=q$, in MCMC
+                $q$ are Markovian
+      \end{tabulary}
+
+      Calculating the required sample to achieve the same
+      efficiency
+      \begin{align*}
+          se = \frac{sd}{\sqrt{K}} \Rightarrow K = \frac{sd^2}{se^2}
+      \end{align*}
+
+      \subsubsection{Comparing the methods}
+
+      \begin{itemize}
+          \item Rejection sampling:
+              \subitem[key] some random samples from proposal is rejected
+              \subitem[advantage] useful for e.g. predictive
+              sampling since only useful samples are kept
+              \subitem[disadvantage] probability of reject
+              might be high
+          \item Importance sampling:
+              \subitem[key] all samples are kept, but re-sampled with
+              over-represented values are given smaller importance
+              weights.
+              \subitem[advantage] useful for generating
+              samples, since all samples are kept
+              \subitem[advantage] No need to find $M$ which
+              is needed in rejection sampling
+              \subitem[disadvantage] less useful for e.g.
+              predictive samplings since even less important
+              samples are kept, as weights have to be taken
+              into consideration
+          \item Sampling importance resampling:
+              \subitem[key] samples from proposal density is resampled in
+              proportion to the importance weight
+              (improvement over important samplings for e.g.
+              predictive samplings)
+              \subitem[advantage] useful for e.g. predictive
+              distribution since more important samples are
+              sampled more often
+      \end{itemize}
+
+      \subsection{Rejection sampling (MC)}
+
+      Consider $p(\theta|\mathbf{y})\propto f(\theta)$.
+
+      To generate $\theta^{(k)}\sim p(\theta|\mathbf{y})$,
+      first find $M>0$ s.t. $Mq(\theta)\geq  f(\theta)$ for
+      all $\theta$
+
+      \begin{enumerate}
+          \item Generate $\theta \sim q$, where $q$ is the
+              proposal distribution
+          \item Generate $u\sim unif(0, 1)$
+              \subitem[2.1] If $u \leq
+              \frac{f(\theta)}{Mq(\theta)}$, accept $\theta$
+              and $\theta^{(k)}=\theta$
+              \subitem[2.2] else repeat step 1
+      \end{enumerate}
+
+      \subsection{Importance sampling (MC)}
+
+      \subsubsection{Known constant}
+
+      If $p(\theta|\mathbf{y})$ is known completely.
+
+      Generate $\theta^{(k)}\sim q$, where $q$ is the
+      proposal distribution.
+
+      Set weight as
+      \begin{align*}
+          w(\theta^{(k)}) = \frac{p(\theta^{(k)}|\mathbf{y})}
+          {q(\theta^{(k)})}
+      \end{align*}
+
+      and the estimated posterior mean is
+      \begin{align*}
+          \hat{\theta} = \frac{1}{K}\sum_{k=1}^K
+          w(\theta^{(k)})\theta^{(k)}
+      \end{align*}
+
+      \subsubsection{Unknown constant}
+
+      Same procedure as in the case of known constant.
+      However, the weight $w(\theta^{(k)})$ is now
+      normalised such that it sums up to 1
+      \begin{align*}
+          w^{(k)} = \frac{w(\theta^{(k)})}
+          {\sum_{\ell=1}^K w(\theta^{(\ell)})}
+      \end{align*}
+
+      and the estimated posterior mean is
+      \begin{align*}
+          \hat{\theta} = \sum_{k=1}^K w^{(k)}\theta^{(k)}
+      \end{align*}
+
+      \subsection{Sampling importance resampling (SIR) (MC)}
+
+      Modification from importance sampling with unknown
+      constant such that we do not need to deal with the
+      weights.
+
+      Let $\mathbf{\theta}_q = (\theta_q^{(1)}, \cdots,
+      \theta_q^{(J)})$ denote i.i.d sample from $q$. Let
+      $\mathbf{w} = (w^{(1)}, \cdots, w^{(J)})$ denote the
+      normalized importance weights.
+
+      Create a resample $\mathbf{\theta}_p =
+      (\theta_p^{(1)}, \cdots, \theta_p^{(K)})$ representing
+      a sample from the posterior $p(\theta|\mathbf{y})$ as
+      followed:
+
+      \begin{enumerate}
+          \item Generate random index $J_k$ such that for
+              $1\leq j \leq J$
+              \begin{align*}
+                  P(J_k = j) = w^{(j)}
+              \end{align*}
+          \item Let $\theta_p^{(k)} = \theta_q^{(J_k)}$
+      \end{enumerate}
