@@ -8,6 +8,10 @@ If anyone wants to share their cheatsheet too, please feel free to drop me a mes
 
 If you identify any mistakes, please raise an issue.
 
+If you are interested in joining the data field, please do read [data career
+FAQ](./data_career_faq.md) where I answered the common questions juniors asked
+me.
+
 # List of cheatsheet
 
 *Cheatsheets* were prepared when only limited help
