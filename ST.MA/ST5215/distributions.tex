@@ -1,0 +1,162 @@
+\section{Distributions}
+
+\subsection{Discrete Distributions on $\mathcal{R}$}
+
+[Uniform $DU(a_1, \cdots, a_m)$] $a_i \in \mathcal{R}$, $m=1, 2, \cdots$, $x=a_1, \cdots, a_m$
+
+$f(x)=1/m$,
+$M_X(t) = \sum_{j=1}^m exp(a_jt)/m$,
+$E(X)=\sum_{j=1}^ma_j/m$,
+$Var(X)=\sum_{j=1}^m(a_j-\bar{a})^2/m$
+
+\pline
+[Binomial $Bi(p, n)$] $p\in[0, 1], n=1, 2, \cdots, x=0, 1, \cdots, n$
+
+$f(x)=\binom{n}{x}p^x(1-p)^{n-x}$,
+$M_X(t)=(pexp(t)+1-p)^n$,
+$E(X)=np$,
+$Var(X)=np(1-p)$
+
+\pline
+[Poisson $P(\theta)$], $\theta>0$, $x=0, 1, 2, \cdots$
+
+$f(x)=\theta^xexp(-\theta)/x!$,
+$M(t)=exp(\theta(exp(t)-1))$,
+$E(X)=Var(X)=\theta$
+
+\pline
+[Geometric $G(p)$] $p\in[0, 1]$, $x=1, 2, \cdots$
+
+$f(x)=(1-p)^{x-1}p$
+$M(t)=pexp(t)/[1-(1-p)exp(t)], t<-\log(1-p)$,
+$E(X)=1/p$,
+$Var(X)=(1-p)/p^2$
+
+\pline
+[Hyper-geometric $HG(r, n, m)$] $r, n, m=1, 2, \cdots, N=n+m$, $x=0, 1, \cdots, \min(r, n), r-x \leq m$
+
+$f(x)=\binom{n}{x}\binom{m}{r-x}/\binom{N}{r}$,
+$E(X)=rn/N$,
+$Var(X)=rnm(N-r)/[N^2(N-1)]$, no MGF
+
+\pline
+[Negative Binomial $NB(p, r)$] $p\in[0, 1], r=1, 2, \cdots$, $x=r, r+1, \cdot$
+
+$f(x)=\binom{x-1}{r-1}p^r(1-p)^{x-r}$,
+$M(t)=p^rexp(rt)/[1-(1-p)exp(t)]^r, t<-\log(1-p)$,
+$E(X)=r/p$,
+$Var(X)=r(1-p)/p^2$
+
+\pline
+[Log-distribution $L(p)$] $p\in[0, 1]$, $x=1, 2, \cdots$
+
+$f(x)=-(\log p)^{-1}x^{-1}(1-p)^x$,
+$M(t)=\log[1-(1-p)exp(t)]/\log(p)$,
+$E(X)=-(1-p)/(p\log p)$,\\
+$Var(X)=-(1-p)[1+(1-p)/\log p]/(p^2\log p)$
+
+\subsection{Distributions on $\mathcal{R}$ with Lebesgue PDFs}
+
+[Uniform $U(a, b)$] $a, b \in \mathcal{R}, a < b$
+
+$f(x) = (b-a)^{-1}I_{(a, b)}(x)$,
+$M(t)=(exp(bt)-exp(at))/[(b-a)t]$,
+$E(X)=(a+b)/2$,
+$(Var(X)=(b-a)^2/12$
+
+\pline
+[Normal $N(\mu, \sigma^2$] $\mu\in\mathcal{R}, \sigma^2 > 0$
+
+$f(x)=(2\pi\sigma^2)^{-1/2}exp(-(x-\mu)^2/2\sigma^2)$,
+$M(x)=exp(\mu t + \sigma^2 t^2/2$,
+$E(X)=\mu$,
+$Var(X)=\sigma^2$
+
+\pline
+[Exponential $E(a, \theta)$] $\theta > 0, a\in\mathcal{R}$
+
+$f(x)=\theta^{-1}exp(-(x-a)/\theta I_{(a, \infty)(x)}$
+$M(t)=exp(at)(1-\theta t)^{-1}, t<\theta^{-1}$,
+$E(X)=\theta+a$,
+$Var(X)=\theta^2$
+
+\pline
+[Chi-square $\chi_k^2$] $k=1, 2, \cdots$
+
+$f(x)=(\Gamma(k/2)2^{k/2})^{-1}x^{k/2-1}exp(-x/2)I_{(0, \infty)}(x)$,
+$M(t)=(1-2t)^{-k/2}, t<1/2$,
+$E(X)=k$,
+$Var(X)=2k$
+
+\pline
+[Gamma $\Gamma(\alpha, \gamma)$] $\gamma >0, \alpha >0$
+
+$f(x)=(\Gamma(\alpha)\gamma^{\alpha})^{-1}exp(-x/\gamma)I_{(0, \infty)}(x)$,
+$M(t)=(1-\gamma t)^{-\alpha}, t < \gamma^{-1}$,
+$E(X)=\alpha\gamma$,
+$Var(X)=\alpha\gamma^2$
+
+\pline
+[Beta $B(\alpha, \beta)$] $\alpha > 0, \beta > 0$
+
+$f(x) = \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}x^{\alpha-1}(1-x)^{\beta-1}I_{(0, 1)}(x)$,
+$E(X)=\alpha/(\alpha+\beta)$,
+$Var(X)=\alpha\beta/[(\alpha+\beta+1)(\alpha+\beta)^2]$,
+No MGF
+
+\pline
+[Cauchy $C(\mu, \sigma)$] $\mu\in\mathcal{R}, \sigma > 0$
+
+$f(x)=[\pi\sigma]^{-1}\left[1+\left(\frac{x-\mu}{\sigma}\right)^2\right]$,
+$\phi_X(t)=exp\left(\sqrt{-1}\mu t-\sigma|t|\right)$
+
+\pline
+[t $t_n$] $n=1, 2, \cdots$
+
+$f(x)=\frac{\Gamma[(n+1)/2]}{\sqrt{n\pi}\Gamma(n/2)}\left(1+\frac{x^2}{n}\right)^{(n+1)/2}$,
+$E(X)=0, n>1$,
+$Var(X)=n/(n-2), n>2$
+
+\pline
+[F $F_{n, m}$] $n=1, 2, \cdots, m=1, 2, \cdots$
+
+$f(x)=\frac{n^{n/2}m^{m/2}\Gamma[(n+m)/2]x^{n/2-1}}{\Gamma(n/2)\Gamma(m/2)(m+nx)^{(n+m)/2}}I_{(0, \infty)}(x)$,
+$E(X)=m/(m-2), m>2$,
+$Var(X)=2m^2(n+m-2)/[n(m-2)^2(m-4)], m>4$
+
+\pline
+[Log-normal $LN(\mu, \sigma^2$] $\mu\in\mathcal{R}, \sigma>0$
+
+$f(x)=(2\pi\sigma^2)^{-1/2}x^{-1}exp(-(\log x - \mu)^2 / 2\sigma^2)I_{(0, \infty)}(x)$,
+$E(X)=exp(\mu+\sigma^2)/2$,
+$Var(X)=exp(2\mu+\sigma^2)(exp(\sigma^2)-1)$
+
+\pline
+[Weibull $W(\alpha, \theta$] $\theta>0, \alpha>0$
+
+$f(x)=\frac{a}{\theta}x^{\alpha-1}exp(-x^{\alpha}/\theta)I_{(0, \infty)}(x)$,
+$E(X)=\theta^{1-\alpha}\Gamma(\alpha^{-1}+1)$,
+$Var(X)=\theta^{2/\alpha}\left\{\Gamma(2\alpha^{-1}+1)-[\Gamma(\alpha^{-1}+1)]^2\right\}$
+
+\pline
+[Double Exponential $DE(\mu, \theta)$] $\mu\in\mathcal{R}, \theta>0$
+
+$f(x)=(2\theta)^{-1}exp(-|x-\mu|/\theta)$,
+$M(t)=exp(\mu t)/(1-\theta^2t^2), |t|<\theta^{-1}$,
+$E(X)=\mu$,
+$Var(X)=2\theta^2$
+
+\pline
+[Pareto $Pa(a, \theta)$] $\theta > 0, a >0$
+
+$f(x)=\theta a^{\theta} x^{-(\theta+1)}I_{(a, \theta)}(x)$,
+$E(X)=\theta a/(\theta - 1), \theta > 1$,
+$Var(X)=\theta a^2/[(\theta - 1)^2(\theta - 2)], \theta > 2$
+
+\pline
+[Logistic $LG(\mu, \sigma)$] $\mu\in\mathcal{R}, \sigma>0$
+
+$f(x)=\sigma^{-1}exp(-(x-\mu)/\sigma)/[1+exp(-(x-\mu)/\sigma)]^2$,
+$M(t)=exp(\mu t \Gamma(1+\sigma t)\Gamma(1-\sigma t), |t| < \sigma^{-1}$,
+$E(X)=\mu$,
+$Var(X)=\sigma^2\pi^2/3$

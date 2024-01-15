@@ -1,0 +1,103 @@
+\section{Evaluation}
+
+\subsection{Decision rules}
+Statistical decision is action taken after observing data $X$, e.g. estimate $\theta$ by $\hat\theta$, choose between different hypothesis, make a statement about parameter range.
+
+[Action space] $\mathcal{A}$ set of allowable actions, endowed with a $\sigma$-field $\mathcal{F}_{\mathcal{A}}$
+
+[Decision rule] measurable function from $(\mathcal{X}, \mathcal{F}_{\mathcal{X}})$ to $(\mathcal{A}, \mathcal{F}_{\mathcal{A}})$. $\mathcal{X}$ is range of $X$ and $\mathcal{F}_{\mathcal{X}}$ is a $\sigma$-field on $\mathcal{X}$.
+Choose a decision rule $T$, and take action $T(X)\in\mathcal{A}$ after $X$ is observed.
+
+\subsubsection{Loss function}
+Function $L: \mathcal{P}\times \mathcal{A} \rightarrow [0, \infty)$ that is Borel for each fixed $P \in \mathcal{P}$
+
+\subsubsection{Risk}
+
+$R_T(P) = E_P L(P, T(X)) = \int L(P, T(X)) dP$. Average loss under population $P$, depending on $P, T, L$
+
+\subsubsection{Hypothesis tests}
+
+Let $\mathcal{P}$ be a family of distributions, $\mathcal{P}_0\subset\mathcal{P}, \mathcal{P}_1 = \mathcal{P}\backslash\mathcal{P}_0$. Hypothesis testing decides between $H_0: P \in \mathcal{P}_0, H_1: P \in \mathcal{P}_1$. Action space $\mathcal{A}= \{0, 1\}$, decision rule is called a test $T: \mathcal{X} \rightarrow \{0, 1\} \Rightarrow T(X) = I_C(X)$ for some $C \subset \mathcal{X}$. $C$ is called the region/critical region.
+
+\subsubsection{$0-1$ loss}
+Common loss function for hypo test, $L(P, j) = 0$ for $P\in\mathcal{P}_j$ and $=1$ for $P\in\mathcal{P}_{1-j}, j \in \{0, 1\}$
+
+Risk $R_T(P) = P(T(X)=1)=P(X\in C)$ if $P\in\mathcal{P}_0$ or $P(T(X)=0)=P(X\notin C)$ if $P\in\mathcal{P}_1$
+
+\subsubsection{Type I and II errors}
+Type I: $H_0$ is rejected when $H_0$ is true.
+Error rate: $\alpha_T(P) = P(T(X)=1), P\in\mathcal{P}_0$
+
+Type II: $H_0$ is accepted when $H_0$ is false.
+Error rate: $1 - \alpha_T(P) = P(T(X)=1), P\in\mathcal{P}_1$
+
+\subsubsection{Power function of $T$}
+$\alpha_T(P)$, Type I and Type II error rates cannot be minimized simultaneously.
+
+\subsubsection{Significance level}
+Under Neyman-Pearson framework, assign pre-specified bound $\alpha$ (significance level of test):
+$$
+\sup_{P\subset \mathcal{P}_0} P(T(X)=1) \leq \alpha
+$$
+
+\subsubsection{size of test}
+$\alpha'$ is the size of the test
+$$
+\sup_{P\subset \mathcal{P}_0} P(T(X)=1) = \alpha'
+$$
+
+\subsection{Comparing decision rules}
+
+\subsubsection{Compare decision rules}
+
+$T_1$ is ... as $T_2$ if ...:
+as good as if $R_{T_1}(P) \leq P_{T_2}(P)$. $\forall$ $P\in\mathcal{P}$
+
+better if $R_{T_1}(P) < R_{T_2}(P)$ for some $P\in\mathcal{P}$ (and $T_2$ is dominated by $T_1$).
+
+equivalent if $R_{T_2}(P) = R_{T_2}(P)$ for all $P\in\mathcal{P}$
+
+\subsubsection{Optimal}
+
+Let $\mathcal{J}$ be collection of decision rules in consideration.
+$T_*$ is $\mathcal{J}$-optional if $T_*$ is as good as any other rule in $\mathcal{J}$,
+Optimal if $T_*$ is as good as any other possible rule
+
+\subsubsection{Admissibility}
+
+Let $\mathcal{J}$ be a class of decision rules. A decision rule $T\in\mathcal{J}$ is called $\mathcal{J}$-admissible if no $S\in\mathcal{J}$ is better than $T$ in terms of the risk.
+
+\subsubsection{Minimaxity}
+
+Let $\mathcal{J}$ be a class of decision rules. A decision rule $T_*\in\mathcal{J}$ is called $\mathcal{J}$-minimax if $\sup_{P\subset\mathcal{P}}R_{T_*}(P)\leq \sup_{P\subset\mathcal{P}}R_T(P)$ for any $T\in\mathcal{J}$
+
+\subsubsection{Bayes Risk and Rule}
+
+A form of averaging $R_T(P)$ over $P\in\mathcal{P}$.
+Bayes risk $r_T(\Pi)=\int_{\mathcal{P}} R_T(P) d\Pi(P)$, $\Pi$ is known probability measure. $R_T(\Pi)$ is Bayes risk of $T$ wrt $\Pi$.
+If $T_*\in\mathcal{J}$, $r_{T_*}(\Pi)\leq r_T(\Pi)$ for any $T\in\mathcal{J}$, then $T_*$ is called $\mathcal{J}$-Bayes rule wrt $\Pi$.
+
+\subsubsection{Finding Bayes rule}
+
+Let $\Tilde{\theta}\sim\pi$, $X|\Tilde{\theta}\sim P_{\Tilde{\theta}}$, then
+$r_\pi (T) = E\left[L(\Tilde{\theta}, T(X)\right]=E\left[E\left[L(\Tilde{\theta}, T(X)\right]|X\right]$
+where $E$ is taken jointly over $(\Tilde{\theta}, X)$.  Then find $T_*(x)$ that minimises the conditional risk.
+
+\subsubsection{Point estimators evaluation}
+
+\pline
+[Bias] $E_\theta(\hat\theta)-\theta$
+
+If there exists an unbiased estimator of $\theta$, then $\theta$ is called an estimable parameter.
+
+\pline
+[Variance] $Var(\hat\theta)$
+
+\pline
+[MSE] $E(||\hat\theta-\theta||^2)=E||\hat\theta-E(\hat\theta)||^2+(E\hat\theta-\theta)^2=Var(\hat\theta)+\text{Bias}^2$
+
+\subsection{Rao-Blackwell}
+
+Require convex loss $L(P, a)$ and sufficient statistics $T$ for $P\in\mathcal{P}$.
+Suppose $S_0$ is decision rule satisfying $E_P|||S_0|| < \infty$ for all $P\in\mathcal{P}$. Let $S_1 = E[S_0(X)|T]$, then $R_{S_1}(P)\leq R_{S_0}(P)$.
+If $L(P, a)$ is strictly convex in $a$, and $S_0$ is not a funciton of $T$, then $S_0$ is inadmissible and dominated by $S_1$.

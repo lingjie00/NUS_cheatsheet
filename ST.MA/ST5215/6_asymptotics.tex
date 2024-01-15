@@ -1,0 +1,187 @@
+\section{Asymptotics}
+
+\subsection{Consistency of point estimators}
+
+$X=(X_1, \cdots, X_n)$ is sample from $P\in\mathcal{P}$ and $T_n(X)$ be estimator of $\theta$ for $P$.
+
+[consistent] $\Leftrightarrow T_n(X)\rightarrow^P \theta$ 
+
+[strongly consistent] $\Leftrightarrow T_n(X)\rightarrow^{\text{a.s.}}\theta$ 
+
+[$a_n$-consistent] $\Leftrightarrow a_n(T_n(X) - \theta) = O_P(1)$, $\{a_n\} > 0$ and diverge to $\infty$
+
+[$L_r$-consistent] $T_n(X)\rightarrow^{L^P}\theta$ for some fixed $r > 0$
+
+A combination of LLN, CLT, Slustky's, continuous mapping, $\delta$-method are used. If $T_n$ is (strongly) consistent for $\theta$ and $g$ is continuous at $\theta$ then $g(T_n)$ is (strongly) consistent for $g(\theta)$
+
+\subsubsection{Affine estimator}
+
+Consider $T_n=\sum_{i=1}^nc_{ni}X_i$
+
+(1) If $c_{ni}=c_i/n$ satisfy (1) $\frac{1}{n}\sum_{i=1}^n c_i \rightarrow 1$ and $\sup_i |c_i|<\infty$ then $T_n$ is strongly consistent.
+
+(2) If population variance is finite, then $T_n$ is consistent in mse $\Leftrightarrow$ $\sum_{i=1}^nc_{ni}\rightarrow 1$ and $\sum_{i=1}^n c_{ni}^2\rightarrow 0$
+
+\subsection{Asympotics bias, variance, MSE}
+
+[Approximate unbiased] Estimator $T_n(X)$ for $\theta$ is approximately unbiased if $b_{T_n}(P)\rightarrow 0$ as $n\rightarrow \infty$, $b_{T_n}(P) := ET_n(X)-\theta$
+
+\pline
+When estimator's expectations or second moment are not well defined, we need asymptotic behaviours.
+
+[Asymptotic statistics conditions] $\{a_n\}>0$ and either (a) $a_n\rightarrow\infty$ or (b) $a_n \rightarrow a > 0$. If
+
+$$a_n(T_n-\theta)\rightarrow^D Y$$
+
+[Asymptotic expectation]
+If $a_n\xi_n\rightarrow^D \xi$, $E|\xi| < \infty$, then asymptotic expectation of $\xi_n$ is ${E\xi}/{a_n}$
+
+[Asymptotic bias] $\Tilde{b}_{T_n} = EY/a_n$,
+asymptotically unbiased if $\lim_{n\rightarrow\infty} \Tilde{b}_{T_n}(P) = 0$ for any $P \in \mathcal{P}$.
+
+[Asymptotic MSE] amse is the asymptotic expectation of $(T_n-\theta)^2$ or $\text{amse}_{T_n}(P)=EY^2/a_n^2$
+
+[Asymptotic Variance] $\sigma_{T_n}^2(P) = Var(Y)/a_n^2$
+
+[Remark] $EY^2\leq \lim\inf_{n\rightarrow\infty} E[a_n^2(T_n-v)^2]$ (amse is no greater than exact mse)
+
+\subsubsection{Asym Relative Efficiency}
+
+$e_{T_{1n}, T_{2n}} = amse_{T_{2n}(P)} / amse_{T_{1n}(P)}$.
+Note efficiency of estimator $T$ refers to $1/[I(\theta)MSE_T(\theta)]$
+
+\subsubsection{$\delta$-method corollary}
+
+If $a_n\rightarrow\infty$, $g$ is differentiable at $\theta$, $U_n = g(T_n)$.
+Then amse of $U_n$ is $[g'(\theta)^2EY^2]/a_n^2$, asym var of $U_n$ is $[g'(\theta)^2Var(Y)]/a_n^2$
+
+\subsection{Properties of MOM}
+
+$\theta_n$ is unique if $h^{-1}$ exists. Strongly consistent if $h^{-1}$ is continuous via SLLN and continuous mapping. If $h^{-1}$ is differentiable and $E|X_1|^{2k}<\infty$ then by CLT and $\delta$-method. $V_\mu$ is $k\times k$ with $(i, j) = \mu_{i+j}-\mu_i\mu_j$
+
+$$
+\sqrt{n} (\hat\theta_n-\theta) \rightarrow_D N(0, [\nabla g]^T V_\mu \nabla g)
+$$
+
+MOM is $\sqrt{n}$-consistent, and if $k=1$ $amse_{\hat\theta_n}(\theta)=g'(\mu_1)^2\sigma^2/n$, $\sigma^2=\mu_2-\mu_1^2$
+
+\subsection{Asym Properties of UMVUE}
+
+Typically consistent, exactly unbiased, ratio of mse over Cramér-Rao LB converges to 1 (asym they are the same).
+
+\subsection{Asymptotic properties of sample quantiles}
+
+$X_1, X_2, \cdots$ iid rvs with CDF $F$, $\gamma\in(0, 1)$, $\hat\theta_n :=$ $\lfloor{\gamma n}\rfloor$-th order statistics. Suppose $F(\theta)=\gamma$ and $F'(\theta) > 0$ and exists.
+$$
+\sqrt{n}(\hat\theta_n-\theta)\rightarrow^{D} N\left(0, \frac{\gamma(1-\gamma)}{[F'(\theta)]^2}\right)
+$$
+
+\subsection{Consistency and Asymptotic efficiency of MLEs and RLEs}
+
+\subsubsection{Continuous in $\theta$}
+
+Suppose (1) $\Theta$ is compact (2) $f(x|\theta)$ is continuous in $\theta$ for all $x$ (3) there exists a function $M(x)$ s.t. $E_{\theta_0}|M(X)| < \infty$ and $|\log f(x|\theta) - log f(x|\theta_0)| \leq M(x)$ for all $x$ and $\theta$ (4) identifiable $f(x|\theta)=f(x|\theta_0)$ $\nu$-a.e. $\Rightarrow \theta = \theta_0$. Then for any sequence of MLE $\hat\theta_n\rightarrow_{\text{a.s.}}\theta_0$
+
+\subsubsection{Upper semi-continuous (usc)}
+
+$$
+\lim_{\rho\rightarrow0} \left\{
+    \sup_{||\theta'-\theta||<\rho} f(x|\theta')
+\right\} = f(x|\theta)
+$$
+
+\subsubsection{USC in $\theta$}
+
+Suppose (1) $\Theta$ is compact with metric $d(\cdot, \cdot)$ (2) $f(x|\theta)$ is usc in $\theta$ and for all $x$ (3) there exists a function $M(x)$ s.t. $E_{\theta_0}|M(X)| < \infty$ and $\log f(x|\theta)-\log f(x|\theta_0) \leq M(x)$ for all $x$ and $\theta$ (4) for all $\theta\in\Theta$ and sufficiency small $\rho >0$, $\sup_{d(\theta', \theta)<\rho} f(x|\theta')$ is measurable in $x$ (5) identifiable $f(x|\theta)=f(x|\theta_0)$ $\nu$-a.e. $\Rightarrow \theta=\theta_0$. Then $d(\hat\theta_n, \theta_0)\rightarrow_{\text{a.s.}}0$
+
+\subsubsection{$M$-estimators}
+
+General method to find $\hat\theta_n$ maximises criterion function $S_\theta(x)$, for MLE $s_\theta(x) = \log f(x|\theta)$.
+$E_{\theta_0}s_\theta(X) < E_{\theta_0}s_{\theta_0}(X)$ $\forall$ $\theta\neq \theta_0$.
+
+$$
+\theta \mapsto S_n(\theta) = \frac{1}{n} \sum_{i=1}^n s_\theta(X_i)
+$$
+
+\subsubsection{Consistency of $M$-estimators}
+
+$S_n(\theta)$ is random function while $S(\theta)$ is fixed s.t. $\sup_{\theta\in\Theta}|S_n(\theta)-S(\theta)|\rightarrow_P 0$ and for every $\rho > 0$
+$\sup_{\theta:d(\theta, \theta_0)\geq\rho}S(\theta)<S(\theta_0)$. Then any sequence of estimators $\hat\theta_n$ with $S_n(\hat\theta_n)\geq S_n(\theta_0)-o_P(1)$ converges in probability to $\theta_0$
+
+\subsubsection{RLE: Roots of the Likelihood Equation}
+
+$\theta$ that solves $\frac{\partial}{\partial\theta}\log L_n(\theta) = 0$
+
+\subsubsection{Basic Regularity conditions}
+
+Suppose (1) $\Theta$ is open subset of $\mathcal{R}^k$ (2) $f(x|\theta)$ is twice continuously differentiable in $\theta$ for all $x$, and
+$\frac{\partial}{\partial\theta}\int f(x|\theta) d\nu = \int \frac{\partial}{\partial\theta}f(x|\theta)d\nu$,
+$\frac{\partial}{\partial\theta}\int \frac{\partial}{\partial\theta^T} f(x|\theta) d\nu = \int \frac{\partial^2}{\partial\theta\partial\theta^T}f(x|\theta) d\nu$.
+(3) $\Psi(x, \theta)=\frac{\partial^2}{\partial\theta\partial\theta^T}\log f(x|\theta)$, there exists a constant $c$ and non-negative function $H$ s.t. $EH(X)<\infty$ and $\sup_{||\theta-\theta_*||<c}||\Psi(x, \theta)||\leq H(x)$.
+(4) Identifiable
+
+\subsubsection{Consistency of RLEs}
+
+Under basic regularity conditions, there exists a sequence of $\hat\theta_n$ s.t. $\frac{\partial}{\partial\theta}\log L_n(\hat\theta_n)=0$ and $\hat\theta_n\rightarrow_{\text{a.s.}}\theta_*$. More useful if likelihood is concave or unique.
+
+\subsubsection{Asymptotic Normality of RLEs}
+
+Assume basic regularity conditions, and $I(\theta) = \int \frac{\partial}{\partial\theta} \log f(x|\theta) \left[\frac{\partial}{\partial\theta}\log f(x|\theta)\right]^T d\nu(x)$ is positive definite and $\theta=\theta_*$. Then any consistent sequence $\{\Tilde{\theta_n}\}$ of RLE it holds
+
+$$
+\sqrt{n}(\Tilde{\theta_n} - \theta_*) \rightarrow_D N\left(0, \frac{1}{I(\theta_*)}\right)
+$$
+
+\subsubsection{NEF RLEs}
+
+Basic regularity condition (1, 2, 3, 4) holds due to proposition 3.2 and theorem 2.1, and result for (3). Only need to check condition on Fisher Info, then when $n$ is large, there exists $\hat\eta_n$ s.t. $g(\hat\eta_n)=\hat\mu_n$ and $\hat\eta_n\rightarrow_{\text{a.s.}}\eta$
+
+$$
+\sqrt{n}(\hat\eta_n - \eta) \rightarrow_D N\left(
+    0, \left[
+        \frac{\partial^2}{\partial\eta\partial\eta^T} \mathcal{C}(\eta)
+    \right]^{-1}
+\right)
+$$
+
+Where $g(\eta) = \frac{\partial\mathcal{C}(\eta)}{\partial\eta}$ and $\hat\mu_n=\frac{1}{n}\sum_{i=1}^n T(X_i)$
+
+\subsubsection{Asym Covariance Matrix}
+$V_n(\theta)$ is $k\times k$ positive definite matrix called asym covariance matrix. $V_n(\theta)$ is usually in form of $n^{-\delta}V(\theta)$, higher $\delta$ means faster convergence.
+
+$$
+[V_n(\theta)]^{-1/2}(\hat\theta_n-\theta)\rightarrow_D N_k(0, I_k)
+$$
+
+\subsubsection{Information Inequalities}
+
+$A \preccurlyeq B$ means $B-A$ is positive semi-definite. Suppose two estimators $\hat\theta_{1n}, \hat\theta_{2n}$ satisfy asym covariance matrix with $V_{1n}(\theta), V_{2n}(\theta)$. $\hat\theta_{1n}$ is asym more efficient thant $\hat\theta_{2n}$ if
+
+(1) $V_{1n}(\theta) \preccurlyeq V_{2n}(\theta)$ for all $\theta\in\Theta$ and all large $n$
+
+(2) $V_{1n}(\theta) \prec V_{2n}(\theta)$ for at least one $\theta \in \Theta$
+
+But note $\hat\theta_n$ is asym unbiased but CR LB might not hold even if regularity condition is satisfied.
+
+\subsubsection{Hodges' estimator}
+
+$X_i\sim N(\theta, 1)$, $\hat\theta_n=\bar X_n$ if $\bar X_n\geq n^{-1/4}$ and $t\bar X_n$ otherwise. $V_n(\theta)=1/n$ if $\theta\neq0$ and $t^2/n$ otherwise.
+
+if $\theta\neq 0$: $\sqrt{n}(\hat\theta - \theta) = \sqrt{n}(\bar X_n - \theta) - (1-t)\sqrt{n}\bar X_n I_{|\bar\theta_n|<n^{-1/4}}$
+if $\theta=0$: $=t\sqrt{n}(\bar X_n - \theta) + (1-t)\sqrt{n}\bar X_n I_{|\bar X_n|\geq n^{-1/4}}$
+
+\subsubsection{Super-efficiency}
+
+Point where UMVUE failed Hodeges' estiamtor in information inequality (2). But under the basic regularity condition and if Fisher Information is positive definite at $\theta=\theta_*$, if $\hat\theta_n$ satisfies Asym covariance matrix, then there is a $\Theta_0\subset\Theta$ with Lebesgue measure $0$ s.t. information inequality (2) holds for any $\theta\notin\Theta_0$
+
+\subsubsection{Asym efficiency}
+
+Assume Fisher Info $I_n(\theta)$ is well-defined and positive definite for every $n$, seq of estimators $\{\hat\theta_n\}$ satisfies asym cov matrix is asym efficient or asym optimal if and only if $V_n(\theta)=[I_n(\theta)]^{-1}$.
+
+\subsubsection{One-step MLE}
+
+Often asym efficient, useful to adjust an non asym efficient estimators provided $\hat\theta_n^{(0)}$ is $\sqrt{n}$-consistent.
+
+$$
+\hat\theta_n^{(1)} = \hat\theta_n^{(0)}-\left[\nabla s_n (\hat\theta_n^{(0)})\right]^{-1} s_n(\hat\theta_n^{(0)})
+$$

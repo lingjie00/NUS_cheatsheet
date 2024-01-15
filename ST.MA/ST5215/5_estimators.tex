@@ -1,0 +1,173 @@
+\section{Estimators}
+
+\subsection{Method of Moments}
+[$j$th moments of $P_\theta$] $\mu_j = E_\theta X^j$
+
+[Unbiased estimate] $\hat\mu_j = \frac{1}{n}\sum_{i=1}^n X^j$
+
+[MoM] Find the first $n$ moments, $n=$ number of parameters. Note $EX^2=Var(X)+(EX)^2$
+
+\subsubsection{Properties}
+
+\subsection{Maximum Likelihood}
+
+[Likelihood function] $\ell(\theta)=f_{\theta}(x)$
+
+[Maximum likelihood estimate of $\theta$] $\hat\theta \in \Theta$ satisfying $\ell(\hat\theta)=\max_{\theta\in\Theta}\ell(\theta)$
+
+[Maximum likelihood estimator] If $\hat\theta$ is a Borel function $X$ a.e. $\nu$
+
+[MLE est] $\max_{\theta}\ell(\theta)$
+
+[Score function] $\frac{\partial}{\partial\theta}\log f_\theta(X)$
+
+[Limitations] MLE might not exist, solvable, no PDFs, not MSE optimal. Note need to check all critical points
+
+\subsubsection{Numerical methods}
+
+Assuming Hessian matrix is full rank. Solving $\frac{\partial\log\ell(\theta)}{\partial\theta}=\mathbf{0}$
+$$
+\hat{\theta}^{(t+1)} = \hat{\theta}^{(t)} - \left[ 
+    \frac{\partial^2 \log \ell(\theta)}{\partial\theta\partial\theta^T} \mid_{\theta=\hat{\theta}^{(t)}}
+\right]^{-1}
+    \frac{\partial \log \ell(\theta)}{\partial\theta} \mid_{\theta=\hat{\theta}^{(t)}}
+$$
+
+\subsubsection{MLE for Exp Fam}
+
+NEF: $\ell(\eta)=\exp\left[\eta^T T(x) - \mathcal{C}(\eta) \right]h(x)$
+
+$$
+T(x) = \frac{\partial\mathcal{C}(\eta)}{\partial\eta},
+Var(T) = \frac{\partial^2\mathcal{C}(\eta)}{\partial\eta\partial\eta^T}
+$$
+
+General: $\ell(\theta) = \exp \left[\eta(\theta)^T T(x) - \xi(\theta)\right]h(x)$, note $\xi(\theta) = \mathcal{C}(\eta(\theta))$
+
+$$
+\hat\theta = \eta^{-1}(\hat\eta), \text{ or solution of }
+\frac{\partial\eta(\theta)}{\partial\theta}T(x) = \frac{\partial\xi(\theta)}{\partial\theta}
+$$
+
+\subsubsection{Consistency}
+
+Suppose (1) $\Theta$ is compact (2) $f(x|\theta)$ is continuous in $\theta$ for all $x$ (3) There exists a function $M(x)$ s.t. $E_{\theta_0}[M(X)]<\infty$ and $|\log f(x|\theta) - \log f(x|\theta_0)| \leq M(x)$ for all $x, \theta$ (4) identifiability holds $f(x|\theta)=f(x|\theta_0)$ $\nu$-a.e. $\Rightarrow \theta = \theta_0$. Then for any sequence of maximum likelihood-likelihood estimates $\hat\theta_n$ of $\theta$
+$$
+\hat\theta_n \rightarrow^{\text{a.s}} \theta_0
+$$
+
+\subsection{Unbiased Estimators}
+
+\subsubsection{Uniformly minimum variance unbiased estimator UMVUE}
+
+$T(X)$ of $\theta$ is UMVUE $\Leftrightarrow$
+$Var(T(X)\leq Var(U(X))$ for any $P\in\mathcal{P}$ and any other unbiased estimator $U(X)$ of $\theta$
+
+\subsubsection{Lehmann-Scheffé}
+
+Suppose there exists sufficient and complete statistic $T(X)$ for $P\in\mathcal{P}$, and $\theta$ is related to $P$. If $\theta$ is estimable, then there is a unique unbiased estimator of $\theta$ that is of the form $h(T)$ with a Borel function $h$. Furthermore, $h(T)$ is the unique UMVUE of $\theta$.
+
+\subsubsection{Finding UMVUE method 1}
+
+Using Lehmann-Scheffé, manipulate $E(h(T))=\theta$ to get $\hat\theta$ where $T$ is sufficient and complete. Useful when $E(h(T))$ is easy to solve.
+
+\subsubsection{Finding UMVUE method 2}
+
+Using Rao-Blackwellization. Find (1) unbiased estimator of $\theta=U(X)$, (2) sufficient and complete statistics $T(X)$, then $E(U|T)$ is the UMVUE of $\theta$ by Lehmann-Scheffé. Useful if $E(U|T)$ is easy to solve.
+
+\subsubsection{UMVUE method 3 - necessary and sufficient condition}
+
+Useful when no complete and sufficient statistics. Can use to find UMVUE, check if estimator is UMVUE, show nonexistence of UMVUE.
+
+Let $T$ is an unbiased estimator of $eta$ with finite variance, $\mathcal{U}$ is set of all unbiased estimators of 0 with finite variances.
+$T(X)$ is UMVUE $\Leftrightarrow$ $E[T(X)U(X)]=0$ for any $U\in\mathcal{U}$ and any $P\in\mathcal{P}$.
+
+Suppose $T=h(S)$, where $S$ is sufficient statistics for $P\in\mathcal{P}$ and $h$ is a Borel function. Let $\mathcal{U}_S$ be the subset of $\mathcal{U}$ consisting of Borel functions of $S$.
+$T(X)$ is UMVUE $\Leftrightarrow$ $E[T(X)U(X)]=0$ for any $U\in\mathcal{U}_S$ and any $P\in\mathcal{P}$
+
+\subsubsection{Using method3}
+
+(1) Find $U(x)$ via $E[U(x)]=0$ (2) Construct $T=h(S)$ s.t. $T$ is unbiased (3) Find $T$ via $E[TU]=0$
+
+\subsubsection{Corollary}
+
+If $T_j$ is UMVUE of $\eta_j$ with finite variances, then $T=\sum_{j=1}^k c_jT_j$ is UMVUE of $\eta=\sum_{j=1}^k c_j\eta_j$.
+
+If $T_1, T_2$ are UMVUE of $\eta$ with finite variances, then $T_1=T_2$ a.s. $P, P\in\mathcal{P}$
+
+\subsection{Fisher information}
+Suppose fixed support, for any $\theta\in\Theta$, $\frac{\partial f_\theta(x)}{\partial\theta}$ exists and is finite $P_\theta-$a.s., $X$ is a sample from $P_\theta\in\mathcal{P}$. Amount of information from $X$ is
+
+$$
+I(\theta) = E\left(
+    \frac{\partial}{\partial\theta}\log f_\theta (X)
+\right)^2 = \int \left(
+    \frac{\partial}{\partial\theta} \log f_\theta(X)
+\right)^2 f_\theta(X) d\nu(x)
+    = E\left\{
+        \frac{\partial}{\partial\theta}\log f_\theta(X) \left[
+            \frac{\partial}{\partial\theta}\log f_\theta (X)
+        \right]^T
+    \right\}
+$$
+
+\subsubsection{Parameterization}
+
+If $\theta=\psi(\eta)$ and $\psi'$ exists
+
+$$
+\Tilde{I}(\eta) = \psi'(\eta)^2 I(\psi(\eta))
+$$
+
+\subsubsection{Twice differentiable}
+
+Suppose $f_\theta$ is twice differentiable in $\theta$ and $\int \frac{\partial^2}{\partial\theta^2}f_\theta(x)I_{f_\theta(x)>0}d\nu=0$, then 
+$$
+I(\theta) = -E\left[
+    \frac{\partial^2}{\partial\theta^2} \log f_\theta(X)
+\right] = - E \left[
+        \frac{\partial^2}{\partial\theta\partial\theta^T} \log f_\theta(X)
+    \right]
+$$
+
+\subsubsection{Independent samples}
+
+If regularity condition $\int \frac{\partial}{\partial\theta}f_\theta(x)d\nu=0$ holds, then 
+$$I_{(X, Y)}(\theta) = I_X(\theta) + I_Y(\theta)$$
+
+\subsubsection{iid samples} If regularity condition holds
+
+$$
+I_{(X_1, \cdots, X_n)}(\theta) = nI_X{(X_1)}(\theta)
+$$
+
+\subsubsection{Exp fam}
+
+For any $S$ with $E[S(X)]<\infty$, it holds that $\frac{\partial}{\partial\theta}\int S(x) f_\theta(x) d\nu = \int S(x)\frac{\partial}{\partial\theta}f_\theta(x) d\nu$ and $I(\theta)=-E\left[\frac{\partial^2}{\partial\theta\partial\theta^T}\log f_\theta (X)\right]$
+
+If $\underline{I}(\eta)$ is fisher information matrix for natural parameter $\eta$, then covariance matrix $Var(T)=\underline{I}(\eta)$.
+
+Let $\psi=E[T(X)]$. Suppose $\Bar{I}(\psi)$ is fisher info matrix for parameter $\psi$, then $Var(T)=[\Bar{I}(\psi)]^{-1}$
+
+\subsubsection{Cramér-Rao Lower Bound}
+
+Suppose (1) $\Theta$ is an open set; $P_\theta$ has pdf $f_\theta$ (2) $f_\theta$ is differentiable and $0=\frac{\partial}{\partial\theta}\int f_\theta(x) d\nu = \int \frac{\partial}{\partial\theta}f_\theta(x)d\nu, \theta\in\Theta$.
+
+Suppose $g(\theta)$ is differentiable. $T(X)$ is unbiased estimator of $g(\theta)$ s.t. $g'(\theta)=\frac{\partial}{\partial\theta}\int T(x) f_\theta(x)d\nu=\int T(x)\frac{\partial}{\partial\theta}f_\theta(x)d\nu, \theta\in\Theta$. Then
+
+
+$$
+Var(T(X))\geq \frac{g'(\theta)^2}{I(\theta)} = \left[
+        \frac{\partial}{\partial\theta}g(\theta)
+    \right]^T [I(\theta)]^{-1} \frac{\partial}{\partial\theta} g(\theta)
+$$
+
+where $I(\theta)>0$ for any $\theta\in\Theta$
+
+\subsubsection{CR LB for biasd estimator}
+
+$Var(T) \geq \frac{[g'(\theta) + b'(\theta)]^2}{I(\theta)}$
+
+\subsubsection{CR LB equality}
+
+CR achieve equality iff $T = \left[\frac{g'(\theta)}{I(\theta)}\right]\frac{\partial}{\partial\theta}\log f_\theta(X) + g(\theta)$ a.s. One such example is exp fam.

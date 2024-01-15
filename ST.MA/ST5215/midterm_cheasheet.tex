@@ -1,0 +1,360 @@
+\documentclass{article}
+\usepackage[a4paper, total={8in, 11.5in}]{geometry}
+\usepackage{mathtools}
+\usepackage{tabulary}
+% commands to create lines
+\newcommand{\dline}{\vspace{1pt}\hrule\hrule\vspace{1pt}}
+\newcommand{\pline}{\vspace{1pt}\par\noindent\dotfill\vspace{1pt}\newline\noindent}
+%override section and subsection commands
+\renewcommand{\section}[1]{\\\vspace{1pt}\textbf{#1} &}
+\renewcommand{\subsection}[1]{\\\vspace{1pt}\text{[#1]} &}
+%remove page numbering
+\pagenumbering{gobble}
+% disable indent
+\setlength\parindent{0pt}
+% reduce padding
+\renewcommand{\arraystretch}{0.5}
+\setlength{\tabcolsep}{3pt}
+\setlength\extrarowheight{-3pt}
+
+\pdfinfo{
+    /Title (ST5215 Advanced Statistical Theory Midterm cheat-sheet)
+/Creator (Ling)}
+
+\begin{document}
+
+\begin{tabulary}{\textwidth}{l L}
+
+\section{Measure and Analysis}
+
+\subsection{Checking convexity}
+
+Convexity of $f$ implied by positive semi-definiteness Hessian [$\mathbf{x}^T\mathbf{Ax}\geq0$]. Check (1) Non-negative eigenvalues [$\det(\mathbf{A}-\lambda\mathbf{I})= 0$], (2) Leading principal minors are positive [$\det(\triangle_k)>0$]
+
+\subsection{Matrix operations}
+
+$c^{T}c=c_1^2 + \cdots + c_k^2$, $cc^{T}$ is $k\times k$ matrix with $(i, j)$th element as $c_ic_j$
+
+\subsection{$\sigma$-field}
+
+(1) $\emptyset \in \mathcal{F}$
+(2) $A \in \mathcal{F} \Rightarrow A^c \in \mathcal{F}$
+(3) $A_i \in \mathcal{F} \Rightarrow \cup_{i=1}^\infty A_i \in \mathcal{F}$
+(4) Smallest if any other $\sigma$-field $\subset\mathcal{E}$
+(5) Borel $\mathcal{B}$ := $\sigma(\mathcal{O})$
+
+\subsection{Measure}
+
+(1. non-negativity) $0\leq \nu(A) \leq \infty$ $\forall$ $A \in \mathcal{F}$
+(2. empty is zero) $\nu(\emptyset)=0$
+(3. $\sigma$-additivity) $\sum_{i=1}^\infty \nu(A_i) \ \nu(\cup_{i=1}^\infty) A_i$ if $A_i\in\mathcal{F}$ are disjoint
+
+\subsection{Measure property} 
+
+(1. Monotonicity) $A\subset B \Rightarrow \nu(A) \leq \nu(B)$
+(2. Sub-additivity) $\nu(\cup_{n=1}^\infty A_n) \leq \sum_{n=1}^\infty \nu(A_n)$
+(3. Continuity of $\uparrow$ seq) $\lim_{n\rightarrow\infty} A_n := \cup_{n=1}^\infty A_n$ and $\nu(\lim_{n\rightarrow \infty} A_n) = \lim_{n\rightarrow \infty} \nu(A_n)$
+(4. Continuity of $\downarrow$ seq) $\lim_{n\rightarrow \infty} A_n := \cap_{n=1}^\infty A_n$, and if $\nu(A_1) < \infty$ then $\nu(\lim_{n\rightarrow \infty} A_n) = \lim_{n\rightarrow \infty} \nu(A_n)$
+
+\subsection{Measurable function}
+
+Function $f$ is measurable function from $(\Omega, \mathcal{F})$ to $(\Lambda, \mathcal{G})$ if
+$f^{-1}(A) \in \mathcal{F} \text{ for all } A \in \mathcal{G}$.
+$f^{-1}(\mathcal{G})=\sigma(f)=\{f^{-1}(A):A\in\mathcal{G}\}$ is a sub-$\sigma$-field to $\mathcal{F}$
+
+\section{Integration}
+
+(Simple) $\int f d\nu := \sum_{i=1}^k c_i \nu(A_i)$
+(Non-negative Borel) $\int f d\nu := \sup \left\{ \int f d\nu: g\in \mathcal{S}_f \right\} = \lim_n \int \varphi_n d\nu$
+(Borel) $\int f d\nu := \int f_+ d\nu - \int f_- d\nu$
+where $f = f_+ - f_-$, $f_+ = \max\{f(x), 0\}$, $f_- = \max\{ -f(x), 0 \}$
+
+\subsection{Deduce $X=0$} If $X\geq 0$ a.s. and $EX=0$ then $X=0$ a.s.
+
+\subsection{Fubini's Theorem}
+
+Suppose $f\geq 0$ or $\int |f|d(\nu_1 \times \nu_2) < \infty$ then
+$g(\omega_2) = \int_{\Omega_1} f(\omega_1, \omega_2) d\nu_1(\omega_1)$,
+$\int_{\Omega_1 \times \Omega_2} f d(\nu_1 \times \nu_2) = \int_{\Omega_1}\left[ \int_{\Omega_2} f(\omega_1, \omega_2) d\nu_1(\omega_1) \right] d\nu_2(\omega_2)$
+
+\section{Convergence}
+
+\subsection{Monotone}
+
+$\int \lim_n f_n d\nu = \lim_n \int f_n d\nu$
+if $0\leq f_1 \leq f_2 \leq \cdots$ and $\lim_n f_n = f$ a.e.
+
+\subsection{Fatou}
+
+$\int \lim\inf_n f_n d\nu \leq \lim\inf_n \int f_n d\nu$
+if $f_n \geq 0$
+
+\subsection{Dominated}
+
+$\int\lim_n f_n d\nu = \lim_n \int f_n d\nu$
+if $\lim_{n\rightarrow \infty} f_n = f $ and $\exists $ integrable function $g$ s.t. $|f_n|\leq g$ a.e.
+
+\section{Change of variables}
+
+\subsection{Diff and Int}
+
+$\frac{d}{d\theta}\int  f(\omega,\theta) d\nu(\omega) = \int \frac{\partial f(\omega, \theta)}{\partial\theta} d\nu(\omega)$
+(1) $\exists$ $(a, b)\subset \mathcal{R}$ which $\partial f(\omega,\theta)/\partial\theta$ exists a.e. (2) $\exists$ $g$ on $\omega$ s.t. $|\partial f(\omega,\theta/\partial\theta|\leq g(\omega)$ a.e.
+
+\subsection{Change of Var}
+
+$\int_\Omega g \circ f d\nu = \int_\Lambda g d (\nu \circ f^{-1})$
+$f$ is measurable from $(\Omega, \mathcal{F}, \nu)$ to $(\Lambda, \mathcal{G})$, 
+induce measure $\nu \circ f^{-1}(B) := \nu(f^{-1}(B))\in\Lambda$ $\forall$ $B\in\mathcal{G}$.
+$g$ is Borel function on $(\Lambda, \mathcal{G})$
+
+\subsection{Change of Var Formula}
+
+$Y=g(X)$, $A_i$ disjoint, $h_j$ is inverse function of $g$ on $A_j$.
+$f_Y(y)=\sum_{j:1\leq j \leq m, y\in g(A_j)}|\det(\frac{\partial h_j(y)}{\partial y})| f_X(h_j(y))$
+
+\subsection{CDF/Law of X/X dist} $\nu = P$, $(\Lambda, \mathcal{G}) = (\mathcal{R}, \mathcal{B})$ and $f=X$.
+Then $P\circ X^{-1}$ if often denoted by $P_X$ or $F_X$ (CDF). Where $F_X(c) = P(X\leq c)$ By change of var
+$E g(X) = \int_\Omega g(X(\omega)) dP(\omega) = \int_\mathcal{R} g(x) dP_X(x)  = \int_\mathcal{R} g(x) dF_X(x)$
+
+\section{RN derivatives}
+
+\subsection{Ab continuity}
+
+$\lambda << \nu$ iff for any $A \in \mathcal{F}$, $\nu(A) = 0 \Rightarrow \lambda(A) = 0$
+
+\subsection{RN PDF}
+
+$\lambda << \nu$, there exist unique $f$ s.t. $\lambda(A) = \int_A f d\nu, A\in \mathcal{F}$.
+$f=\frac{dP}{d\nu}$ is called the pdf of $P$ w.r.t. $\nu$
+
+\section{Inequalities}
+
+\subsection{Cauchy-Schewarz}
+
+$Cov(X, Y)^2 \leq Var(X)Var(Y)$ \&
+$(E[XY])^2 \leq EX^2 EY^2$
+
+\subsection{Jensen}
+
+$\varphi(EX) \leq E\varphi(X)$ if $\varphi$ is convex fn, \& 
+$(EX)^{-1} < E(X^{-1})$
+\& $E(logX)<log(EX)$
+\& $\int f\log\left(\frac{f}{g}\right)d\nu \geq 0$
+
+\subsection{Chebyshev}
+
+$\varphi(t) P(|X|\geq t) \leq \int_{\{|X|\geq t\}} \varphi(X) dP \leq E\varphi(X)$, $\varphi(x)=\varphi(-x)\geq 0$, non-decreasing
+
+\subsection{Hölders}
+
+$E|XY| \leq (E|X|^p)^{1/p}(E|Y|^q)^{1/q}$, $1/p + 1/q = 1\Rightarrow q = p / (p-1)$
+
+\subsection{Young}
+
+$ab \leq \frac{a^p}{p} + \frac{b^q}{q}$
+equality if and only if $a^p = b^q$
+
+\subsection{Minkowski}
+
+$p \geq 1$, $(E|X+Y|^p)^{1/p} \leq (E|X|^p)^{1/p} + (E|Y|^p)^{1/p}$
+
+\subsection{Lyapunov}
+
+$0 < s < t$, $(E|X|^s)^{1/2} \leq (E|X|^t)^{1/t}$
+
+\end{tabulary}
+
+\begin{tabulary}{\textwidth}{l L}
+
+\section{CHF, MGF}
+
+$\forall$ $t\in\mathcal{R}^d$, if $\psi$ is finite in neighborhood of $\mathbf{0}\in\mathcal{R}^d$, then moments of $X$ of any order are finite, and $\phi_X(t)=\psi_X(\sqrt{-1}t)$, $\psi_{-X}(t) = \psi_{X}(-t)$, $|\phi_X|\leq 1$, $\phi_{-X}=\overline{\phi_X(t)}$
+
+\subsection{CHF}
+
+$\phi_X(t) = E\left[exp(\sqrt{-1}t^TX\right]=E\left[\cos(t^TX) + \sqrt{-1}\sin(t^TX)\right]$
+
+\subsection{MGF}
+
+$\psi_X(t) = E\left[exp(t^TX)\right]$
+
+\section{Conditional Exp/Dist}
+
+\subsection{Exp}
+$E(X|\mathcal{A})$ exist, unique s.t.
+(1) measurable from $(\Omega, \mathcal{A})$ to $(\mathcal{R}, \mathcal{B})$
+(2) $\int_C E(X|\mathcal{A})dP=\int_C X dP$, $C\in \mathcal{A}$.
+
+[prob]
+$P(B|\mathcal{A})=E(I_B|\mathcal{A})$
+[Exp given $Y$]
+$E(X|Y):=E[X|\sigma(Y)]$
+
+[simple fn $Y$, discrete $A_i$] $E(X|Y) = \sum_{i=1}^\infty \frac{\int_{A_i} X dP}{P(A_i)}I_{A_i}$
+
+\subsection{Dist}
+
+$P_{X|Y}(B|y)$ exists on $\mathcal{B}^n\times \Lambda $ s.t.
+(1) $P_{X|Y}(\cdot|y)$ is a prob. measure on $(\mathcal{R}^n, \mathcal{B}^n)$ for any fixed $y\in\Lambda$
+(2) $P_{X|Y}(B|y)=P[X\in B |Y = y]$ a.s. $P_Y$ for any fixed $B\in \mathcal{B}^n$
+
+\subsection{PDF}
+
+(a) any fixed $y\in A$, $P_{X|Y=y}$ w.r.t $\nu$ is $f_{X|Y}(x|y) = \frac{f(x, y)}{f_Y(y)}$.
+(b)If $g(x, y)$ is Borel fn on $\mathcal{R}^{n+m}$ and $Eg(X,Y) < \infty$, then
+$E[g(X, Y)|Y] = \int g(x, Y)f_{X|Y}(x|Y) d\nu(x)$ a.s.
+
+\subsection{Joint Dist}
+
+$Q$: $\mathcal{B}^n\times \Lambda \rightarrow \mathcal{R}$ and
+(1) $Q(\cdot, y)$ is a probability measure on $(\mathcal{R}^n, \mathcal{B}^n)$ for any $y\in\Lambda$
+(2) $Q(B, \cdot)$ is $\mathcal{G}-$measurable for any $B\in\mathcal{B}^n$.
+Then $P$ unique measure on $(\mathcal{R}^n\times\Lambda, \sigma(\mathcal{B}^n)\times\mathcal{G})$ s.t. for $B\in\mathcal{B}^n$ and $C\subset\mathcal{G}$, $P(B\times C) = \int_C Q(B, y) dP_0(y)$
+
+\section{Exp fam}
+
+For $\omega\in\Omega$, 
+$f_{\theta}(\omega)=\frac{dP_\theta}{d\nu}(\omega) = \exp\left\{[\eta(\theta)]^T T(\omega)-\xi(\theta)\right\}h(\omega)$,
+where $T$ is a random $p$-vector, $\eta$ is a function from $\Omega$ to $\mathcal{R}^p$, h is non-negative Borel function on $(\omega, \varepsilon)$ and 
+$\xi(\theta) =\log\left\{\int_\Omega \exp\left\{[\eta(\theta)]^T T(\omega)\right\}h(\omega) d\nu(\omega)\right\}$.
+Joint exp is exp.
+
+\subsection{NEF}
+
+$f_\eta(\omega) = \exp\left\{\eta^T T(\omega)-\mathcal{C}(\eta)\right\}h(\omega)$
+$\mathcal{C}(\eta)=\log\left\{\int_\Omega \exp\left\{\eta^T T(\omega)\right\}h(\omega)d\nu(\omega)\right\}$
+$\eta$ is called natural parameter and natural parameter space
+$\Xi=\{\eta(\theta):\theta\in\Theta\}\subset\mathcal{R}^p$. Full rank if $\Xi$ contains open set in $\mathcal{R}^p$
+
+\subsection{Show non Exp Fam} For an exp fam $P_\theta$, there is nonzero measure $\lambda$ s.t. $\frac{dP_\theta}{d\lambda}(\omega)>0$ $\lambda$-a.e. and for all $\theta$.
+
+Consider $f=\frac{dP_\theta}{d\lambda}I_{(t, \infty)}(x)$,
+$\int fd\lambda=0, f\geq 0\Rightarrow f=0$. Since $\frac{dP_\theta}{d\lambda}>0$ (assume), then $I_{(t, \infty)}(x)=0\Rightarrow v([t, \infty))=0$. Since $t$ is arbitary, consider $v(\mathcal{R})=0$ (contradiction)
+
+\subsection{Split $T(X)$} Let $T=(Y, U)$ and $\eta=(\nu, \varphi)$ [$Y$, $\nu$ same dim]. Then $Y$ has PDF
+$f_\eta(y)=\exp\left\{\nu^T y - \mathcal{C}(\eta)\right\}$
+
+w.r.t $\sigma$-finite measure depending on $\varphi$.
+If $T$ has a PDF in NEF, the conditional distirbution of $Y$ given $U=u$ has PDF
+$f_{\nu, u}(y) = \exp\left\{\nu^T y - \mathcal{C}_u(\nu)\right\}$
+which is in a NEF indexed by $\nu$
+
+\subsection{MGF of NEF}
+
+If $\eta_0$ is an interior point on natural parameter space, then MGF $\phi_{\eta_0}(t)$ of $T$ (with $P=P_{\eta_0}$ is finite in neighborhood of $t=0$ and is given by
+$\psi_{\eta_0}(t) = \exp\left\{\mathcal{C}(\eta_0+t)-\mathcal{C}(\eta_0)\right\}$
+
+Let $A(\theta)=\mathcal{C}(\eta_0(\theta))$, $\frac{dA(\theta)}{d\theta}=\frac{d\mathcal{C}(\eta_0(\theta))}{d\eta_0(\theta)}\cdot\frac{d\eta_0(\theta)}{d\theta}$,
+$E_{\eta_0} T = \frac{d\psi_{\eta_0}}{dt}|_{t=0} = \frac{d\mathcal{C}}{d\eta_0}
+=\frac{A'(\theta)}{\eta_0'(\theta)}$,
+$E_{\eta_0}T^2 = \mathcal{C}''(\eta_0) + \mathcal{C}'(\eta_0)^2$,
+$Var(T) = \mathcal{C}''(\eta_0) = \frac{A''(\theta)}{[\eta_0(\theta)]^2} - \frac{\eta_0(\theta)''A'(\theta)}{[\eta_0(\theta)']^3}$
+
+\subsection{Differential identities}
+
+$G(\eta) := \int g(\omega) \exp\left\{\eta^T T(\omega)-\mathcal{C}(\eta)\right\}h(\omega) d\nu(\omega)$,
+For $\eta$ in interior of $\Xi_g$,
+(1) $G$ is continuous and has continuous derivatives of all orders.
+(2) These derivatives can be computed by differentiation under the integral sign.
+e.g. $\frac{dG(\eta)}{d\eta} = E_\eta \left[g(\omega) \left(T(\omega) - \frac{\partial}{\partial\eta}\xi(\eta)\right)\right]$
+
+\section{Statistics}
+
+[Sample Variance] $S^2=\frac{1}{n-1}\sum_i(X_i-\bar{X})^2$
+[Ordered stats] $X_{(k)}$, $X_{(n)}=[F(x)]^n, f_{X_{(n)}}=nf(x)[F(x)]^{n-1}$, $X_{(1)}=1-[1-F(x)]^n, f_{X_{(1)}}=nf(x)[1-F(x)]^{n-1}$
+
+\section{Sufficiency}
+
+$P(X=x|T=t) \text{ does not depend on } \theta$
+
+\subsection{Factorization}
+
+$\frac{dP}{d\nu}(x) = g_P(T(x))h(x)$, 
+(1) $h(x)$ does not depend on $P$
+(2) $g_P(t)$ depends on $P$
+
+\section{Minimal sufficiency}
+
+Let $T$ be a sufficient statistics for $P\in\mathcal{P}$. $T$ is called minimal sufficient statistics iff for any other statistics $S$ sufficient for $P\in\mathcal{P}$, there is a measurable function $\psi$ s.t. $T=\psi(S)$ $\mathcal{P}$-a.s.
+
+\subsection{Method1 (A+B)}
+
+[Theorem A]
+Suppose $\mathcal{P}_0\subset\mathcal{P}$ and $\mathcal{P}_0$-a.s. implies $\mathcal{P}$-a.s.
+If $T$ is sufficient for $P\in\mathcal{P}$ and minimal sufficient for $P\in\mathcal{P}_0$, then $T$ is minimal sufficient for $P\in\mathcal{P}$
+
+[Theorem B]
+Suppose $\mathcal{P}$ contains PDFs $f_0, f_1, \cdots$ w.r.t a $\sigma$-finite measure.
+
+(1) Define $f_\infty(x)=\sum_{i=0}^\infty c_if_i(x)$, $T_i(x)=f_i(x)/f_\infty(x)$, then $T(X)=(T_0(X), T_1(X), \cdots)$ is minimal sufficient for $\mathcal{P}$. Where $c_i>0, \sum_{i=0}^\infty c_i=1, f_{\infty}(x)>0$.
+
+(2) If $\{x:f_i(x)>0\}\subset \{x: f_0(x) > 0\}$ for all $i$, then $T(X)=(f_1(x)/f_0(x), f_2(x)/f_0(x), \cdots$ is minimal sufficient for $\mathcal{P}$
+
+\subsection{Method2 (C)}
+
+[Theorem C]
+Suppose $\mathcal{P}$ contains PDFs $f_P$ w.r.t. $\sigma$-finite measure $\nu$. If
+(a) $T(X)$ is a sufficient statistics, and
+(b) There is a measurable function $\phi$ s.t. for any possible values $x, y$ of $X$, or $x, y\in\{x:h(x)>0\}$ for NEF.
+
+$f_P(x) = f_P(y)\phi(x, y) \forall P\in\mathcal{P} \Rightarrow T(x)=T(y)$,
+then $T(X)$ is minimal sufficient for $\mathcal{P}$
+
+\end{tabulary}
+
+\begin{tabulary}{\textwidth}{l L}
+
+\subsection{NEF special}
+
+If there exists $\Theta_0=\{\theta_0, \theta_1, \cdots, \theta_p\}\subset \Theta$ s.t. vectors $\eta_i=\eta(\theta_i)-\eta(\theta_0), i \in [1, p]$ are linearly independent in $\mathcal{R}^p$, then $T$ is also minimal sufficient.
+Check $det([\eta_1, \cdots, \eta_p])$ is non-zero OR $\Xi = \{\eta(\theta):\theta\in\Theta\}$  contains $(p+1)$ points that do not lie on the same hyperplane OR $\Xi$ is full rank.
+
+\section{Completeness}
+
+Statistics $T(X)$ is complete for $P\in\mathcal{P}$ iff for any Borel function $f$, $E_P f(T)=0$ for all $P\in\mathcal{P}$ implies $f(T)=0$ $\mathcal{P}$-a.s.
+$T$ is boundedly complete iff statements holds for bounded Borel functions $f$.
+
+[Completeness + Sufficiency $\Rightarrow$ Minimal Sufficiency]
+Suppose $X$ is a sample from unknown $P\in\mathcal{P}$, and suppose a minmal sufficient statistics exists.
+If a statistics $U$ is sufficient and boundedly complete, then $U$ is minimal sufficient
+
+\subsection{Ancillary statistics}
+A statistics $V(X)$ is ancillary for $\mathcal{P}$ if its distribution does not depend on population $P\in\mathcal{P}$
+
+[First-order ancillary] if $E_P[V(X)]$ does not depend on $P\in\mathcal{P}$
+
+\subsection{NEF special}
+
+If $\mathcal{P}$ is NEF of full rank then $T(X)$ is complete and sufficient for $\eta\in\Xi$
+
+\section{Basu's theorem}
+
+Let $V$ and $T$ be two statistics of $X$ from a population $P\in\mathcal{P}$. If $V$ is ancillary and $T$ is boundedly complete and sufficient for $P\in\mathcal{P}$, then $V$ and $T$ are independent w.r.t any $P\in\mathcal{P}$ 
+
+\section{Point Estimate}
+
+\subsection{Method of Moments}
+[$j$th moments of $P_\theta$] $\mu_j = E_\theta X^j$
+
+[Unbiased estimate] $\hat\mu_j = \frac{1}{n}\sum_{i=1}^n X^j$
+
+[MoM] Find the first $n$ moments, $n=$ number of parameters. Note $EX^2=Var(X)+(EX)^2$
+
+\subsection{Maximum Likelihood}
+
+[Likelihood function] $\ell(\theta)=f_{\theta}(x)$
+
+[Maximum likelihood estimate of $\theta$] $\hat\theta \in \Theta$ satisfying $\ell(\hat\theta)=\max_{\theta\in\Theta}\ell(\theta)$
+
+[Maximum likelihood estimator] If $\hat\theta$ is a Borel function $X$ a.e. $\nu$
+
+[MLE est] $\max_{\theta}\ell(\theta)$
+
+[Limitations] MLE might not exist, solvable, no PDFs, not MSE optimal. Note need to check all critical points
+
+\end{tabulary}
+
+\input{distributions}
+
+\end{document}

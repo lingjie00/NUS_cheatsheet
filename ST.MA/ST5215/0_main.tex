@@ -1,0 +1,40 @@
+\documentclass{article}
+\usepackage[a4paper, total={7.5in, 10.5in}]{geometry}
+\usepackage{mathtools}
+\usepackage{amssymb}
+% commands to create lines
+\newcommand{\dline}{\vspace{3pt}\hrule\hrule\vspace{5pt}}
+\newcommand{\pline}{\vspace{1pt}\par\noindent\dotfill\vspace{1pt}\newline\noindent}
+% disable indent
+\setlength\parindent{0pt}
+\pdfinfo{
+    /Title (ST5215 Advanced Statistical Theory)
+/Creator (Ling)}
+
+\begin{document}
+
+\tableofcontents
+
+\dline
+\input{1_analysis.tex}
+
+\dline
+\input{2_probability_theory.tex}
+
+\dline
+\input{3_elements_of_stats.tex}
+
+\dline
+\input{4_evaluation.tex}
+
+\dline
+\input{5_estimators.tex}
+
+\dline
+\input{6_asymptotics.tex}
+
+% list of commonly used distributions
+% \dline
+% \input{distributions.tex}
+
+\end{document}

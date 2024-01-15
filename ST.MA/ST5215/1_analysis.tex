@@ -1,0 +1,29 @@
+\section{Useful Analysis results}
+
+[Power set]
+$2^\Omega$ power set := {all subsets of $\Omega$}, trivial $\sigma$-field
+
+\pline
+[Cartesian product]
+$A\times B$ Cartesian product of two sets $A, B$ := $\{(a, b): a\in A, b\in B\}$,
+two spaces $\mathcal{F}_1 \times \mathcal{F}_2 := \{A_i \times B_i: A_i\in \mathcal{F}_1, B_i \in \mathcal{F}_2\}$
+
+\pline
+[Sets under mappings] For any function $f: \Omega \rightarrow \Lambda$ and any index set $I$
+\newline(a) $f\left( \cup_{\alpha\in I} A_\alpha \right) = \cup_{\alpha\in I}f(A_\alpha)$ where $A_\alpha \subset \Omega$
+\newline(b) $f^{-1}\left(\cup_{\alpha\in I} B_\alpha \right) = \cup_{\alpha\in I}f^{-1}(B_\alpha)$ where $B_\alpha \subset \Lambda$
+\newline(c) $f^{-1}(B^c) = (f^{-1}(B))^c$ where $B \subset \Lambda$
+
+\pline
+[Checking convexity] If $f$ is twice-differentiable, then convexity of $f$ is implied by positive semi-definiteness of Hessian [$\mathbf{x}^T\mathbf{Ax}\geq0$]. checked (1) Non-negative eigenvalues [$\det(\mathbf{A}-\lambda\mathbf{I})= 0$], (2) Leading principal minors are positive [$\det(\triangle_k)>0$]
+
+\pline
+[Matrix operations] $c^{T}c=c_1^2 + \cdots + c_k^2$, $cc^{T}$ is $k\times k$ matrix with $(i, j)$th element as $c_ic_j$
+
+\pline
+[Max function] $\max(a, b) = \frac{a+b-|a-b|}{2}$
+
+\pline
+[Set operation] $\cup_i (C\cap A_i) = C\cap (\cup_i A_i)\in \mathcal{F}_C$
+
+$f(\omega) = \int I_{(0, f(\omega))}(t) dm(t)$
