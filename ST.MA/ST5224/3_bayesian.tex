@@ -1,0 +1,121 @@
+
+\begin{tabulary}{\textwidth}{l || L}
+
+	\section{Bayesian}
+
+	\subsection{Method}
+
+	[Bayes formula]
+	$\frac{dP_{\theta|X}}{d\Pi} = \frac{f_\theta(X)}{m(X)}$.
+
+		[Bayes action $\delta(x)$]
+	$\arg\min_a E[L(\theta, a) | X = x]$,
+	when $L(\theta, a) = (\theta - a)^2$, $\delta(x) = E(\theta | X = x)$.
+
+		[Generalised Bayes action]
+	$\arg\min_a \int_{\Theta} L(\theta, a) f_\theta(x) d\Pi$,
+	works for improper prior where $\Pi(\Theta) \neq 1$
+
+	[Interval estimation - Credible sets]
+	$P_{\theta|x}(\theta\in C) = \int_C p_x(\theta)d\lambda \geq 1- \alpha$
+
+	[HPD (highest posterior dentsity)]
+	$C(x) = \{\theta: p_x(\theta) \geq c_\alpha\}$,
+	often shortest length credible set.
+	Is a horizontal line in the posterior density plot.
+	Might not have confidence level $1-\alpha$.
+
+		[Hierachical Bayes]
+	With hyper-priors as hyper-parameters on the priors.
+
+\end{tabulary}
+
+\begin{tabulary}{\textwidth}{l || L}
+
+
+	\subsection{Empirical Bayes}
+	Estimate hyper-paramter via data using MoM (no MLE as not independent).
+
+	$X_i\sim N(\mu, \sigma^2)$,\; $\mu|\xi \sim N(\mu_0, \sigma_0^2)$,\;
+	$\sigma^2$ known,\; $\xi = (\mu_0, \sigma_0^2)$,\ Using MoM
+
+	$E_\xi(X|\xi) = E_\xi(E[X|\mu, \xi]) = E_\xi(\mu|\xi) = \mu_0 \approx \bar X$,\;
+	$E_\xi(X^2|\xi) = E_\xi(\mu^2 + \sigma^2 | \xi) = \sigma^2 + \mu_0^2 +
+		\sigma_0^2 \approx \frac{1}{n} \sum X_i^2$
+	$\Rightarrow \sigma_0^2 = \frac{1}{n}\sum_{i=1}^n (X_i - \bar X)^2
+		-\sigma^2$
+
+	\subsection{Normal posterior}
+
+	Normal posterior with prior unknown $\mu$ and known $\sigma^2$ $N(\mu_*(x), c^2)$:
+
+	$\mu_*(x) = \frac{\sigma^2}{\sigma^2 + n\sigma_0^2} \mu_0 + \frac{n\sigma_0^2}{\sigma^2 + n\sigma_0^2} \bar{x}$,
+	$c^2 = \frac{\sigma_0^2\sigma^2}{n\sigma_0^2 + \sigma^2}$
+
+	$C(x) = [\mu_*(x) - cz_{1-\alpha/2},~\mu_*(x) + cz_{1-\alpha/2}]$.
+
+	\subsection{Decision theory}
+
+	[Admissibility]
+	(1) $\delta(X)$ unique $\Rightarrow$ admissible,\;
+	(2, 3) $r_{\delta}(\Pi) < \infty$, $\Pi(\theta) > 0$ for all $\theta$
+	and $\delta$ is Bayes action with respect to $\Pi$ $\Rightarrow$ admissible.
+	\textit{Not true for improper priors}, Improper priors require excessive risk
+	ignorable, take limit and observe if risk is admissible.
+
+		[Bias]
+	Under squared error loss, $\delta(X)$ is biased unless $r_\delta(\Pi) = 0$.
+	\textit{No applicable to improper priors}.
+
+	[Minimax]
+	If $T$ is (unique) Bayes estimator under $\Pi$ and
+	$R_T(\theta) = \sup_{\theta'} R_T(\theta')$ $\pi\text{-a.e.}$,
+	, then $T$ is (unique) minimax.
+	\textit{Limit of Bayes estimators} If $T$ has constant risk and
+	$\lim\inf_j r_j \geq R_T$, then $T$ is minimax.
+
+\end{tabulary}
+
+\begin{tabulary}{\textwidth}{l || L}
+
+	\subsection{Simul est}
+
+	Simultaneous estimate vector-valued $\mathcal{V}$ with e.g. squared loss
+	$L(\theta, a) = \|a - \theta\|^2 = \sum_{i=1}^{p} (a_i - \theta_i)^2$
+
+	\subsection{Asymptotic}
+
+	[Posterior Consistency]
+	$X\sim P_{\theta_0}$ and $\Pi(U|X_n) \xrightarrow{P_{\theta_0}} 1$
+	for all open $U$ containing $\theta_0$.
+
+		[Wald type consistency]
+	Assume $p_\theta(x)$ is continuous, measurable, $\theta_*$ is unique maximizer
+	then MLE converge to true parameter $\theta^*$ $P_*$ a.s.
+	Furthermore, if $\theta^\ast$ is in the support of the prior,
+	then posterior converges to $\theta^\ast$ in probability.
+
+		[Posterior Robustness]
+	all priors that lead to consistent posteriors are equivalent.
+
+	\subsection{BM}
+	Bernstein-von Mises: assume regularity conditions, posterior
+	$T_n = \sqrt{n} (\Tilde{\theta_n}-\hat{\theta_n}) \sim \mathcal{N}(\hat\theta_n, V^*/n)$
+	asymptotically.
+
+		[Well-specified]
+	$V^* = E_* \left[ -\nabla_\theta^2 \log p_{\theta^*}(Y) \right]^{-1}$
+	(same as MLE, with $\theta^*$ as true parameter, CI = CR)
+
+	[Mis-specified]
+	$V^* = \mathbb{E}_*\left[-\nabla_\theta^2\log p_{\theta_*}(Y)\right]^{-1}=$
+	$\mathbb{E}_*\left[-\nabla_\theta^2\log p_{\theta^*}(Y)\right]^{-1}\text{Var}_*\left(\nabla\log
+		p_{\theta^*}(Y)\right)\mathbb{E}_*\left[-\nabla_\theta^2\log p_{\theta^*}(Y)\right]^{-1}$
+	(differ from MLE, with $\theta_*$ the projection of $P_*$ to parameter
+	space)
+
+	[Result]
+	$\sqrt{n} \left( \hat\theta_n - E_\theta[\theta | X_1, \cdots, X_n] \right)
+		\xrightarrow{P} 0$ (If MLE has asym normality, so is posterior mean)
+
+\end{tabulary}

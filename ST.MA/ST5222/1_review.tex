@@ -1,0 +1,100 @@
+\section{L1 Review}
+
+\begin{tabulary}{\textwidth}{l L}
+
+\subsection{Big $O(\cdot)$}
+
+$f(z) = O(g(z))$ as $z\rightarrow z_0 \in \mathcal{R}$ if 
+$$
+\left|\frac{f(z)}{g(z)}\right| \leq M
+$$
+for some $M > 0$, and for all $z$ in neighborhood of $z_0$.
+
+If $z\rightarrow \infty$, then there exists $C>0$ s.t. statement holds for all $z>C$
+
+\subsection{Small $o(\cdot)$}
+
+$f(z)=o(g(z))$ as $z\rightarrow z_0 \in \mathcal{R}$ if
+
+$$
+\lim_{z\rightarrow z_0} \frac{f(z)}{g(z)} = 0
+$$
+
+\subsection{Taylor's Expansion}
+
+Let $f(\cdot)$ defined on $[a, b]$ s.t. it has continuous $(n+1)$th order derivatives. Then for all $x, x_0$ in $[a, b]$
+
+$$
+f(x) = f(x_0) + (x-x_0) f'(x_0) + \frac{(x-x_0)^2}{2!} f''(x_0) + \cdots + \frac{(x-x_0)^n}{n!} f^{(n)}(x_0) + R_n
+$$
+
+where
+
+$$
+R_n = \frac{(x-x_0)^{n+1}}{(n+1)!} f^{(n+1)}(\xi) = O(|x-x_0|^{n+1})
+$$
+
+for some $\xi\in(x, x_0)$ or $(x_0, x)$
+
+\subsection{Alternate Taylor}
+
+Since $f^{(n+1)}(\cdot)$ is bounded based on theorem condition
+
+$$
+f(x) = f(x_0) + (x-x_0)f'(x_0) + \cdots + \frac{(x-x_0)^n}{n} f^{(n)}(x_0) + O(|x-x_0|^{n+1})
+$$
+
+as $x\rightarrow x_0$
+
+\subsection{Multivariate Taylor expansion}
+
+Let $x=(x_1, x_2)^T, y=(y_1, y_2)^T$
+
+$$
+f(x+y) = f(x) + y_1 f_1(x) + y_2f_2(x) + R
+$$
+
+$$
+R = \frac{1}{2} y_1^2 f_{11}(\xi) + y_1 y_2 f_{12} (\xi) + \frac{1}{2} y^2_2 f_{22} (\xi) = O(||y||^2)
+$$
+
+and $\xi = \alpha x + (1-\alpha) (x+y)$ for some $\alpha \in [0, 1]$
+
+\subsection{Likelihood Inference}
+
+$X_1, \cdots, X_n$ be iid with $f(x|\theta)$, then likelihood of $X_1=x_1, \cdots, X_n=x_n$ is
+
+$$
+L(\theta) = \prod_{i=1}^n f(x_i|\theta)
+$$
+
+Likelihood principle find $\theta$ that maximises $L(\theta)$.
+Log-likelihood = $\ell(\theta)=\log L(\theta)$.
+Score function $s(\theta) = \ell'(\theta)$
+
+\subsection{Asymptotic Normality of MLEs}
+
+\subsection{Convergence Order}
+
+A root-finding method has convergence order $\beta$ ($\geq 1)$ if
+
+(a) $\lim_{t\rightarrow\infty} \epsilon_t = 0$
+
+(b) $\lim_{t\rightarrow\infty} \frac{|\epsilon_{t+1}}{\epsilon_t}^\beta = c$ for some $c > 0$
+
+When $\beta = 1$, we require $c < 1$
+
+\subsection{Matrix Digression}
+
+Given $y, z$ not orthogonal to each other, find symmetric matrix $M$ s.t. $y = Mz$
+
+[[ Solution 1 ]] $y^Tz$ is scalar,
+$ M = \frac{yy^T}{y^Tz} $
+
+[[ Solution 2 ]] Given any symmetric matrix $M_0$, let $v = y-M_0z$. 
+$M = M_0 + \frac{vv^T}{v^Tz}$
+
+[[ Solution 3 ]]
+$M = M_0 - \frac{(M_0z)(M_0z)^}{z^TM_0z} + \frac{yy^T}{y^Tz}$
+
+\end{tabulary}

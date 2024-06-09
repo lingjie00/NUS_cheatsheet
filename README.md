@@ -47,4 +47,6 @@ contains every major pointers in the module.
 | ST3248 | Statistical Learning I | summary notes |
 | ST4231 | Computer Intensive Statistical Methods | summary notes |
 | ST4234 | Bayesian Statistics | summary notes |
-| ST5215 | Advanced Statistical Theory | summary notes + cheatssheet |
+| ST5215 | Advanced Statistical Theory | summary notes + cheatsheet |
+| ST5222 | Advanced Topics in Applied Statistics | summary notes + cheatsheet |
+| ST5224 | Advanced Statistical Theory II | summary notes + cheatsheet |

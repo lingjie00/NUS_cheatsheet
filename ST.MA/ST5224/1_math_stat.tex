@@ -1,0 +1,281 @@
+\begin{tabulary}{\textwidth}{l || L}
+
+	\section{Math Prob}
+
+	\subsection{Real}
+
+	$\min(a, b) + \max(a, b) = a + b$,
+	$\max(a, b) + \min(a, b) = |a - b|$,
+	$\max(a, b) = \frac{1}{2} (a + b + |a - b|)$,
+	$\min(a, b) = \frac{1}{2} (a + b - |a - b|)$
+
+	\subsection{Matrix}
+
+	[Ops]
+	$x^Tx\in\mathcal{R}$,
+	$xx^T \in \mathcal{R}_{k\times k}$
+	$g(b) = \lVert X - Zb \rVert = (X - Zb)^T (X - Zb)$,
+	$\frac{\partial}{\partial b} (b^T A b) = 2Ab$,
+	$\frac{\partial}{\partial b} (b^T A c) = Ac$,
+
+	[Generalised inverse]
+	$A^-$ is inverse of $A$ if $AA^-A = A$
+	[Moore-Penrose inverse]
+	$A^- A A^- = A^-$
+
+	[Projection]
+	$P_z = Z(Z^TZ)^- Z^T$, $P_z^2 = P_z$, $P_z Z = Z$, $rank(P_z) =
+		r$
+
+	\subsection{Sets}
+
+	[Mapping]
+	(a) $f\left( \cup_{\alpha\in I} A_\alpha \right) = \cup_{\alpha\in
+			I}f(A_\alpha)$
+	(b) $f^{-1}\left(\cup_{\alpha\in I} B_\alpha \right) =
+		\cup_{\alpha\in I}f^{-1}(B_\alpha)$
+	(c) $f^{-1}(B^c) = (f^{-1}(B))^c$
+
+	[Ops]
+	$\cup_i (C\cap A_i) = C\cap (\cup_i A_i)$,
+	$f(\omega) = \int I_{[0, f(\omega)]}t \; dm(t)$
+
+	\subsection{Expectation}
+
+	[Linearity] $E(aX + bY) = aEX + bEY$
+	[Abs finite] $EX$ is finite $\Leftrightarrow$ $E|X|$ is finite
+		[Order] $EX \leq EY$, equality if $X=Y$ a.s.
+		[Deduce $X=0$] If $X\geq 0$ a.s. and $EX=0$ then $X=0$ a.s.
+
+	\subsection{Var, Cov}
+
+	$Var(X) = E[(X-EX)(X-EX)^T]$,
+	$Cov(X, Y) = E[(X-EX)(Y-EY)^T]$,
+	$Corr(X, Y) = Cov(X, Y)/(\sigma_X\sigma_Y)$,
+	$E(a^TX)=a^TEX$,
+	$Var(a^TX)=a^TVar(X)a$
+
+	\subsection{Inequalities}
+
+	[Cauchy-Schewarz]
+	$ Cov(X, Y)^2 \leq Var(X)Var(Y) $,
+	$ (EXY)^2 \leq EX^2 EY^2 $
+
+	[Jensen]
+	$A$ is convex set, $\varphi$ is convex function
+	$ \varphi(EX) \leq E\varphi(X) $,
+	$(EX)^{-1} < E(X^{-1})$,
+	$E(logX)<log(EX)$
+
+	[Chebyshev]
+	$\varphi > 0$,
+	$\varphi(-x) = \varphi(x)$
+	and is non-decreasing on $[0, \infty)$
+	$\Rightarrow
+		\varphi(t) P(|X|\geq t) \leq \int_{\{|X|\geq t\}} \varphi(X) dP \leq
+		E\varphi(X)
+	$
+	E.g.
+	$
+		P(|X-\mu| \geq t) \leq \frac{\sigma_X^2}{t^2},
+		P(|X|\geq t) \leq \frac{E|X|}{t}
+	$
+
+	[Hölder]
+	$p, q > 0$, $1/p + 1/q = 1\Rightarrow q = p / (p-1)$
+	$
+		E|XY| \leq (E|X|^p)^{1/p}(E|Y|^q)^{1/q}
+	$,
+	equality  $\Leftrightarrow$
+	$|X|^p = c|Y|^q$
+
+	[Young]
+	$ ab \leq \frac{a^p}{p} + \frac{b^q}{q} $
+	equality $\Leftrightarrow a^p = b^q$
+
+	[Minkowski]
+	$p \geq 1$,
+	$
+		(E|X+Y|^p)^{1/p} \leq (E|X|^p)^{1/p} + (E|Y|^p)^{1/p}
+	$
+
+	[Lyapunov]
+	for $0 < s < t$,
+	$
+		(E|X|^s)^{1/2} \leq (E|X|^t)^{1/t}
+	$
+
+	[Kullback-Leibler]
+	$K(f_0, f_1) = E_0 \log \frac{f_0(X)}{f_1(X)} = \int \log
+		\left(\frac{f_0(x)}{f_1(x)}\right) f_0(x)d\nu(x) \geq 0$
+	with equality $\Leftrightarrow f_1(\omega)=f_0(\omega)$ $\nu$-a.e.
+
+	\subsection{Char, MGF}
+	$\forall$ $t\in\mathcal{R}^d$
+	[Char func] $|\phi_X|\leq 1$, $\phi_{-X}=\overline{\phi_X(t)}$
+	$
+		\phi_X(t) = E\left[exp(\sqrt{-1}t^TX\right]=E\left[\cos(t^TX) +
+			\sqrt{-1}\sin(t^TX)\right]
+	$
+
+	[MGF]
+	$\psi_{-X}(t) = \psi_{X}(-t)$ $ = E\left[exp(t^TX)\right] $,
+	if $\psi$ finite near $\mathbf{0}\in\mathcal{R}^d$, then
+	$E[X^p]$ finite for all $p$,
+	$\phi_X(t)=\psi_X(\sqrt{-1}t)$
+
+	\subsection{Convergence}
+
+	[a.s.]
+	$ P\left(\lim_{n\rightarrow\infty} X_n = X\right) = 1 $,
+	use B.C. show $\forall \, \epsilon > 0, \sum_{i=1}^\infty P(|X_n - X| > \epsilon) < \infty$
+
+	[$L^p$]
+	if $E|X|^p<\infty$ and $E|X_n|^p<\infty$ and
+	$ \lim_{n\rightarrow\infty} E|X_n-X|^p = 0 $
+
+	[Prob]
+	for all $\epsilon>0$,
+	$
+		\lim_{n\rightarrow\infty} P(|X_n-X|>\epsilon) = 0
+	$,
+	can be showned by $E(X_n)=X$, $\lim_{n\rightarrow\infty}Var(X_n) = 0$
+
+	[dist (weak convergence)]
+	$
+		\lim_{n\rightarrow} F_n(x) = F(x)
+	$
+
+	[RS]
+	$L^p\Rightarrow L^q\Rightarrow P$, $a.s. \Rightarrow P$, $P \Rightarrow D$.
+	If $X_n\xrightarrow{D} C$, then $X_n \xrightarrow{P} C$.
+	If $X_n\xrightarrow{P} X$, $\exists$ sub-sequence s.t. $X_{n_j}\xrightarrow{\text{a.s.}}X$.
+
+		[Continuous mapping]
+	If $g: \mathcal{R}^k\rightarrow\mathcal{R}$ be continuous.
+	If $X_n \xrightarrow{\text{*}} X$, then $g(X_n) \xrightarrow{\text{*}}g(X)$
+	[a.s., $P$ or $D$]
+
+	% 	[Convengence properties]
+	% (Unique in limit)
+	% $X=Y$ if $X_n\xrightarrow{*} X/Y$ [a.s., $P$, $L^p$].
+	% If $F_n\Rightarrow F$ and $G$, then $F(t)=G(t)$ $\forall$ $t$
+
+	% (Concatenation)
+	% $(X_n, Y_n) \xrightarrow{*} (X, Y)$ [$P$ or a.s.],
+	% $(X_n, Y_n)\xrightarrow{D} (X, c)$ only for constant.
+
+	% (Linearity) $(aX_n+bY_n)\xrightarrow{*} aX+bY$ [a.s., $P$, $L^p$]
+	% \textit{note NOT for distribution}.
+
+	% (Cramér-Wold device)
+	% for $k$-random vectors, $X_n\xrightarrow{D} X$ $\Leftrightarrow$
+	% $c^TX_n\xrightarrow{D} c^T X$ for every $c\in\mathcal{R}^k$
+
+	[Lévy continuity]
+	$\{X_n\}$ converges in distribution to $X$  $\Leftrightarrow$ char $\{\phi_n\}$ converges pointwise to $\phi_X$
+
+	[Scheffés] (check pdf converge)
+	If $\lim_{n\rightarrow\infty} f_n(x)=f(x)$,
+	then $\lim_{n\rightarrow\infty} \int |f_n(x) - f(x)|d\nu=0$ and
+	$P_{f_n} \Rightarrow P_f$
+
+	[Slutsky's theorem]
+	If $X_n\xrightarrow{D} X$, $Y_n \xrightarrow{D} c$ (constant).
+	Then $X_n + Y_n \xrightarrow{D} X + c$,\;
+	$X_nY_n \xrightarrow{D} cX$, $X_n/Y_n \xrightarrow{D} X/c$ ($c\neq0$)
+
+	[Skorohod's theorem]
+	If $X_n\xrightarrow{D} X$, then $\exists Y, Y_1, Y_2, \cdots$ on common probability space
+	s.t. $P_{Y_n}=P_{X_n}, n=1, 2, \cdots$, $P_Y=P_X$ and $Y_n\rightarrow^{\text{a.s.}}Y$
+
+	\subsection{$\delta$-method}
+
+	If $\{a_n\} > 0$, $\lim_{n\rightarrow\infty} a_n = \infty$, c is constant,
+	Then $a_n(X_n-c)\xrightarrow{D} Y \Rightarrow a_n[g(X_n) - g(c)]\xrightarrow{D} g'(c) Y$
+
+	If $g^{(j)}(c) = 0$ for all $1\leq j \leq m-1$ and $g^{(m)}(c) \neq 0$. Then
+	$a_n^m [g(X_n)-g(c)]\xrightarrow{D} \frac{1}{m!}g^{(m)}(c) Y^m$
+
+	If $X_i, Y$ are $k$-vectors rvs and $c\in\mathcal{R}^k$
+	$ a_n[g(X_n)-g(c)]\xrightarrow{D} [\nabla g(c)]^T Y $
+	$= N\left(0, g(c)^T \Sigma g(c)\right)$ \textit{only if $Y$ is normal}
+
+	\subsection{SLLN}
+
+	[$X_i$ are identical]
+	$E|X_i|<\infty\Leftrightarrow \frac{1}{n}\sum_{i=1}^n X_i
+		\xrightarrow{\text{a.s.}} E(X_i)$
+
+	[non-identical]
+	If $\exists$ constant $p\in[1, 2]$ s.t. $\sum_{i=1}^\infty E|X_i|^p/i^p<\infty$, then
+	$ \frac{1}{n}\sum_{i=1}^n (X_i-EX_i)\rightarrow^{\text{a.s.}} 0 $
+
+	[Uniform SLLN, iid samples]
+	If (1) $U(x, \theta)$ continuous in $\theta$ for fixed $x$
+	(2) $\mu(\theta)=E[U(X, \theta)]$ is finite
+	(3) $\Theta$ compact
+	(4) $\exists M(x)$ s.t. $EM(X) < \infty$, $|U(x, \theta)\leq M(x)|$
+	$\forall \; x, \theta$. Then
+	$
+		P\left\{
+		\lim_{n\rightarrow\infty}\sup_{\theta\in\Theta} \left|
+		\frac{1}{n}\sum_{i=1}^n U(X_j, \theta)-\mu(\theta)
+		\right| = 0
+		\right\} = 1
+	$
+
+	\subsection{Weak LLN}
+
+	[$X_i$ identical]
+	If $\{a_n\}$ exist, $a_n := E\left(X_1I_{\{|X_1|\leq n\}\right)} \in
+		[-n, n]$, then
+	$
+		\lim_{n\rightarrow \infty} nP\left(|X_1| > n\right) \rightarrow 0
+		\Leftrightarrow \frac{1}{n} \sum_{i=1}^n X_i - a_n \xrightarrow{\mathcal{P}} 0
+	$
+
+	[WLLN, non-identical]
+	If $\exists$ constant $p\in[1, 2]$ s.t.
+	$\lim_{n\rightarrow\infty} \frac{1}{n^p} \sum_{i=1}^n E|X_i|^p = 0$, then
+	$ \frac{1}{n}\sum_{i=1}^n (X_i-EX_i)\rightarrow^{P} 0 $
+
+	\subsection{CLT}
+
+	[iid]
+	$\{X_n\}_{n=1}^\infty$ iid. If $\Sigma=VarX_1<\infty$, then
+	$
+		\frac{1}{\sqrt{n}}\sum_{i=1}^n (X_i-EX_i)\rightarrow^D N(0, \Sigma)
+	$
+
+	[Lindeberg's non-identical]
+	$\{X_{nj}, j=1, \cdots, k_n\}$ independent, if
+	(1) $k_n\rightarrow\infty$ as $n\rightarrow\infty$
+	(2, Lin cond) $0<\sigma_n^2 = Var\left(\sum_{j=1}^{k_n} X_{nj}\right)<\infty, n=1, 2, \cdots$.
+	(3) for any $\epsilon > 0$, $\frac{1}{\sigma_n^2}\sum_{j=1}^{k_n}E\left\{(X_{nj}-EX_{nj})^2I_{\{|X_{nj}-EX_{nj}|>\epsilon\sigma_n\}}\right\}\rightarrow 0$. Then
+	$
+		\frac{1}{\sigma_n}\sum_{j=1}^{k_n} (X_{nj}-EX_{nj})\rightarrow^D N(0, 1)
+	$
+
+	[Checking Lindeberg's condition]
+	(Lyapunov condition)
+	$
+		\frac{1}{\sigma_n^{2+\delta}}\sum_{j=1}^{k_n} E|X_{nj}-EX_{nj}|^{2+\delta}\rightarrow 0 \text{ for some } \delta > 0
+	$
+	(Uniform boundedness)
+	If $|X_{nj}|\leq M$ for all $n$ and $j$ and $\sigma_n^2 = \sum_{j=1}^{k_n}Var(X_{nj})\rightarrow \infty$
+
+	[Feller's condition]
+	If $
+		\lim_{n\rightarrow \infty} \max_{j\leq k_n} \frac{Var(X_{nj})}{\sigma_n^2} = 0
+	$,
+	Lindeberg $\Leftrightarrow$ convergence
+
+
+		[Berry-Esseen]
+	There $\exists$ constant $C$ s.t.
+	$
+		\sup_{y\subset\mathcal{R}}|F_n(y)-\Phi(y)|\leq \frac{C\rho}{\sigma^3\sqrt{n}}
+	$
+
+\end{tabulary}

@@ -1,0 +1,60 @@
+\section{L6: Markov Chain Monte Carlo}
+
+\begin{tabulary}{\textwidth}{l L}
+
+\subsection{MCMC}
+
+Objective: generate stationary distribution s.t. $X_t \sim f(x) \Rightarrow X_{t+1} \sim f(x)$
+
+\subsection{Independence Chains}
+
+Proposal distribution $g(x)$, $w(x) = f(x)/g(x)$
+
+(1) Generate $X_1\sim g(x)$, let $t=1$
+
+(2) Generate $Y\sim g(x)$, $U\sim Unif(0, 1)$
+
+    (2.1) If $U \leq w(Y)/w(X_t)$, $X_{t+1}=Y$
+    
+    (2.2) If $U > w(Y)/w(X_t)$, $X_{t+1}=X_t$
+
+(3) Increase $t$ by 1
+
+(4) Repeat steps (2) and (3) to generate $X_1, X_2, \cdots$
+
+Basically,
+$$
+R(X_t, Y) = \frac{f(Y)g(X_t)}{f(X_t)g(Y)}
+$$
+
+\subsection{Metropolis-Hasting}
+
+(1) Generate $X_1$ from arbitary initial distribution and set $t=1$
+
+(2) Simulate $Y\sim g(y|X_t)$
+
+(3) Compute MH ratio  $R(X_t, Y)$
+
+$$
+R(X_t, Y) = \frac{f(Y)g(X_t|Y)}{f(X_t) g(Y|X_t)}
+$$
+
+(4) Generate $U\sim Unif(0, 1)$,
+
+(4.1) If $U\leq R(X_t, Y)$, $X_{t+1} = Y$
+
+(4.2) Otherwise, $X_{t+1} = X_t$
+
+(5) Increase $t$ by 1
+
+(6) Repeat steps (2)-(5) t generate MC chain $X_1, X_2, \cdots$
+
+\subsection{Gibbs Sampling}
+
+(1) Simulate $X_1=(X_{11}, X_{12})$ from arbitary distribution, set $t=1$
+
+(2) Simulate $X_{t+1|1}\sim f_1(x_1|X_{t, 2})$ and then simulate $X_{t+1, 2} \sim f_2(x_2|X_{t+1}, 1)$
+
+(3) Increase $t$ by 1 and repeat (2)
+
+\end{tabulary}

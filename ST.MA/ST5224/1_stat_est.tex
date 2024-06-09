@@ -1,0 +1,152 @@
+
+\begin{tabulary}{\textwidth}{l || L}
+
+	\section{Stat Est}
+
+	\subsection{Common Terms}
+
+	[Identifiable]
+	Parametric family is identifiable iff $\forall$ $\theta_1,
+		\theta_2\in\Theta$ and $\theta_1\neq\theta_2\Rightarrow P_{\theta_1}\neq
+		P_{\theta_2}$
+
+	[Sample Variance]
+	$S^2=\frac{1}{n-1}\sum_i(X_i-\bar{X})^2$
+	[Empirical variance] $\frac{1}{n}\sum_i (X_i - \bar{X})^2$
+
+	[Ordered Statistics]
+	$X_{(n)}=[F(x)]^n, f_{X_{(n)}}=nf(x)[F(x)]^{n-1}$,
+	$X_{(1)}=1-[1-F(x)]^n, f_{X_{(1)}}=nf(x)[1-F(x)]^{n-1}$
+
+	[Empirical dist]
+	$P_n(A)=\frac{1}{n}\#\{i: X_i \in A\}$, $\forall$ $A\in B$
+	[Empirical CDF]
+	$F_n$ $F_n(t) = \frac{1}{n}\sum_{i=1}^n 1_{(-\infty, t)}(X_i), t\in\mathcal{R}$
+
+
+\end{tabulary}
+
+\begin{tabulary}{\textwidth}{l || L}
+
+
+	\subsection{Exp Fam}
+	$f_\theta(x)=\exp\left[\eta(\theta)Y(x)-\xi(\theta)\right]h(x)$
+	$= \exp\left\{\eta^T T - \mathcal{C}(\eta)\right\} $
+	$A(\theta):=\mathcal{C}(\eta_0(\theta))$, \,
+	$\frac{dA(\theta)}{d\theta}=\frac{d\mathcal{C}(\eta_0(\theta))}{d\eta_0(\theta)}\cdot\frac{d\eta_0(\theta)}{d\theta}$,
+
+	[MGF]
+	$ \psi_{\eta_0}(t) = \exp\left\{\mathcal{C}(\eta_0+t)-\mathcal{C}(\eta_0)\right\} $
+	$
+		E_{\eta_0} T = \frac{d\psi_{\eta_0}}{dt}|_{t=0} = \frac{d\mathcal{C}}{d\eta_0}
+		=\frac{A'(\theta)}{\eta_0'(\theta)}
+	$,
+	$
+		E_{\eta_0}T^2 = \mathcal{C}''(\eta_0) + \mathcal{C}'(\eta_0)^2
+	$,
+	$
+		Var(T) = \mathcal{C}''(\eta_0) = \frac{A''(\theta)}{[\eta_0(\theta)]^2} - \frac{\eta_0(\theta)''A'(\theta)}{[\eta_0(\theta)']^3}
+	$
+
+	[Differnetial]
+	$
+		G(\eta) := \int g(\omega) \exp\left\{\eta^T T(\omega)-\mathcal{C}(\eta)\right\}h(\omega) d\nu(\omega)
+	$
+	$
+		\frac{dG(\eta)}{d\eta} = E_\eta \left[g(\omega) \left(T(\omega) - \frac{\partial}{\partial\eta}\xi(\eta)\right)\right]
+	$
+
+	\subsection{Min Suff}
+
+	[Method 1: A + B]
+	[A]
+	Suppose $\mathcal{P}_0\subset\mathcal{P}$, $\mathcal{P}_0$-a.s.
+	$\Rightarrow \mathcal{P}$-a.s.
+	If $T$ is suff for $P\in\mathcal{P}$ and min suff for $P\in\mathcal{P}_0$,
+	then $T$ is min suff for $P\in\mathcal{P}$
+	[B]
+	Suppose $\mathcal{P}$ contains PDFs $f_0, f_1, \cdots$ w.r.t a $\sigma$-finite measure.
+
+	(B1 $T(X)=\{T_i(X)\}$).
+	$c_i>0$, $\sum_{i=0}^\infty c_i=1$
+	$f_\infty(x) := \sum_{i=0}^\infty c_if_i(x) > 0$,
+	$T_i(x)=f_i(x)/f_\infty(x)$,
+
+	(B2 $T(X)=\{f_i(x)/f_0(x)\}$) If $\{x:f_i(x)>0\}\subset \{x: f_0(x) > 0\} \, \forall \, i$
+
+	[Method 2: C]
+	Suppose $\mathcal{P}$ contains PDFs $f_P$ w.r.t. $\sigma$-finite measure $\nu$. If
+	(a) $T(X)$ is a suff stat, and
+	(b) $\exists \, \phi$ s.t.
+	$
+		f_P(x) = f_P(y)\phi(x, y) \, \forall \, P\in\mathcal{P} \Rightarrow T(x)=T(y)
+	$
+	for any possible values $x, y$ of $X$ (NEF: $x, y\in\{x:h(x)>0\}$)
+
+	[NEF special]
+	$T$ is min suff if $\eta_i=\eta(\theta_i)-\eta(\theta_0)$ are linearly independent.
+	(a) Check $det([\eta_1, \cdots, \eta_p])$ is non-zero
+	(b) $\Xi = \{\eta(\theta):\theta\in\Theta\}$  contains $(p+1)$ points that do not lie on the same hyperplane
+	(c) $\Xi$ is full rank.
+
+	\subsection{Completeness,\\Basu}
+
+	$T(X)$ is complete for $P\in\mathcal{P}$ $\Leftrightarrow$ for any Borel function $f$,
+	$E_P f(T)=0 \Rightarrow f(T)=0$ (bounded if $f$ is bounded)
+
+	[Bounded Complete + Suff $\Rightarrow$ Min Suff]
+		[NEF]
+	full rank $\Rightarrow T(X)$ is complete and sufficient for $\eta\in\Xi$
+
+	[Basu's theorem]
+	Let $V$ and $T$ be two statistics of $X$ from a population $P\in\mathcal{P}$. If $V$ is ancillary and $T$ is boundedly complete and sufficient for $P\in\mathcal{P}$, then $V$ and $T$ are independent w.r.t any $P\in\mathcal{P}$
+
+	\subsection{Decision rule,\\Rao Blackwell}
+
+	[Risk] $R_T(P) = E[L(P, T(X))]$
+	[Optimal]
+	$R_T(P) \leq R_{T_*}(P) \, \forall \, P$
+	[Admissibility]
+	$\not\exists R_T(P) > R_{T_*}(P) \, $ for any $P$
+	[MiniMax]
+	$\sup_{P\subset\mathcal{P}}R_{T_*}(P)\leq \sup_{P\subset\mathcal{P}}R_T(P)$
+	[Bayes]
+	$r_T(\Pi)=\int_{\mathcal{P}} R_T(P) d\Pi(P)$
+
+	[MSE]
+	$E(||\hat\theta-\theta||^2)=E||\hat\theta-E(\hat\theta)||^2+(E\hat\theta-\theta)^2=Var(\hat\theta)+\text{Bias}^2$
+
+	[Rao-Blackwell]
+	Given convex $L(P, a)$ in $a$, suff stat $T$,
+	$S_1 = E[S_0(X)|T]$, then $R_{S_1}(P)\leq R_{S_0}(P)$.
+	If $L(P, a)$ strictly convex, $S_0$ not a fn of $T$, then $S_0$ is inadmissible and dominated by $S_1$.
+
+	\subsection{MLE}
+
+	[Consistency]
+	Suppose (1) $\Theta$ is compact (2) $f(x|\theta)$ is continuous in $\theta$
+	for all $x$ (3) There exists a function $M(x)$ s.t.
+	$E_{\theta_0}[M(X)]<\infty$ and $|\log f(x|\theta) - \log
+		f(x|\theta_0)| \leq M(x)$ for all $x, \theta$ (4) identifiability holds
+	$f(x|\theta)=f(x|\theta_0)$ $\nu$-a.e. $\Rightarrow \theta = \theta_0$.
+	Then for any sequence of maximum likelihood-likelihood estimates
+	$\hat\theta_n$ of $\theta$
+	$
+		\hat\theta_n \rightarrow^{\text{a.s}} \theta_0
+	$
+
+
+
+	\subsection{MLE regularity}
+
+	(1) $\Theta$ is open set
+	(2) $f_\theta(x)$ is twice continuously differentiable in $\theta$
+	(3) integration is interchangeable $\frac{\partial}{\partial\theta}\int = \int \frac{\partial}{\partial\theta}$
+	(4) Fisher information is positive definite
+
+
+
+	\subsection{UMVUE}
+
+
+\end{tabulary}

@@ -1,0 +1,115 @@
+
+\begin{tabulary}{\textwidth}{l || L}
+	\section{Linear Model}
+
+	\subsection{Linear Model}
+
+	$X = Z\beta + \epsilon$ (or $X_i = Z_i^T \beta + \epsilon_i$)
+
+	Estimate with $b = \min_b \lVert X - Zb \rVert^2 = \lVert X - Z\hat\beta
+		\rVert^2$,
+	[solution = normal equation] $Z^Z b = Z^T X$
+
+	[Full rank]: $\hat\beta = (Z^T Z)^{-1}Z^T X$
+	[Non-full rank]: $\hat\beta = (Z^T Z)^{-}Z^T X$
+
+	[A1 Gaussian noise] $\epsilon \sim N_n(0, \sigma^2 I_n)$
+
+	[A2 homoscedastic noise] $E(\epsilon) = 0$, $Var(\epsilon) = \sigma^2 I_n$
+
+	[A3 general noise] $E(\epsilon) = 0$, $Var(\epsilon) = \Sigma$
+
+	\subsection{Inference}
+
+	Estimate linear combination of coefficient
+
+		[General] Necce and Suff condition: $\ell \ in R(Z) = R(Z^TZ)$
+
+	[A3] LSE $\ell^T \hat\beta$ is unique and unbiased
+
+		[A1] if $\ell\notin R(Z)$, $\ell^T\beta$ not estimable
+
+	\subsection{Properties}
+
+	Require $\ell \in R(Z) = R(Z^TZ)$
+
+	[A1]
+	(i) LSE $\ell^T\hat\beta$ is UMVUE of $\ell^T\beta$,
+	(ii) UMVUE of $\hat\sigma^2 = (n-r)^{-1}\lVert X - Z\hat\beta \rVert^2$,
+	$r$ is rank of $Z$
+	(iii) $\ell\hat\beta$ and $\hat\sigma^2$ are independent,
+	$\ell^T\hat\beta \sim N(\ell^T\beta, \sigma^2\ell^T(Z^TZ)-\ell)$,
+	$(n-r)\hat\sigma/\sigm^2\sim\chi_{n-r}^2$
+
+	[A2] LSE $\ell^T\hat\beta$ is BLUE (Best Linear Unbiased Estimator, best as in min var)
+
+	[A3] Following are equivalent:
+	(a) $\ell^T\hat\beta$ is BLUE for $\ell^T\beta$ (also UMVUE),
+	(b) $E[\ell^T\hat\eta^TX)=0]$, any $\eta$ is s.t. $E[\eta^TX]=0$
+	(c) $Z^T var(\epsilon) U = 0$, for $U$ s.t. $Z^TU = 0$, $R(U^T)+R(Z^T)=R^n$
+	(d) $Var(\epsilon) = Z\Lambda_1 Z^T + U \Lambda_2 U^T$,
+	for some $\Lambda_1, \Lambda_2, U$ s.t. $Z^TU = 0$, $R(U^T)+R(Z^T)=R^n$
+	(e) $Z(Z^TZ)^-Z^T Var(\epsilon)$ is symmetric
+
+	\subsection{Asymptotic}
+
+	$\lambda_+[A]$ is the largest eigenvalue of $A_n = (Z^TZ)^-$.
+
+		[Consistency]
+	Suppose $\sup_n \lambda_+ [Var\epsilon)] < \infty$ and
+	$\lim_{n\rightarrow\infty} \lambda_+ [A_n] = 0$,
+	$\ell^T\hat\beta$ is consistent in MSE.
+
+		[Asym Normality]
+	$\ell^T(\hat\beta-\beta)/\sqrt{Var(\ell^T\hat\beta)}\rightarrow_d N(0, 1)$
+	suff cond: $\lambda_+[A_n]\rightarrow 0$, $Z_n^T A_n Z_n \rightarrow 0$ as
+	$n\rightarrow\infty$, and
+	there exist $\{a_n\}$ s.t. $a_n\rightarrow \infty$, $a_n/a_{n+1}\rightarrow
+		1$, $Z^TZ/a_n$ converge to positive definite matrix.
+
+\end{tabulary}
+
+\begin{tabulary}{\textwidth}{l || L}
+
+
+
+	\subsection{Testing}
+
+	Under A1, $\ell \in R(Z)$, $\theta_0$ fixed constant,
+
+	[Hypothesis testing]
+
+	(simple)
+	$\ell \in R(Z)$,
+	$H_0: \ell^T\beta \leq \theta_0$, $H_1: \ell^T\beta > \theta_0$,
+	or $H_0: \ell^T\beta = \theta_0$, $H_1: \ell^T\beta \neq \theta_0$,
+	$
+		t(X) = \frac{\ell^T\hat\beta - \theta_0}{
+			\sqrt{ \ell^T(Z^TZ)^-\ell }
+			\sqrt{ \SSR/(n-r) }
+		} \sim t_{n-r}
+	$ under $H_0$,
+	UMPU reject $t(X) > t_{n-r, \alpha}$
+	or $|t(X)| > t_{n-r, \alpha/2}$
+
+	(multiple)
+	$L_{s\times p}$, $s \leq r$ and all rows = $\ell_j \in R(Z)$
+	$H_0: L\beta = 0$, $H_1: L\beta \neq 0$
+	$
+		W = \frac{(\lVert X - Z\hat\beta_0 \rVert^2 - \lVert X - Z\hat\beta
+			\rVert^2)/s}{\lVert X - Z\hat\beta \rVert^2/(n-r)} \sim F_{s, n-r}
+			{}
+	$
+	with non-central param
+	$\sigma^{-2}\lVert Z\beta - \Pi_0Z\beta\rVert^2$,
+	reject $W > F_{s, n-r, 1-\alpha}$
+
+	[Confidence set]
+	Pivotal qty: $
+		\mathcal{R}(X, \beta) = \frac{(\hat\beta -
+			\beta)^TZ^TZ(\hat\beta-\beta)/p}{
+			\lVert X - Z\hat\beta \rVert^2/(n-p)
+		} \sim F_{p, n-p}
+	$, $\hat\beta$ is LSE of $\beta$,
+	$C(X) = \{\beta: \mathcal{R}(X, \beta) \leq F_{p, n-p, 1-\alpha}\}$
+\end{tabulary}

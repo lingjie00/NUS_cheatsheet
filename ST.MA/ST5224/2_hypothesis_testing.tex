@@ -1,0 +1,342 @@
+
+\begin{tabulary}{\textwidth}{l || L}
+
+	\section{Hypo testing}
+
+	\section{NP Test}
+
+	 [Steps]
+	 (1) Find joint distribution $f(X_1, \cdots, X_n)$ - MLR/NEF
+	(2) Hypothesis $H_0, H_1$ - simple/composite, must be $\theta$ and not $f(\theta)$
+	(3) Form N-P test structure $T_*$
+	(4) Find test dist, rejection/acceptance region.
+
+		[Type I error] reject $H_0$ when $H_0$ is correct. $\beta_T(\theta_0) =
+		E_{H_0}(T) \leq \alpha$ (within controlled with size $\alpha$)
+
+	[Type II error] do not reject $H_0$ when $H_1$ is correct.
+	$1 - \beta_T(\theta)$ for $\theta\in\Theta_1$
+
+	[N-P lemma]
+	NP test has non-trival power $\alpha < \beta_{H_1}(T)$ unless $P_0=P_1$,
+	and is unique up to $\gamma$ (randomised test)
+
+	[Show $T_*$ is UMP]
+	UMP when $E_1[T_*]-E_1[T]\geq 0$,
+	\textit{key equation}: $(T_*-T)(f_1-cf_0)\geq 0$.
+
+	$\Rightarrow \int (T_*-T)(f_1-cf_0) = \beta_{H_1}(T_*) - \beta_{H_1}(T) \geq 0$.
+
+		[Composite hypothesis]
+	Simple $\Rightarrow$ Composite when
+	$\beta_T(\theta_0) \geq \beta_T(\theta \in H_0)$
+
+	and/or $\beta_T(\theta_0) \leq \beta_T(\theta \in H_1)$ (or does not depend on
+	$\theta$.
+	For MLR this is satisfied, others need to check.
+
+
+	\subsection{Monoton Likelihood}
+
+	$\theta_2 > \theta_2$, increasing likelihood ratio in $Y$ if
+	$g(Y) = \frac{f_{\theta_2}(Y)}{f_{\theta_1}(Y)} > 1$ or $g'(Y) > 0$.
+	For NEF, check $\eta'(\theta) > 0$.
+
+
+	\subsection{UMP}
+
+	(1) $H_0: P=p_0$ $H_1: P=p_1$ $\Rightarrow T(X) = I(p_1(X) > cp_0(X))$,
+	$\beta_T(p_0) = \alpha$
+
+	(2) $H_0: \theta\leq \theta_0$ $H_1: \theta > \theta_0$ $\Rightarrow T(Y) =
+		I(Y > c)$, $\beta_T(\theta_0)=\alpha$
+
+	(3) $H_0: \theta\leq \theta_1$ or $\theta\geq\theta_2$ $H_1: \theta_1 <
+		\theta < \theta_2$, $\Rightarrow T(Y) = I(c_1 < Y < c_2)$,
+	$\beta_T(\theta_1) = \beta_T(\theta_2) = \alpha$
+
+	[No UMP]
+	$H_0: \theta=\theta_1, H_1: \theta\neq\theta_1$
+	and $H_0: \theta\in(\theta_1, \theta_2)$ $H_1: \theta\notin(\theta_1, \theta_2)$
+
+	\subsection{UMP Exp fam}
+
+	[$\eta(\theta)$ increasing, $H_0:\theta\leq \theta_0$]
+	[$\eta(\theta)$ decreasing, $H_0:\theta\geq \theta_0$]
+	Same UMP $T(Y) = I(Y < c)$
+
+	[$\eta(\theta)$ increasing, $H_0:\theta\geq \theta_0$]
+		[$\eta(\theta)$ decreasing, $H_0:\theta\leq \theta_0$]
+	Reverse inequalities $T(Y) = I(Y > c)$
+
+	\subsection{Normal results}
+
+	$X_i\sim N(\mu, \sigma^2)$, under $H_0: \sigma^2 = \sigma_0^2$, note $S^2=\frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X})^2$ independent to $\bar{X}$
+
+	$V=\frac{1}{\sigma_0^2}\sum_{i=1}^n (X_i - \bar{X})^2 = \frac{(n-1)S^2}{\sigma^2} \sim \chi_{n-1}^2$
+
+	$t = \frac{\sqrt{n}(\bar{X}-\mu)/\sigma}{\sqrt{V/(n-1)}} = \frac{Z}{\sqrt{V/(n-1)}} \sim t_{(n-1)}$ [(only if $X_i\sim N$]
+
+	\subsection{Simultaneous}
+
+	[Bonferroni] adjust each paramter level to $\alpha_t = \alpha/k$
+	[Bootstrap] Monte Carlo percentile estimate
+
+
+\end{tabulary}
+
+\begin{tabulary}{\textwidth}{l || L}
+
+	\subsection{UMPU NEF\\$\eta(\theta) = \theta$}
+
+	Require:
+	(1) suff stat $Y$ for $\theta$
+	(2) suff and complete $U$ for $\varphi$
+	(2a) $U$ complete when $\varphi$ to be full-rank
+
+	(1) $H_0: \theta\leq \theta_1$ or $\theta\geq \theta_2$ $H_1: \theta_1<\theta<\theta_2$
+
+	$\Rightarrow T(Y, U) = I(c_1(U) < Y < c_2(U))$,
+	$E_{\theta_1}[T(Y, U)|U=u] = E_{\theta_2}[T(Y, U)|U=u] =\alpha$
+
+	(2) $H_0: \theta_1 \leq \theta \leq \theta_2$ $H_1: \theta < \theta_1$ or $\theta > \theta_2$
+
+	$\Rightarrow T(Y, U) = I(Y < c_1(U)$ or $ Y > c_2(U))$,
+	$E_{\theta_1}[T(Y, U)|U=u] = E_{\theta_2}[T(Y, U)|U=u] =\alpha$
+
+
+	(3) $H_0: \theta=\theta_0$ $H_1: \theta\neq\theta_0$
+	$\Rightarrow T(Y, U) = I(Y < c_1(U)$ or $ Y > c_2(U))$,
+
+	$E_{\theta_0}[T_*(Y, U)|U=u]=\alpha$ and
+	$E_{\theta_0}[T_*(Y, U)Y| U=u]=\alpha E_{\theta_0}(Y|U=u)$
+
+	(4) $H_0: \theta\leq \theta_0$ $H_1: \theta>\theta_0$
+	$\Rightarrow T(Y, U) = I(Y > c(U))$,
+	$E_{\theta_0}[T(Y, U)|U=u]=\alpha$
+
+\end{tabulary}
+
+\begin{tabulary}{\textwidth}{l || L}
+
+	\subsection{UMPU Normal}
+
+	Assume $V(Y, U)$ independent of $U$ under $H_0$
+
+	(1) $H_0: \theta\leq \theta_1$ or $\theta\geq \theta_2$ $H_1: \theta_1<\theta<\theta_2$
+	Require $V$ to be increasing in $Y$.
+
+	$\Rightarrow T(V) = I(c_1 < V < c_2)$,
+	$E_{\theta_1}[T(V)] = E_{\theta_2}[T(V)] = \alpha$
+
+	(2) $H_0: \theta_1 \leq \theta \leq \theta_2$ $H_1: \theta < \theta_1$ or $\theta > \theta_2$
+	Require $V$ to be increasing in $Y$.
+
+	$\Rightarrow T(V) = I(V < c_1$ or $V > c_2)$,
+	$E_{\theta_1}[T(V)] = E_{\theta_2}[T(V)] = \alpha$
+
+	(3) $H_0: \theta=\theta_0$ $H_1: \theta\neq\theta_0$
+	Require $V(Y, U)=a(u)Y + bU$
+
+	$\Rightarrow T(V) = I(V < c_1$ or $ V > c_2)$,
+	$E_{\theta_0}[T(V)] = \alpha$,
+	$E_{\theta_0}[T(V)V] = \alpha E_{\theta_0}(V)$
+
+	(4) $H_0: \theta\leq \theta_0$ $H_1: \theta>\theta_0$
+	Require $V$ to be increasing in $Y$.
+	$\Rightarrow T(V) = I(V>c)$,
+	$E_{\theta_0}[T(V)] = \alpha$
+
+\end{tabulary}
+
+\begin{tabulary}{\textwidth}{l || L}
+
+	\section{LR test}
+
+	$\lambda(X) = \frac{\sup_{\theta\in\theta_0} \ell(\theta)}{\sup_{\theta\in\Theta} \ell(\theta)}$
+	Rejects $H_0 \Leftrightarrow \lambda(X)<c\in[0, 1]$.
+	\textit{1-param Exp Fam LR test is also UMP.}
+
+	\section{Asym test}
+
+	Assume MLE regularity condition,
+	under $H_0$, $-2\log\lambda(X)\rightarrow \chi_r^2$,
+	where $r := dim(\theta)$
+
+	$T(X) = I\left[\lambda(X)<\exp(-\chi^2_{r, 1-\alpha}/2)\right]$ where $\chi_{r, 1-\alpha}^2$ is the $(1-\alpha)$th quantile of $\chi_r^2$.
+
+
+	\subsection{Asymptotic Tests}
+
+	$H_0: R(\theta)=0$, $\lim_{n\rightarrow \infty} W_n, Q_n \sim \chi_r^2$,
+	$T(X) = I(W_n > \chi_{r, 1-\alpha}^2)$ or $I(Q_n > \chi_{r, 1-\alpha}^2)$
+
+	[Wald's test]
+	$W_n = R(\hat\theta)^T \{C(\hat\theta)^T I_n^{-1}(\hat\theta) C(\hat\theta) \}^{-1} R(\hat\theta)$
+
+	$C(\theta) = \partial R(\theta)/\partial \theta$,
+	$I_n(\theta)$ is fisher info for $X_1, \cdots, X_n$,
+	$\hat\theta$ is unrestricted MLE/RLE of $\theta$.
+
+	if $H_0: \theta=\theta_0$ $\Rightarrow R(\theta) = \theta - \theta_0$, and
+	$W_n = (\hat\theta - \theta_0)^T I_n(\hat\theta) (\hat\theta - \theta_0)$
+
+	[Rao's score test]
+	$Q_n=s_n(\Tilde{\theta})^T I_n^{-1}(\Tilde{\theta}) s_n(\Tilde{\theta})$.
+
+	$s_n(\theta)=\partial\log\ell(\theta)/\partial\theta$ is score function, $\Tilde{\theta}$ is MLE/RLE of $\theta$ under $H_0: R(\theta)=0$ (under $H_0$).
+
+
+\end{tabulary}
+
+\begin{tabulary}{\textwidth}{l || L}
+
+	\section{Non-param tests}
+
+	\subsection{Sign test}
+
+	$X_i\sim^{iid} F$, $u$ is fixed constant, $p=F(u)$,
+	$\triangle_i = I(X_i - u \leq 0)$,
+	$P(\triangle_i = 1 ) = p$, $p_0\in(0, 1)$
+
+	$H_0: p \leq p_0$ $H_1: p > p_0$
+	$\Rightarrow T(Y) = I(Y > m)$,
+	$Y = \sum_{i=1}^n \triangle_i \sim Bin(n, p)$,
+	$m, \gamma$ s.t. $\alpha = E_{p_0}[T(Y)]$
+
+	$H_0: p = p_0$ $H_1: p \neq p_0$
+	$\Rightarrow T(Y) = I(Y < c_1 $ or $Y > c_2)$,
+	$E_{p_0}[T] = \alpha$ and $E_{p_0}[TY] = \alpha n p_0$
+
+	\subsection{Permutation test}
+	$X_{i1}, \cdots, X_{i n_i} \sim^{iid} F_i$, $i=1, 2$
+	$H_0: F_1 = F_2$ $H_1: F_1 \neq F_2$,
+	$\Rightarrow T(X)$ with $\frac{1}{n!}\sum_{z\in\pi(x)}T(z) = \alpha$
+
+	$\pi(x)$ is set of $n!$ points obtained from $x$ by permuting components of
+	$x$
+
+	E.g. $T(X) = I(h(X) > h_m)$,
+	$h_m := $ $(m+1)^{th}$ largest $\{h(z : z \in \pi(x)\}$
+	e.g $h(X) = |\bar X_1 - \bar X_2|$ or $|S_1 - S_2|$
+
+	\subsection{Rank test}
+
+	$X_i \sim^{iid} F$, $Rank(X_i) = \#\{X_j: X_j \leq X_i\}$,
+	$H_0: F$ symm ard 0, $H_1:$ $H_0$ false,
+	$R_+^o$ vector of ordered $R_+$.
+
+		[Wilcoxon] $T(X) = I[W(R_+^o) < c_1$ or $W(R_+^o > c_2)]$,
+	$W(R_+^o) = J(R_{+1}^o/n) + \cdots + J(R_{+n_*}^o/n)$
+
+	$c_1, c_2$ are $(m+1)^{th}$ smallest/largest of $\{W(y): y\in \mathcal{Y}\}$,
+	$\gamma = \alpha 2^n / 2 - m$
+
+
+
+\end{tabulary}
+
+\begin{tabulary}{\textwidth}{l || L}
+
+
+	\subsection{KS test}
+
+	$X_i\sim^{iid} F$
+	$H_0: F=F_0$, $H_1: F \neq F_0$,
+	$\Rightarrow T(X) = I(D_n(F_0) > c)$,
+	$D_n(F) = \sup_{x\in\mathcal{R}}|F_n(x) - F(x)|$
+
+	With $F_n$ Emp CDF, and
+	for any $d, n > 0$, $P(D_n(F)>d)\leq 2\exp(-2nd^2)$,
+
+	\subsection{Cramer-von test}
+
+	Modified KS with $T(X) = I(C_n(F_0) > c)$,
+	$C_n(F) = \int \{F_n(x) - F(x)\}^2 dF(x)$
+
+	$nC_n(F_0)\xrightarrow{D} \sum_{j=1}^\infty \lambda_j \chi_{1j}^2$,
+	with $\chi_{1j}^2 \sim \chi_1^2$ and $\lambda_j=j^{-2}\pi^{-2}$
+
+
+	\subsection{Empirical LR}
+
+	$X_i \sim^{iid} F$,
+	$H_0: \Lambda(F)=t_0$ $H_1: \Lambda(F) \neq t_0$,
+	$\Rightarrow T(X) = I(ELR_n(X) < c)$
+
+	$ELR_n(X) = \frac{\ell(\hat{F}_0)}{\ell(\hat{F})}$,
+	$\ell(G) = \prod_{i=1}^n P_G(\{x_i\})$, $G \in \mathcal{F}$.
+	($\mathcal{F} :=$ collection of CDFs, $P_G :=$ measure induced by CDF $G$)
+
+	\section{Confidence set}
+
+	$C(X): X \rightarrow \mathcal{B}(\Theta)$,
+	Require $\inf_{P\in\mathcal{P}} P(\theta\in C(X)) \geq 1 - \alpha$.
+	Conf coeff more than level
+
+		[via pivotal qty]
+	$C(X) = \{\theta: c_1 \leq \mathcal{R}(X, \theta) \leq c_2\}$,
+	\textit{not dependent on $P$}, common pivotal qty: $(X_i-\mu)/\sigma$
+
+	[invert accept region]
+	$C(X) = \{\theta: x\in A(\theta)\}$, Acceptance region $A(\theta)=\{x:
+		T_{\theta_0}(x) \neq 1\}$.
+	$H_0: \theta = \theta_0$, $H_1$ any
+
+
+	\subsection{Shortest CI}
+
+	[unimodal]
+	$f'(x_0) = 0$ $f'(x)<0, x < x_0$ and $f'(X)>0, x > x_0$
+
+	[Pivotal $(T-\theta)/U$, $f$ unimodal at $x_0$]
+	$[T - b_*U, T-a_* U]$, shortest when
+	$f(a_*) = f(b_*) > 0$
+	$a_* \leq x_0 \leq b_*$
+
+	[Pivotal $T/\theta$, $x^2f(x)$ unimodal at $x_0$]
+	$[b_*^{-1}T, a_*^{-1}T_*]$ shortest when
+	$a^2_*f(a_*) = b^2_*f(b_*) > 0$
+	$a_* \leq x_0 \leq b_*$
+
+	[General]
+	Suppose $f > 0$, integrable, unimodal at $x_0$,
+	want: $\min b - a$ s.t.
+	$\int_a^b f(x) dx$ and $a \leq b$
+
+	sol: $a_*, b_*$ satisfy
+	(1) $a_* \leq x_0 \leq b_*$
+	(2) $f(a_*) = f(b_*) > 0$
+	(3) $\int_{a_*}^{b_*} f(x) dx = 1- \alpha$
+	\subsection{asym}
+	require $\lim_{n\rightarrow}P(\theta\in C(X)) \geq 1 - \alpha$,
+
+	[asym pivotal]
+	$\mathcal{R}_n(X, \theta) = \hat V_n^{-1/2} (\hat\theta_n - \theta)$
+	does not depend on $P$ in limit
+
+		[LR]
+	$C(X) = \left\{\theta: \ell(\theta, \hat\varphi) \geq
+		exp(-\chi_{r, 1-\alpha}^2_\alpha/2)\ell(\hat\theta)\right\}$
+
+	[Wald]
+	$C(X) = \left\{
+		\theta: (\hat\theta - \theta)^T \left[
+			C^T \left(
+			I_n(\hat\theta)
+			\right)^{-1}
+			C
+			\right]^{-1}
+		(\hat\theta - \theta) \leq \chi_{r, 1-\alpha}^2
+		\right\}$
+
+	[Rao]
+	$C(X) = \left\{
+		\theta:
+		\left[ s_n(\theta, \hat\varphi) \right]^T
+		\left[ I_n(\theta, \hat\varphi) \right]^{-1}
+		\left[ s_n(\theta, \hat\varphi) \right]
+		\leq \chi_{r, 1-\alpha}^2
+		\right\}$
+
+\end{tabulary}

@@ -1,0 +1,94 @@
+\section{L7: Non-parametric Density Estimation}
+
+\begin{tabulary}{\textwidth}{l L}
+
+\subsection{Measure of Performance}
+
+ISE: Integrated squared error
+
+$$
+ISE(\hat{f}(x)) = \int \left\{
+    \hat{f}(x) - f(x)
+\right\}^2 dx
+$$
+
+MSE: mean squared error
+
+$$
+MSE(\hat{f}(x)) = E \left[
+    \left\{
+        \hat{f}(x) - f(x)
+    \right\}^2
+\right] = \text{bias}^2\{\hat{f}(x)\} + \text{var}\{\hat{f}(x)\}
+$$
+
+MISE: mean integrated squared error
+
+$$
+MISE(\hat{f}(x)) = E\left\{
+    ISE(\hat{f}(x))
+\right\} = \int MSE(\hat{f}(x)) dx\\
+ &= \int \text{bias}^2\{\hat{f}(x)\} + \int \text{var}\{\hat{f}(x)\}
+$$
+
+\subsection{Naive Estimators}
+
+$$
+\hat{f}_n(x) = \frac{\hat{F}_2(x+h) - \hat{F}_n(x-h)}{2h}
+= \frac{1}{2nh} (\text{\# of } X_1, \cdots, X_n \text{ in } (x-h, x+h])
+$$
+
+Equivalently, 
+
+$$w(x)=I\left(|x| < 1\right)\frac{1}{2}$$
+
+
+$$
+\hat{f}(x) = \frac{1}{nh} \sum_{i=1}^n w\left(\frac{x-X_i}{h}\right)
+$$
+
+\subsection{Kernel Density Estimators}
+
+$h$ bandwidth - most important hyper-parameter, $K(\cdot)$ kernel function, $K_h(x) = K(y/h)/h$ bandwidth-rescaled kernel function
+
+$$
+\hat{f}_n(x) = \frac{1}{nh} \sum_{i=1}^n K\left(
+    \frac{x-X_i}{h}
+\right) = \frac{1}{n} \sum_{i=1}^n K_h\left(
+    x - X_i
+\right)
+$$
+
+\subsection{Kernel Function}
+
+Non-negative function $K(\cdot)$ with following condition, usually a pdf
+
+(1) $\int_{-\infty}^\infty K(x) dx = 1$
+
+(2) $\int_{-\infty}^\infty x K(x) dx = 0$
+
+(3) $\int_{-\infty}^\infty x^2 K(x) dx = \sigma_k^2 > 0$
+
+Common kernel:
+
+Uniform:
+$K(t) = \frac{1}{2} I(|t| < 1)$
+
+Gaussian (most popular):
+$K(t) = \frac{1}{\sqrt{2\pi}}exp(-t^2/2)$
+
+Epanechnikov (most popular):
+$K(t) = \max(0.75 (1-t^2) , 0)$
+
+Biweight
+$K(t) = \max(15/16 (1-t^2)^2, 0)$
+
+\subsection{Unbiased C-V}
+
+UCV is a better approach than conventional Cross Validation
+
+$$
+\min_h UCV(h) = \int \hat{f}_n^2(x) dx - \frac{2}{n} \sum_{i=1}^n \hat{f}_{-i, n} (x_i)
+$$
+
+\end{tabulary}

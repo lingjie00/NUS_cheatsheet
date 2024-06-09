@@ -1,0 +1,144 @@
+\section{Optimisation}
+
+\subsection{Optimisation in Uni-variate: find $x^*$ s.t. $g'(x^*)=0$}
+
+\begin{tabulary}{\textwidth}{l L}
+
+\subsection{Bisection}
+
+Condition: $g'(a) > 0 , g'(b) < 0$, $g'(x)$ exist and continuous for all $x\in(a, b)$
+
+Let $x_0 = (a+b)/2$, set $\Tilde{a}=a$, $\Tilde{b}=b$, $t=0$
+
+(1.1) If $g'(x_{t-1}) > 0$, $X_t = (x_{t-1} + \Tilde{b}) / 2$, $\Tilde{a} = x_{t-1}$
+
+(1.2) If $g'(x_{t-1}) < 0$, $X_t = (\Tilde{a} + x_{t-1}) / 2$, $\Tilde{b} = x_{t-1}$
+
+(2) $t = t + 1$, terminate when $|x_t - x_{t-1}| < \epsilon$
+
+\subsection{Modified Bisection}
+
+Instead of choosing the mid-point, we can choose
+
+$$
+x_t = \frac{|g'(b)|}{|g'(a)| + |g'(b)|} a
++ \frac{|g'(a)|}{|g'(a)| + |g'(b)|} b
+$$
+
+
+\subsection{Newton's Method}
+
+$$
+x_{t+1} = x_t - \frac{g'(x_t)}{g''(x_t)}
+$$
+
+\subsection{Fisher Scoring}
+
+Replace Hessian $\ell''(\theta_t)$ in Newton method by $-I(\theta_t)$
+
+$$
+-I(\theta) = nE\left\{
+    \frac{d^2}{d\theta^2} \log f(X|\theta)
+\right\} =  \sum_{i=1}^n \frac{d^2}{d\theta^2} \log f(x_i|\theta)
+$$
+
+
+$$
+\theta_{t+1} = \theta_t + \frac{\ell'(\theta_t)}{I(\theta_t)}
+$$
+
+\subsection{Secant Method}
+
+Approximate Hessian $g''(x) = \lim_{y\rightarrow x} \frac{g'(y) - g'(x)}{y - x}$, assuming update is small, i.e. $|x_{t-1} - x_t| < \epsilon$
+
+$$
+g''(x_t) \approx \frac{g'(x_{t-1} - g'(x_t)}{x_{t-1} - x_t}
+$$
+
+$$
+x_{t+1} = x_t - g'(x_t) \frac{x_t - x_{t-1}}{g'(x_t) - g'(x_{t-1})}
+$$
+
+\subsection{Fixed-point Iteration}
+
+Let $g'(a) > 0, g'(b) < 0$. Assume $\exists x^* \in [a, b], \epsilon \in (0, \frac{1}{2})$ s.t.
+
+$(1-\epsilon) (x^* -x) \geq g'(x) \geq \epsilon(x^*-x)$ for $x < x^*$
+
+$(1-\epsilon) (x^* -x) \leq g'(x) \leq \epsilon(x^*-x)$ for $x > x^*$
+
+Then $x_{t+1} = x_t + g'(x_t)$ converges to $x^*$
+
+\end{tabulary}
+
+\subsection{Optimisation in Multivariate}
+
+\begin{tabulary}{\textwidth}{l L}
+
+\subsection{Newton's Method, Fisher scoring}
+
+Similar to single variable method, with
+$g'=\nabla g$, $g''=\nabla^2 g$
+
+\subsection{Newton-like method}
+
+General form with $-M_t$ a positive definite matrix
+
+$$
+x_{t+1} = x_t - \alpha_t [M_t]^{-1} g'(x_t)
+$$
+
+\subsection{Ascent Algorithm: Bracketing}
+
+Ascent algo: Control for $\alpha_t$ s.t. $g(x_{t+1}) \geq g(x_t)$
+
+$$
+x_{t+1} = x_t + \alpha_t g'(x_t)
+$$
+
+Bracketing:
+
+(1) start with $\alpha_t = 1$, compute $x_{t+1}$
+
+(2) if $g(x_{t+1}) < g(x_t)$, $\alpha_t$ is too large and update $\alpha_t = 1/2$
+
+\subsection{Discrete Newton}
+
+Approximate Hessian $g''$ by discrete version, with $e_1 = (1, 0)^T, e_2 = (0, 1)^T$, some small $h_{ij} > 0$
+
+$$
+M_{ij}^{(t)} = \frac{g_i(x_t + h_{ij} e_j) - g_i(x_t)}{h_{ij}}
+$$
+
+To ensure symmetry, consider
+
+$$
+N_{ij}^{(t)} = \frac{M_{ij}^{(t)} + M_{ji}^{(t)}}{2}
+$$
+
+\subsection{Quasi-Newton}
+
+Estimate Hessian with $g'(x_t) - g'(x_{t-1}) = M_t (x_t - x_{t-1})$.
+
+Consider $y = g'(x_t) - g'(x_{t-1})$, $z=x_t - x_{t-1}$,
+$M_t = M_{t-1} + \frac{v^T}{v^Tz}$
+
+If $1/(v^Tz) \leq 0$, $-M_0 \succ 0 \Rightarrow -M \succ 0$
+
+If $1/(v^Tz) > 0$, $M_t = M_{t-1} + \alpha_t vv^T$ with $\alpha_t > 0$ s.t. $-M \succ 0$
+
+\subsection{Gaussian-Newton}
+
+Model $y_i = f(z_i, \theta) + \epsilon_i$, $\epsilon_i \sim N(0, \tau)$ iid, then 
+$\theta = (Z^TZ)^{-1}Z^T y$ (linear) else
+$\theta_{t+1} = \theta_t + [A_t^T A_t]^{-1}A_t^T x_t$
+
+\subsection{Nonlinear Gauss-Seidel}
+
+Restrict update to one co-ordinate at a time,
+find $x_1^*, x_2^*$ s.t. $g_1(x_1^*, x_2^*) = 0$, $g_2(x_1^*, x_2^*) = 0$
+
+Iterate with $g_1(x_1^{(t+1)}, x_2^{(t)}) = 0$
+$g_2(x_1^{(t+1)}, x_2^{(t+1)}) = 0$
+
+\end{tabulary}

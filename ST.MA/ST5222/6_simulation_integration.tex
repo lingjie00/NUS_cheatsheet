@@ -1,0 +1,121 @@
+\section{L5: Simulation and MC Integration}
+
+\begin{tabulary}{\textwidth}{l L}
+
+\subsection{MC integration}
+
+Estimate $\mu = E[h(X)]$, generate $X_i$ from $f(x)$ (known)
+
+$\hat\mu_{MC} = \frac{1}{n} \sum_{i=1}^n h(X_i)$
+
+$\hat\sigma^2_{MC} = \frac{1}{n-1} \sum_{i=1}^n [h(X_i) - \hat\mu_{MC}]^2$
+
+MC estimate: $\hat\mu_{MC} \pm \hat\sigma / \sqrt{n}$
+
+\subsection{Extract Simulation}
+
+Simulate samples from $f(x)$ directly if $F^{-1}(U)$ exist and known, and is single-varaite
+
+(1) Generate $U\sim Unif(0, 1)$ (2) $X = F^{-1}(U)$
+
+Known distributions such as Gaussian, Beta have special algorithm.
+
+\subsection{Rejection Sampling}
+
+Assume $f(x)$ can be computed easily, find proposal density $Y\sim g$ s.t. $f(x) \leq g(x)/\alpha$ for known $\alpha > 0$
+If $\alpha f(Y)/g(y)$ is small, then algo is inefficient.
+
+(1) Generate $Y\sim g$
+
+(2) Generate $U\sim unif(0, 1)$
+
+(3) If $U \leq \alpha f(Y) / g(Y)$, set $X = Y$
+
+(4) Else, repeat (1-3) until succeed
+
+\subsection{SIR}
+
+Sampling Importance Resampling, with envelope function $g(x)$
+
+Generate approximate distribution from $f(x)$ (previous 2 methods are exact).
+
+(1) Sample $Y_i, \cdot, Y_m$ from $g(x)$
+
+(2) Calculate standardised importance weight $w(Y_1), \cdots, w(Y_m)$
+
+$w(Y_i) = \frac{f(Y_i) / g(Y_i)}{\sum_{j=1}^m f(Y_j)/g(Y_j)}$
+
+(3) Resample $X_i$ from $Y_1, \cdots, Y_m$ with probability $w(Y_1), \cdots, w(Y_m)$
+
+\subsection{Sequential MC}
+
+Splitting high-dimensional task into sequence of simpler steps, each step updates the previous one.
+Goal: simulate $X_{1:t}^{(i)}$, $i=1, \cdots, n$ iid from $f(x_{1:t})$
+
+(1) Sample $X_1\sim g(x_1)$. Let $w_1 = u_1 = f(x_1)/g(x_1)$. set $t=2$, $X_{1:t-1}=X_1$
+
+(2) Sample $X_t=g(x_t|X_{1:t-2})$
+
+(3) Append $X_t$ to $X_{1:t-1}$. Obtain $X_{1:t}$
+
+(4) Let $u_t = f(X_t|X_{1:t-1})/g(X_t|X_{1:t-1})$
+
+(5) Let $w_t = w_{t-1}u_t$
+
+(6) Increase $t$ by 1 and return to step (2)
+
+\subsection{SISR}
+
+When $t$ increases $w_t^{(i)}$ may have large variability and reduce sampling efficiency.
+
+Effective sample size $\hat N_t = \frac{n}{1 + cv_t^2}$, $cv_t^2 = \sum_{i=1}^{n} (w_t^{(i)} - \bar w_t )^2 / (n \bar w_t^2)$,
+$\bar w_t = \sum_{i=1}^n w_t^{(i)} / n$
+
+(1) When $\hat N_t$ is smaller than predetermined threshold, stop SIS
+
+(2) Resample $n$ sequences from $\{ X_{1:t}^{(1)}, \cdots, X_{1:t}^{(n)} \}$
+with probability $\{w_t^{(1)}, \cdots, w_t^{(n)}\}$, set weight for new resampled seq as $1/n$
+
+(3) Use resample sequences and weights as inputs for next step in SIS algo
+
+\end{tabulary}
+
+\section{Variance Reduction}
+
+\begin{tabulary}{\textwidth}{l L}
+
+\subsection{Importance Sampling}
+
+$\mu = E[h(X)] = \int h(x) w(x) g(x) dx$, $w(x) = \frac{f(x)}{g(x)}$
+
+$$
+\hat\mu_{IS} = \frac{1}{n} \sum_{i=1}^n h(X_i) w(X_i)
+$$
+
+\subsection{Antithetic Sampling}
+
+Find two unbiased estimators $\hat\mu_1$ and $\hat\mu_2$ that are negatively correlated
+
+$$
+\hat\mu_{AS} = \frac{\hat\mu_1 + \hat\mu_2}{2}
+$$
+
+\subsection{Control Variates}
+
+Generate 2 sets of samples $\{(X_i, Y_i)\}$, $\mu = E[h(X)]$, $\theta = E(c(Y))$
+
+$$
+\hat\mu_{CV} = \hat\mu_{MC} + \lambda (\hat\theta_{MC} - \theta)
+$$
+
+with $\lambda_{\min} = - \frac{cov(h(X), c(Y)}{var(c(Y)}$
+
+\subsection{Rao-Blackwellization}
+
+Remove randomness from some vectors by solving conditional expectation.
+
+Consider $X = (X_1, X_2)$, $\mu = E(h(X)) = E[E(h(X)|X_2)] = E(\Tilde{h}(X_2))$
+
+$$\hat\mu_{RB} = \frac{1}{n} \sum_{i=1}^n \Tilde{h}(X_{i2})$$
+
+\end{tabulary}

@@ -1,0 +1,44 @@
+\section{L4: Bootstrap}
+
+\begin{tabulary}{\textwidth}{l L}
+
+\subsection{Nonparametric}
+
+Re-sample with replacement and estimate $E(f(X))$ with $\frac{1}{B}\sum_{b=1}^B f(X^{(b)})$
+
+\subsection{Parametric}
+
+First estimate $\hat\theta$ (e.g. with MLE) then generate samples from $F_{\hat\theta}(x)$. require assumption on parametric form.
+
+\subsection{BS techniques}
+
+Paired BS: generate BS samples by pairing $Z_i = (x_i, y_i)$
+
+BS residual: generate est $y_i^*$ by bootstrapping $\hat\epsilon_i^*$
+
+Bias correction: $\hat{\text{bias}} = \frac{1}{B}\sum_{k=1}^B (\hat\theta_k^* - \hat\theta)$, correct estimate with $\hat\theta - \hat{\text{bias}}$
+
+\subsection{BS Percentile CI}
+
+90\% BS CI for $\theta$ = $\left(\hat\theta^*_{(5)}, \hat\theta^*_{(95)}\right)$
+
+Only works well if $\hat\theta - \theta$ does not depend on $\theta$ and is symetric about 0
+
+\subsection{BS t CI}
+
+Consider $\frac{\hat\theta - \theta}{\hat\theta}$ instead, let $d^*_k = \frac{\hat\theta_k^* - \hat\theta}{\hat\sigma^*_k}$,
+90\% CI for $\theta$ is $(\hat\theta - \hat\sigma d^*_{(95)}, \hat\theta - \hat\sigma d^*_{(5)})$
+
+\subsection{Balanced BS}
+
+Reduce MC error from some observed $X_i$ are too frequently selected by chance.
+
+(1) Generate every $X_i$ exactly $B$ times. (2) Permute/re-order the samples (3) first $n$ is assigned to first BS sample
+
+\subsection{Antithetic BS}
+
+Reduce MC error by enforcing data pairing.
+
+(1) Generate $B$ data (2) second sample is replacing $X_{(k)}$ with $X_{(n-k+1)}$
+
+\end{tabulary}

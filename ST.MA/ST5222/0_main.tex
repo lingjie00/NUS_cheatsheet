@@ -1,0 +1,44 @@
+\documentclass{article}
+\usepackage[a4paper, total={8in, 11.5in}]{geometry}
+\usepackage{mathtools}
+\usepackage{tabulary}
+% commands to create lines
+\newcommand{\dline}{\vspace{1pt}\hrule\hrule\vspace{1pt}}
+\newcommand{\pline}{\vspace{1pt}\par\noindent\dotfill\vspace{1pt}\newline\noindent}
+%override section and subsection commands
+\renewcommand{\section}[1]{\\\vspace{1pt}\textbf{#1} &}
+\renewcommand{\subsection}[1]{\\\vspace{1pt}\text{[#1]} &}
+%remove page numbering
+\pagenumbering{gobble}
+% disable indent
+\setlength\parindent{0pt}
+% reduce padding
+\renewcommand{\arraystretch}{0.5}
+\setlength{\tabcolsep}{3pt}
+\setlength\extrarowheight{-3pt}
+
+\pdfinfo{
+    /Title (ST5222 Advanced Topics in Applied Statistics)
+/Creator (Ling)}
+
+\begin{document}
+
+% \tableofcontents
+
+\input{1_review}
+\newpage
+\input{2_optimisation}
+\newpage
+\input{3_em}
+\newpage
+\input{4_numerical_integration}
+\newpage
+\input{5_bootstrap}
+\newpage
+\input{6_simulation_integration}
+\newpage
+\input{7_mcmc}
+\newpage
+\input{8_nonparametric}
+
+\end{document}

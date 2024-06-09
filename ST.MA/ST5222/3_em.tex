@@ -1,0 +1,86 @@
+\section{L2: EM Optimization}
+
+\begin{tabulary}{\textwidth}{l L}
+
+\subsection{EM}
+
+Want to solve $ \hat\theta = arg \max \ell_X(\theta) $ with some missing data $Z$.
+
+Therefore, consider $Y=(X, Z)$ complete data instead. $\ell_Y(\theta) =\ell_X(\theta) + \ell_{Z|X}(\theta)$.
+
+Solve for $$Q(\theta|\theta^{(t)}) = E_{\theta^{(t)}}\left[\ell_Y(\theta)|X\right]$$
+
+with (1) E-step: Compute $Q(\theta|\theta^{(t)})$ (2) M-step: Maximise  $Q$ with respect to $\theta$ and set $\theta^{(t+1)}=\theta^*$
+
+Only requires: $\ell_X(\theta^{(t+1)}) > \ell_X(\theta^{(t)})$ (generalised EM)
+
+\subsection{EM for Canonical Exp Fam}
+
+Canonical Exp Fam has log-likelihood linear in missing data $Z$ and observed data $X$.
+Check before solving (1) impute $Z$ (2) estimate $\theta^{(t+1)}$
+$$
+\ell_Y(\theta) = c(Y) + d(\theta) + \sum_{j=1}p \theta_j Y_j
+$$
+$$Q(\theta|\theta^{(t)}) = c(Y) + d(\theta) + \sum_{j=1}^p \theta_j E_{\theta^{(t)}}(Y_j|X)$$
+
+\subsection{Var estimate of $\hat\theta$}
+
+Fisher information $I(\theta) = E_\theta[-\ell''_X(\theta)] = var_\theta(\ell'_X (\theta))$
+
+MLE asymptotic dist $I(\theta)^{-1/2}(\hat\theta-\theta_0) \rightarrow N(0, I_K)$
+
+Fisher info for complete data $i_Y(\theta) = i_X(\theta) + i_{Z|X}(\theta)$ $\Rightarrow i_X = i_Y - i_{Z|X}$ (note the variance estimate $\hat\theta$ is wrt to $i_X$)
+
+BS-MC estimate $\hat{i}_Y(\theta) = -\frac{1}{m}\sum_{i=1}^m \ell''_{Y^{(k)}}(\theta)$,
+$\hat{i}_{Z|X}(\theta) = -\frac{1}{m}\sum_{i=1}^m \ell''_{Z^{(k)}}(\theta)$
+
+\end{tabulary}
+
+\section{Extended EM}
+
+\begin{tabulary}{\textwidth}{l L}
+\subsection{MC-EM}
+
+Instead of calculating $Q(\theta|\theta^{(t)})$ via integration, use MC instead.
+
+\subsection{Expected Conditional Max}
+
+Instead of maximising $\theta=(a, b)$ at once, maximise them sequentially
+
+(a) $\max_a Q(a, b^{(t)}|\theta^{(t)})$
+(b) $\max_b Q(a^{(t+1)}, b|\theta^{(t)})$
+(c) $\theta^{(t+1)} = (a^{(t+1)}, b^{(t+1)})$
+
+\subsection{EM Gradient}
+
+Instead of solving maximisation analytically, use gradient-based methods (e.g. Newton).
+$\theta^{(t+1)}=\theta^{(t)} - Q''(\theta|\theta^{t})^{-1}|_{\theta=\theta^{t}}\times Q'(\theta|\theta^{t})|_{\theta=\theta^{(t)}}$
+
+\end{tabulary}
+
+\section{EM Acceleration Methods}
+
+\begin{tabulary}{\textwidth}{l L}
+
+\subsection{Convergence rate}
+
+EM est $\hat\theta$ converge to $\theta$ at linear rate, depending on fraction of observed information $\rho(\theta)=\frac{i_X(\theta)}{i_Y(\theta)}$
+
+\subsection{Aitken Acceleration}
+
+Use Newton method for optim (Quad rate) and estimate $\ell_X(\theta)$ using EM with
+$\rho(\theta)=\frac{i_X(\theta)}{i_Y(\theta)} = 1 - \frac{i_{Z|X}(\theta)}{i_Y(\theta)}$
+$$\theta^{(t+1)}=\theta^{(t)}+\frac{\theta_{EM}^{(t)} - \theta^{(t)}}{\rho(\theta^{(t)})}$$
+
+\subsection{Quasi-Newton Acceleration}
+
+Avoid estimating $\rho(\theta)$,
+$
+\rho(\theta) \approx 1 - \frac{\theta^{(t)}_{EM} - \theta^{(t-1)}_{EM}}{\theta^{(t)} - \theta^{(t-1)}}
+$
+
+$$
+\theta^{(t+1)} = \theta^{(t)} + (I - M^{(t)})^{-1} (\theta_{EM}^{(t)} - \theta^{(t)})
+$$
+
+\end{tabulary}

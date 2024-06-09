@@ -1,0 +1,35 @@
+\documentclass{article}
+\usepackage[a4paper, total={8.2in, 11.5in}, margin=0.1cm]{geometry}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{tabulary}
+% commands to create lines
+\newcommand{\dline}{\vspace{0.01pt}\hrule\hrule\vspace{0.01pt}}
+\newcommand{\pline}{\vspace{0.01pt}\par\noindent\dotfill\vspace{0.01pt}\newline\noindent}
+%override section and subsection commands
+\renewcommand{\section}[1]{\\\vspace{0.01pt}\textbf{#1} &}
+\renewcommand{\subsection}[1]{\\\vspace{0.01pt}\text{[#1]} &}
+%remove page numbering
+\pagenumbering{gobble}
+% disable indent
+\setlength\parindent{0pt}
+% reduce padding
+\renewcommand{\arraystretch}{0.1}
+\setlength{\tabcolsep}{1.5pt}
+\setlength\extrarowheight{-3pt}
+
+\pdfinfo{
+    /Title (ST5224 Advanced Statistical Theory II)
+/Creator (Ling)}
+
+\begin{document}
+
+% \tableofcontents
+
+\input{1_math_stat}
+\input{1_stat_est}
+\input{2_hypothesis_testing}
+\input{3_bayesian}
+\input{4_linear_model}
+
+\end{document}

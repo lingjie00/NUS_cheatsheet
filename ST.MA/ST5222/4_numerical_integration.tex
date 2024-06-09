@@ -1,0 +1,62 @@
+\section{L3: Numerical Integration}
+
+\begin{tabulary}{\textwidth}{l L}
+
+\subsection{Integration}
+
+Objective: approximate $\int_a^b f(x) dx$ numerically
+
+Naive method: Divide $[a, b]$ into $n$ sub-intervals,  $x^*_i$ is the middle point of $i$th subinterval.
+
+$$\int_a^b f(x) dx \approx \frac{b-a}{n}\sum_{i=1}^n f(x_i^*)$$
+
+Improvement: for each of the sub-interval $[x_i, x_{i+1}]$ add $(m+1)$ nodes
+
+\subsection{Trapezoidal Rule}
+
+Choose 2 nodes ($m=1$) in $[x_i, x_{i+1}]$.
+To approximate height $I = \frac{\int_{x_i}^{x_{i+1}} f(x) dx }{x_{i+1} -x_i}$. Area = $(x_{i+1} - x_{i})\times I$
+
+$$
+\hat I_1 = \frac{f(x^*_0) + f(x^*_1)}{2}
+$$
+
+Total area $\int_a^b f(x) dx$, with $h = (b-a)/n$
+
+$$
+\hat T(n) = h \sum_{i=1}^n \frac{f(x_i) + f(x_{i+1})}{2}
+$$
+
+$\hat T(n) - \int_a^b f(x)dx = O(n^{-2})$
+
+\subsection{Simpson Rule}
+
+Choose 3 nodes ($m=2$). Approximate height $I$
+
+$$
+\hat I_2 = \frac{1}{6} f(X^*_0) + \frac{4}{6} f(x_1^*) + \frac{1}{6} f(x^*_2)
+$$
+
+Total area $\int_a^b f(x) dx$, with $h = (b-a)/n$, $x^*_i = (x_i+x_{i+1})/2$
+
+$$
+\hat S(n) = h\sum_{i=1}^n \left\{
+\frac{f(x_i)}{6} + \frac{2f(x_i^*)}{3} + \frac{f(x_{i+1})}{6}
+\right\}
+$$
+
+$\hat S(n) - \int_a^b f(x) dx = O(n^{-4})$, can generalised to other polynomial order $m$
+
+\subsection{Gaussian Quadrature}
+
+Perfect est for polynomial order $2m+1$ and below (or fn close enough) using $2m+2$ points.
+
+$$
+I = \int_a^b w(x) f(x) dx = \sum_{j=0}^m c_j f(x_j)
+$$
+
+when $a, b$ finite, $w(x)=1$; when $a=0, b=\infty$, $w(x) = e^{-x}$; when $a=-\infty, b=\infty$, $w(x) = e^{-x^2/2}$
+
+Requires solving for $x_0, \cdots, x_m$ and $c_0, \cdots, c_m$ ($2m+2$ unknowns)
+
+\end{tabulary}
