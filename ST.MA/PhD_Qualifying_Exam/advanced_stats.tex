@@ -38,7 +38,7 @@ $cc^{T}$ is $k\times k$ matrix with $(i, j)$th element as $c_ic_j$,
 \subsection{Max, Min}
 $\max(a, b) = \frac{1}{2} (a + b + |a-b|)$,
 $\min(a, b) = \frac{1}{2} (a + b - |a - b|)$
-
+\compact
 \section{Probability}
 \compact
 \subsection{Moments}
@@ -83,7 +83,7 @@ and $f(x, \theta) = \frac{d\lambda}{d\nu}$
 $E(0, \theta) = \Gamma(1, \theta)$,
 $\Gamma(\frac{n}{2}, 2) \sim \chi_n^2$,
 $X\sim U(0, 1) \Rightarrow -\log X \sim E(0, 1)$
-
+\compact
 \section{Integration}
 \compact
 \subsection{MCT}
@@ -110,7 +110,7 @@ $\Rightarrow$
 $Y=g(X), X = g^{-1}(Y) = h(Y)$ and $A_i$ disjoint,
 $f_Y(y)=\sum_{j:1\leq j \leq m, y\in g(A_j)}\left|\det\left(\frac{\partial h_j(y)}{\partial y}\right)\right| f_X(h_j(y))$.
 Simple version: $f_Y(y) = |det(\partial h(y)/\partial y)| f_X(h(y))$
-
+\compact
 \section{Inequalities}
 \compact
 \subsection{Cauchy-Schewarz}
@@ -146,7 +146,7 @@ $ (E|X|^s)^{1/2} \leq (E|X|^t)^{1/t} $
 \subsection{KL}
 $K(f_0, f_1) = E_0 \log \frac{f_0(X)}{f_1(X)} = \int \log \left(\frac{f_0(x)}{f_1(x)}\right) f_0(x)d\nu(x) \geq 0$
 equality $\Leftrightarrow f_1(\omega)=f_0(\omega)$
-
+\compact
 \section{Convergence}
 \compact
 \subsection{a.s} $X_n\xrightarrow{\text{a.s.}}X$ if
@@ -302,7 +302,7 @@ If $|X_{nj}|\leq M$ for all $n$ and $j$ and $\sigma_n^2 = \sum_{j=1}^{k_n}Var(X_
 \subsection{Feller's condition}
 Ensures Lindeberg's condition is sufficient and necessary (else only sufficient).
 $\lim_{n\rightarrow \infty} \max_{j\leq k_n} \frac{Var(X_{nj})}{\sigma_n^2} = 0$
-
+\compact
 \section{Exponential Families}
 \compact
 \subsection{NEF}
@@ -442,7 +442,7 @@ s.t. $E_{\theta_0}[T(V)] = \alpha$
 \compact
 \subsection{MLR for one-param exp fam}
 $\eta(\theta)$ nondecreasing in $\theta$ $\Rightarrow \eta'(\theta) > 0$.
-
+\compact
 \section{Statistics}
 \compact
 \subsection{Sufficiency}
@@ -489,7 +489,7 @@ If $V$ is ancillary and $T$ is boundedly complete and sufficient, then $V$ and $
 \subsection{Completeness for Varying Support}
 $\int_0^\theta g(x) x^{n-1}dx = 0 \implies g(\theta)\theta^{n-1} = 0$,
 $\implies g(\theta) = g(X_{(n)}) = 0$ and thus $X_{(n)}$ is complete
-
+\compact
 \section{Fisher information}
 $
     I(\theta) = E\left(
@@ -518,7 +518,7 @@ $ I(\theta) = - E \left[
 If $\int \frac{\partial}{\partial\theta}f_\theta(x)d\nu=0$ holds, then
 $I_{(X, Y)}(\theta) = I_X(\theta) + I_Y(\theta)$, and
 $ I_{(X_1, \cdots, X_n)}(\theta) = nI_{X_1}(\theta) $
-
+\compact
 \section{Comparing decision rules}
 \compact
 \subsection{Compare decision rules}
@@ -551,7 +551,7 @@ where $E$ is taken jointly over $(\Tilde{\theta}, X)$.  Then find $T_*(x)$ that 
 \circled{a} Suppose $L(P, a)$ is convex and $T$ is sufficient and $S_0$ is decision rule satisfying $E_P|||S_0|| < \infty$ for all $P\in\mathcal{P}$.
 Let $S_1 = E[S_0(X)|T]$, then $R_{S_1}(P)\leq R_{S_0}(P)$.
 \circled{b} If $L(P, a)$ is strictly convex in $a$, and $S_0$ is not a funciton of $T$, then $S_0$ is inadmissible and dominated by $S_1$.
-
+\compact
 \section{MOM}
 \compact
 \subsection{MoM}
@@ -568,7 +568,7 @@ $
     \sqrt{n} (\hat\theta_n-\theta) \xrightarrow{D} N(0, [\nabla g]^T V_\mu \nabla g)
 $
 MOM is $\sqrt{n}$-consistent, and if $k=1$ $amse_{\hat\theta_n}(\theta)=g'(\mu_1)^2\sigma^2/n$, $\sigma^2=\mu_2-\mu_1^2$
-
+\compact
 \section{MLE}
 \compact
 \subsection{MLE}
@@ -613,7 +613,7 @@ Often asym efficient, useful to adjust an non asym efficient estimators provided
 $
     \hat\theta_n^{(1)} = \hat\theta_n^{(0)}-\left[\nabla s_n (\hat\theta_n^{(0)})\right]^{-1} s_n(\hat\theta_n^{(0)})
 $
-
+\compact
 \section{Unbiased Estimators}
 \compact
 \subsection{UMVUE}
@@ -672,7 +672,7 @@ s.t. $\xi'(\theta) = g(\theta) \eta'(\theta)$ and $I(\theta) = \eta'(\theta)g'(\
 \compact
 \subsection{UMVUE asymptotic}
 Typically consistent, exactly unbiased, ratio of mse over Cramér-Rao LB converges to 1 (asym they are the same).
-
+\compact
 \section{Other estimators}
 \compact
 \subsection{Upper semi-continuous (usc)}
@@ -718,7 +718,7 @@ Point where UMVUE failed Hodeges' estiamtor in information inequality (2). But u
 \compact
 \subsection{Asym efficiency}
 Assume Fisher Info $I_n(\theta)$ is well-defined and positive definite for every $n$, seq of estimators $\{\hat\theta_n\}$ satisfies asym cov matrix is asym efficient or asym optimal if and only if $V_n(\theta)=[I_n(\theta)]^{-1}$.
-
+\compact
 \section{Asymptotics}
 \compact
 \subsection{Consistency of point estimators}
@@ -769,7 +769,7 @@ Then \circled{a} amse of $U_n$ is $[g'(\theta)^2EY^2]/a_n^2$
 $F(\theta) = \gamma \in (0, 1)$ and $\hat\theta_n :=$ $\lfloor{\gamma n}\rfloor$-th order statistics,
 $F'(\theta) > 0$ and exists.
 $ \sqrt{n}(\hat\theta_n-\theta)\xrightarrow{D} N\left(0, \frac{\gamma(1-\gamma)}{[F'(\theta)]^2}\right) $
-
+\compact
 \section{Hypothesis testing}
 \compact
 \subsection{Hypothesis tests}
@@ -879,7 +879,7 @@ asymptotic CI if $\lim_{n\rightarrow \infty} P(\theta_t \in C_t(X) \text{ for al
 \compact
 \subsection{UMPU}
 Exists for one-param,
-
+\compact
 \section{Asymptotic test}
 \compact
 \subsection{LR test}
@@ -909,7 +909,7 @@ $\Tilde{\theta}$ is MLE/RLE of $\theta$ under $H_0: R(\theta)=0$.
 Same test structure for LR, Wald', Rao's score test.
 $H_0: R(\theta)=0$, $\lim_{n\rightarrow \infty} W_n, Q_n \sim \chi_r^2$,
 $T(X) = I(W_n > \chi_{r, 1-\alpha}^2)$ or $I(Q_n > \chi_{r, 1-\alpha}^2)$
-
+\compact
 \section{Non-param tests}
 \compact
 \subsection{Sign test}
@@ -964,7 +964,7 @@ $\Rightarrow T(X) = I(ELR_n(X) < c)$
 $ELR_n(X) = \frac{\ell(\hat{F}_0)}{\ell(\hat{F})}$,
 $\ell(G) = \prod_{i=1}^n P_G(\{x_i\})$, $G \in \mathcal{F}$.
 ($\mathcal{F} :=$ collection of CDFs, $P_G :=$ measure induced by CDF $G$)
-
+\compact
 \section{Confidence set}
 $C(X): X \rightarrow \mathcal{B}(\Theta)$,
 Require $\inf_{P\in\mathcal{P}} P(\theta\in C(X)) \geq 1 - \alpha$,
@@ -1039,7 +1039,7 @@ $C(X) = \left\{
     \left[ s_n(\theta, \hat\varphi) \right]
     \leq \chi_{r, 1-\alpha}^2
     \right\}$
-
+\compact
 \section{Bayesian}
 \compact
 \subsection{Bayes formula}
@@ -1140,7 +1140,7 @@ $\mathbb{E}_*\left[-\nabla_\theta^2\log p_{\theta^*}(Y)\right]^{-1}\text{Var}_*\
     p_{\theta^*}(Y)\right)\mathbb{E}_*\left[-\nabla_\theta^2\log p_{\theta^*}(Y)\right]^{-1}$
 (differ from MLE, with $\theta_*$ the projection of $P_*$ to parameter
 space)
-
+\compact
 \section{Linear Model}
 \compact
 \subsection{Linear Model}
@@ -1268,4 +1268,11 @@ Sample correlation coefficient:
 $R=\frac{\sum_{i=1}^n(X_{i1}-\bar{X}_1)(X_{X_{i2} - \bar{X}_2})}{\left\{\sum_{i=1}^n(X_{i1}-\bar{X}_1)^2\sum_{i=1}^n(X_{i2}-\bar{X}_2)^2\right\}^(1/2)}$,
 $T=\sqrt{n-2}R/\sqrt{1-R^2}\sim t_{n-2}$ under $H_0: \rho=0$,
 UMPU test reject $|T| > t_{n-2, \alpha/2}$
+\compact
+\subsection{Conditional normal}
+$x\sim N_x(\mu, \Sigma)$, $x=[x_a, x_b]^T$, $\mu=[\mu_a, \mu_b]^T$,
+$\Sigma=[[\Sigma_a, \Sigma_c], [\Sigma_c^T, \Sigma_b]]^T$,
+$p(x_a|x_b)=N_{x_a}(\hat\mu_a, \hat\Sigma_a)$,
+$\hat\mu_a = \mu_a + \Sigma_c\Sigma_b^{-1}(x_b-\mu_b)$,
+$\hat\Sigma_a = \Sigma_a - \Sigma_c\Sigma_b^{-1}\Sigma_c^T$
 \end{document}
