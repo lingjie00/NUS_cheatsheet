@@ -20,8 +20,8 @@
 % Define a command to create circled numbers
 \newcommand{\circled}[1]{\textcircled{\footnotesize #1}}
 % Define a command to swap between line breaks
-\newcommand{\compact}{\nolinebreak}
-% \newcommand{\compact}{\\}
+% \newcommand{\compact}{\nolinebreak}
+\newcommand{\compact}{\\}
 
 \pdfinfo{
     /Title (Advanced Statistical Theory PhD Qualifying Exam)
@@ -418,6 +418,9 @@ and $E_{\theta_0}[T(V)V] = \alpha E_{\theta_0}(V)$
 \circled{4} $V$ to be increasing in $Y$
 $\Rightarrow T(V) = I(V>c)$
 s.t. $E_{\theta_0}[T(V)] = \alpha$
+\compact
+\subsection{MLR for one-param exp fam}
+$\eta(\theta)$ nondecreasing in $\theta$ $\Rightarrow \eta'(\theta) > 0$.
 
 \section{Statistics}
 \compact
@@ -780,50 +783,20 @@ $
 $
 \compact
 \subsection{NP Test}
- (Steps)
-\circled{1} Find joint distribution $f(X_1, \cdots, X_n)$ - MLR/NEF
-\circled{2} Hypothesis $H_0, H_1$ - simple/composite, must be $\theta$ and not $f(\theta)$
+Steps
+\circled{1} Find joint distribution $f(X)$ and determine MLR and/or NEF
+\circled{2} Formulate hypothesis $H_0, H_1$ - simple/composite about $\theta$ and not $f(\theta)$
 \circled{3} Form N-P test structure $T_*$
-\circled{4} Find test dist, rejection/acceptance region.
+\circled{4} Find test distribution and rejection region.
 \compact
 \subsection{Generalised NP}
-(Want to) $\max_{\phi} \int \phi f_{m+1} d\nu$ s.t.
-$\int \phi f_1 d\nu \leq t_1$,
-$\int \phi f_2 d\nu \leq t_2$,
-$\cdots$
-$\int \phi f_m d\nu \leq t_m$,
-(condition) If $\exists$ $c_1, \cdots, c_m$ s.t.
-$\phi_*(x) = I(f_{m+1}(x) > c_1 f_1(x) + \cdots + c_mf_m(x))$,
+$\phi$ is the $T$
+(Test framework) $\max_{\phi} \int \phi f_{m+1} d\nu$
+s.t.  $\int \phi f_i d\nu \leq t_i \; \forall \; i \in (1, m)$,
+(Required condition) If $\exists$ $c_1, \cdots, c_m$ s.t.
+$\phi_*(x) = I\left[ f_{m+1}(x) > \sum_{i=1}^m c_i f_i(x) \right]$,
 then $\phi_*$ maximises objective function with equality constraint.
 If $c_i\geq 0$ then $\phi_*$ maximises with inequality constraint.
-\compact
-\subsection{N-P lemma}
-NP test has non-trival power $\alpha < \beta_{H_1}(T)$ unless $P_0=P_1$,
-and is unique up to $\gamma$ (randomised test)
-\compact
-\subsection{Show $T_*$ is UMP}
-UMP when $E_1[T_*]-E_1[T]\geq 0$,
-\textit{key equation}: $(T_*-T)(f_1-cf_0)\geq 0$.
-$\Rightarrow \int (T_*-T)(f_1-cf_0) = \beta_{H_1}(T_*) - \beta_{H_1}(T) \geq 0$.
-\compact
-\subsection{Composite hypothesis}
-Simple $\Rightarrow$ Composite when
-$\beta_T(\theta_0) \geq \beta_T(\theta \in H_0)$
-and/or $\beta_T(\theta_0) \leq \beta_T(\theta \in H_1)$ (or does not depend on
-$\theta$.
-For MLR this is satisfied, others need to check.
-\compact
-\subsection{Monotone Likelihood Ratio}
-$\theta_2 > \theta_2$, increasing likelihood ratio in $Y$ if
-$g(Y) = \frac{f_{\theta_2}(Y)}{f_{\theta_1}(Y)} > 1$ or $g'(Y) > 0$.
-For NEF, check $\eta'(\theta) > 0$.
-\compact
-\subsection{MLR}
-(Monotone Likelihood ratio in $Y(X)$) for any $\theta_1 < \theta_2$,
-$f_{\theta_2}(x) / f_{\theta_1}(x)$ nondecreasing in $Y(x)$.
-    [MLR for one-param exp fam] $\eta(\theta)$ nondecreasing in $\theta$.
-    [Simply NP test] $T(X) = I(Y(X) > c) + \gamma I(Y(X) = c)$ (increasing MLR,
-$H_0: \theta \leq \theta_0$, $H_1: \theta > \theta_0$)
 \compact
 \subsection{UMP}
 \circled{1} $H_0: P=p_0$ $H_1: P=p_1$ $\Rightarrow T(X) = I(p_1(X) > cp_0(X))$,
@@ -834,14 +807,35 @@ $\beta_T(p_0) = \alpha$
     \theta < \theta_2$, $\Rightarrow T(Y) = I(c_1 < Y < c_2)$,
 $\beta_T(\theta_1) = \beta_T(\theta_2) = \alpha$
 \compact
-(UMP) Satisfy (1) pre-set size $\alpha = E_{H_0}(T)$ (2) max power $\beta_T(P) =
+UMP Satisfy (1) pre-set size $\alpha = E_{H_0}(T)$ (2) max power $\beta_T(P) =
     E_{H_1}(T)$
-(Neyman-Pearson) $T(X) = I(f_1(X) > c f_0(X)) + \gamma I(f_1(X) = c
-    f_0(X))$ (unique up to randomised test)
 \compact
 \subsection{No UMP}
 $H_0: \theta=\theta_1, H_1: \theta\neq\theta_1$
 and $H_0: \theta\in(\theta_1, \theta_2)$ $H_1: \theta\notin(\theta_1, \theta_2)$
+\compact
+\subsection{N-P lemma}
+NP test has non-trival power $\alpha < \beta_{H_1}(T)$ unless $P_0=P_1$,
+and is unique up to $\gamma$ (randomised test)
+\compact
+\subsection{Show $T_*$ is UMP in simple hypothesis}
+UMP when $E_1[T_*]-E_1[T]\geq 0$,
+\textit{key equation}: $(T_*-T)(f_1-cf_0)\geq 0$.
+$\Rightarrow \int (T_*-T)(f_1-cf_0) = \beta_{H_1}(T_*) - \beta_{H_1}(T) \geq 0$.
+\compact
+\subsection{UMP unique up to randomised test in simple hypothesis}
+$(T_*-T)(f_1-cf_0)\geq 0, \int (T_*-T)(f_1-cf_0) = 0 \Rightarrow (T_*-T)(f_1-cf_0)= 0$ and $T_* = T$
+\compact
+\subsection{Composite hypothesis}
+Simple $\Rightarrow$ Composite when
+$\beta_T(\theta_0) \geq \beta_T(\theta \in H_0)$
+and/or $\beta_T(\theta_0) \leq \beta_T(\theta \in H_1)$ (or does not depend on
+$\theta$).
+For MLR this is satisfied, others need to check.
+\compact
+\subsection{Monotone Likelihood Ratio}
+$\theta_2 > \theta_2$, increasing likelihood ratio in $Y$ if
+$g(Y) = \frac{f_{\theta_2}(Y)}{f_{\theta_1}(Y)} > 1$ or $g'(Y) > 0$.
 \compact
 \subsection{Simultaneous}
 (Bonferroni) adjust each paramter level to $\alpha_t = \alpha/k$
@@ -859,21 +853,23 @@ under $H_0$, $-2\log\lambda(X)\rightarrow \chi_r^2$,
 where $r := dim(\theta)$
 $T(X) = I\left[\lambda(X)<\exp(-\chi^2_{r, 1-\alpha}/2)\right]$ where $\chi_{r, 1-\alpha}^2$ is the $(1-\alpha)$th quantile of $\chi_r^2$.
 \compact
-\subsection{Asymptotic Tests}
-$H_0: R(\theta)=0$, $\lim_{n\rightarrow \infty} W_n, Q_n \sim \chi_r^2$,
-$T(X) = I(W_n > \chi_{r, 1-\alpha}^2)$ or $I(Q_n > \chi_{r, 1-\alpha}^2)$
-\compact
 \subsection{Wald's test}
-$W_n = R(\hat\theta)^T \{C(\hat\theta)^T I_n^{-1}(\hat\theta) C(\hat\theta) \}^{-1} R(\hat\theta)$
-$C(\theta) = \partial R(\theta)/\partial \theta$,
+$W_n = R(\hat\theta)^T \{C(\hat\theta)^T I_n^{-1}(\hat\theta) C(\hat\theta) \}^{-1} R(\hat\theta)$,
+where $C(\theta) = \partial R(\theta)/\partial \theta$,
 $I_n(\theta)$ is fisher info for $X_1, \cdots, X_n$,
 $\hat\theta$ is unrestricted MLE/RLE of $\theta$.
+\subsection{Wald's test - easy case}
 if $H_0: \theta=\theta_0$ $\Rightarrow R(\theta) = \theta - \theta_0$, and
 $W_n = (\hat\theta - \theta_0)^T I_n(\hat\theta) (\hat\theta - \theta_0)$
 \compact
 \subsection{Rao's score test}
 $Q_n=s_n(\Tilde{\theta})^T I_n^{-1}(\Tilde{\theta}) s_n(\Tilde{\theta})$.
-$s_n(\theta)=\partial\log\ell(\theta)/\partial\theta$ is score function, $\Tilde{\theta}$ is MLE/RLE of $\theta$ under $H_0: R(\theta)=0$ (under $H_0$).
+where score function $s_n(\theta)=\partial\log\ell(\theta)/\partial\theta$,
+$\Tilde{\theta}$ is MLE/RLE of $\theta$ under $H_0: R(\theta)=0$.
+\subsection{Asymptotic Tests}
+Same test structure for LR, Wald', Rao's score test.
+$H_0: R(\theta)=0$, $\lim_{n\rightarrow \infty} W_n, Q_n \sim \chi_r^2$,
+$T(X) = I(W_n > \chi_{r, 1-\alpha}^2)$ or $I(Q_n > \chi_{r, 1-\alpha}^2)$
 
 \section{Non-param tests}
 \compact
@@ -932,45 +928,50 @@ $\ell(G) = \prod_{i=1}^n P_G(\{x_i\})$, $G \in \mathcal{F}$.
 
 \section{Confidence set}
 $C(X): X \rightarrow \mathcal{B}(\Theta)$,
-Require $\inf_{P\in\mathcal{P}} P(\theta\in C(X)) \geq 1 - \alpha$.
-Conf coeff more than level
-(via pivotal qty)
+Require $\inf_{P\in\mathcal{P}} P(\theta\in C(X)) \geq 1 - \alpha$,
+that is confidencen coeff should be more than level
+\compact
+\subsection{CI via pivotal qty}
 $C(X) = \{\theta: c_1 \leq \mathcal{R}(X, \theta) \leq c_2\}$,
-\textit{not dependent on $P$}, common pivotal qty: $(X_i-\mu)/\sigma$
-(invert accept region)
+\textit{not dependent on $P$}
+common pivotal qty: $(X_i-\mu)/\sigma$
+\compact
+\subsection{invert accept region}
 $C(X) = \{\theta: x\in A(\theta)\}$, Acceptance region $A(\theta)=\{x:
     T_{\theta_0}(x) \neq 1\}$.
-$H_0: \theta = \theta_0$, $H_1$ any
+$H_0: \theta = \theta_0$, any $H_1$ satisfy
 \compact
 \subsection{Shortest CI}
-(unimodal)
-$f'(x_0) = 0$ $f'(x)<0, x < x_0$ and $f'(X)>0, x > x_0$
-(Pivotal $(T-\theta)/U$, $f$ unimodal at $x_0$)
-$[T - b_*U, T-a_* U]$, shortest when
-$f(a_*) = f(b_*) > 0$
-$a_* \leq x_0 \leq b_*$
-(Pivotal $T/\theta$, $x^2f(x)$ unimodal at $x_0$)
-$[b_*^{-1}T, a_*^{-1}T_*]$ shortest when
-$a^2_*f(a_*) = b^2_*f(b_*) > 0$
-$a_* \leq x_0 \leq b_*$
-(General)
-Suppose $f > 0$, integrable, unimodal at $x_0$,
-want: $\min b - a$ s.t.
-$\int_a^b f(x) dx$ and $a \leq b$
-sol: $a_*, b_*$ satisfy
-(1) $a_* \leq x_0 \leq b_*$
-(2) $f(a_*) = f(b_*) > 0$
-(3) $\int_{a_*}^{b_*} f(x) dx = 1- \alpha$
+require unimodal: $f'(x_0) = 0$ $f'(x)<0, x < x_0$ and $f'(X)>0, x > x_0$
 \compact
-\subsection{asym}
-require $\lim_{n\rightarrow}P(\theta\in C(X)) \geq 1 - \alpha$,
-(asym pivotal)
+\subsection{Pivotal $(T-\theta)/U$, $f$ unimodal at $x_0$}
+Interval $[T - b_*U, T-a_* U]$, shortest when $f(a_*) = f(b_*) > 0$ $a_* \leq x_0 \leq b_*$
+\compact
+\subsection{Pivotal $T/\theta$, $x^2f(x)$ unimodal at $x_0$}
+Interval $[b_*^{-1}T, a_*^{-1}T_*]$ shortest when $a^2_*f(a_*) = b^2_*f(b_*) > 0$ $a_* \leq x_0 \leq b_*$
+\compact
+\subsection{General CI}
+Require $f > 0$, integrable, unimodal at $x_0$,
+(Objective) $\min b - a$ s.t.
+$\int_a^b f(x) dx$ and $a \leq b$
+(Solution) $a_*, b_*$ satisfy
+\circled{1} $a_* \leq x_0 \leq b_*$
+\circled{2} $f(a_*) = f(b_*) > 0$
+\circled{3} $\int_{a_*}^{b_*} f(x) dx = 1- \alpha$
+forms the shortest CI, note it has to exactly the formulation above.
+\compact
+\subsection{Asymptotic CI}
+Require $\lim_{n\rightarrow}P(\theta\in C(X)) \geq 1 - \alpha$,
+\compact
+\subsection{Asymptotic pivotal}
 $\mathcal{R}_n(X, \theta) = \hat V_n^{-1/2} (\hat\theta_n - \theta)$
 does not depend on $P$ in limit
-(LR)
+\compact
+\subsection{Asymptotic LR CI}
 $C(X) = \left\{\theta: \ell(\theta, \hat\varphi) \geq
     exp(-\chi_{r, 1-\alpha}^2-\alpha/2)\ell(\hat\theta)\right\}$
-(Wald)
+\compact
+\subsection{Asymptotic Wald CI}
 $C(X) = \left\{
     \theta: (\hat\theta - \theta)^T \left[
         C^T \left(
@@ -980,7 +981,8 @@ $C(X) = \left\{
         \right]^{-1}
     (\hat\theta - \theta) \leq \chi_{r, 1-\alpha}^2
     \right\}$
-(Rao)
+\compact
+\subsection{Asymptotic Rao CI}
 $C(X) = \left\{
     \theta:
     \left[ s_n(\theta, \hat\varphi) \right]^T
@@ -991,23 +993,28 @@ $C(X) = \left\{
 
 \section{Bayesian}
 \compact
-\subsection{Method}
-(Bayes formula)
+\subsection{Bayes formula}
 $\frac{dP_{\theta|X}}{d\Pi} = \frac{f_\theta(X)}{m(X)}$.
-(Bayes action $\delta(x)$)
+\compact
+\subsection{Bayes action $\delta(x)$}
 $\arg\min_a E[L(\theta, a) | X = x]$,
-when $L(\theta, a) = (\theta - a)^2$, $\delta(x) = E(\theta | X = x)$.
-(Generalised Bayes action)
+when $L(\theta, a) = (\theta - a)^2$, $\delta(x) = E(\theta | X = x)$,
+and bayes risk $r_\delta(\theta) = Var(\theta|X)$
+\compact
+\subsection{Generalised Bayes action}
 $\arg\min_a \int_{\Theta} L(\theta, a) f_\theta(x) d\Pi$,
 works for improper prior where $\Pi(\Theta) \neq 1$
-(Interval estimation - Credible sets)
+\compact
+\subsection{Interval estimation - Credible sets}
 $P_{\theta|x}(\theta\in C) = \int_C p_x(\theta)d\lambda \geq 1- \alpha$
-(HPD (highest posterior dentsity))
+\compact
+\subsection{HPD highest posterior dentsity}
 $C(x) = \{\theta: p_x(\theta) \geq c_\alpha\}$,
 often shortest length credible set.
 Is a horizontal line in the posterior density plot.
-Might not have confidence level $1-\alpha$.
-(Hierachical Bayes)
+Might not have exact confidence level $1-\alpha$.
+\compact
+\subsection{Hierachical Bayes}
 With hyper-priors as hyper-parameters on the priors.
 \compact
 \subsection{Empirical Bayes}
@@ -1021,7 +1028,7 @@ $\Rightarrow \sigma_0^2 = \frac{1}{n}\sum_{i=1}^n (X_i - \bar X)^2
     -\sigma^2$
 \compact
 \subsection{Normal posterior}
-Normal posterior with prior unknown $\mu$ and known $\sigma^2$ $N(\mu_*(x), c^2)$:
+Normal posterior $N(\mu_*(x), c^2)$ with prior unknown $\mu$ and known $\sigma^2$:
 $\mu_*(x) = \frac{\sigma^2}{\sigma^2 + n\sigma_0^2} \mu_0 + \frac{n\sigma_0^2}{\sigma^2 + n\sigma_0^2} \bar{x}$,
 $c^2 = \frac{\sigma_0^2\sigma^2}{n\sigma_0^2 + \sigma^2}$
 $C(x) = [\mu_*(x) - cz_{1-\alpha/2},~\mu_*(x) + cz_{1-\alpha/2}]$.
@@ -1035,7 +1042,7 @@ and $\delta$ is Bayes action with respect to $\Pi$ $\Rightarrow$ admissible.
 ignorable, take limit and observe if risk is admissible.
 (Bias)
 Under squared error loss, $\delta(X)$ is biased unless $r_\delta(\Pi) = 0$.
-\textit{No applicable to improper priors}.
+\textit{Not applicable to improper priors}.
 (Minimax)
 If $T$ is (unique) Bayes estimator under $\Pi$ and
 $R_T(\theta) = \sup_{\theta'} R_T(\theta')$ $\pi\text{-a.e.}$,
@@ -1053,7 +1060,7 @@ Note, not true for generalised Bayes rules unless limit is Bayes rule.
 Simultaneous estimate vector-valued $\mathcal{V}$ with e.g. squared loss
 $L(\theta, a) = \|a - \theta\|^2 = \sum_{i=1}^{p} (a_i - \theta_i)^2$
 \compact
-\subsection{Asymptotic}
+\subsection{Bayes Asymptotic Property}
 (Posterior Consistency)
 $X\sim P_{\theta_0}$ and $\Pi(U|X_n) \xrightarrow{P_{\theta_0}} 1$
 for all open $U$ containing $\theta_0$.
@@ -1065,91 +1072,105 @@ then posterior converges to $\theta^\ast$ in probability.
 (Posterior Robustness)
 all priors that lead to consistent posteriors are equivalent.
 \compact
-\subsection{BM}
-Bernstein-von Mises: assume regularity conditions, posterior
+\subsection{Bernstein-von Mises}
+Assume MLE regularity conditions, posterior
 $T_n = \sqrt{n} (\Tilde{\theta_n}-\hat{\theta_n}) \sim \mathcal{N}(\hat\theta_n, V^*/n)$
 asymptotically.
 (Well-specified)
-$V^* = E_* \left[ -\nabla_\theta^2 \log p_{\theta^*}(Y) \right]^{-1}$
+$V^* = I(\theta^*)^{-1} = E_* \left[ -\nabla_\theta^2 \log p_{\theta^*}(Y) \right]^{-1}$
 (same as MLE, with $\theta^*$ as true parameter, CI = CR)
+$\sqrt{n} \left( \hat\theta_n - E_\theta[\theta | X_1, \cdots, X_n] \right)
+    \xrightarrow{P} 0$ (If MLE has asym normality, so is posterior mean)
 (Mis-specified)
-$V^* = \mathbb{E}_*\left[-\nabla_\theta^2\log p_{\theta_*}(Y)\right]^{-1}=$
+$V^* = \mathbb{E}_*\left[-\nabla_\theta^2\log p_{\theta_*}(Y)\right]^{-1}$,
+$\theta_*$ is projection of $\theta^*$ onto parameter space,
+or unique maximizer of $\ell^*(\theta) = E_*[\log p_\theta(Y)]$
+\compact
+\subsection{MLE asymptotic variance under model misspecification}
 $\mathbb{E}_*\left[-\nabla_\theta^2\log p_{\theta^*}(Y)\right]^{-1}\text{Var}_*\left(\nabla\log
     p_{\theta^*}(Y)\right)\mathbb{E}_*\left[-\nabla_\theta^2\log p_{\theta^*}(Y)\right]^{-1}$
 (differ from MLE, with $\theta_*$ the projection of $P_*$ to parameter
 space)
-(Result)
-$\sqrt{n} \left( \hat\theta_n - E_\theta[\theta | X_1, \cdots, X_n] \right)
-    \xrightarrow{P} 0$ (If MLE has asym normality, so is posterior mean)
 
 \section{Linear Model}
-
+\compact
 \subsection{Linear Model}
 $X = Z\beta + \epsilon$ (or $X_i = Z_i^T \beta + \epsilon_i$)
 Estimate with $b = \min_b \lVert X - Zb \rVert^2 = \lVert X - Z\hat\beta
     \rVert^2$,
+\subsection{Generalised inverse} Moore-Penrose inverse $A^+ A A^+ = A^+$, $A = (Z^TZ)$
+\subsection{Projection matrix} $P_Z = Z(Z^TZ)^- Z^T$, $P_Z^2 = P_Z$, $P_Z Z = Z$,
+$rank(P_Z)=tr(P_Z)=r$
+\compact
+\subsection{LM Solution}
 (solution = normal equation) $Z^Z b = Z^T X$
-(Full rank): $\hat\beta = (Z^T Z)^{-1}Z^T X$
-(Non-full rank): $\hat\beta = (Z^T Z)^{-}Z^T X$
+(when $Z$ is full rank): $\hat\beta = (Z^T Z)^{-1}Z^T X$
+(when $Z$ is not full rank): $\hat\beta = (Z^T Z)^{-}Z^T X$
+\compact
+\subsection{LM assumptions}
 (A1 Gaussian noise) $\epsilon \sim N_n(0, \sigma^2 I_n)$
 (A2 homoscedastic noise) $E(\epsilon) = 0$, $Var(\epsilon) = \sigma^2 I_n$
 (A3 general noise) $E(\epsilon) = 0$, $Var(\epsilon) = \Sigma$
 \compact
-\subsection{Inference}
+\subsection{Estimable $\ell \beta$}
 Estimate linear combination of coefficient
-(General) Necce and Suff condition: $\ell \ in R(Z) = R(Z^TZ)$
-(A3) LSE $\ell^T \hat\beta$ is unique and unbiased
-(A1) if $\ell\notin R(Z)$, $\ell^T\beta$ not estimable
+(General) necessary and Sufficient condition: $\ell \in R(Z) = R(Z^TZ)$
+(under A3) LSE $\ell^T \hat\beta$ is unique and unbiased
+(under A1) if $\ell\notin R(Z)$, $\ell^T\beta$ not estimable
 \compact
-\subsection{Properties}
-Require $\ell \in R(Z) = R(Z^TZ)$
-(A1)
-(i) LSE $\ell^T\hat\beta$ is UMVUE of $\ell^T\beta$,
-(ii) UMVUE of $\hat\sigma^2 = (n-r)^{-1}\lVert X - Z\hat\beta \rVert^2$,
+\subsection{LM property under A1}
+\circled{1} LSE $\ell^T\hat\beta$ is UMVUE of $\ell^T\beta$,
+\circled{2} UMVUE of $\hat\sigma^2 = (n-r)^{-1}\lVert X - Z\hat\beta \rVert^2$,
 $r$ is rank of $Z$
-(iii) $\ell\hat\beta$ and $\hat\sigma^2$ are independent,
+\circled{3} $\ell\hat\beta$ and $\hat\sigma^2$ are independent,
 $\ell^T\hat\beta \sim N(\ell^T\beta, \sigma^2\ell^T(Z^TZ)-\ell)$,
 $(n-r)\hat\sigma/\sigma^2\sim\chi_{n-r}^2$
-(A2) LSE $\ell^T\hat\beta$ is BLUE (Best Linear Unbiased Estimator, best as in min var)
-[A3] Following are equivalent:
-(a) $\ell^T\hat\beta$ is BLUE for $\ell^T\beta$ (also UMVUE),
-(b) $E[\ell^T\hat\eta^TX)=0]$, any $\eta$ is s.t. $E[\eta^TX]=0$
-(c) $Z^T var(\epsilon) U = 0$, for $U$ s.t. $Z^TU = 0$, $R(U^T)+R(Z^T)=R^n$
-(d) $Var(\epsilon) = Z\Lambda_1 Z^T + U \Lambda_2 U^T$,
-for some $\Lambda_1, \Lambda_2, U$ s.t. $Z^TU = 0$, $R(U^T)+R(Z^T)=R^n$
-(e) $Z(Z^TZ)^-Z^T Var(\epsilon)$ is symmetric
 \compact
-\subsection{Asymptotic}
+\subsection{LM property under A2}
+LSE $\ell^T\hat\beta$ is BLUE (Best Linear Unbiased Estimator, best as in min var)
+\compact
+\subsection{LM property under A3}
+Following are equivalent:
+\circled{a} $\ell^T\hat\beta$ is BLUE for $\ell^T\beta$ (also UMVUE),
+\circled{b} $E[\ell^T\hat\eta^TX)=0]$, any $\eta$ is s.t. $E[\eta^TX]=0$
+\circled{c} $Z^T var(\epsilon) U = 0$, for $U$ s.t. $Z^TU = 0$, $R(U^T)+R(Z^T)=R^n$
+\circled{d} $Var(\epsilon) = Z\Lambda_1 Z^T + U \Lambda_2 U^T$,
+for some $\Lambda_1, \Lambda_2, U$ s.t. $Z^TU = 0$, $R(U^T)+R(Z^T)=R^n$
+\circled{e} $Z(Z^TZ)^-Z^T Var(\epsilon)$ is symmetric
+\compact
+\subsection{LM consistency}
 $\lambda_+[A]$ is the largest eigenvalue of $A_n = (Z^TZ)^-$.
-(Consistency)
 Suppose $\sup_n \lambda_+ [Var\epsilon)] < \infty$ and
 $\lim_{n\rightarrow\infty} \lambda_+ [A_n] = 0$,
 $\ell^T\hat\beta$ is consistent in MSE.
-(Asym Normality)
-$\ell^T(\hat\beta-\beta)/\sqrt{Var(\ell^T\hat\beta)}\rightarrow_d N(0, 1)$
-suff cond: $\lambda_+[A_n]\rightarrow 0$, $Z_n^T A_n Z_n \rightarrow 0$ as
-$n\rightarrow\infty$, and
-there exist $\{a_n\}$ s.t. $a_n\rightarrow \infty$, $a_n/a_{n+1}\rightarrow
-    1$, $Z^TZ/a_n$ converge to positive definite matrix.
 \compact
-\subsection{Testing}
-Under A1, $\ell \in R(Z)$, $\theta_0$ fixed constant,
-(Hypothesis testing)
-(simple)
+\subsection{LM asymptotic normality}
+$\ell^T(\hat\beta-\beta)/\sqrt{Var(\ell^T\hat\beta)}\xrightarrow{D} N(0, 1)$.
+sufficient condition:
+$\lambda_+[A_n]\rightarrow 0$ and
+$Z_n^T A_n Z_n \rightarrow 0$ as $n\rightarrow\infty$ and
+there exist $\{a_n\}$ s.t. $a_n\rightarrow \infty$, $a_n/a_{n+1}\rightarrow 1$ and
+$Z^TZ/a_n$ converge to positive definite matrix.
+\compact
+\subsection{LM Hypothesis testing}
+Under A1, $\ell \in R(Z)$, $\theta_0$ fixed constant
+\compact
+\subsection{LM hypothesis testing - simple}
 $\ell \in R(Z)$,
-$H_0: \ell^T\beta \leq \theta_0$, $H_1: \ell^T\beta > \theta_0$,
-or $H_0: \ell^T\beta = \theta_0$, $H_1: \ell^T\beta \neq \theta_0$,
-$
-    t(X) = \frac{\ell^T\hat\beta - \theta_0}{
+\circled{a} $H_0: \ell^T\beta \leq \theta_0$, $H_1: \ell^T\beta > \theta_0$,
+\circled{b} $H_0: \ell^T\beta = \theta_0$, $H_1: \ell^T\beta \neq \theta_0$,
+Under $H_0$ :
+$ t(X) = \frac{\ell^T\hat\beta - \theta_0}{
         \sqrt{ \ell^T(Z^TZ)^-\ell }
         \sqrt{ SSR/(n-r) }
-    } \sim t_{n-r}
-$ under $H_0$,
+} \sim t_{n-r} $,
 UMPU reject $t(X) > t_{n-r, \alpha}$
 or $|t(X)| > t_{n-r, \alpha/2}$
-(multiple)
+\compact
+\subsection{LM hypothesis testing - multiple}
 $L_{s\times p}$, $s \leq r$ and all rows = $\ell_j \in R(Z)$
-$H_0: L\beta = 0$, $H_1: L\beta \neq 0$
+\circled{a} $H_0: L\beta = 0$, $H_1: L\beta \neq 0$
+Under $H_0$:
 $
     W = \frac{(\lVert X - Z\hat\beta_0 \rVert^2 - \lVert X - Z\hat\beta
         \rVert^2)/s}{\lVert X - Z\hat\beta \rVert^2/(n-r)} \sim F_{s, n-r}
@@ -1158,46 +1179,13 @@ $
 with non-central param
 $\sigma^{-2}\lVert Z\beta - \Pi_0Z\beta\rVert^2$,
 reject $W > F_{s, n-r, 1-\alpha}$
-(Confidence set)
+\compact
+\subsection{LM confidence set}
 Pivotal qty: $
     \mathcal{R}(X, \beta) = \frac{(\hat\beta -
         \beta)^TZ^TZ(\hat\beta-\beta)/p}{
         \lVert X - Z\hat\beta \rVert^2/(n-p)
     } \sim F_{p, n-p}
-$, $\hat\beta$ is LSE of $\beta$,
+$, where $\hat\beta$ is LSE of $\beta$,
 $C(X) = \{\beta: \mathcal{R}(X, \beta) \leq F_{p, n-p, 1-\alpha}\}$
-
-\section{Linear models}
- (Normal equation) $Z^TZb = Z^TX$
-(LSE) $\hat\beta = (Z^TZ)^- Z^T X$
-(Generalised inverse) Moore-Penrose inverse $A^+ A A^+ = A^+$, $A = (Z^TZ)$
-(Projection matrix) $P_Z = Z(Z^TZ)^- Z^T$, $P_Z^2 = P_Z$, $P_Z Z = Z$,
-$rank(P_Z)=tr(P_Z)=r$
-\compact
-\subsection{Assumptions}
-(A1 Gaussian noise) $\epsilon\sim N_n(0, \sigma^2 I_n)$
-(A2 homoscedastic noise) $E(\epsilon) =0$, $Var(\epsilon) = \sigma^2 I_n$
-(A3 general noise) $E(\epsilon) = 0$, $Var(\epsilon) = \Sigma$
-\compact
-\subsection{Estimable}
-Estimate $\nu = \ell^T \beta$ for some $\ell\in\mathcal{R}^p$.
-(Necc Suff) $\ell \in \mathcal{R(Z)} = \mathcal{R}(Z^TZ)$ (linear subspace)
-(A3 + above)  LSE $\ell^T\hat\beta$ unique and unbiased
-(A1 + not cond) $\ell^T\beta$ not estimable
-\compact
-\subsection{asym}
-(Asym Norm) $\ell^T(\hat\beta - \beta)/\sqrt{Var(\ell^T\hat\beta}
-    \xrightarrow{d} N(0, 1)$
-\compact
-\subsection{Hypo test - one}
-($H_0: \ell^T\beta \leq \theta_0$, $H_1: \ell^T \beta > \theta_0$)
-($H_0: \ell^T\beta = \theta_0$, $H_1: \ell^T \beta \neq \theta_0$)
-$t(X) = \frac{\ell^T\hat\beta -
-        \theta_0}{\sqrt{\ell^T(Z^TZ)^-\ell}\sqrt{SSR/(n-r)}}\sim t_{n-r}$ under
-$H_0$
-\compact
-\subsection{Hypo test - multi}
-($H_0: L\beta = 0$, $H_1: L\beta \neq 0$)
-$W = \frac{(||X-Z\hat\beta_0||^2 - ||X -
-        Z\hat\beta||^2)/s}{||X-Z\hat\beta||^2/(n-r)}\sim F_{s, n-r}$ under $H_0$
 \end{document}
