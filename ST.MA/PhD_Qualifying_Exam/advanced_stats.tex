@@ -20,8 +20,8 @@
 % Define a command to create circled numbers
 \newcommand{\circled}[1]{\textcircled{\footnotesize #1}}
 % Define a command to swap between line breaks
-% \newcommand{\compact}{\nolinebreak}
-\newcommand{\compact}{\\}
+\newcommand{\compact}{\nolinebreak}
+% \newcommand{\compact}{\\}
 
 \pdfinfo{
     /Title (Advanced Statistical Theory PhD Qualifying Exam)
@@ -38,8 +38,11 @@ $cc^{T}$ is $k\times k$ matrix with $(i, j)$th element as $c_ic_j$,
 \subsection{Max, Min}
 $\max(a, b) = \frac{1}{2} (a + b + |a-b|)$,
 $\min(a, b) = \frac{1}{2} (a + b - |a - b|)$
-\compact
+
 \section{Probability}
+\compact
+\subsection{Moments}
+$\mu^k = E(X^k) = \int x^k f(x) dx$
 \compact
 \subsection{Deduce $X=0$}
 If $X\geq 0$ a.s. and $EX=0$ then $X=0$ a.s.
@@ -84,7 +87,7 @@ $g$ is an integrable function.
 \compact
 \subsection{Interchange Diff and Int}
 \circled{1} $\partial f(\omega,\theta)/\partial\theta$ exists in $(a, b)$
-\circled{2} $|\partial f(\omega,\theta/\partial\theta|\leq g(\omega)$ a.e.
+\circled{2} $|\partial f(\omega,\theta)/\partial\theta|\leq g(\omega)$ a.e.
 $\Rightarrow$
 \compact
 \circled{1} $\partial f(\omega, \theta) / \partial \theta$ integrable in $(a, b)$
@@ -344,6 +347,77 @@ $ \frac{\partial\eta(\theta)}{\partial\theta}T(x) = \frac{\partial\xi(\theta)}{\
 \subsection{NEF Fisher Info}
 If $\underline{I}(\eta)$ is fisher info natural parameter $\eta$, then $Var(T)=\underline{I}(\eta)$.
 Let $\psi=E[T(X)]$. Suppose $\Bar{I}(\psi)$ is fisher info matrix for parameter $\psi$, then $Var(T)=[\Bar{I}(\psi)]^{-1}$
+\compact
+\subsection{NEF RLEs}
+RLE regularity condition (1, 2, 3, 4) holds due to proposition 3.2 and theorem 2.1, and result for (3). Only need to check condition on Fisher Info, then when $n$ is large, there exists $\hat\eta_n$ s.t. $g(\hat\eta_n)=\hat\mu_n$ and $\hat\eta_n\rightarrow_{\text{a.s.}}\eta$
+$
+    \sqrt{n}(\hat\eta_n - \eta) \rightarrow_D N\left(
+    0, \left[
+        \frac{\partial^2}{\partial\eta\partial\eta^T} \mathcal{C}(\eta)
+        \right]^{-1}
+    \right)
+$
+Where $g(\eta) = \frac{\partial\mathcal{C}(\eta)}{\partial\eta}$ and $\hat\mu_n=\frac{1}{n}\sum_{i=1}^n T(X_i)$
+\compact
+\subsection{UMP NEF}
+\circled{a} UMP $T(Y) = I(Y > c)$
+\circled{i} $\eta(\theta)$ increasing and $H_1:\theta\geq \theta_0$
+\circled{ii} $\eta(\theta)$ decreasing and $H_1:\theta\leq \theta_0$
+\circled{b} Reverse inequalities $T(Y) = I(Y < c)$
+\circled{i} $\eta(\theta)$ increasing and $H_1:\theta\leq \theta_0$
+\circled{ii} $\eta(\theta)$ decreasing and $H_1:\theta\geq \theta_0$
+\compact
+\subsection{UMP Normal results}
+Given $X_i\sim N(\mu, \sigma^2)$ and $H_0: \sigma^2 = \sigma_0^2$
+\circled{a} $S^2=\frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X})^2$ independent to $\bar{X}$
+\circled{b} $V=\frac{1}{\sigma_0^2}\sum_{i=1}^n (X_i - \bar{X})^2 = \frac{(n-1)S^2}{\sigma^2} \sim \chi_{n-1}^2$
+\circled{c} $t = \frac{\sqrt{n}(\bar{X}-\mu)/\sigma}{\sqrt{V/(n-1)}} = \frac{Z}{\sqrt{V/(n-1)}} \sim t_{(n-1)}$ (only if $X_i\sim N$)
+\compact
+\subsection{UMPU NEF\\$\eta(\theta) = \theta$}
+Require:
+\circled{1} suff stat $Y$ for $\theta$
+\circled{2} suff and complete $U$ for $\varphi$ such that $\varphi$ is full-rank
+\compact
+\subsection{UMPU NEF $H_0: \theta\leq \theta_1$ or $\theta\geq \theta_2$ $H_1: \theta_1<\theta<\theta_2$}
+$T(Y, U) = I(c_1(U) < Y < c_2(U))$
+s.t. $E_{\theta_1}[T(Y, U)|U=u] = E_{\theta_2}[T(Y, U)|U=u] =\alpha$
+\compact
+\subsection{UMPU NEF $H_0: \theta_1 \leq \theta \leq \theta_2$ $H_1: \theta < \theta_1$ or $\theta > \theta_2$}
+$T(Y, U) = I(Y < c_1(U)$ or $ Y > c_2(U))$
+s.t. $E_{\theta_1}[T(Y, U)|U=u] = E_{\theta_2}[T(Y, U)|U=u] =\alpha$
+\compact
+\subsection{UMPU NEF $H_0: \theta=\theta_0$ $H_1: \theta\neq\theta_0$}
+$T(Y, U) = I(Y < c_1(U)$ or $ Y > c_2(U))$
+s.t. $E_{\theta_0}[T_*(Y, U)|U=u]=\alpha$ and
+$E_{\theta_0}[T_*(Y, U)Y| U=u]=\alpha E_{\theta_0}(Y|U=u)$
+\compact
+\subsection{UMPU NEF $H_0: \theta\leq \theta_0$ $H_1: \theta>\theta_0$}
+$T(Y, U) = I(Y > c(U))$
+s.t. $E_{\theta_0}[T(Y, U)|U=u]=\alpha$
+\compact
+\subsection{UMPU Normal}
+Require UMPU NEF \circled{1}, \circled{2} and \circled{3} $V(Y, U)$ independent of $U$ under $H_0$
+\compact
+\subsection{UMPU Normal $H_0: \theta\leq \theta_1$ or $\theta\geq \theta_2$ $H_1: \theta_1<\theta<\theta_2$}
+\circled{4} $V$ to be increasing in $Y$
+$T(V) = I(c_1 < V < c_2)$
+s.t. $E_{\theta_1}[T(V)] = E_{\theta_2}[T(V)] = \alpha$
+\compact
+\subsection{UMPU Normal $H_0: \theta_1 \leq \theta \leq \theta_2$ $H_1: \theta < \theta_1$ or $\theta > \theta_2$}
+\circled{4} $V$ to be increasing in $Y$
+$\Rightarrow T(V) = I(V < c_1$ or $V > c_2)$
+s.t. $E_{\theta_1}[T(V)] = E_{\theta_2}[T(V)] = \alpha$
+\compact
+\subsection{UMPU Normal $H_0: \theta=\theta_0$ $H_1: \theta\neq\theta_0$}
+\circled{4} $V(Y, U)=a(u)Y + bU$
+$\Rightarrow T(V) = I(V < c_1$ or $ V > c_2)$
+s.t. $E_{\theta_0}[T(V)] = \alpha$
+and $E_{\theta_0}[T(V)V] = \alpha E_{\theta_0}(V)$
+\compact
+\subsection{UMPU Normal $H_0: \theta\leq \theta_0$ $H_1: \theta>\theta_0$}
+\circled{4} $V$ to be increasing in $Y$
+$\Rightarrow T(V) = I(V>c)$
+s.t. $E_{\theta_0}[T(V)] = \alpha$
 
 \section{Statistics}
 \compact
@@ -357,7 +431,8 @@ $T(X)$ is sufficient for $P\in\mathcal{P} \Leftrightarrow$ there are non-negativ
 s.t.  $ \frac{dP}{d\nu}(x) = g_P(T(x))h(x) $
 \compact
 \subsection{Minimal sufficiency}
-$T$ is minimal sufficient $\Leftrightarrow T=\psi(S)$ for any other sufficient statistics $S$
+$T$ is minimal sufficient $\Leftrightarrow T=\psi(S)$ for any other sufficient statistics $S$.
+Min suff is unique and usually exist.
 \compact
 \subsection{Min Suff-Method 1}
 (Theorem A)
@@ -386,6 +461,10 @@ Completeness + Sufficiency $\Rightarrow$ Minimal Sufficiency
 \compact
 \subsection{Basu's theorem}
 If $V$ is ancillary and $T$ is boundedly complete and sufficient, then $V$ and $T$ are independent w.r.t any $P\in\mathcal{P}$
+\compact
+\subsection{Completeness for Varying Support}
+$\int_0^\theta g(x) x^{n-1}dx = 0 \implies g(\theta)\theta^{n-1} = 0$,
+$\implies g(\theta) = g(X_{(n)}) = 0$ and thus $X_{(n)}$ is complete
 
 \section{Fisher information}
 $
@@ -449,7 +528,31 @@ where $E$ is taken jointly over $(\Tilde{\theta}, X)$.  Then find $T_*(x)$ that 
 Let $S_1 = E[S_0(X)|T]$, then $R_{S_1}(P)\leq R_{S_0}(P)$.
 \circled{b} If $L(P, a)$ is strictly convex in $a$, and $S_0$ is not a funciton of $T$, then $S_0$ is inadmissible and dominated by $S_1$.
 
+\section{MOM}
+\compact
+\subsection{MoM}
+$\mu_j = E_\theta X^j = h_j(\theta)$,
+$\implies \hat\theta = h_j^{-1}(\hat\mu_j)$.
+Provided $h_j^{-1}$ exists and $\hat\mu_j = \frac{1}{n}\sum_{i=1}^n X_i^j$.
+\compact
+\subsection{MOM asymptotic}
+$\theta_n$ is unique if $h^{-1}(X)$ exists.
+Strongly consistent if $h^{-1}$ is continuous via SLLN and continuous mapping.
+If $h^{-1}$ is differentiable and $E|X_1|^{2k}<\infty$ then use CLT and $\delta$-method.
+$V_\mu$ is $k\times k$ with $(i, j) = \mu_{i+j}-\mu_i\mu_j$
+$
+    \sqrt{n} (\hat\theta_n-\theta) \xrightarrow{D} N(0, [\nabla g]^T V_\mu \nabla g)
+$
+MOM is $\sqrt{n}$-consistent, and if $k=1$ $amse_{\hat\theta_n}(\theta)=g'(\mu_1)^2\sigma^2/n$, $\sigma^2=\mu_2-\mu_1^2$
+
 \section{MLE}
+\compact
+\subsection{MLE}
+$\hat\theta = \arg\max_\theta L(\theta)$.
+Consider (a) boundary opint
+(b) $\partial L(\theta)/\partial\theta = 0$
+and ${\partial^2 L(\theta)}/{\partial \theta^2} < 0$ (Concave),
+note MLE may not exist
 \compact
 \subsection{MLE Consistency}
 Suppose
@@ -459,9 +562,33 @@ Suppose
 \circled{4} identifiability holds $f(x|\theta)=f(x|\theta_0)$ $\nu$-a.e.  $\Rightarrow \theta = \theta_0$.
 Then MLE estimate $ \hat\theta_n \xrightarrow{\text{a.s}} \theta_0 $
 \compact
-\subsection{RLE Consistency}
+\subsection{RLE}
+[Roots of the Likelihood Equation]
+$\theta$ that solves $\frac{\partial}{\partial\theta}\log L_n(\theta) = 0$
 \compact
-\subsection{RLE Asymptotic normality}
+\subsection{RLE regularity conditions}
+Suppose
+\circled{1} $\Theta$ is open subset of $\mathcal{R}^k$
+\circled{2} $f(x|\theta)$ is twice continuously differentiable in $\theta$ for all $x$, and
+$\frac{\partial}{\partial\theta}\int f(x|\theta) d\nu = \int \frac{\partial}{\partial\theta}f(x|\theta)d\nu$,
+$\frac{\partial}{\partial\theta}\int \frac{\partial}{\partial\theta^T} f(x|\theta) d\nu = \int \frac{\partial^2}{\partial\theta\partial\theta^T}f(x|\theta) d\nu$.
+\circled{3} $\Psi(x, \theta)=\frac{\partial^2}{\partial\theta\partial\theta^T}\log f(x|\theta)$, there exists a constant $c$ and non-negative function $H$ s.t. $EH(X)<\infty$ and $\sup_{||\theta-\theta_*||<c}||\Psi(x, \theta)||\leq H(x)$.
+\circled{4} Identifiable
+\compact
+\subsection{RLE consistency}
+Under RLE regularity conditions, there exists a sequence of $\hat\theta_n$ s.t. $\frac{\partial}{\partial\theta}\log L_n(\hat\theta_n)=0$ and $\hat\theta_n\rightarrow_{\text{a.s.}}\theta_*$.
+\compact
+\subsection{RLE asymptotic normality}
+Assume RLE regularity conditions, and $I(\theta) = \int \frac{\partial}{\partial\theta} \log f(x|\theta) \left[\frac{\partial}{\partial\theta}\log f(x|\theta)\right]^T d\nu(x)$ is positive definite and $\theta=\theta_*$. Then any consistent sequence $\{\Tilde{\theta_n}\}$ of RLE it holds
+$
+    \sqrt{n}(\Tilde{\theta_n} - \theta_*) \xrightarrow{D} N\left(0, \frac{1}{I(\theta_*)}\right)
+$
+\compact
+\subsection{One-step MLE}
+Often asym efficient, useful to adjust an non asym efficient estimators provided $\hat\theta_n^{(0)}$ is $\sqrt{n}$-consistent.
+$
+    \hat\theta_n^{(1)} = \hat\theta_n^{(0)}-\left[\nabla s_n (\hat\theta_n^{(0)})\right]^{-1} s_n(\hat\theta_n^{(0)})
+$
 
 \section{Unbiased Estimators}
 \compact
@@ -518,62 +645,11 @@ CR achieve equality
 \circled{a} $\Leftrightarrow T = \left[\frac{g'(\theta)}{I(\theta)}\right]\frac{\partial}{\partial\theta}\log f_\theta(X) + g(\theta)$
 \circled{b} $\Leftrightarrow f_\theta(X) = \exp(\eta(\theta)T(x) - \xi(\theta))h(x)$,
 s.t. $\xi'(\theta) = g(\theta) \eta'(\theta)$ and $I(\theta) = \eta'(\theta)g'(\theta)$
-
-\section{Asymptotics}
-\subsection{Consistency of point estimators}
-$X=(X_1, \cdots, X_n)$ is sample from $P\in\mathcal{P}$ and $T_n(X)$ be estimator of $\theta$ for $P$.
-(consistent) $\Leftrightarrow T_n(X)\rightarrow^P \theta$
-(strongly consistent) $\Leftrightarrow T_n(X)\rightarrow^{\text{a.s.}}\theta$
-($a_n$-consistent) $\Leftrightarrow a_n(T_n(X) - \theta) = O_P(1)$, $\{a_n\} > 0$ and diverge to $\infty$
-($L_r$-consistent) $T_n(X)\rightarrow^{L^P}\theta$ for some fixed $r > 0$
-A combination of LLN, CLT, Slustky's, continuous mapping, $\delta$-method are used. If $T_n$ is (strongly) consistent for $\theta$ and $g$ is continuous at $\theta$ then $g(T_n)$ is (strongly) consistent for $g(\theta)$
 \compact
-\subsection{Affine estimator}
-Consider $T_n=\sum_{i=1}^nc_{ni}X_i$
-(1) If $c_{ni}=c_i/n$ satisfy (1) $\frac{1}{n}\sum_{i=1}^n c_i \rightarrow 1$ and $\sup_i |c_i|<\infty$ then $T_n$ is strongly consistent.
-(2) If population variance is finite, then $T_n$ is consistent in mse $\Leftrightarrow$ $\sum_{i=1}^nc_{ni}\rightarrow 1$ and $\sum_{i=1}^n c_{ni}^2\rightarrow 0$
-\compact
-\subsection{Asympotics bias, variance, MSE}
-(Approximate unbiased) Estimator $T_n(X)$ for $\theta$ is approximately unbiased if $b_{T_n}(P)\rightarrow 0$ as $n\rightarrow \infty$, $b_{T_n}(P) := ET_n(X)-\theta$
-When estimator's expectations or second moment are not well defined, we need asymptotic behaviours.
-(Asymptotic statistics conditions) $\{a_n\}>0$ and either (a) $a_n\rightarrow\infty$ or (b) $a_n \rightarrow a > 0$. If
-$$a_n(T_n-\theta)\rightarrow^D Y$$
-(Asymptotic expectation)
-If $a_n\xi_n\rightarrow^D \xi$, $E|\xi| < \infty$, then asymptotic expectation of $\xi_n$ is ${E\xi}/{a_n}$
-(Asymptotic bias) $\Tilde{b}_{T_n} = EY/a_n$,
-asymptotically unbiased if $\lim_{n\rightarrow\infty} \Tilde{b}_{T_n}(P) = 0$ for any $P \in \mathcal{P}$.
-(Asymptotic MSE) amse is the asymptotic expectation of $(T_n-\theta)^2$ or $\text{amse}_{T_n}(P)=EY^2/a_n^2$
-(Asymptotic Variance) $\sigma_{T_n}^2(P) = Var(Y)/a_n^2$
-(Remark) $EY^2\leq \lim\inf_{n\rightarrow\infty} E[a_n^2(T_n-v)^2]$ (amse is no greater than exact mse)
-\compact
-\subsection{Asym Relative Efficiency}
-$e_{T_{1n}, T_{2n}} = amse_{T_{2n}(P)} / amse_{T_{1n}(P)}$.
-Note efficiency of estimator $T$ refers to $1/[I(\theta)MSE_T(\theta)]$
-\compact
-\subsection{$\delta$-method corollary}
-If $a_n\rightarrow\infty$, $g$ is differentiable at $\theta$, $U_n = g(T_n)$.
-Then amse of $U_n$ is $[g'(\theta)^2EY^2]/a_n^2$, asym var of $U_n$ is $[g'(\theta)^2Var(Y)]/a_n^2$
-\compact
-\subsection{Properties of MOM}
-$\theta_n$ is unique if $h^{-1}$ exists. Strongly consistent if $h^{-1}$ is continuous via SLLN and continuous mapping. If $h^{-1}$ is differentiable and $E|X_1|^{2k}<\infty$ then by CLT and $\delta$-method. $V_\mu$ is $k\times k$ with $(i, j) = \mu_{i+j}-\mu_i\mu_j$
-$
-    \sqrt{n} (\hat\theta_n-\theta) \rightarrow_D N(0, [\nabla g]^T V_\mu \nabla g)
-$
-MOM is $\sqrt{n}$-consistent, and if $k=1$ $amse_{\hat\theta_n}(\theta)=g'(\mu_1)^2\sigma^2/n$, $\sigma^2=\mu_2-\mu_1^2$
-\compact
-\subsection{Asym Properties of UMVUE}
+\subsection{UMVUE asymptotic}
 Typically consistent, exactly unbiased, ratio of mse over Cramér-Rao LB converges to 1 (asym they are the same).
-\compact
-\subsection{Asym sample quantiles}
-$X_1, X_2, \cdots$ iid rvs with CDF $F$, $\gamma\in(0, 1)$, $\hat\theta_n :=$ $\lfloor{\gamma n}\rfloor$-th order statistics. Suppose $F(\theta)=\gamma$ and $F'(\theta) > 0$ and exists.
-$
-    \sqrt{n}(\hat\theta_n-\theta)\rightarrow^{D} N\left(0, \frac{\gamma(1-\gamma)}{[F'(\theta)]^2}\right)
-$
-\compact
-\subsection{Cons and Asym eff MLEs, RLEs}
-\compact
-\subsection{Continuous in $\theta$}
-Suppose (1) $\Theta$ is compact (2) $f(x|\theta)$ is continuous in $\theta$ for all $x$ (3) there exists a function $M(x)$ s.t. $E_{\theta_0}|M(X)| < \infty$ and $|\log f(x|\theta) - log f(x|\theta_0)| \leq M(x)$ for all $x$ and $\theta$ (4) identifiable $f(x|\theta)=f(x|\theta_0)$ $\nu$-a.e. $\Rightarrow \theta = \theta_0$. Then for any sequence of MLE $\hat\theta_n\rightarrow_{\text{a.s.}}\theta_0$
+
+\section{Other estimators}
 \compact
 \subsection{Upper semi-continuous (usc)}
 $
@@ -584,48 +660,6 @@ $
 \compact
 \subsection{USC in $\theta$}
 Suppose (1) $\Theta$ is compact with metric $d(\cdot, \cdot)$ (2) $f(x|\theta)$ is usc in $\theta$ and for all $x$ (3) there exists a function $M(x)$ s.t. $E_{\theta_0}|M(X)| < \infty$ and $\log f(x|\theta)-\log f(x|\theta_0) \leq M(x)$ for all $x$ and $\theta$ (4) for all $\theta\in\Theta$ and sufficiency small $\rho >0$, $\sup_{d(\theta', \theta)<\rho} f(x|\theta')$ is measurable in $x$ (5) identifiable $f(x|\theta)=f(x|\theta_0)$ $\nu$-a.e. $\Rightarrow \theta=\theta_0$. Then $d(\hat\theta_n, \theta_0)\rightarrow_{\text{a.s.}}0$
-\compact
-\subsection{$M$-estimators}
-General method to find $\hat\theta_n$ maximises criterion function $S_\theta(x)$, for MLE $s_\theta(x) = \log f(x|\theta)$.
-$E_{\theta_0}s_\theta(X) < E_{\theta_0}s_{\theta_0}(X)$ $\forall$ $\theta\neq \theta_0$.
-$
-    \theta \mapsto S_n(\theta) = \frac{1}{n} \sum_{i=1}^n s_\theta(X_i)
-$
-\compact
-\subsection{Consistency of $M$-estimators}
-$S_n(\theta)$ is random function while $S(\theta)$ is fixed s.t. $\sup_{\theta\in\Theta}|S_n(\theta)-S(\theta)|\rightarrow_P 0$ and for every $\rho > 0$
-$\sup_{\theta:d(\theta, \theta_0)\geq\rho}S(\theta)<S(\theta_0)$. Then any sequence of estimators $\hat\theta_n$ with $S_n(\hat\theta_n)\geq S_n(\theta_0)-o_P(1)$ converges in probability to $\theta_0$
-\compact
-\subsection{RLE}
-[Roots of the Likelihood Equation]
-$\theta$ that solves $\frac{\partial}{\partial\theta}\log L_n(\theta) = 0$
-\compact
-\subsection{Basic Regularity conditions}
-Suppose (1) $\Theta$ is open subset of $\mathcal{R}^k$ (2) $f(x|\theta)$ is twice continuously differentiable in $\theta$ for all $x$, and
-$\frac{\partial}{\partial\theta}\int f(x|\theta) d\nu = \int \frac{\partial}{\partial\theta}f(x|\theta)d\nu$,
-$\frac{\partial}{\partial\theta}\int \frac{\partial}{\partial\theta^T} f(x|\theta) d\nu = \int \frac{\partial^2}{\partial\theta\partial\theta^T}f(x|\theta) d\nu$.
-(3) $\Psi(x, \theta)=\frac{\partial^2}{\partial\theta\partial\theta^T}\log f(x|\theta)$, there exists a constant $c$ and non-negative function $H$ s.t. $EH(X)<\infty$ and $\sup_{||\theta-\theta_*||<c}||\Psi(x, \theta)||\leq H(x)$.
-(4) Identifiable
-\compact
-\subsection{Consistency of RLEs}
-Under basic regularity conditions, there exists a sequence of $\hat\theta_n$ s.t. $\frac{\partial}{\partial\theta}\log L_n(\hat\theta_n)=0$ and $\hat\theta_n\rightarrow_{\text{a.s.}}\theta_*$. More useful if likelihood is concave or unique.
-\compact
-\subsection{Asymptotic Normality of RLEs}
-Assume basic regularity conditions, and $I(\theta) = \int \frac{\partial}{\partial\theta} \log f(x|\theta) \left[\frac{\partial}{\partial\theta}\log f(x|\theta)\right]^T d\nu(x)$ is positive definite and $\theta=\theta_*$. Then any consistent sequence $\{\Tilde{\theta_n}\}$ of RLE it holds
-$
-    \sqrt{n}(\Tilde{\theta_n} - \theta_*) \rightarrow_D N\left(0, \frac{1}{I(\theta_*)}\right)
-$
-\compact
-\subsection{NEF RLEs}
-Basic regularity condition (1, 2, 3, 4) holds due to proposition 3.2 and theorem 2.1, and result for (3). Only need to check condition on Fisher Info, then when $n$ is large, there exists $\hat\eta_n$ s.t. $g(\hat\eta_n)=\hat\mu_n$ and $\hat\eta_n\rightarrow_{\text{a.s.}}\eta$
-$
-    \sqrt{n}(\hat\eta_n - \eta) \rightarrow_D N\left(
-    0, \left[
-        \frac{\partial^2}{\partial\eta\partial\eta^T} \mathcal{C}(\eta)
-        \right]^{-1}
-    \right)
-$
-Where $g(\eta) = \frac{\partial\mathcal{C}(\eta)}{\partial\eta}$ and $\hat\mu_n=\frac{1}{n}\sum_{i=1}^n T(X_i)$
 \compact
 \subsection{Asym Covariance Matrix}
 $V_n(\theta)$ is $k\times k$ positive definite matrix called asym covariance matrix. $V_n(\theta)$ is usually in form of $n^{-\delta}V(\theta)$, higher $\delta$ means faster convergence.
@@ -639,6 +673,17 @@ $A \preccurlyeq B$ means $B-A$ is positive semi-definite. Suppose two estimators
 (2) $V_{1n}(\theta) \prec V_{2n}(\theta)$ for at least one $\theta \in \Theta$
 But note $\hat\theta_n$ is asym unbiased but CR LB might not hold even if regularity condition is satisfied.
 \compact
+\subsection{$M$-estimators}
+General method to find $\hat\theta_n$ maximises criterion function $S_\theta(x)$, for MLE $s_\theta(x) = \log f(x|\theta)$.
+$E_{\theta_0}s_\theta(X) < E_{\theta_0}s_{\theta_0}(X)$ $\forall$ $\theta\neq \theta_0$.
+$
+    \theta \mapsto S_n(\theta) = \frac{1}{n} \sum_{i=1}^n s_\theta(X_i)
+$
+\compact
+\subsection{Consistency of $M$-estimators}
+$S_n(\theta)$ is random function while $S(\theta)$ is fixed s.t. $\sup_{\theta\in\Theta}|S_n(\theta)-S(\theta)|\rightarrow_P 0$ and for every $\rho > 0$
+$\sup_{\theta:d(\theta, \theta_0)\geq\rho}S(\theta)<S(\theta_0)$. Then any sequence of estimators $\hat\theta_n$ with $S_n(\hat\theta_n)\geq S_n(\theta_0)-o_P(1)$ converges in probability to $\theta_0$
+\compact
 \subsection{Hodges' estimator}
 $X_i\sim N(\theta, 1)$, $\hat\theta_n=\bar X_n$ if $\bar X_n\geq n^{-1/4}$ and $t\bar X_n$ otherwise. $V_n(\theta)=1/n$ if $\theta\neq0$ and $t^2/n$ otherwise.
 if $\theta\neq 0$: $\sqrt{n}(\hat\theta - \theta) = \sqrt{n}(\bar X_n - \theta) - (1-t)\sqrt{n}\bar X_n I_{|\bar\theta_n|<n^{-1/4}}$
@@ -649,15 +694,60 @@ Point where UMVUE failed Hodeges' estiamtor in information inequality (2). But u
 \compact
 \subsection{Asym efficiency}
 Assume Fisher Info $I_n(\theta)$ is well-defined and positive definite for every $n$, seq of estimators $\{\hat\theta_n\}$ satisfies asym cov matrix is asym efficient or asym optimal if and only if $V_n(\theta)=[I_n(\theta)]^{-1}$.
+
+\section{Asymptotics}
 \compact
-\subsection{One-step MLE}
-Often asym efficient, useful to adjust an non asym efficient estimators provided $\hat\theta_n^{(0)}$ is $\sqrt{n}$-consistent.
-$
-    \hat\theta_n^{(1)} = \hat\theta_n^{(0)}-\left[\nabla s_n (\hat\theta_n^{(0)})\right]^{-1} s_n(\hat\theta_n^{(0)})
-$
+\subsection{Consistency of point estimators}
+\circled{a} consistent $T_n(X)\xrightarrow{P} \theta$
+\circled{b} strongly consistent $T_n(X)\xrightarrow{\text{a.s.}}\theta$
+\circled{c} $a_n$-consistent $a_n(T_n(X) - \theta) = O_P(1)$, $\{a_n\} > 0$ and diverge to $\infty$
+\circled{d} $L_r$-consistent $T_n(X)\xrightarrow{L^P}\theta$ for some fixed $r > 0$.
+\compact
+\subsection{Remark on consistency}
+A combination of LLN, CLT, Slustky's, continuous mapping, $\delta$-method are used.
+If $T_n$ is (strongly) consistent for $\theta$ and $g$ is continuous at $\theta$ then $g(T_n)$ is (strongly) consistent for $g(\theta)$
+\compact
+\subsection{Affine estimator}
+Consider $T_n=\sum_{i=1}^nc_{ni}X_i$
+\circled{1} If $c_{ni}=c_i/n$ s.t $\frac{1}{n}\sum_{i=1}^n c_i \rightarrow 1$ and $\sup_i |c_i|<\infty$ then $T_n$ is strongly consistent.
+\circled{2} If population variance is finite, then $T_n$ is consistent in mse $\Leftrightarrow$ $\sum_{i=1}^nc_{ni}\rightarrow 1$ and $\sum_{i=1}^n c_{ni}^2\rightarrow 0$
+\compact
+\subsection{Asymptotic distribution}
+$\{a_n\}>0$ and either
+\circled{a} $a_n\rightarrow\infty$
+\circled{b} $a_n \rightarrow a > 0$,
+s.t.  $a_n(T_n-\theta)\xrightarrow{D} Y$.
+When estimator's expectations or second moment are not well defined, we need asymptotic behaviours.
+\compact
+\subsection{Asymptotic bias}
+$\Tilde{b}_{T_n} = EY/a_n$, asymptotically unbiased if $\lim_{n\rightarrow\infty} \Tilde{b}_{T_n}(P) = 0$, $b_{T_n}(P) := ET_n(X)-\theta$
+\compact
+\subsection{Asymptotic expectation}
+If $a_n\xi_n\rightarrow^D \xi$, $E|\xi| < \infty$, then asymptotic expectation of $\xi_n$ is ${E\xi}/{a_n}$
+\compact
+\subsection{Asymptotic MSE}
+asymptotic expectation of $(T_n-\theta)^2$ or $\text{amse}_{T_n}(P)=EY^2/a_n^2$
+(Remark) $EY^2\leq \lim\inf_{n\rightarrow\infty} E[a_n^2(T_n-v)^2]$ (amse is no greater than exact mse)
+\compact
+\subsection{Asymptotic variance}
+$\sigma_{T_n}^2(P) = Var(Y)/a_n^2$
+\compact
+\subsection{Asym Relative Efficiency}
+$e_{T_{1n}, T_{2n}} = amse_{T_{2n}(P)} / amse_{T_{1n}(P)}$.
+Note efficiency of estimator $T$ refers to $1/[I(\theta)MSE_T(\theta)]$
+\compact
+\subsection{$\delta$-method corollary}
+If $a_n\rightarrow\infty$, $g$ is differentiable at $\theta$, $U_n = g(T_n)$.
+Then \circled{a} amse of $U_n$ is $[g'(\theta)^2EY^2]/a_n^2$
+\circled{b} asym var of $U_n$ is $[g'(\theta)^2Var(Y)]/a_n^2$
+\compact
+\subsection{Quantiles asymptotic}
+$F(\theta) = \gamma \in (0, 1)$ and $\hat\theta_n :=$ $\lfloor{\gamma n}\rfloor$-th order statistics,
+$F'(\theta) > 0$ and exists.
+$ \sqrt{n}(\hat\theta_n-\theta)\xrightarrow{D} N\left(0, \frac{\gamma(1-\gamma)}{[F'(\theta)]^2}\right) $
 
-\section{Hypo testing}
-
+\section{Hypothesis testing}
+\compact
 \subsection{Hypothesis tests}
 Let $\mathcal{P}$ be a family of distributions, $\mathcal{P}_0\subset\mathcal{P}, \mathcal{P}_1 = \mathcal{P}\backslash\mathcal{P}_0$. Hypothesis testing decides between $H_0: P \in \mathcal{P}_0, H_1: P \in \mathcal{P}_1$. Action space $\mathcal{A}= \{0, 1\}$, decision rule is called a test $T: \mathcal{X} \rightarrow \{0, 1\} \Rightarrow T(X) = I_C(X)$ for some $C \subset \mathcal{X}$. $C$ is called the region/critical region.
 \compact
@@ -667,8 +757,11 @@ Risk $R_T(P) = P(T(X)=1)=P(X\in C)$ if $P\in\mathcal{P}_0$ or $P(T(X)=0)=P(X\not
 \compact
 \subsection{Type I and II errors}
 Type I: $H_0$ is rejected when $H_0$ is true.
+$\beta_T(\theta_0) =
+    E_{H_0}(T) \leq \alpha$ (within controlled with size $\alpha$)
 Error rate: $\alpha_T(P) = P(T(X)=1), P\in\mathcal{P}_0$
 Type II: $H_0$ is accepted when $H_0$ is false.
+$1 - \beta_T(\theta)$ for $\theta\in\Theta_1$
 Error rate: $1 - \alpha_T(P) = P(T(X)=1), P\in\mathcal{P}_1$
 \compact
 \subsection{Power function of $T$}
@@ -685,111 +778,82 @@ $\alpha'$ is the size of the test
 $
     \sup_{P\subset \mathcal{P}_0} P(T(X)=1) = \alpha'
 $
-
-
-\section{NP Test}
+\compact
+\subsection{NP Test}
  (Steps)
- (1) Find joint distribution $f(X_1, \cdots, X_n)$ - MLR/NEF
-(2) Hypothesis $H_0, H_1$ - simple/composite, must be $\theta$ and not $f(\theta)$
-(3) Form N-P test structure $T_*$
-(4) Find test dist, rejection/acceptance region.
-(Type I error) reject $H_0$ when $H_0$ is correct. $\beta_T(\theta_0) =
-    E_{H_0}(T) \leq \alpha$ (within controlled with size $\alpha$)
-(Type II error) do not reject $H_0$ when $H_1$ is correct.
-$1 - \beta_T(\theta)$ for $\theta\in\Theta_1$
-(N-P lemma)
+\circled{1} Find joint distribution $f(X_1, \cdots, X_n)$ - MLR/NEF
+\circled{2} Hypothesis $H_0, H_1$ - simple/composite, must be $\theta$ and not $f(\theta)$
+\circled{3} Form N-P test structure $T_*$
+\circled{4} Find test dist, rejection/acceptance region.
+\compact
+\subsection{Generalised NP}
+(Want to) $\max_{\phi} \int \phi f_{m+1} d\nu$ s.t.
+$\int \phi f_1 d\nu \leq t_1$,
+$\int \phi f_2 d\nu \leq t_2$,
+$\cdots$
+$\int \phi f_m d\nu \leq t_m$,
+(condition) If $\exists$ $c_1, \cdots, c_m$ s.t.
+$\phi_*(x) = I(f_{m+1}(x) > c_1 f_1(x) + \cdots + c_mf_m(x))$,
+then $\phi_*$ maximises objective function with equality constraint.
+If $c_i\geq 0$ then $\phi_*$ maximises with inequality constraint.
+\compact
+\subsection{N-P lemma}
 NP test has non-trival power $\alpha < \beta_{H_1}(T)$ unless $P_0=P_1$,
 and is unique up to $\gamma$ (randomised test)
-(Show $T_*$ is UMP)
+\compact
+\subsection{Show $T_*$ is UMP}
 UMP when $E_1[T_*]-E_1[T]\geq 0$,
 \textit{key equation}: $(T_*-T)(f_1-cf_0)\geq 0$.
 $\Rightarrow \int (T_*-T)(f_1-cf_0) = \beta_{H_1}(T_*) - \beta_{H_1}(T) \geq 0$.
-(Composite hypothesis)
+\compact
+\subsection{Composite hypothesis}
 Simple $\Rightarrow$ Composite when
 $\beta_T(\theta_0) \geq \beta_T(\theta \in H_0)$
 and/or $\beta_T(\theta_0) \leq \beta_T(\theta \in H_1)$ (or does not depend on
 $\theta$.
 For MLR this is satisfied, others need to check.
 \compact
-\subsection{Monoton Likelihood}
+\subsection{Monotone Likelihood Ratio}
 $\theta_2 > \theta_2$, increasing likelihood ratio in $Y$ if
 $g(Y) = \frac{f_{\theta_2}(Y)}{f_{\theta_1}(Y)} > 1$ or $g'(Y) > 0$.
 For NEF, check $\eta'(\theta) > 0$.
 \compact
+\subsection{MLR}
+(Monotone Likelihood ratio in $Y(X)$) for any $\theta_1 < \theta_2$,
+$f_{\theta_2}(x) / f_{\theta_1}(x)$ nondecreasing in $Y(x)$.
+    [MLR for one-param exp fam] $\eta(\theta)$ nondecreasing in $\theta$.
+    [Simply NP test] $T(X) = I(Y(X) > c) + \gamma I(Y(X) = c)$ (increasing MLR,
+$H_0: \theta \leq \theta_0$, $H_1: \theta > \theta_0$)
+\compact
 \subsection{UMP}
-(1) $H_0: P=p_0$ $H_1: P=p_1$ $\Rightarrow T(X) = I(p_1(X) > cp_0(X))$,
+\circled{1} $H_0: P=p_0$ $H_1: P=p_1$ $\Rightarrow T(X) = I(p_1(X) > cp_0(X))$,
 $\beta_T(p_0) = \alpha$
-(2) $H_0: \theta\leq \theta_0$ $H_1: \theta > \theta_0$ $\Rightarrow T(Y) =
+\circled{2} $H_0: \theta\leq \theta_0$ $H_1: \theta > \theta_0$ $\Rightarrow T(Y) =
     I(Y > c)$, $\beta_T(\theta_0)=\alpha$
-(3) $H_0: \theta\leq \theta_1$ or $\theta\geq\theta_2$ $H_1: \theta_1 <
+\circled{3} $H_0: \theta\leq \theta_1$ or $\theta\geq\theta_2$ $H_1: \theta_1 <
     \theta < \theta_2$, $\Rightarrow T(Y) = I(c_1 < Y < c_2)$,
 $\beta_T(\theta_1) = \beta_T(\theta_2) = \alpha$
-(No UMP)
+\compact
+(UMP) Satisfy (1) pre-set size $\alpha = E_{H_0}(T)$ (2) max power $\beta_T(P) =
+    E_{H_1}(T)$
+(Neyman-Pearson) $T(X) = I(f_1(X) > c f_0(X)) + \gamma I(f_1(X) = c
+    f_0(X))$ (unique up to randomised test)
+\compact
+\subsection{No UMP}
 $H_0: \theta=\theta_1, H_1: \theta\neq\theta_1$
 and $H_0: \theta\in(\theta_1, \theta_2)$ $H_1: \theta\notin(\theta_1, \theta_2)$
-\compact
-\subsection{UMP Exp fam}
-($\eta(\theta)$ increasing, $H_0:\theta\leq \theta_0$)
-($\eta(\theta)$ decreasing, $H_0:\theta\geq \theta_0$)
-Same UMP $T(Y) = I(Y < c)$
-($\eta(\theta)$ increasing, $H_0:\theta\geq \theta_0$)
-($\eta(\theta)$ decreasing, $H_0:\theta\leq \theta_0$)
-Reverse inequalities $T(Y) = I(Y > c)$
-\compact
-\subsection{Normal results}
-$X_i\sim N(\mu, \sigma^2)$, under $H_0: \sigma^2 = \sigma_0^2$, note $S^2=\frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X})^2$ independent to $\bar{X}$
-$V=\frac{1}{\sigma_0^2}\sum_{i=1}^n (X_i - \bar{X})^2 = \frac{(n-1)S^2}{\sigma^2} \sim \chi_{n-1}^2$
-$t = \frac{\sqrt{n}(\bar{X}-\mu)/\sigma}{\sqrt{V/(n-1)}} = \frac{Z}{\sqrt{V/(n-1)}} \sim t_{(n-1)}$ [(only if $X_i\sim N$]
 \compact
 \subsection{Simultaneous}
 (Bonferroni) adjust each paramter level to $\alpha_t = \alpha/k$
 (Bootstrap) Monte Carlo percentile estimate
+
+\section{Asymptotic test}
 \compact
-\subsection{UMPU NEF\\$\eta(\theta) = \theta$}
-Require:
-(1) suff stat $Y$ for $\theta$
-(2) suff and complete $U$ for $\varphi$
-(2a) $U$ complete when $\varphi$ to be full-rank
-(1) $H_0: \theta\leq \theta_1$ or $\theta\geq \theta_2$ $H_1: \theta_1<\theta<\theta_2$
-$\Rightarrow T(Y, U) = I(c_1(U) < Y < c_2(U))$,
-$E_{\theta_1}[T(Y, U)|U=u] = E_{\theta_2}[T(Y, U)|U=u] =\alpha$
-(2) $H_0: \theta_1 \leq \theta \leq \theta_2$ $H_1: \theta < \theta_1$ or $\theta > \theta_2$
-$\Rightarrow T(Y, U) = I(Y < c_1(U)$ or $ Y > c_2(U))$,
-$E_{\theta_1}[T(Y, U)|U=u] = E_{\theta_2}[T(Y, U)|U=u] =\alpha$
-(3) $H_0: \theta=\theta_0$ $H_1: \theta\neq\theta_0$
-$\Rightarrow T(Y, U) = I(Y < c_1(U)$ or $ Y > c_2(U))$,
-$E_{\theta_0}[T_*(Y, U)|U=u]=\alpha$ and
-$E_{\theta_0}[T_*(Y, U)Y| U=u]=\alpha E_{\theta_0}(Y|U=u)$
-(4) $H_0: \theta\leq \theta_0$ $H_1: \theta>\theta_0$
-$\Rightarrow T(Y, U) = I(Y > c(U))$,
-$E_{\theta_0}[T(Y, U)|U=u]=\alpha$
-\compact
-\subsection{UMPU Normal}
-Assume $V(Y, U)$ independent of $U$ under $H_0$
-(1) $H_0: \theta\leq \theta_1$ or $\theta\geq \theta_2$ $H_1: \theta_1<\theta<\theta_2$
-Require $V$ to be increasing in $Y$.
-$\Rightarrow T(V) = I(c_1 < V < c_2)$,
-$E_{\theta_1}[T(V)] = E_{\theta_2}[T(V)] = \alpha$
-(2) $H_0: \theta_1 \leq \theta \leq \theta_2$ $H_1: \theta < \theta_1$ or $\theta > \theta_2$
-Require $V$ to be increasing in $Y$.
-$\Rightarrow T(V) = I(V < c_1$ or $V > c_2)$,
-$E_{\theta_1}[T(V)] = E_{\theta_2}[T(V)] = \alpha$
-(3) $H_0: \theta=\theta_0$ $H_1: \theta\neq\theta_0$
-Require $V(Y, U)=a(u)Y + bU$
-$\Rightarrow T(V) = I(V < c_1$ or $ V > c_2)$,
-$E_{\theta_0}[T(V)] = \alpha$,
-$E_{\theta_0}[T(V)V] = \alpha E_{\theta_0}(V)$
-(4) $H_0: \theta\leq \theta_0$ $H_1: \theta>\theta_0$
-Require $V$ to be increasing in $Y$.
-$\Rightarrow T(V) = I(V>c)$,
-$E_{\theta_0}[T(V)] = \alpha$
-\compact
-\section{LR test}
+\subsection{LR test}
 $\lambda(X) = \frac{\sup_{\theta\in\theta_0} \ell(\theta)}{\sup_{\theta\in\Theta} \ell(\theta)}$
 Rejects $H_0 \Leftrightarrow \lambda(X)<c\in[0, 1]$.
 \textit{1-param Exp Fam LR test is also UMP.}
 
-\section{Asym test}
 Assume MLE regularity condition,
 under $H_0$, $-2\log\lambda(X)\rightarrow \chi_r^2$,
 where $r := dim(\theta)$
@@ -798,21 +862,22 @@ $T(X) = I\left[\lambda(X)<\exp(-\chi^2_{r, 1-\alpha}/2)\right]$ where $\chi_{r, 
 \subsection{Asymptotic Tests}
 $H_0: R(\theta)=0$, $\lim_{n\rightarrow \infty} W_n, Q_n \sim \chi_r^2$,
 $T(X) = I(W_n > \chi_{r, 1-\alpha}^2)$ or $I(Q_n > \chi_{r, 1-\alpha}^2)$
-(Wald's test)
+\compact
+\subsection{Wald's test}
 $W_n = R(\hat\theta)^T \{C(\hat\theta)^T I_n^{-1}(\hat\theta) C(\hat\theta) \}^{-1} R(\hat\theta)$
 $C(\theta) = \partial R(\theta)/\partial \theta$,
 $I_n(\theta)$ is fisher info for $X_1, \cdots, X_n$,
 $\hat\theta$ is unrestricted MLE/RLE of $\theta$.
 if $H_0: \theta=\theta_0$ $\Rightarrow R(\theta) = \theta - \theta_0$, and
 $W_n = (\hat\theta - \theta_0)^T I_n(\hat\theta) (\hat\theta - \theta_0)$
-(Rao's score test)
+\compact
+\subsection{Rao's score test}
 $Q_n=s_n(\Tilde{\theta})^T I_n^{-1}(\Tilde{\theta}) s_n(\Tilde{\theta})$.
 $s_n(\theta)=\partial\log\ell(\theta)/\partial\theta$ is score function, $\Tilde{\theta}$ is MLE/RLE of $\theta$ under $H_0: R(\theta)=0$ (under $H_0$).
 
 \section{Non-param tests}
 \compact
 \subsection{Sign test}
-\compact
 $X_i\sim^{iid} F$, $u$ is fixed constant, $p=F(u)$,
 $\triangle_i = I(X_i - u \leq 0)$,
 $P(\triangle_i = 1 ) = p$, $p_0\in(0, 1)$
@@ -978,6 +1043,12 @@ $R_T(\theta) = \sup_{\theta'} R_T(\theta')$ $\pi\text{-a.e.}$,
 \textit{Limit of Bayes estimators} If $T$ has constant risk and
 $\lim\inf_j r_j \geq R_T$, then $T$ is minimax.
 \compact
+\subsection{Admissibility}
+$\delta(X)$ is a Bayes rule with prior $\Pi$, $\delta$ is admissible if
+(1) if $\delta$ is unique
+(2) If $\Theta$ is countable, $\Pi(\theta) > 0$ $\forall \Theta$.
+Note, not true for generalised Bayes rules unless limit is Bayes rule.
+\compact
 \subsection{Simul est}
 Simultaneous estimate vector-valued $\mathcal{V}$ with e.g. squared loss
 $L(\theta, a) = \|a - \theta\|^2 = \sum_{i=1}^{p} (a_i - \theta_i)^2$
@@ -1096,336 +1167,6 @@ Pivotal qty: $
 $, $\hat\beta$ is LSE of $\beta$,
 $C(X) = \{\beta: \mathcal{R}(X, \beta) \leq F_{p, n-p, 1-\alpha}\}$
 
-\section{Sufficiency}
-\subsection{Factorization}
-$T(X)$ is sufficient for $\theta$ $\Leftrightarrow$ $\exists \, h(x), g_P(t)$
-s.t. $f(x|\theta) = g_P(T(x)) h(x)$
-\compact
-\subsection{Min. Sufficient}
-$T$ is min sufficient $\Leftrightarrow$ for any other stat $S$,
-$T=\psi(S)$.
-Min suff is unique and usually exist.
-\compact
-\subsection{Method 1}
-(A) If $P_0 \subset P$ and $P_0$ a.s. implies $P$ a.s.,
-if $T$ is suff for $P$ and min suff for $P_0$, then $T$ is min suff for $P$.
-(B1) $T(X) = \{f_i(x)/f_\infty(x)\}$ is min suff for $P$,
-where $f_\infty(x) = \sum_{i=0}^\infty c_i f_i(x)$, $c_i > 0,
-    \sum_{i=0}^\infty c_i = 1$
-(B2) $T(X) = \{f_i(x) / f_0(x)\}$ is min suff for $P$,
-if $\{x: f_i(x) > 0 \} \subset \{ x: f_0(x) > 0 \}$
-\compact
-\subsection{Method 2}
-(C) $T(X)$ is suff, $\exists$ $\phi$ s.t.
-$f_P(x) = f_P(y) \phi(x, y)$ $\implies T(x) = T(y)$
-Then $T(X)$ is min suff.
-\compact
-\subsection{Exp Fam}
-$T$ is suff, $\exists \Theta_0 \subset \Theta$ s.t.
-$\eta_i = \eta(\theta_i) - \eta(\theta_0), i = 1, \cdots, p$
-are linear indep, then $T$ is min suff. e.g. $\Theta$ Full rank.
-\compact
-\section{Completeness}
-$T$ is complete for $\theta$ if $E_\theta[g(T)] = 0$ $\implies$ $f(T)=0$
-a.s.
-Suff + bounded complete $\implies$ min suff.
-\compact
-\subsection{Exp Fam}
-if $\eta$ is full-rank in NEF, then $T$ is complete and suff.
-\compact
-\subsection{Varying Support}
-$\int_0^\theta g(x) x^{n-1}dx = 0 \implies g(\theta)\theta^{n-1} = 0$,
-$\implies g(\theta) = g(X_{(n)}) = 0$ and thus $X_{(n)})$ is complete.
-\compact
-\subsection{Basu}
-If $V$ is ancillary and $T$ is boundedly complete and sufficnet,
-then $V$ and $T$ are indep.
-
-\section{Estimation}
-\subsection{MoM}
-$\mu_j = E_\theta X^j = h_j(\theta)$,
-$\implies \hat\theta = h_j^{-1}(\hat\mu_j)$.
-Provided $h_j^{-1}$ exists and $\hat\mu_j = \frac{1}{n}\sum_{i=1}^n X_i^j$.
-\compact
-\subsection{MLE}
-$\hat\theta = \arg\max_\theta L(\theta)$.
-Consider (a) boundary opint
-(b) $\partial L(\theta)/\partial\theta = 0$
-and ${\partial^2 L(\theta)}/{\partial \theta^2} < 0$,
-MLE may not exist
-(Asym Normality of RLEs) If $I(\theta)$ positive definite at $\theta$, then
-$\sqrt{n}(\hat\theta - \theta) \xrightarrow{D} N(0, I(\theta)^{-1})$
-
-\section{Decision Rule}
- (Loss) $L: P \times \mathcal{A} \rightarrow [0, \infty]$,
-(Risk) $R_T(P) = E_P[L(P, T(X)]$.
-$T_2$ dominated by $T_1$ if $R_{T_1}(P) < R_{T_2}(P)$
-(Bayes Risk) $r_T(\Pi) = \int_P R_T(P) d\Pi(P)$,
-find via $\min E[L(\theta, T) | X]$
-\compact
-\subsection{Decision}
-(Optimal) $T$ is optimal if $\forall T'$, $R_T(P) \leq R_{T'}(P)$,
-or as good as any other rule.
-(Admissibility) $T$ is admissible if no $T'$ s.t. $R_T(P) >
-    R_{T'}(P) \forall P$, or not dominated by any other rule.
-(MiniMax) $T$ is mini-max if $\sup_{\theta\in\Theta} R_T(P) \leq
-    \sup_{\theta\in\Theta} R_{T'}(P)$ for any $T'$.
-(Bayes Rule) $r_T(\Pi) \leq r_T'(\Pi)$ for any $T'$.
-\compact
-\subsection{Rao-Blackwell}
-Consider rule $S_0$ and $S_1 = E[S_0(X)|T]$.
-If $L(P, a)$ convex in $a$ then $R_{S_1}(P) \leq R_{S_0}(P)$.
-If $L$ is strictly convex, and $S_0$ is not function of $T$,
-then $S_0$ is inadmissible and dominated by $S_1$
-\compact
-\subsection{UMVUE}
-$T$ is unbiased and $Var(T) \leq Var(S)$ for any unbiased $S$.
-\compact
-\subsection{Method 1}
-(Lehmann-Scheffe) if $T$ is suff and complete, UNVUE is in form $h(T)$ and
-is unique. $\implies$ UMVUE $\theta = E[h(T)]$
-\compact
-\subsection{Method 2}
-Find unbiased estimator $U$, find suff and complete $T$,
-UNVUE is $E[U|T]$.
-\compact
-\subsection{Method 3}
-When no complete and suff stat, let $T$ be unbiased estimator and
-$\mathcal{U}$ be unbiased estimator of $0$.
-If $S$ is UMVUE $\Leftrightarrow$ $E[SU] = 0$ for any $U$ and $P$,
-if $S=h(T)$ then $E[SU(T)] = 0$, $T$ is suff stat.
-Useful to find UMVUE, check if $S$ is UMVUE, show non-existence of
-UMVUE. e.g. find UMVUE of $X\sim Unif(0, \theta), \Theta=[1, \infty)$
-\compact
-\subsection{Fisher Info}
-$I(\theta) = E\left(\frac{\partial}{\partial\theta}\log
-    f_\theta(X)\right)^2$,
-provided $\frac{\partial f_\theta(x)}{\partial\theta}$ exists.
-Note if $\theta=\psi(\eta)$, $\tilde{I}(\eta) = \psi'(\eta)^2
-    I(\psi(\eta))$.
-Suppose $f_\theta$ is twice differentiable, and
-$\int \frac{\partial^2}{\partial\theta^2}f_\theta(x) d\nu = 0$,
-then $I(\theta) = - E[\frac{\partial^2}{\partial\theta^2} \log f_\theta(X)]$
-Suppose $\int \frac{\partial}{\partial\theta} f_\theta(x) d\nu = 0$,
-$I_{X+Y}(\theta) = I_X(\theta) + I_Y(\theta)$
-\compact
-\subsection{Cramer-Rao LB}
-LB $Var(T) \geq \frac{g'(\theta)^2}{I(\theta)}$,
-where $T$ is unbiased estimator of $g(\theta)$,
-s.t. $g'(\theta) = \frac{\partial}{\partial \theta}\int T f_\theta(x) d\nu=
-    \int T(x) \frac{\partial}{\partial \theta} f_\theta(x) d\nu$.
-Require $f_\theta$ differentiable and
-$0=\frac{\partial}{\partial\theta}\int f_\theta(x) d\nu
-    = \int \frac{\partial}{\partial \theta}f_\theta(x) d\nu$
-\compact
-\subsection{Convergence}
-(a.s.) $P(\lim_{n\rightarrow\infty} X_n = X) = 1$.
-($L^p$) $\lim_{n\rightarrow \infty} E|X_n - X|^p = 0$.
-(Prob) $\forall \epsilon > 0, \lim_{n\rightarrow\infty} P(|X_n - X| >
-    \epsilon) = 0$.
-(Dist) $\lim_{n\rightarrow\infty} F_n(x) = F(x)$.
-\compact
-\subsection{Showing a.s.}
-(1st Borel-Cantelli) If $\sum_{n=1}^\infty P(A_n) < \infty$, then $P(\limsup A_n) =
-    0$. (or $A_n$ occurs finitely often)
-(2nd BC) If $A_n$ are pairwise indep and $\sum_{n=1}^\infty P(A_n) = \infty$, then
-$P(\limsup A_n) = 1$.
-(Thm) If $\sum_{n=1}^\infty P(A_n(\epsilon)) < \infty$ $\forall \epsilon > 0$,
-then $X_n \xrightarrow{a.s.} X$
-\compact
-\subsection{Dist with chf}
-(Levy continuity) $X_n \xrightarrow{D} X$ $\Leftrightarrow$ $\phi_{X_n}(t)
-    \rightarrow \psi_X(t)$ where $\phi_X(t)$ is chf.
-\compact
-\subsection{Continuous mapping}
-If $X_n \xrightarrow{a.s.} X$, then $g(X_n) \xrightarrow{a.s.} g(X)$.
-If $X_n \xrightarrow{P} X$, then $g(X_n) \xrightarrow{P} g(X)$.
-If $X_n \xrightarrow{D} X$, then $g(X_n) \xrightarrow{D} g(X)$.
-\compact
-\subsection{Slutsky's thm}
-\compact
-If $X_n \xrightarrow{D} X$ and $Y_n \xrightarrow{P} c$, then
-$X_n + Y_n \xrightarrow{D} X + c$,
-$X_nY_n \xrightarrow{D} cX$,
-$X_n/Y_n \xrightarrow{D} X/c$ if $c\neq 0$.
-\compact
-\subsection{$\delta$-method}
-Suppose $a_n(X_n-c)\xrightarrow{D} Y$, then $a_n [g(X_n) - g(c) \xrightarrow{D}
-    g'(c)Y$.
-$a_n^m[g(X_n) - g(c)] \xrightarrow{D} \frac{1}{m!}g^{(m)}(c) Y^m$
-\compact
-\subsection{SLLN}
-(iid) If $E|X| < \infty$, then $\frac{1}{n}\sum_{i=1}^n X_i \xrightarrow{a.s.} \mu$.
-(non ident) if $\exists p \in [1, 2]$ s.t.
-$\sum_{i=1}^\infty \frac{E|X_i|^p}{i^p} < \infty$, then
-$\frac{1}{n}\sum_{i=1}^n (X_i - EX_i) \xrightarrow{a.s.} 0$
-\compact
-\subsection{WLLN}
-(iid) If $nP(|X_1| > n) \rightarrow 0$, then
-$\frac{1}{n}\sum_{i=1}^n X_i - E[X_1I_{|X|\leq n}] \xrightarrow{P} 0$
-(non ident) If $\exists p\in[1, 2]$ s.t.
-$\lim_{n\rightarrow \infty} \frac{1}{n^p}\sum_{i=1}^n E|X_i|^p = 0$, then
-$\frac{1}{n}\sum_{i=1}^n (X_i - EX_i) \xrightarrow{P} 0$
-\compact
-\subsection{CLT}
-(iid) If $\Sigma = Var(X_1) < \infty$, then
-$\frac{\sum_{i=1}^n(X_i - EX_i)}{\sqrt{n}} \xrightarrow{D} N(0, \Sigma)$
-(non ident - Lindeberg's CLT)
-For each $n$, let $\{X_{nj}\}$ with $j=1, \cdots, k_n$
-Suppose $k_n \rightarrow \infty$ as $n\rightarrow \infty$
-and $0<\sigma_n^2 = Var\left(\sum_{j=1}^{k_n} X_{nj}\right) < \infty$.
-If for any $\epsilon > 0$,
-$\frac{1}{\sigma_n^2}\sum_{j=1}^{k_n} E\left\{(X_{nj} -
-    EX_{nj})^2I_{\{|X_{nj} - EX_{nj}| > \epsilon\sigma_n\}}\right\} \rightarrow
-    0$,
-then $\frac{1}{\sigma_n} \sum_{j=1}^{k_n} (X_{nj} - EX_{nj}) \xrightarrow{D}
-    N(0, 1)$
-\compact
-\subsection{Consistency}
-(Consistent) $T_n(X) \xrightarrow{P} \theta$
-(Strongly Consistent) $T_n(X) \xrightarrow{a.s.} \theta$
-($a_n$-consistent) $a_n(T_n(X) - \theta) = O_p(1)$
-($L_r$-consistent) $T_n(X) \xrightarrow{L^r} \theta$
-(Proving consistency) LLN + CLT + Slustsky's thm + continuous mapping thm +
-$\delta$-method
-\compact
-\subsection{Asymptotic}
-(Approx unbiased) $b_{T_n}(P) := ET_n(X) - \theta \rightarrow 0$ as
-$n\rightarrow \infty$
-(Asym Expectation) $a_n\xi_n \xrightarrow{D} \xi$, $E|\xi| < \infty$,
-then $E\xi/a_n$ is asym. expect of $\xi_n$
-[Asym Bias) Asym. expect $\tilde{b}_{T_n} = T_n - \theta$
-(Asym unbiase) if $\lim_{n\rightarrow \infty} \tilde{b}_{T_n}(P) = 0$
-(Asym MSE) Suppose $a_n(T_n - \theta) \xrightarrow{D} Y$, amse is
-$EY^2/a_n^2$
-(Asym var) $\sigma_{T_n}^2(P) = Var(Y) / a_n^2$
-(Asym relative efficiency) $e_{T_n' T_n}(P) = amse_{T_n} / amse_{T'_n}$
-(note the order)
-\compact
-\subsection{Hypo Test}
-(UMP) Satisfy (1) pre-set size $\alpha = E_{H_0}(T)$ (2) max power $\beta_T(P) =
-    E_{H_1}(T)$
-(Neyman-Pearson) $T(X) = I(f_1(X) > c f_0(X)) + \gamma I(f_1(X) = c
-    f_0(X))$ (unique up to randomised test)
-\compact
-\subsection{MLR}
-(Monotone Likelihood ratio in $Y(X)$) for any $\theta_1 < \theta_2$,
-$f_{\theta_2}(x) / f_{\theta_1}(x)$ nondecreasing in $Y(x)$.
-    [MLR for one-param exp fam] $\eta(\theta)$ nondecreasing in $\theta$.
-    [Simply NP test] $T(X) = I(Y(X) > c) + \gamma I(Y(X) = c)$ (increasing MLR,
-$H_0: \theta \leq \theta_0$, $H_1: \theta > \theta_0$)
-\compact
-\subsection{Generalised NP}
-(Want to) $\max_{\phi} \int \phi f_{m+1} d\nu$ s.t.
-$\int \phi f_1 d\nu \leq t_1$,
-$\int \phi f_2 d\nu \leq t_2$,
-$\cdots$
-$\int \phi f_m d\nu \leq t_m$,
-(condition) If $\exists$ $c_1, \cdots, c_m$ s.t.
-$\phi_*(x) = I(f_{m+1}(x) > c_1 f_1(x) + \cdots + c_mf_m(x))$,
-then $\phi_*$ maximises objective function with equality constraint.
-If $c_i\geq 0$ then $\phi_*$ maximises with inequality constraint.
-\compact
-\subsection{UMPU}
-(UMPU) UMP amongst unbiased test of size $\alpha$.
-(NEF) $U$ is sufficient and complete when $\theta$ is known.
-    [$H_0: \theta \leq \theta_0$, $H_1: \theta > \theta_0$]
-$T(Y, U) = I(Y > c(U))$ and $E_{\theta_0}(T | U=u) = \alpha$
-[$H_0: \theta \notin (\theta_1, \theta_2)$, $H_1: \theta \in (\theta_1, \theta_2)$]
-$T(Y, U) = I(c_1(U) < Y c_2(U))$ and
-$E_{\theta_1}[T | U=u] = $ $E_{\theta_2}[T | U=u] = \alpha$
-[$H_0: \theta_1 \leq \theta \leq \theta_2$, $H_1: \theta < \theta_1$ or
-        $\theta > \theta_2$]
-$T(Y, U) = I(Y <c_1(U) \text{ or } Y > c_2(U))$
-and $E_{\theta_1}(T|U=u)=E_{\theta_2}(T|U=u)=\alpha$
-[$H_0: \theta = \theta_0$, $H_1: \theta \neq \theta_0$]
-$T(Y, U) = I(Y <c_1(U) \text{ or } Y > c_2(U))$
-and $E_{\theta_0}(T|U=u) = \alpha E_{\theta_0}(Y|U=u)$
-\compact
-\subsection{UMPU, Normal}
-$V(Y, U)$ independent of $U$ when $\theta=\theta_j$ (in $H_0$),
-increasing in $y$ for each $u$. Usually can be shown via Basu.
-    [$H_0: \theta = \theta_0$, $H_1: \theta \neq \theta_0$]
-If $V(y, u) = a(u)y + b(u)$, $a(u) > 0$, then
-$T(V) = I(V < c_1 \text{ or } V > c_2)$ and
-$E_{\theta_0}(T) = \alpha$, and
-$E_{\theta_0}(TV) = \alpha E_{\theta_0}(V)$
-[$H_0: \theta \leq \theta_1 \text{ or } \theta \geq \theta_0$,
-        $H_1: \theta_1 < \theta < \theta_2$]
-$T(V) = I(c_1 < V < c_2)$, and
-$E_{\theta_1}(T) = E_{\theta_2}(T) = \alpha$
-[$H_0: \theta_1 \leq \theta \leq \theta_2$,
-        $H_1: \theta < \theta_1$ or $\theta > \theta_2$]
-$T(V) = I(V < c_1 \text{ or } V > c_2)$ and
-$E_{\theta_1}(T) = E_{\theta_2}(T) = \alpha$
-[$H_0: \theta \leq \theta_0$, $H_1: \theta > \theta_0$]
-$T(V) = I(V>c)$ and $E_{\theta_0}(T)=\alpha$
-\compact
-\subsection{LRT}
-(Likelihood Ratio Test) Reject $H_0$ if $\lambda(X) < c$, $c\in[0, 1]$
-$\lambda(X) = \frac{\sup_{\theta\in\Theta_0}
-        \ell(\theta)}{\sup_{\theta\in\Theta} \ell(\theta)}$.
-    [Asym Dist] Under $H_0$ $-2\log\lambda(X) \rightarrow \chi_r^2$ (r is dim
-of $\Theta$)
-(Rejection region) $\lambda(X) < exp(-\chi_{r, 1 - \alpha}^2 / 2)$,
-same for other asym test
-\compact
-\subsection{Wald's test}
-$H_0: R(\theta) = 0$, reject large
-$W_n = R(\hat\theta)^T [C(\hat\theta)^T I_n^{-1}(\hat\theta)
-    C(\hat\theta)]^{-1} R(\hat\theta)$.
-$C(\theta) = \partial R(\theta) / \partial \theta$,
-$I_n(\theta)$ fisher info,
-$\hat\theta$ is MLE.
-\compact
-\subsection{Rao's score test}
-$H_0: R(\theta) = 0$, reject large
-$Q_n = s_n(\tilde{\theta})^T I_n^{-1}(\tilde{\theta}) s_n(\tilde{\theta})$.
-$s_n(\theta) = \partial \log \ell(\theta) / \partial \theta$,
-$\tilde{\theta}$ is MLE in $H_0: R(\theta)=0$
-\compact
-\subsection{Confidence Set}
-$C(X)$ confidence set for $\theta$
-(Pivotal quantity) $\mathcal{R}(X, \theta)$ does not depend on $P$
-(Invert accept region) accept region of $H_0: \theta=\theta_0$
-(Bonferroni's method) Simultaneous test simply $\alpha/r$
-\compact
-\subsection{Shortest CI}
-(Pivot $(T-\theta)/U$) $f(x)$ unimodal at $x_0$, $f(a_*) = f(b_*) > 0$,
-$C=\{[T-bU, T-aU]: \int_a^b f(x) dx = 1 - \alpha\}$
-(Pivotal $T/\theta$) $x^2f(x)$ unimodal at $x_0$, $a_*^2f(a_*) =
-    b^2_*f(b_*) > 0$,
-$C=\{[T/b, T/a]: \int_a^b f(x) dx = 1 - \alpha\}$
-(General) $f$ unimodal at $x_0$,
-$\min b - a$ s.t. $\int_a^b f(x) dx = A$ at
-$a_* \leq x_0 \leq b_*$ and $f(a_*) = f(b_*) > 0$ and
-$\int_{a_*}^{b_*} f(x) dx = A$
-\compact
-\subsection{Bayes action}
-(Bayes Action) $\min_{a}E[L(\theta, a) | X = x]$
-(Generalised) $\min_a \int_\Theta L(\theta, a) f_\theta(x) d\Pi$ (improper
-prior)
-\compact
-\subsection{Admissibility}
-$\delta(X)$ is a Bayes rule with prior $\Pi$, $\delta$ is admissible if
-(1) if $\delta$ is unique
-(2) If $\Theta$ is countable, $\Pi(\theta) > 0$ $\forall \Theta$.
-Note, not true for generalised Bayes rules unless limit is Bayes rule.
-\compact
-\subsection{Minimaxity}
-If $T$ is Bayes estimator and $R_T(\theta) = \sup_{\theta'}R_T(\theta')$,
-then $T$ is minimax. If $T$ is unique, it is unique minimax.
-\compact
-\subsection{Bernstein-von Mises}
-(asymp normality) $\tilde{\theta}_n$ posterior $\hat\theta_n$ MLE,
-$T_n = \sqrt{n}(\tilde{\theta}_n - \hat\theta_n) \xrightarrow{D}
-    N(\hat\theta_n, V^*/n)$, $\theta^*$ is true value.
-(assume MLE is asym normal)
-(well-specified) $V^* = E_*[-\nabla_\theta^2 \log p_{\theta^*}(Y)]^{-1}$
-(mis-specified) $V^* = E_*[-\nabla_\theta^2 \log p_{\theta^*}(Y)]^{-1}
-    Var_*(\nabla \log p_{\theta^*}(Y))E_*[-\nabla_\theta^2
-            \log_{p_{\theta^*}}(Y)]^{-1}$
-
 \section{Linear models}
  (Normal equation) $Z^TZb = Z^TX$
 (LSE) $\hat\beta = (Z^TZ)^- Z^T X$
@@ -1459,5 +1200,4 @@ $H_0$
 ($H_0: L\beta = 0$, $H_1: L\beta \neq 0$)
 $W = \frac{(||X-Z\hat\beta_0||^2 - ||X -
         Z\hat\beta||^2)/s}{||X-Z\hat\beta||^2/(n-r)}\sim F_{s, n-r}$ under $H_0$
-
 \end{document}
