@@ -70,6 +70,19 @@ and $\phi_X(t)=\psi_X(\sqrt{-1}t)$
 \compact
 \subsection{Conditional Exp}
 $f_{X|Y}(x|Y=y) = \frac{f_{X, Y}(x, y)}{f_Y(y)} = \frac{f_{Y|X}(y|X=x)f_X(x)}{f_Y(y)}$
+\compact
+\subsection{Symmetric distribution}
+$Y =^D -Y$, $E_{-Y}(Y) = E_Y(-Y)$, mean = mediam = mode
+\compact
+\subsection{Radon-Nikodym}
+$\lambda << \nu$, there exist unique $f$ s.t.
+$\lambda(A) = \int_A f d\nu, A\in \mathcal{F}$
+and $f(x, \theta) = \frac{d\lambda}{d\nu}$
+\compact
+\subsection{Gamma family}
+$E(0, \theta) = \Gamma(1, \theta)$,
+$\Gamma(\frac{n}{2}, 2) \sim \chi_n^2$,
+$X\sim U(0, 1) \Rightarrow -\log X \sim E(0, 1)$
 
 \section{Integration}
 \compact
@@ -308,6 +321,13 @@ $\int fd\lambda=0, f\geq 0\Rightarrow f=0$. Since $\frac{dP_\theta}{d\lambda}>0$
 Suppose $\eta_0$ is interior point on $\Xi$, then
 $ \psi_{\eta_0}(t) = \exp\left\{\mathcal{C}(\eta_0+t)-\mathcal{C}(\eta_0)\right\} $ and is finite in neighborhood of $t=0$.
 \compact
+\subsection{Normal MGF}
+$X\sim N(\mu, \sigma^2)$,
+$E(X-\mu) = 0$,
+$E(X-\mu)^2 = \sigma^2$,
+$E(X-\mu)^3 = 0$,
+$E(X-\mu)^4 = 3\sigma^4$
+\compact
 \subsection{NEF Moments}
 Let $A(\theta)=\mathcal{C}(\eta_0(\theta))$, $\frac{dA(\theta)}{d\theta}=\frac{d\mathcal{C}(\eta_0(\theta))}{d\eta_0(\theta)}\cdot\frac{d\eta_0(\theta)}{d\theta}$,
 $T(x) = \frac{\partial\mathcal{C}(\eta)}{\partial\eta}$
@@ -319,6 +339,7 @@ $T(x) = \frac{\partial\mathcal{C}(\eta)}{\partial\eta}$
 $,
 \circled{c} $
     Var(T) = \mathcal{C}''(\eta_0) = \frac{A''(\theta)}{[\eta_0(\theta)]^2} - \frac{\eta_0(\theta)''A'(\theta)}{[\eta_0(\theta)']^3} = \frac{\partial^2\mathcal{C}(\eta)}{\partial\eta\partial\eta^T}
+= - \frac{\partial^2\log\ell(\eta)}{\partial\eta\partial\eta^T}
 $
 \compact
 \subsection{NEF Differential}
@@ -798,6 +819,16 @@ $\phi_*(x) = I\left[ f_{m+1}(x) > \sum_{i=1}^m c_i f_i(x) \right]$,
 then $\phi_*$ maximises objective function with equality constraint.
 If $c_i\geq 0$ then $\phi_*$ maximises with inequality constraint.
 \compact
+\subsection{Generalised NP - working example}
+$H_0: \lambda = 1, \lambda = 2$, $H_1: \lambda \in (1, 2)$
+\circled{1} $\max \int \varphi(x) f_{\lambda}(x) dx$ with $\int \varphi f_{\lambda=1} dx = \int \varphi f_{\lambda=2} dx = \alpha$
+\circled{2} by generalised NP lemma, $\varphi^*(x) = I(f_\lambda > k_1 f_{\lambda =1} + k_2 f_{\lambda = 2}) = I(c_1 g(x) + c_2 g(x) < 1)$
+\circled{3} show $c_i$ are positives. If $c_i$ are both negative then test always reject $H_0$.
+If $c_i$ have opposite signs, or one of them equals zero, LHS of inequalities is monotone function of $x$ and test will be one-sided test.
+Power will be monotone and unable to satisfy constraints for power function. So $c_i$ must be positive.
+\circled{4} Then $c_1f_{\lambda =1 } + c_2 f_{\lambda=2}$ is convex, and $\varphi^*$ is two-sided test with form $\varphi^*(x) = I_{b_1, b_2}(x)$
+\circled{5} Find $b_1, b_2$ s.t. $\int \varphi^* f_{\lambda=1} dx = \int \varphi^* f_{\lambda=2} dx = \alpha$
+\compact
 \subsection{UMP}
 \circled{1} $H_0: P=p_0$ $H_1: P=p_1$ $\Rightarrow T(X) = I(p_1(X) > cp_0(X))$,
 $\beta_T(p_0) = \alpha$
@@ -837,9 +868,17 @@ For MLR this is satisfied, others need to check.
 $\theta_2 > \theta_2$, increasing likelihood ratio in $Y$ if
 $g(Y) = \frac{f_{\theta_2}(Y)}{f_{\theta_1}(Y)} > 1$ or $g'(Y) > 0$.
 \compact
-\subsection{Simultaneous}
+\subsection{Simultaneous Interval}
+$C_t(X), t \in \mathcal{T}$ are $1-\alpha$ simultaneous confidence intervals for $\theta_t, t\in \mathcal{T} \Leftrightarrow$
+$\inf_{P\in \mathcal{P}} P(\theta_t \in C_t(X) \text{ for all } t \in \mathcal{T}) \geq 1 - \alpha$
+asymptotic CI if $\lim_{n\rightarrow \infty} P(\theta_t \in C_t(X) \text{ for all } t \in \mathcal{T}) \geq 1 - \alpha$
+\subsection{Simultaneous methods}
 (Bonferroni) adjust each paramter level to $\alpha_t = \alpha/k$
 (Bootstrap) Monte Carlo percentile estimate
+(Multivariate Normal) $||(X-\mu)/\sigma||^2 < \chi_{p}^2$
+\compact
+\subsection{UMPU}
+Exists for one-param,
 
 \section{Asymptotic test}
 \compact
@@ -930,6 +969,16 @@ $\ell(G) = \prod_{i=1}^n P_G(\{x_i\})$, $G \in \mathcal{F}$.
 $C(X): X \rightarrow \mathcal{B}(\Theta)$,
 Require $\inf_{P\in\mathcal{P}} P(\theta\in C(X)) \geq 1 - \alpha$,
 that is confidencen coeff should be more than level
+\compact
+\subsection{Pratt's theorem}
+Suppose $vol(C(x)) = \int_C(x) d\theta'$ is finite, then expected volume of $C(X)$
+$E[vol(C(x))] = \int_{\theta'\neq\theta} P(\theta' \in C(x)) d\theta'$
+\compact
+\subsection{Uniformly most accurate (UMA)}
+$\theta \in \Theta$ and $\Theta' \subset \Theta$ that does not contain true $\theta$,
+$C(X)$ is $\Theta'-$UMA $\Leftrightarrow$ $P(\theta' \in C(X)) \leq P(\theta' \in C_1(X))$ for any other $C_1(X)$
+$C(X)$ is UMA $\Leftrightarrow$ it is $\Theta'-$UMA with $\Theta' = \{\theta\}^c$
+$\Rightarrow$ inverting $H_0: \theta = \theta_0$ and $H_1: \theta \neq \theta_0$
 \compact
 \subsection{CI via pivotal qty}
 $C(X) = \{\theta: c_1 \leq \mathcal{R}(X, \theta) \leq c_2\}$,
@@ -1107,6 +1156,10 @@ $rank(P_Z)=tr(P_Z)=r$
 (when $Z$ is full rank): $\hat\beta = (Z^T Z)^{-1}Z^T X$
 (when $Z$ is not full rank): $\hat\beta = (Z^T Z)^{-}Z^T X$
 \compact
+\subsection{LM tricks}
+$X-Z\hat\beta = P_{Z\perp} X, Z\hat\beta = P_Z X$.
+$\exists W \in \mathcal{R}^{n\times(n-r)}$ s.t. $W^T W = I_{n-r}$ and $WW^T = P_{Z\perp} = I_{n}$
+\compact
 \subsection{LM assumptions}
 (A1 Gaussian noise) $\epsilon \sim N_n(0, \sigma^2 I_n)$
 (A2 homoscedastic noise) $E(\epsilon) = 0$, $Var(\epsilon) = \sigma^2 I_n$
@@ -1188,4 +1241,31 @@ Pivotal qty: $
     } \sim F_{p, n-p}
 $, where $\hat\beta$ is LSE of $\beta$,
 $C(X) = \{\beta: \mathcal{R}(X, \beta) \leq F_{p, n-p, 1-\alpha}\}$
+\compact
+\subsection{CI for $H_0: \theta = \theta_0$, $H_1: \theta < \theta_0$}
+$A(\theta_0) = \left\{X: \ell^T \hat\beta - \theta_0 > -t_{n-r, \alpha}\sqrt{\ell^T(Z^TZ)^-\ell SSR/(n-r)}\right\}$
+\compact
+\subsection{CI For $H_0: \theta = \theta_0$, $H_1: \theta\neq \theta_0$}
+$A(\theta_0) = \left\{X: |\ell^T\hat\beta - \theta_0| < t_{n-r, \alpha/2}\sqrt{\ell^T(Z^TZ)^-\ell SSR/(n-r)}\right\}$
+\compact
+\subsection{Asymptotic CI}
+Does not require normality of noise
+$C(X) = \left\{\beta: (\hat\beta - \beta)^T (Z^TZ)(\hat\beta-\beta) \leq \chi_{p, \alpha}^2 SSR/(n-p)\right\}$
+$SSR = ||X-Z\hat\beta||^2$
+\compact
+\subsection{Linear Estimator}
+Linear estimator for linear model $X=Z\beta + \epsilon$ is linear function of $X$.
+e.g. $\ell^T\hat\beta = \ell^T(Z^TZ)^-Z^TX = C^T X$, $Var(c^TX) = c^T Var(X) c = c^T Var(\epsilon) c$
+\compact
+\subsection{Bivariate Normal density}
+$X_i$ are iid from bivariate normal
+$f(X) = \frac{1}{(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^n}\exp\left\{ - \frac{||Y_1-\mu_1 1_n||^2}{2\sigma_1^2(1-\rho^2)} + \frac{\rho(Y_1-\mu_11_n)^T(Y_2-\mu_21_n)}{\sigma_1\sigma_2(1-\rho^2)} - \frac{||Y_2 - \mu_21_n||^2}{2\sigma_2^2(1-\rho^2)} \right\}$,
+Testing $H_0: \rho=0$, $H_1: \rho \neq 0$ with
+$\theta = \frac{\rho}{\sigma_1\sigma_2(1-\rho^2)}$,
+$Y=\sum_{i=1}^n X_{i1}X_{i2}$,
+$U = \left(\sum_{i=1}^n X_{i1}^2, \sum_{i=1}^n X_{i2}^2, \sum_{i=1}^n X_{i1}, \sum_{i=1}^n X_{i2}\right)$,
+Sample correlation coefficient:
+$R=\frac{\sum_{i=1}^n(X_{i1}-\bar{X}_1)(X_{X_{i2} - \bar{X}_2})}{\left\{\sum_{i=1}^n(X_{i1}-\bar{X}_1)^2\sum_{i=1}^n(X_{i2}-\bar{X}_2)^2\right\}^(1/2)}$,
+$T=\sqrt{n-2}R/\sqrt{1-R^2}\sim t_{n-2}$ under $H_0: \rho=0$,
+UMPU test reject $|T| > t_{n-2, \alpha/2}$
 \end{document}
