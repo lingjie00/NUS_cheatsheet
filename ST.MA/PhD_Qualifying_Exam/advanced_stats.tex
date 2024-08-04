@@ -39,7 +39,26 @@ $cc^{T}$ is $k\times k$ matrix with $(i, j)$th element as $c_ic_j$,
 $\max(a, b) = \frac{1}{2} (a + b + |a-b|)$,
 $\min(a, b) = \frac{1}{2} (a + b - |a - b|)$
 \compact
+\subsection{Real Convergence}
+$\lim_{n\rightarrow\infty}(1+\frac{x}{n})^n = \exp(x)$
+\compact
+\subsection{Linear Algebra}
+\circled{a} $\left[[a, b], [c, d]\right]^{-1}=\frac{1}{det(A)}\left[[d, -b], [-c, a]\right]^T$,
+\circled{b} $\frac{d}{dX}X^T A X = 2AX$, $\frac{d}{dX}A^T XA = AA^T$
+
+\circled{c} $(x-\mu)^T\Sigma^{-1}(x-\mu) = x^T\Sigma^{-1}x - \mu^T \Sigma^{-1}x - x^T\Sigma^{-1}\mu + \mu^T \Sigma^{-1}\mu$
+\circled{d} $(A+B)^T = A^T + B^T$
+\compact
+\subsection{Binomial Theorem}
+$(x+y)^n = \sum_{k=0}^n \begin{pmatrix}n\\k\end{pmatrix}x^{n-k}y^k$
+
 \section{Probability}
+\compact
+\subsection{Ordered statistics}
+$P(X_{(n)} \leq x) = P(X_1 \leq x)^n$ and $P(X_{(n)} = x)= n P(X_1 \leq x)^{n-1}P(X_1 = x)$,
+\compact
+$P(X_{(1)} \leq x) = 1 - \left[1 - P(X_1 \leq x)\right]^n$ and
+$P(X_{(1)} = x)= n \left[1 - P(X_1 \leq x)\right]^{n-1}P(X_1 = x)$
 \compact
 \subsection{Moments}
 $\mu^k = E(X^k) = \int x^k f(x) dx$
@@ -52,7 +71,9 @@ $Var(X) = E[(X-EX)(X-EX)^T]$,
 $Cov(X, Y) = E[(X-EX)(Y-EY)^T]$,
 $Corr(X, Y) = Cov(X, Y)/(\sigma_X\sigma_Y)$,
 $E(a^TX)=a^TEX$,
-$Var(a^TX)=a^TVar(X)a$
+$Var(a^TX)=a^TVar(X)a$,
+$Var(X) = E(X^2) - E^2(X)$,
+$Var(aX + bY) = a^bVar(X) + b^2Var(Y) + 2abCov(X, Y)$
 \compact
 \subsection{CHF}
 $ \phi_X(t) = E\left[exp(\sqrt{-1}t^TX\right]=E\left[\cos(t^TX) + \sqrt{-1}\sin(t^TX)\right] $
@@ -71,6 +92,9 @@ and $\phi_X(t)=\psi_X(\sqrt{-1}t)$
 \subsection{Conditional Exp}
 $f_{X|Y}(x|Y=y) = \frac{f_{X, Y}(x, y)}{f_Y(y)} = \frac{f_{Y|X}(y|X=x)f_X(x)}{f_Y(y)}$
 \compact
+\subsection{Bias}
+$E(\hat\mu - \mu)$
+\compact
 \subsection{Symmetric distribution}
 $Y =^D -Y$, $E_{-Y}(Y) = E_Y(-Y)$, mean = mediam = mode
 \compact
@@ -82,9 +106,15 @@ and $f(x, \theta) = \frac{d\lambda}{d\nu}$
 \subsection{Gamma family}
 $E(0, \theta) = \Gamma(1, \theta)$,
 $\Gamma(\frac{n}{2}, 2) \sim \chi_n^2$,
-$X\sim U(0, 1) \Rightarrow -\log X \sim E(0, 1)$
+$X\sim U(0, 1) \Rightarrow -\log X \sim E(0, 1)$,
+$Y\sim\Gamma(n, \theta_0)$, $\frac{2Y}{\theta_0}\sim\Gamma(n, 2)\sim\chi^2_{2n}$
 \compact
-\section{Integration}
+\subsection{Common result}
+\circled{a} $X\sim\Gamma(\alpha, \gamma)$, $E(X) = \alpha\gamma$, $Var(X) = \alpha\gamma^2$
+\circled{b} $Z\sim N(0, 1)$, $W\sim\chi_p^2$, $\frac{Z}{\sqrt{W}/p}\sim t_{p}$
+\circled{c} $t^2 \sim \chi^2_a/\chi^2_b \sim F_{a, b}$
+\compact
+\section{Integration Convergence}
 \compact
 \subsection{MCT}
 $0\leq f_1 \leq f_2 \leq \cdots \leq f_n$ and $\lim_n f_n = f$ a.e.
@@ -179,10 +209,10 @@ for every $x\in\mathcal{R}$ at which $F$ is continuous
 \compact
 \subsection{Relationships between convergence}
 \compact
-\circled{1} $L^p\Rightarrow L^q\Rightarrow P$
-\circled{2} $a.s. \Rightarrow P$, $P \Rightarrow D$
-\circled{3} $X_n\rightarrow_D C \Rightarrow X_n \rightarrow_P C$
-\circled{4} If $X_n\rightarrow_P X \Rightarrow \exists$ sub-seq s.t. $X_{n_j}\rightarrow_{\text{a.s.}}X$.
+\circled{1} $L^p\Rightarrow L^q\Rightarrow P$, $p>q$
+\circled{2} $a.s. \Rightarrow P \Rightarrow D$
+\circled{3} $X_n\xrightarrow{D} C \Rightarrow X_n \xrightarrow{P} C$
+\circled{4} If $X_n\xrightarrow{P} X \Rightarrow \exists$ sub-seq s.t. $X_{n_j}\xrightarrow{\text{a.s.}}X$.
 \compact
 \subsection{Continuous mapping}
 If $g: \mathcal{R}^k\rightarrow\mathcal{R}$ is continuous and
@@ -283,7 +313,8 @@ $X_n\xrightarrow{D} X \Leftrightarrow$ $E[h(X_n)]\rightarrow E[h(X)]$
 \compact
 \subsection{CLT, iid}
 Suppose $\Sigma=VarX_1<\infty$, then
-$\frac{1}{\sqrt{n}}\sum_{i=1}^n (X_i-EX_i)\xrightarrow{D} N(0, \Sigma)$
+$\frac{1}{\sqrt{n}}\sum_{i=1}^n (X_i-EX_i)\xrightarrow{D} N(0, \Sigma)$,
+or $\sqrt{n}(\bar{X}-E(X_1))\xrightarrow{D}N(0, \Sigma)$
 \compact
 \subsection{CLT, non-identical but independent}
 Suppose
@@ -397,51 +428,68 @@ Given $X_i\sim N(\mu, \sigma^2)$ and $H_0: \sigma^2 = \sigma_0^2$
 \subsection{UMPU NEF\\$\eta(\theta) = \theta$}
 Require:
 \circled{1} suff stat $Y$ for $\theta$
-\circled{2} suff and complete $U$ for $\varphi$ such that $\varphi$ is full-rank
+\circled{2} suff and complete $U$ for $\varphi$ such that $\varphi$ is full-rank,
+when $\theta$ is fixed and $\varphi$ is unknown, use $E_{\theta}(\cdot|U)$ to denote expectation wrt $f_{\theta, \varphi}$
+as $U$ is sufficient for $\varphi$.
+$f_{\theta, \varphi}(x) = \exp\left\{\theta Y(x) + \varphi^T U(x) - \mathcal{C}(\theta, \varphi)\right\}$,
 \compact
 \subsection{UMPU NEF $H_0: \theta\leq \theta_1$ or $\theta\geq \theta_2$ $H_1: \theta_1<\theta<\theta_2$}
 $T(Y, U) = I(c_1(U) < Y < c_2(U))$
-s.t. $E_{\theta_1}[T(Y, U)|U=u] = E_{\theta_2}[T(Y, U)|U=u] =\alpha$
+s.t. $E_{\theta_1}[T|U=u] = E_{\theta_2}[T|U=u] =\alpha$
 \compact
 \subsection{UMPU NEF $H_0: \theta_1 \leq \theta \leq \theta_2$ $H_1: \theta < \theta_1$ or $\theta > \theta_2$}
 $T(Y, U) = I(Y < c_1(U)$ or $ Y > c_2(U))$
-s.t. $E_{\theta_1}[T(Y, U)|U=u] = E_{\theta_2}[T(Y, U)|U=u] =\alpha$
+s.t. $E_{\theta_1}[T|U=u] = E_{\theta_2}[T|U=u] =\alpha$
 \compact
 \subsection{UMPU NEF $H_0: \theta=\theta_0$ $H_1: \theta\neq\theta_0$}
 $T(Y, U) = I(Y < c_1(U)$ or $ Y > c_2(U))$
-s.t. $E_{\theta_0}[T_*(Y, U)|U=u]=\alpha$ and
-$E_{\theta_0}[T_*(Y, U)Y| U=u]=\alpha E_{\theta_0}(Y|U=u)$
+s.t. $E_{\theta_0}[T|U=u]=\alpha$ and
+$E_{\theta_0}[TY| U=u]=\alpha E_{\theta_0}(Y|U=u)$
 \compact
 \subsection{UMPU NEF $H_0: \theta\leq \theta_0$ $H_1: \theta>\theta_0$}
 $T(Y, U) = I(Y > c(U))$
-s.t. $E_{\theta_0}[T(Y, U)|U=u]=\alpha$
+s.t. $E_{\theta_0}[T|U=u]=\alpha$
 \compact
 \subsection{UMPU Normal}
 Require UMPU NEF \circled{1}, \circled{2} and \circled{3} $V(Y, U)$ independent of $U$ under $H_0$
 \compact
 \subsection{UMPU Normal $H_0: \theta\leq \theta_1$ or $\theta\geq \theta_2$ $H_1: \theta_1<\theta<\theta_2$}
 \circled{4} $V$ to be increasing in $Y$
-$T(V) = I(c_1 < V < c_2)$
-s.t. $E_{\theta_1}[T(V)] = E_{\theta_2}[T(V)] = \alpha$
+$\Rightarrow T(V) = I(c_1 < V < c_2)$
+s.t. $E_{\theta_1}[T] = E_{\theta_2}[T] = \alpha$
 \compact
 \subsection{UMPU Normal $H_0: \theta_1 \leq \theta \leq \theta_2$ $H_1: \theta < \theta_1$ or $\theta > \theta_2$}
 \circled{4} $V$ to be increasing in $Y$
 $\Rightarrow T(V) = I(V < c_1$ or $V > c_2)$
-s.t. $E_{\theta_1}[T(V)] = E_{\theta_2}[T(V)] = \alpha$
+s.t. $E_{\theta_1}[T] = E_{\theta_2}[T] = \alpha$
 \compact
 \subsection{UMPU Normal $H_0: \theta=\theta_0$ $H_1: \theta\neq\theta_0$}
-\circled{4} $V(Y, U)=a(u)Y + bU$
+\circled{4} $V(y, u)=a(u)y + b(u)$ and $a(u) > 0$
 $\Rightarrow T(V) = I(V < c_1$ or $ V > c_2)$
-s.t. $E_{\theta_0}[T(V)] = \alpha$
-and $E_{\theta_0}[T(V)V] = \alpha E_{\theta_0}(V)$
+s.t. $E_{\theta_0}[T] = \alpha$
+and $E_{\theta_0}[TV] = \alpha E_{\theta_0}(V)$
 \compact
 \subsection{UMPU Normal $H_0: \theta\leq \theta_0$ $H_1: \theta>\theta_0$}
 \circled{4} $V$ to be increasing in $Y$
 $\Rightarrow T(V) = I(V>c)$
-s.t. $E_{\theta_0}[T(V)] = \alpha$
+s.t. $E_{\theta_0}[T] = \alpha$
 \compact
 \subsection{MLR for one-param exp fam}
 $\eta(\theta)$ nondecreasing in $\theta$ $\Rightarrow \eta'(\theta) > 0$.
+\compact
+\subsection{UMPU results - one sample normal}
+\circled{a} $H_0: \sigma^2 = \sigma_0^2$, $H_1: \sigma^2 \neq \sigma_0^2$
+$\theta = -(2\sigma^2)^{-1}$, $\varphi = n\mu/\sigma^2$, $Y=\sum X_i^2$, $U\bar{X}$
+$V = (n-1)S^2 = Y - nU^2$, $S = \frac{1}{n-1}\sum (X_i - \bar{X})$,
+$V/\sigma^2 \sim\chi^2_{n-1}$
+\circled{b} $H_0: \mu \leq \mu_0$, $H_1: \mu > \mu_0$,
+$Y = \bar{X}$, $U=\sum (X_i - \mu_0)^2$, $\theta=-n(\mu-\mu_0)/\sigma^2$,
+$\varphi = -(2\sigma^2)^{-1}$,
+$V = (\bar{X} - \mu_0)/\sqrt{U}$ increasing in $Y$, under $H_0$, $V \perp U$,
+$t(X) = \sqrt{n}(\bar{X} - \mu_0)/S = \sqrt{(n-1)n}V(X)/\sqrt{1-n[V(X)]^2}\sim t_{n-1}$,
+$t(X)$ increasing in $V$
+\circled{c} $H_0: \mu=\mu_0$, $H_1:\mu\neq\mu_0$, $V=(\bar{X} - \mu_0)/\sqrt{U}$ symmetric about 0 under $H_0: \mu=\mu_0$,
+reject $H_0$ when $|V|>d$ where $P_{H_0}(|V|>d)=\alpha$. consider same $t$ as before.
 \compact
 \section{Statistics}
 \compact
@@ -603,7 +651,8 @@ $\frac{\partial}{\partial\theta}\int \frac{\partial}{\partial\theta^T} f(x|\thet
 Under RLE regularity conditions, there exists a sequence of $\hat\theta_n$ s.t. $\frac{\partial}{\partial\theta}\log L_n(\hat\theta_n)=0$ and $\hat\theta_n\rightarrow_{\text{a.s.}}\theta_*$.
 \compact
 \subsection{RLE asymptotic normality}
-Assume RLE regularity conditions, and $I(\theta) = \int \frac{\partial}{\partial\theta} \log f(x|\theta) \left[\frac{\partial}{\partial\theta}\log f(x|\theta)\right]^T d\nu(x)$ is positive definite and $\theta=\theta_*$. Then any consistent sequence $\{\Tilde{\theta_n}\}$ of RLE it holds
+Assume RLE regularity conditions, and $I(\theta) = \int \frac{\partial}{\partial\theta} \log f(x|\theta) \left[\frac{\partial}{\partial\theta}\log f(x|\theta)\right]^T d\nu(x)$ is positive definite and $\theta=\theta_*$ (for single $X$).
+Then any consistent sequence $\{\Tilde{\theta_n}\}$ of RLE it holds
 $
     \sqrt{n}(\Tilde{\theta_n} - \theta_*) \xrightarrow{D} N\left(0, \frac{1}{I(\theta_*)}\right)
 $
@@ -991,7 +1040,7 @@ $C(X) = \{\theta: x\in A(\theta)\}$, Acceptance region $A(\theta)=\{x:
 $H_0: \theta = \theta_0$, any $H_1$ satisfy
 \compact
 \subsection{Shortest CI}
-require unimodal: $f'(x_0) = 0$ $f'(x)<0, x < x_0$ and $f'(X)>0, x > x_0$
+require unimodal wrt $x$ at $x_0$: $f'(x_0) = 0$ $f'(x)<0, x < x_0$ and $f'(X)>0, x > x_0$
 \compact
 \subsection{Pivotal $(T-\theta)/U$, $f$ unimodal at $x_0$}
 Interval $[T - b_*U, T-a_* U]$, shortest when $f(a_*) = f(b_*) > 0$ $a_* \leq x_0 \leq b_*$
@@ -1082,30 +1131,26 @@ $\mu_*(x) = \frac{\sigma^2}{\sigma^2 + n\sigma_0^2} \mu_0 + \frac{n\sigma_0^2}{\
 $c^2 = \frac{\sigma_0^2\sigma^2}{n\sigma_0^2 + \sigma^2}$
 $C(x) = [\mu_*(x) - cz_{1-\alpha/2},~\mu_*(x) + cz_{1-\alpha/2}]$.
 \compact
-\subsection{Decision theory}
-(Admissibility)
-(1) $\delta(X)$ unique $\Rightarrow$ admissible,\;
-(2, 3) $r_{\delta}(\Pi) < \infty$, $\Pi(\theta) > 0$ for all $\theta$
-and $\delta$ is Bayes action with respect to $\Pi$ $\Rightarrow$ admissible.
-\textit{Not true for improper priors}, Improper priors require excessive risk
-ignorable, take limit and observe if risk is admissible.
-(Bias)
+\subsection{Bayesian Bias}
 Under squared error loss, $\delta(X)$ is biased unless $r_\delta(\Pi) = 0$.
 \textit{Not applicable to improper priors}.
-(Minimax)
+\compact
+\subsection{Bayesian minimax}
 If $T$ is (unique) Bayes estimator under $\Pi$ and
 $R_T(\theta) = \sup_{\theta'} R_T(\theta')$ $\pi\text{-a.e.}$,
 , then $T$ is (unique) minimax.
 \textit{Limit of Bayes estimators} If $T$ has constant risk and
 $\lim\inf_j r_j \geq R_T$, then $T$ is minimax.
+$\sup_{\theta\in\Theta}R_S(\theta) \geq \int_{\Theta_\pi}R_S(\theta)d\pi \geq \int_{\Theta_\pi}R_T(\theta)d\pi = \sup_{\theta\in\Theta}R_T(\theta)$
 \compact
-\subsection{Admissibility}
-$\delta(X)$ is a Bayes rule with prior $\Pi$, $\delta$ is admissible if
-(1) if $\delta$ is unique
-(2) If $\Theta$ is countable, $\Pi(\theta) > 0$ $\forall \Theta$.
-Note, not true for generalised Bayes rules unless limit is Bayes rule.
+\subsection{Bayesian admissibility}
+(1) $\delta(X)$ unique $\Rightarrow$ admissible,\;
+(2, 3) $r_{\delta}(\Pi) < \infty$, $\Pi(\theta) > 0$ for all $\theta$
+and $\delta$ is Bayes action with respect to $\Pi$ $\Rightarrow$ admissible.
+\textit{Not true for improper priors unless it is limit of Bayes rule}, Improper priors require excessive risk
+ignorable, take limit and observe if risk is admissible.
 \compact
-\subsection{Simul est}
+\subsection{Simultaneous credible set}
 Simultaneous estimate vector-valued $\mathcal{V}$ with e.g. squared loss
 $L(\theta, a) = \|a - \theta\|^2 = \sum_{i=1}^{p} (a_i - \theta_i)^2$
 \compact
@@ -1123,7 +1168,7 @@ all priors that lead to consistent posteriors are equivalent.
 \compact
 \subsection{Bernstein-von Mises}
 Assume MLE regularity conditions, posterior
-$T_n = \sqrt{n} (\Tilde{\theta_n}-\hat{\theta_n}) \sim \mathcal{N}(\hat\theta_n, V^*/n)$
+$T_n = \sqrt{n} (\tilde{\theta_n}-\hat{\theta_n}) \sim \mathcal{N}(0, V^*)$
 asymptotically.
 (Well-specified)
 $V^* = I(\theta^*)^{-1} = E_* \left[ -\nabla_\theta^2 \log p_{\theta^*}(Y) \right]^{-1}$
@@ -1138,7 +1183,7 @@ or unique maximizer of $\ell^*(\theta) = E_*[\log p_\theta(Y)]$
 \subsection{MLE asymptotic variance under model misspecification}
 $\mathbb{E}_*\left[-\nabla_\theta^2\log p_{\theta^*}(Y)\right]^{-1}\text{Var}_*\left(\nabla\log
     p_{\theta^*}(Y)\right)\mathbb{E}_*\left[-\nabla_\theta^2\log p_{\theta^*}(Y)\right]^{-1}$
-(differ from MLE, with $\theta_*$ the projection of $P_*$ to parameter
+(differ from bayesian CR, $\theta_*$ is the projection of $P_*$ to parameter
 space)
 \compact
 \section{Linear Model}
@@ -1155,6 +1200,23 @@ $rank(P_Z)=tr(P_Z)=r$
 (solution = normal equation) $Z^Z b = Z^T X$
 (when $Z$ is full rank): $\hat\beta = (Z^T Z)^{-1}Z^T X$
 (when $Z$ is not full rank): $\hat\beta = (Z^T Z)^{-}Z^T X$
+\compact
+\subsection{LM MLE}
+$X_i = \beta_0 + \beta_1 t_i + \epsilon_i$,
+$D:=\sum (t_i - \bar{t})^2$,
+$\hat\beta_1 = \frac{1}{D}(\sum t_i(X_i-\bar{X}))$
+and $\hat\beta_0 = \bar{X} - \hat\beta_1 \bar{t}$
+and $\hat\sigma^2 = \frac{1}{n}\sum(X_i-\bar{X})^2 - \frac{D}{n}\hat\beta_1^2$ (?)
+\compact
+\subsection{LM solution property}
+\circled{a} $E(\hat\beta) = \beta$,
+\circled{b} $Var((Z^T Z)^{-1} ZX ) = (Z^T Z)^{-1}Z Var(X) Z^T (Z^TZ)^{-1}$
+\circled{c} $Var(\ell^T\hat\beta) = \sigma^2 \ell^T(Z^TZ)^-\ell$
+\circled{d} $Cov(\hat\beta)=\sigma^2 \begin{pmatrix}
+        n & \sum t_i \\ \sum t_i & \sum t_i^2
+    \end{pmatrix}^{-1} = \frac{\sigma^2}{nD} \begin{pmatrix}
+        \sum t_i^2 & -\sum t_i \\ -\sum t_i & n
+    \end{pmatrix}$
 \compact
 \subsection{LM tricks}
 $X-Z\hat\beta = P_{Z\perp} X, Z\hat\beta = P_Z X$.
