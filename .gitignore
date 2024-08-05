@@ -2,3 +2,7 @@
 ECON/.DS_Store
 MA.ST/.DS_Store
 *.aux
+*.log
+*.gz
+*.fls
+*.fdb_latexmk
