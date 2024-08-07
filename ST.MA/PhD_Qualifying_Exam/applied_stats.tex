@@ -72,6 +72,11 @@ $D_{KL}(g|f) = E_g\left(\log\frac{g(x)}{f(x)}\right) \geq 0$
 \subsection{Tail of $Exp(0, a)$}
 $E(Y_j - c_j | Y_j > c_j) = E(Y_j)$
 
+\subsection{Series summation}
+$\sum_{i=1}^n i = \frac{n(n+1)}{2}$
+and $\sum_{i=1}^n i^2 = \frac{n(n+1)(2n+1)}{6}$
+and $\sum_{i=1}^n i^3 = \left(\frac{n(n+1)}{2}\right)^2$
+
 \section{L1 Review}
 
 \subsection{Big $O(\cdot)$}
@@ -541,13 +546,15 @@ Reduce MC error by enforcing data pairing.
 Proposal density $X^*\sim f(x)$, same as target density $f(x)$
 $w(X^*) = \frac{f(x)/f(x)}{\sum f(x)/f(x)} = \frac{1}{n}$
 
-\subsection{BS unbiased estimate}
+\subsection{BS is unbiased estimate}
+Note $\sum_{j=1}^b I(X_i^* = X_j) = 1$
 $$
     E[h(X_i^*)] = \sum_{i=1}^b[h(X_i^*)I(X_i^* = X_i)] = \sum_{i=1}^b E[E[h(X_i^*)I(X_i^* = X_i)|I(X_i^*=X_i)]]
 $$
 $$
     =\sum_{i=1}^b E[h(X^*_i)I(X_i^*=X_i)=1]P(X_i^*=X_i)=\sum_{i=1}^b E[h(X_i)]\frac{1}{n} = E[h(X_i)]
 $$
+
 
 \section{L5: Simulation and MC Integration}
 
@@ -581,6 +588,39 @@ To ensure rejection sampling exists, require $\frac{f(x)}{g(x)} \leq \frac{1}{\a
 \subsection{Deducing Rejection Sampling distribution}
 $P(X\leq x) = P(Y \leq y | U \leq \alpha f(Y) / g(Y))$
 
+\subsection{Rejection Sampling for multivariate}
+Consider $\mathcal{O}=\{(x, y, z): x^2 + y^2 + z^2 \leq 1\}$,
+$\mathcal{D} = \{(x, y): x^2 + y^2 \leq 1\}$
+
+area of $\mathcal{D} = \pi$, area of $\mathcal{O}=\frac{4\pi}{3}$
+
+\circled{1} generate $\mathcal{D}$ using $X\sim unif(-1, 1)$, $Y\sim unif(-1, 1)$
+
+(1) Generate $W\sim unif(-1, 1)$, $V\sim unif(-1, 1)$
+
+(2) If $W^2 + V^2 \leq 1$ or $(W, V) \in \mathcal{D}$, set $(\tilde{X}, \tilde{Y}) = (W, V)$ else repeat (1)
+
+This is rejection sampling with
+$g(w, v) = I(w\in(-1, 1))I(v \in (-1, 1))$,
+$f(x, y) = \frac{1}{\pi}I(x^2 + y^2 \leq 1)$,
+$f(x, y)/g(x, y) \leq \frac{1}{\pi}\Rightarrow \alpha = \pi$
+
+Since $\alpha f(w, v)/g(w, v) = I(w^2 + v^2 \leq 1)$,
+$U \leq \alpha f(w, v)/g(w, v) \Rightarrow I(w^2 + v^2 \leq 1)$ or $(W, V) \in \mathcal{D}$
+
+\circled{1} gnerate $\mathcal{O}$ using $Z\sim unif(-1, 1)$ and $X, Y$
+
+(3) Generate $S\sim unif(-1, 1)$
+
+(4) If $\tilde{X}^2 + \tilde{Y}^2 + S^2 \leq 1$ or $(\tilde{X}, \tilde{Y}, S) \in \mathcal{O}$, set $\tilde{Z} = S$ else repeat (3)
+
+Similarly, $g(w, v, s) = I(w\in(-1, 1))I(v \in (-1, 1))I(s \in (-1, 1))$,
+$f(x, y, z) = \frac{3}{4\pi}I(x^2 + y^2 + z^2 \leq 1)$,
+$f(x, y, z)/g(x, y, z) \leq \frac{3}{4\pi}\Rightarrow \alpha = 4\pi/3$
+
+Since $\alpha f(w, v, s)/g(w, v, s) = I(w^2 + v^2 + s^2 \leq 1)$,
+$U \leq \alpha f(w, v, s)/g(w, v, s) \Rightarrow I(w^2 + v^2 + s^2 \leq 1)$ or $(W, V, S) \in \mathcal{O}$
+
 \subsection{SIR}
 
 Sampling Importance Resampling, with envelope function $g(x)$.
@@ -592,9 +632,29 @@ Generate approximate distribution from $f(x)$ (previous 2 methods are exact).
 
 (2) Calculate standardised importance weight $w(Y_1), \cdots, w(Y_m)$
 
-$w(Y_i) = \frac{f(Y_i) / g(Y_i)}{\sum_{j=1}^m f(Y_j)/g(Y_j)}$
+$w^*(Y_i) = {f(Y_i) / g(Y_i)}$
+and $w(Y_i) = \frac{w^*(Y_i)}{\sum_{j=1}^m W^*(Y_j)}$
 
 (3) Resample $X_i$ from $Y_1, \cdots, Y_m$ with probability $w(Y_1), \cdots, w(Y_m)$
+
+\subsection{Finding SIR asymptotic distribution}
+$$
+    P(X_i \in A | Y_1, \cdots, Y_m)
+    =P(\cup_{j=1}^m \{X_i = Y_j \text{ and } Y_j \in A\} | Y_1, \cdots, Y_m)
+    = \frac{\sum_{j=1}^m I(Y_j \in A)w^*(Y_j)}{\sum_{j=1}^m w^*(Y_j)}
+    = \frac{\frac{1}{m}\sum_{j=1}^m I(Y_j \in A)w^*(Y_j)}{\frac{1}{m}\sum_{j=1}^m w^*(Y_j)}
+$$
+
+Using LLN with $m\rightarrow \infty$
+
+$$
+    \frac{1}{m}\sum_{j=1}^m I(Y_j \in A)w^*(Y_j) \rightarrow E[I(Y_j \in A)w^*(Y)] = \int_A \frac{f(y)}{g(y)} g(y) dy = \int_A f(y) dy
+$$
+$$
+    \frac{1}{m}\sum_{j=1}^m w^*(Y_j) \rightarrow E[w^*(Y)] = \int \frac{f(y)}{g(y)} g(y) dy = \int f(y) dy = 1
+$$
+
+By DCT, $P(X_i \in A) = E[P(X_i \in A|Y_1, \cdots, Y_m)] = \int_A f(y) dy$
 
 \subsection{Sequential MC}
 
@@ -670,14 +730,34 @@ $$\hat\mu_{RB} = \frac{1}{n} \sum_{i=1}^n \Tilde{h}(X_{i2})$$
 
 
 \subsection{MCMC}
-Objective: generate stationary distribution s.t. $X_t \sim f(x) \Rightarrow X_{t+1} \sim f(x)$
+Generate stationary distribution s.t. $X_t \sim f(x) \Rightarrow X_{t+1} \sim f(x)$
+using exchangeable transition kernel $R(X_{t}, Y)$.
+
+Require $P(X_t \leq x, X_{t+1} \leq x') = P(X_t \leq x', X_{t+1} \leq x)$ $\Leftrightarrow F(x, x') = F(x', x)$
 
 $$
-    R(X_t, Y_t) = \frac{f(Y_t)g(X_t)}{f(X_t)g(Y_t)}
+    F(x, x') = P\left(X_t \leq x, Y \leq x', U \leq R(X_t, X_{t+1})\right)
+    + P\left(X_t \leq x, X_{t} \leq x', U > R(X_t, X_{t+1})\right)
+    = F_1(x, x') + F_2(x, x')
 $$
 
-require $g_Y(X_t|Y_t) = g_Y(X_t)$ and $g_Y(Y_t|X_t) = g_Y(Y_t)$.
-Note $g$ is the density of $Y$ the proposal distribution.
+$F_2(x, x')$ is exchangeable as both is about $X_t$
+Note $f(x_t, y) = f_{X_t}(x_t)g_Y(y|x_t)$
+
+$$
+    F_1(x, x') = \int_{x_t \leq x, y \leq x'} \min\{f(x_t)g(y|x_t), R(x_t, y) f(x_t)g(y|x_t)\} d x_t dy
+    = \int_{z \leq x, w \leq x'} \min\{f(z)g(w|z), R(z, w) f(z)g(w|z)\} dz dw
+$$
+
+$$
+F_1(x', x) = \int_{x_t \leq x', y \leq x} \min\{f(x_t)g(y|x_t), R(x_t, y) f(x_t)g(y|x_t)\} dx_t dy
+= \int_{z \leq x, w \leq x'} \min\{f(w)g(z|w), R(w, z) f(w)g(z|w)\} dz dw
+$$
+
+as $X_t, Y$ are dummy variables. Require
+$$
+    \min\left\{f(x_t)g(y|x_t), R(x_t, y) f(x_t)g(y|x_t)\right\} = \min\left\{f(y)g(x_t|y), R(y, x_t) f(y)g(x_t|y)\right\}
+$$
 
 \subsection{Deducing MCMC distribution}
 $P(X_t\leq x) = P(Y_t \leq x, U \leq R(X_t, Y)) + P(X_t \leq x, U > R(X_t, Y))$
@@ -701,7 +781,7 @@ Proposal distribution $g(x)$, $w(x) = f(x)/g(x)$
 
 Basically,
 $$
-    R(X_t, Y) = \frac{f(Y)g(X_t)}{f(X_t)g(Y)}
+R(X_t, Y) = \frac{f_{X_t}(Y)g_Y(X_t)}{f_{X_t}(X_t)g_Y(Y)}
 $$
 
 \subsection{Metropolis-Hasting}
@@ -713,7 +793,7 @@ $$
 (3) Compute MH ratio  $R(X_t, Y)$
 
 $$
-    R(X_t, Y) = \frac{f(Y)g(X_t|Y)}{f(X_t) g(Y|X_t)}
+R(X_t, Y) = \frac{f_{X_t}(Y)g_Y(X_t|Y)}{f_{X_t}(X_t) g_Y(Y|X_t)}
 $$
 
 (4) Generate $U\sim Unif(0, 1)$,
@@ -725,6 +805,9 @@ $$
 (5) Increase $t$ by 1
 
 (6) Repeat steps (2)-(5) t generate MC chain $X_1, X_2, \cdots$
+
+\subsection{Metropolis}
+Initial algorithm proposed by Metropolis require symmetric transition kernel $g(x_t|y) = g(y|x_t)$
 
 \subsection{Gibbs Sampling}
 
