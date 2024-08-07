@@ -29,29 +29,74 @@
 
 \begin{document}
 
+\section{Analysis and Probability}
+
+\subsection{Integrate Max/Min}
+$E[\max\{0, Y\}] = E[YI(Y > 0)]$ and
+$E[\min\{0, Y\}] = E[YI(Y < 0)]$
+
+\subsection{Variance}
+$Var(X) = E(X^2) + (EX)^2$ and
+$Var(X|Y) = Var(E[X|Y]) + E[Var(X|Y)]$
+
+\subsection{Finding joint and conditional density}
+Suppose $X=\epsilon_1$, $Y=X+\epsilon_2$, $Z = X + Y + \epsilon_3$,
+$\epsilon_i \sim^{iid} N(\mu, \sigma^2)$
+
+Note $f_{X|Y, Z}(x|y, z)\propto f_{X, Y, Z}(x, y, z)$
+
+Method \circled{1}
+$f_{X, Y, Z}(x, y, z) = det(\nabla_J) f_{\epsilon_1, \epsilon_2, \epsilon_3}(x, y-x, z-x-y) \propto f_{\epsilon_1}(x) f_{\epsilon_2}(y-x) f_{\epsilon_3}(z-x-y)$
+
+Method \circled{2} $f_{X, Y, Z}(x, y, z) = f_{Z|X, Y}(z|x, y)f_Y(y|x)f_X(x)$
+and $Z|X, Y \sim N(x+y+\mu, \sigma^2)$, $Y|X\sim N(x+\mu, \sigma^2)$
+
+\subsection{Conditional Density Example}
+$X_i \sim^{iid} N(\mu, \sigma^2)$ and $Y_i = X_i + X_{i+2}$.
+
+$f_{X_1|Y}(x|Y) \propto f_{X}(x, y_1 - x, y_2 - y_1 + x, y_3 - y_2 + y_1 - x, y_4 - y_3 + y_2 - y_1 + x) \sim N\left(\frac{1}{5}\left[4Y_1 - 3Y_2 + 2Y_3 - Y_4 + \mu\right], \frac{\sigma^2}{5}\right)$
+
+$f_{X_2 | Y}(x | Y) \sim N\left(\frac{1}{5}\left[Y_1 + 3Y_2 - 2Y_3 + Y_4 - \mu\right], \frac{\sigma^2}{5} \right)$
+$f_{X_3 | Y}(x | Y) \sim N\left(\frac{1}{5} \left[ -Y_1 + 2Y_2 + 2Y_3 - Y_4 + \mu \right], \frac{\sigma^2}{5}\right)$
+
+$f_{X_4 | Y}(x | Y) \sim N\left(\frac{1}{5} \left[ Y_1 - 2Y_2 + 3Y_3 + Y_4 - \mu \right], \frac{\sigma^2}{5} \right)$
+$f_{X_5 | Y}(x | Y) \sim N\left(\frac{1}{5} \left[ -Y_1 + 2Y_2 - 3Y_3 + 4Y_4 + \mu \right], \frac{\sigma^2}{5} \right)$
+
+\subsection{RV transformation}
+$Y = h(X)$
+$g_Y(y) = f_X(h^{-1}(Y)) \left|det\left(\frac{dh^{-1}}{dY}\right)\right|$
+
+\subsection{KL Divergence}
+$D_{KL}(g|f) = E_g\left(\log\frac{g(x)}{f(x)}\right) \geq 0$
+
+\subsection{Tail of $Exp(0, a)$}
+$E(Y_j - c_j | Y_j > c_j) = E(Y_j)$
 
 \section{L1 Review}
 
 \subsection{Big $O(\cdot)$}
-
 $f(z) = O(g(z))$ as $z\rightarrow z_0 \in \mathcal{R}$ if
+for some $M > 0$, and for all $z$ in neighborhood of $z_0$.
 $$
     \left|\frac{f(z)}{g(z)}\right| \leq M
 $$
-for some $M > 0$, and for all $z$ in neighborhood of $z_0$.
 
 If $z\rightarrow \infty$, then there exists $C>0$ s.t. statement holds for all $z>C$
 
-\subsection{Small $o(\cdot)$}
+E.g. $f(n) = h(n) + \frac{n+1}{3n^2}$,
+since $\lim_{n\rightarrow \infty}\left\{\frac{n+1}{3n^2}/n^{-1}\right\} = 1/3 < \infty$,
+$\Rightarrow f(n) = h(n) + O(n^{-1})$
 
+\subsection{Small $o(\cdot)$}
 $f(z)=o(g(z))$ as $z\rightarrow z_0 \in \mathcal{R}$ if
 
 $$
     \lim_{z\rightarrow z_0} \frac{f(z)}{g(z)} = 0
 $$
 
-\subsection{Taylor's Expansion}
+E.g. since $\lim_{n\rightarrow\infty}\frac{n+1}{3n^2}=0$ $f(n) = h(n) - o(1)$ as $n\rightarrow \infty$
 
+\subsection{Taylor's Expansion}
 Let $f(\cdot)$ defined on $[a, b]$ s.t. it has continuous $(n+1)$th order derivatives. Then for all $x, x_0$ in $[a, b]$
 
 $$
@@ -71,7 +116,7 @@ for some $\xi\in(x, x_0)$ or $(x_0, x)$
 Since $f^{(n+1)}(\cdot)$ is bounded based on theorem condition
 
 $$
-    f(x) = f(x_0) + (x-x_0)f'(x_0) + \cdots + \frac{(x-x_0)^n}{n} f^{(n)}(x_0) + O(|x-x_0|^{n+1})
+f(x) = f(x_0) + (x-x_0)f'(x_0) + \cdots + \frac{(x-x_0)^n}{n!} f^{(n)}(x_0) + O(|x-x_0|^{n+1})
 $$
 
 as $x\rightarrow x_0$
@@ -294,12 +339,14 @@ $$
 $$Q(\theta|\theta^{(t)}) = c(Y) + d(\theta) + \sum_{j=1}^p \theta_j E_{\theta^{(t)}}(Y_j|X)$$
 
 \subsection{Var estimate of $\hat\theta$}
+Note that variance estimate $\hat\theta$ is wrt to $i_X$
 
-Fisher information $I(\theta) = E_\theta[-\ell''_X(\theta)] = var_\theta(\ell'_X (\theta))$
+Fisher information for NEF $I(\theta) = E_\theta[-\ell''_X(\theta)] = var_\theta(\ell'_X (\theta))$
 
 MLE asymptotic dist $I(\theta)^{-1/2}(\hat\theta-\theta_0) \rightarrow N(0, I_K)$
 
-Fisher info for complete data $i_Y(\theta) = i_X(\theta) + i_{Z|X}(\theta)$ $\Rightarrow i_X = i_Y - i_{Z|X}$ (note the variance estimate $\hat\theta$ is wrt to $i_X$)
+Fisher info for complete data $i_Y(\theta) = i_X(\theta) + i_{Z|X}(\theta)$ $\Rightarrow i_X = i_Y - i_{Z|X}$
+(need to compute both $i_Y$ and $i_Z|X$ to get $i_X$)
 
 BS-MC estimate $\hat{i}_Y(\theta) = -\frac{1}{m}\sum_{i=1}^m \ell''_{Y^{(k)}}(\theta)$,
 $\hat{i}_{Z|X}(\theta) = -\frac{1}{m}\sum_{i=1}^m \ell''_{Z^{(k)}}(\theta)$
@@ -351,10 +398,9 @@ $$
 
 
 \section{L3: Numerical Integration}
-
+Efficient method for lower dimension.
 
 \subsection{Integration}
-
 Objective: approximate $\int_a^b f(x) dx$ numerically
 
 Naive method: Divide $[a, b]$ into $n$ sub-intervals,  $x^*_i$ is the middle point of $i$th subinterval.
@@ -364,7 +410,6 @@ $$\int_a^b f(x) dx \approx \frac{b-a}{n}\sum_{i=1}^n f(x_i^*)$$
 Improvement: for each of the sub-interval $[x_i, x_{i+1}]$ add $(m+1)$ nodes
 
 \subsection{Trapezoidal Rule}
-
 Choose 2 nodes ($m=1$) in $[x_i, x_{i+1}]$.
 To approximate height $I = \frac{\int_{x_i}^{x_{i+1}} f(x) dx }{x_{i+1} -x_i}$. Area = $(x_{i+1} - x_{i})\times I$
 
@@ -381,7 +426,6 @@ $$
 $\hat T(n) - \int_a^b f(x)dx = O(n^{-2})$
 
 \subsection{Simpson Rule}
-
 Choose 3 nodes ($m=2$). Approximate height $I$
 
 $$
@@ -399,31 +443,31 @@ $$
 $\hat S(n) - \int_a^b f(x) dx = O(n^{-4})$, can generalised to other polynomial order $m$
 
 \subsection{Gaussian Quadrature}
+Perfect est for polynomial order $2m+1$ and below (or fn close enough) using $2m+2$ points ($x_m, x_0, c_m, c_0$).
 
-Perfect est for polynomial order $2m+1$ and below (or fn close enough) using $2m+2$ points.
+Form $p_0 := x + a_0$ s.t. $\int w(x) p_0 dx = 0$ and $p_1 := x^2 + b_1 x + b_0$ s.t. $\int w(x) p_1 dx = \int w(x) x p_1 dx = 0$
 
+$p_m = x p_{m-1} + a_m p_{m-1} + b_m p_{m-2}$ s.t. $\int w(x) x^m p_m dx = \int w(x) x^{m-1}p_m dx = 0$
+Require \circled{1} solve $x_0, \cdots, x_m$ as solutions to $p_m = 0$ (roots)
+\circled{2} find $c_0, \cdots, c_m$ as solutions to $\int r(x) dx = \sum c_j r(x_j)$ where $r$ is polynomial of order $m-1$
+
+Estimate
 $$
-    I = \int_a^b w(x) f(x) dx = \sum_{j=0}^m c_j f(x_j)
+I = \int_a^b w(x) f(x) dx \approx \sum_{j=0}^m c_j f(x_j)
 $$
 
 when $a, b$ finite, $w(x)=1$; when $a=0, b=\infty$, $w(x) = e^{-x}$; when $a=-\infty, b=\infty$, $w(x) = e^{-x^2/2}$
 
-Requires solving for $x_0, \cdots, x_m$ and $c_0, \cdots, c_m$ ($2m+2$ unknowns)
-
 
 \section{L4: Bootstrap}
 
-
 \subsection{Nonparametric}
-
 Re-sample with replacement and estimate $E(f(X))$ with $\frac{1}{B}\sum_{b=1}^B f(X^{(b)})$
 
 \subsection{Parametric}
-
 First estimate $\hat\theta$ (e.g. with MLE) then generate samples from $F_{\hat\theta}(x)$. require assumption on parametric form.
 
 \subsection{BS techniques}
-
 Paired BS: generate BS samples by pairing $Z_i = (x_i, y_i)$
 
 BS residual: generate est $y_i^*$ by bootstrapping $\hat\epsilon_i^*$
@@ -431,44 +475,45 @@ BS residual: generate est $y_i^*$ by bootstrapping $\hat\epsilon_i^*$
 Bias correction: $\hat{\text{bias}} = \frac{1}{B}\sum_{k=1}^B (\hat\theta_k^* - \hat\theta)$, correct estimate with $\hat\theta - \hat{\text{bias}}$
 
 \subsection{BS Percentile CI}
-
 90\% BS CI for $\theta$ = $\left(\hat\theta^*_{(5)}, \hat\theta^*_{(95)}\right)$
 
 Only works well if $\hat\theta - \theta$ does not depend on $\theta$ and is symetric about 0
 
 \subsection{BS t CI}
-
 Consider $\frac{\hat\theta - \theta}{\hat\theta}$ instead, let $d^*_k = \frac{\hat\theta_k^* - \hat\theta}{\hat\sigma^*_k}$,
 90\% CI for $\theta$ is $(\hat\theta - \hat\sigma d^*_{(95)}, \hat\theta - \hat\sigma d^*_{(5)})$
 
 \subsection{Balanced BS}
-
 Reduce MC error from some observed $X_i$ are too frequently selected by chance.
 
 (1) Generate every $X_i$ exactly $B$ times. (2) Permute/re-order the samples (3) first $n$ is assigned to first BS sample
 
 \subsection{Antithetic BS}
-
 Reduce MC error by enforcing data pairing.
-
 (1) Generate $B$ data (2) second sample is replacing $X_{(k)}$ with $X_{(n-k+1)}$
 
+\subsection{BS as SIS}
+Proposal density $X^*\sim f(x)$, same as target density $f(x)$
+$w(X^*) = \frac{f(x)/f(x)}{\sum f(x)/f(x)} = \frac{1}{n}$
+
+\subsection{BS unbiased estimate}
+$$
+    E[h(X_i^*)] = \sum_{i=1}^b[h(X_i^*)I(X_i^* = X_i)] = \sum_{i=1}^b E[E[h(X_i^*)I(X_i^* = X_i)|I(X_i^*=X_i)]]
+$$
+$$
+    =\sum_{i=1}^b E[h(X^*_i)I(X_i^*=X_i)=1]P(X_i^*=X_i)=\sum_{i=1}^b E[h(X_i)]\frac{1}{n} = E[h(X_i)]
+$$
 
 \section{L5: Simulation and MC Integration}
 
-
 \subsection{MC integration}
-
 Estimate $\mu = E[h(X)]$, generate $X_i$ from $f(x)$ (known)
 
 $\hat\mu_{MC} = \frac{1}{n} \sum_{i=1}^n h(X_i)$
-
-$\hat\sigma^2_{MC} = \frac{1}{n-1} \sum_{i=1}^n [h(X_i) - \hat\mu_{MC}]^2$
-
-MC estimate: $\hat\mu_{MC} \pm \hat\sigma / \sqrt{n}$
+and $\hat\sigma^2_{MC} = \frac{1}{n-1} \sum_{i=1}^n [h(X_i) - \hat\mu_{MC}]^2$
+and MC estimate: $\hat\mu_{MC} \pm \hat\sigma / \sqrt{n}$
 
 \subsection{Extract Simulation}
-
 Simulate samples from $f(x)$ directly if $F^{-1}(U)$ exist and known, and is single-varaite
 
 (1) Generate $U\sim Unif(0, 1)$ (2) $X = F^{-1}(U)$
@@ -476,9 +521,9 @@ Simulate samples from $f(x)$ directly if $F^{-1}(U)$ exist and known, and is sin
 Known distributions such as Gaussian, Beta have special algorithm.
 
 \subsection{Rejection Sampling}
-
 Assume $f(x)$ can be computed easily, find proposal density $Y\sim g$ s.t. $f(x) \leq g(x)/\alpha$ for known $\alpha > 0$
 If $\alpha f(Y)/g(y)$ is small, then algo is inefficient.
+To ensure rejection sampling exists, require $\frac{f(x)}{g(x)} \leq \frac{1}{\alpha}$, bounded by a constant.
 
 (1) Generate $Y\sim g$
 
@@ -488,9 +533,13 @@ If $\alpha f(Y)/g(y)$ is small, then algo is inefficient.
 
 (4) Else, repeat (1-3) until succeed
 
+\subsection{Deducing Rejection Sampling distribution}
+$P(X\leq x) = P(Y \leq y | U \leq \alpha f(Y) / g(Y))$
+
 \subsection{SIR}
 
-Sampling Importance Resampling, with envelope function $g(x)$
+Sampling Importance Resampling, with envelope function $g(x)$.
+Note $E[h(X)] = \sum_{i=1}^n w_i h(Y_i)$
 
 Generate approximate distribution from $f(x)$ (previous 2 methods are exact).
 
@@ -576,11 +625,21 @@ $$\hat\mu_{RB} = \frac{1}{n} \sum_{i=1}^n \Tilde{h}(X_{i2})$$
 
 
 \subsection{MCMC}
-
 Objective: generate stationary distribution s.t. $X_t \sim f(x) \Rightarrow X_{t+1} \sim f(x)$
 
-\subsection{Independence Chains}
+$$
+    R(X_t, Y_t) = \frac{f(Y_t)g(X_t)}{f(X_t)g(Y_t)}
+$$
 
+require $g_Y(X_t|Y_t) = g_Y(X_t)$ and $g_Y(Y_t|X_t) = g_Y(Y_t)$.
+Note $g$ is the density of $Y$ the proposal distribution.
+
+\subsection{Deducing MCMC distribution}
+$P(X_t\leq x) = P(Y_t \leq x, U \leq R(X_t, Y)) + P(X_t \leq x, U > R(X_t, Y))$
+
+$=E\left[I(Y_t \leq x)\min\{1, R(X_t, Y)\}\right] + E\left[I(X_t \leq x)[1-\min\{1, R(X_t, Y)\}]\right]$
+
+\subsection{Independence Chains}
 Proposal distribution $g(x)$, $w(x) = f(x)/g(x)$
 
 (1) Generate $X_1\sim g(x)$, let $t=1$
@@ -630,6 +689,22 @@ $$
 
 (3) Increase $t$ by 1 and repeat (2)
 
+\subsection{Gibbs Sampling tricks}
+
+When given mixture density, define latent variable $Z_{ij} \in \{0, 1\}$, and $Z_i = \sum_{j=1}^k Z_{ij} = 1$
+
+$$
+    f(X) = \sum_{j=1}^k p_j f(x|\theta_j) = \sum_{j=1}^k p_j f(x|Z_{ij}=1, \theta_j)
+$$
+
+$$
+    f(X, Z_i) = \prod_{j=1}^k p_j f(x|\theta_j)^{Z_j}, \; \;
+    f(X|Z_i) = p_j f(x|\theta_j), \; \;
+    f(Z_i | X) = \frac{f(X, Z_i)}{f(X)} =
+    \frac{\prod_{j=1}^k p_k f(x|\theta_k)^{Z_{ij}}}{\sum_{j=1}^k p_j f(x|\theta_j)}
+$$
+
+
 
 \section{L7: Non-parametric Density Estimation}
 
@@ -663,7 +738,7 @@ $$
     = \int \text{bias}^2\{\hat{f}(x)\} + \int \text{var}\{\hat{f}(x)\}
 $$
 
-\subsection{Naive Estimators}
+\subsection{Naive Estimators} $X \sim f(x)$, $x\in [a, b]$
 
 $$
     \hat{f}_n(x) = \frac{\hat{F}_2(x+h) - \hat{F}_n(x-h)}{2h}
@@ -679,6 +754,23 @@ $$
     \hat{f}(x) = \frac{1}{nh} \sum_{i=1}^n w\left(\frac{x-X_i}{h}\right)
 $$
 
+\subsection{Histogram moments}
+
+$\hat{f}_n(x) = \frac{1}{2nh} \sum_{i=1}^n I(x-h < X_i \leq x+ h)$,
+and $2nh\hat{f}_n(x) = \sum_{i=1}^n I(x-h < X_i \leq x + h) := \sum_{i=1}^n Y_i$
+
+where $Y_i \sim Ber(p(x))$, $p(x)=\int_{x-h}^{x+h} f(x) dx$.
+$2nh\hat{f}_n(x) \sim B(n, p(x))$
+
+$$
+    E(\hat{f}_n(x)) = \frac{1}{2nh}E(2nh\hat{f}_n(x)) = \frac{1}{2nh} p(x)
+$$
+and $E(\hat{f}_x(x))^2 = Var(\hat{f}_n(x)) + [E(\hat{f}_n(x))]^2$
+
+$$
+    Var(\hat{f}_n(x)) = \frac{1}{(2nh)^2} Var(2nh\hat{f}_n(x)) = \frac{1}{(2nh)^2} np(x)[1-p(x)]
+$$
+
 \subsection{Kernel Density Estimators}
 
 $h$ bandwidth - most important hyper-parameter, $K(\cdot)$ kernel function, $K_h(x) = K(y/h)/h$ bandwidth-rescaled kernel function
@@ -689,6 +781,7 @@ $$
     \right) = \frac{1}{n} \sum_{i=1}^n K_h\left(
     x - X_i
     \right)
+:= \frac{1}{n} \sum g(X_i)
 $$
 
 \subsection{Kernel Function}
@@ -714,6 +807,41 @@ $K(t) = \max(0.75 (1-t^2) , 0)$
 
 Biweight
 $K(t) = \max(15/16 (1-t^2)^2, 0)$
+
+\subsection{Kernel MSE}
+
+$MSE(\hat{f}(x)) = \text{bias}^2\{\hat{f}(x)\} + \text{var}(\hat{f}(x))$
+
+$E\hat{f}_n(x) = Eg(X_1) = \frac{1}{h}EK\left(\frac{x-X_i}{h}\right) = \frac{1}{h}\int K\left(\frac{x-y}{h}\right) f(y) dy$
+$=\int K(t) f(x-ht) dt$
+$=\int K(t) \left[f(x) - htf'(x) + \frac{(ht)^2}{2}f''(x) + \cdots\right] dt$
+
+$=f(x) + \frac{h^2}{2}f''(x) \int t^2 K(t) dt + O(h^3)$
+
+$$
+    \text{bias}(\hat{f}_n(x)) = E(\hat{f}_n(x)) - f(x) = \frac{h^2}{2}f''(x)\int t^2 K(t) dt +O(h^3)
+$$
+
+$EK^2\left(\frac{x-X_i}{h}\right) = \int K^2 \left(\frac{x-y}{h}\right)f(y)dy = h\int K^2(t)f(x-ht)dt$
+$=h\int K^2(t) [f(x) - htf'(x) + \frac{(ht)^2}{2}f''(x) + \cdots] dt$
+$=hf(x)\int K^2(t)dt + O(h^2)$
+
+$$
+    \text{var}(\hat{f}_n(x)) =\frac{1}{n}\text{var}(g(X_i))
+    =\frac{1}{nh^2}\left[EK^2\left(\frac{x-X_i}{h}\right) - \left(EK\left(\frac{x-X_i}{h}\right)^2\right)\right]
+    =\frac{1}{nh} f(x) \int K^2(t) dt + O(1/n)
+$$
+
+$$
+    \text{MSE}(\hat{f}_n(x)) =\frac{1}{nh}f(x)\left(\int K^2(t) dt\right) + \frac{h^4}{4}[f''(x)]^2\left(\int t^2 K(t) dt\right)^2 + o\left(\frac{1}{nh} + h^4\right)
+$$
+
+$$
+    \text{MISE}(\hat{f}_n(x)) =\int \text{MSE}(\hat{f}_n(x)) dx
+    =\frac{1}{nh}\int K^2(t) dt + \frac{h^2}{4} \left(\int [f''(x)]^2 dx\right)\left(\int t^2 K(t) dt\right)^2 + o\left(\frac{1}{nh} + h^4\right)
+$$
+
+condition required is $h\rightarrow 0$, $nh\rightarrow \infty$
 
 \subsection{Unbiased C-V}
 
