@@ -409,6 +409,12 @@ $$\int_a^b f(x) dx \approx \frac{b-a}{n}\sum_{i=1}^n f(x_i^*)$$
 
 Improvement: for each of the sub-interval $[x_i, x_{i+1}]$ add $(m+1)$ nodes
 
+\subsection{Newton-Cotes Quadrature}
+General class that approximate $I = \frac{\int_{x_i}^{x_{i+1}} f(x) dx}{x_{i+1} - x_i}$ with
+$\hat{I}_m = \sum_{j=0}^m c_j f(x_j^*)$
+
+and $x_i=x_0^* < x_2^* < \cdots < x_m^* =x_{i+1}$ equally spaced in $[x_i, x_{i+1}]$
+
 \subsection{Trapezoidal Rule}
 Choose 2 nodes ($m=1$) in $[x_i, x_{i+1}]$.
 To approximate height $I = \frac{\int_{x_i}^{x_{i+1}} f(x) dx }{x_{i+1} -x_i}$. Area = $(x_{i+1} - x_{i})\times I$
@@ -436,27 +442,66 @@ Total area $\int_a^b f(x) dx$, with $h = (b-a)/n$, $x^*_i = (x_i+x_{i+1})/2$
 
 $$
     \hat S(n) = h\sum_{i=1}^n \left\{
-    \frac{f(x_i)}{6} + \frac{2f(x_i^*)}{3} + \frac{f(x_{i+1})}{6}
+\frac{f(x_i)}{6} + \frac{4f(x_i^*)}{6} + \frac{f(x_{i+1})}{6}
     \right\}
 $$
 
 $\hat S(n) - \int_a^b f(x) dx = O(n^{-4})$, can generalised to other polynomial order $m$
 
+To prove the coefficients are as such, show either linear system solution of
+$I = \int_0^1 f(x) dx = a_0 + \frac{1}{2}a_1 + \frac{1}{3}a_2$ and
+$\hat{I}_2 = c_0f(0)+c_1f(0.5)+c_2f(1) = (c_0 + c_1 + c_2)a_0 + (0.5 c_1 + c_2)a_1 + (0.25 c_1 + c_2)a_2$ assume $I=\hat{I}_2$
+
 \subsection{Gaussian Quadrature}
-Perfect est for polynomial order $2m+1$ and below (or fn close enough) using $2m+2$ points ($x_m, x_0, c_m, c_0$).
+Remove Newton-Cotes restriction of equally spaced nodes and $x_0^*=x_i$, $x_m^* = x_{i+1}$,
+perfect est for polynomial order $2m+1$ and below (or fn close enough) using $2m+2$ points ($x_m, x_0, c_m, c_0$).
+Focus on a segment $[a, b]$.
 
-Form $p_0 := x + a_0$ s.t. $\int w(x) p_0 dx = 0$ and $p_1 := x^2 + b_1 x + b_0$ s.t. $\int w(x) p_1 dx = \int w(x) x p_1 dx = 0$
-
-$p_m = x p_{m-1} + a_m p_{m-1} + b_m p_{m-2}$ s.t. $\int w(x) x^m p_m dx = \int w(x) x^{m-1}p_m dx = 0$
-Require \circled{1} solve $x_0, \cdots, x_m$ as solutions to $p_m = 0$ (roots)
-\circled{2} find $c_0, \cdots, c_m$ as solutions to $\int r(x) dx = \sum c_j r(x_j)$ where $r$ is polynomial of order $m-1$
-
-Estimate
 $$
-I = \int_a^b w(x) f(x) dx \approx \sum_{j=0}^m c_j f(x_j)
+    I = \int_a^b w(x) f(x) dx \approx \sum_{j=0}^m c_j f(x_j)
 $$
 
 when $a, b$ finite, $w(x)=1$; when $a=0, b=\infty$, $w(x) = e^{-x}$; when $a=-\infty, b=\infty$, $w(x) = e^{-x^2/2}$
+
+\subsection{Gaussian Quadrature: Construct $p_m(x)$ and $x_m$}
+
+\circled{1} construct polynomial of degreee $m+1$ denoted by $p_m(x)$ s.t.
+
+$$
+    \int_a^b w(x) x^k p_m(x) dx = 0, k=0, \cdots, m
+$$
+
+\circled{2} construct $x_0, \cdots, x_m$ as roots to $p_m = 0$
+
+\circled{3} construct $c_0, \cdots, c_m$ as solutions to $\int r(x) dx = \sum_{j=1}^m c_j r(x_j)$ where $r(x) = a_0 + a_1 x + \cdots + a_m x^m$
+
+$$
+    \int_a^b w(x) r(x) dx = \sum_{j=0}^m W_j a_j, \; \;
+    W_j = \int_a^b w(x) x^j dx
+$$
+
+and
+
+$$
+    \sum_{j=0}^m c_jr(x_j) = \sum_{j=0}^m UJ a_j, \; \;
+    U_j = \sum_{i=0}^m c_i x_i^j
+$$
+
+matching coefficients of $a_j$ or $U_j = W_j$, and solve linear system of $m+1$ equations with $m+1$ unknowns: $c_0, \cdots, c_m$.
+
+\circled{4} Estimate
+
+$$
+\int_a^b w(x) f(x) dx \approx \sum_{j=1}^m c_j f(x_j)
+$$
+
+\subsection{Forming $p_m(x)$}
+
+\circled{1} Form $p_0 := x + a_0$ s.t. $\int w(x) p_0 dx = 0$
+
+\circled{2} $p_1 := x^2 + b_1 x + b_0$ s.t. $\int w(x) p_1 dx = \int w(x) x p_1 dx = 0$
+
+\circled{3} $p_m = x p_{m-1} + a_m p_{m-1} + b_m p_{m-2}$ s.t. $\int w(x) x^m p_m dx = \int w(x) x^{m-1}p_m dx = 0$
 
 
 \section{L4: Bootstrap}
@@ -543,7 +588,7 @@ Note $E[h(X)] = \sum_{i=1}^n w_i h(Y_i)$
 
 Generate approximate distribution from $f(x)$ (previous 2 methods are exact).
 
-(1) Sample $Y_i, \cdot, Y_m$ from $g(x)$
+(1) Sample $Y_i, \cdots, Y_m$ from $g(x)$
 
 (2) Calculate standardised importance weight $w(Y_1), \cdots, w(Y_m)$
 
