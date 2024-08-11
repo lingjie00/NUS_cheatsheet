@@ -36,8 +36,9 @@ $E[\max\{0, Y\}] = E[YI(Y > 0)]$ and
 $E[\min\{0, Y\}] = E[YI(Y < 0)]$
 
 \subsection{Variance}
-$Var(X) = E(X^2) + (EX)^2$ and
-$Var(X|Y) = Var(E[X|Y]) + E[Var(X|Y)]$
+$Var(X) = E(X^2) - (EX)^2$ and
+$Var(X) = Var(E[X|Y]) + E[Var(X|Y)]$
+$Var(X|Y) = E[X^2|Y] - (E[X|Y])^2$
 
 \subsection{Finding joint and conditional density}
 Suppose $X=\epsilon_1$, $Y=X+\epsilon_2$, $Z = X + Y + \epsilon_3$,
@@ -715,7 +716,7 @@ $$
     \hat\mu_{CV} = \hat\mu_{MC} + \lambda (\hat\theta_{MC} - \theta)
 $$
 
-with $\lambda_{\min} = - \frac{cov(h(X), c(Y)}{var(c(Y)}$
+with $\lambda_{\min} = - \frac{cov(h(X), c(Y)}{2var(c(Y)}$
 
 \subsection{Rao-Blackwellization}
 
