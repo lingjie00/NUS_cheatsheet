@@ -50,3 +50,4 @@ contains every major pointers in the module.
 | ST5215 | Advanced Statistical Theory | summary notes + cheatsheet |
 | ST5222 | Advanced Topics in Applied Statistics | summary notes + cheatsheet |
 | ST5224 | Advanced Statistical Theory II | summary notes + cheatsheet |
+| PhD QE | PhD Qualifying Exam | cheatsheets | Covers ST5215, ST5222, ST5224 |
