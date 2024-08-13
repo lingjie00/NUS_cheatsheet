@@ -1,0 +1,32 @@
+\documentclass{article}
+\usepackage[a4paper, total={8.2in, 11.5in}, margin=0.1cm]{geometry}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{textcomp}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor, soul}
+% \usepackage{tabulary}
+%override section and subsection commands
+\renewcommand{\section}[1]{\textcolor{red}{\textbf{#1}}}
+\renewcommand{\subsection}[1]{\text{\hl{[#1]}}}
+%remove page numbering
+\pagenumbering{gobble}
+% disable indent
+\setlength\parindent{0pt}
+% reduce padding
+\renewcommand{\arraystretch}{0.1}
+\setlength{\tabcolsep}{0.1pt}
+% \setlength\extrarowheight{-3pt}
+% Define a command to create circled numbers
+\newcommand{\circled}[1]{\textcircled{\footnotesize #1}}
+% Define a command to swap between line breaks
+% \newcommand{\compact}{\nolinebreak}
+\newcommand{\compact}{\\}
+
+\pdfinfo{
+    /Title (ST4233 Linear Models)
+/Creator (Ling)}
+
+\begin{document}
+
+\end{document}
